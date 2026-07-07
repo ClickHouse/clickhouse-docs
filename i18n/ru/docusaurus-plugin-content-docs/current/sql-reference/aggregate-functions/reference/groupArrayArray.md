@@ -1,12 +1,10 @@
 ---
-description: 'Агрегирует массивы в один массив, состоящий из этих массивов.'
+description: 'Агрегирует массивы в единый более крупный массив этих массивов.'
 keywords: ['groupArrayArray', 'array_concat_agg']
 slug: /sql-reference/aggregate-functions/reference/grouparrayarray
 title: 'groupArrayArray'
 doc_type: 'reference'
 ---
-
-# groupArrayArray \{#grouparrayarray\}
 
 Агрегирует массивы в единый более крупный массив этих массивов.
 Комбинирует функцию [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) с комбинатором [Array](/sql-reference/aggregate-functions/combinators#-array).

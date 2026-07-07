@@ -2,9 +2,9 @@
 slug: /guides/developer/understanding-query-execution-with-the-analyzer
 sidebar_label: 'Понимание выполнения запросов с помощью анализатора'
 title: 'Понимание выполнения запросов с помощью анализатора'
-description: 'В этом руководстве показано, как использовать анализатор, чтобы понять, как ClickHouse выполняет ваши запросы'
+description: 'Описывает, как можно использовать анализатор, чтобы понять, как ClickHouse выполняет ваши запросы'
 doc_type: 'guide'
-keywords: ['выполнение запросов', 'анализатор', 'оптимизация запросов', 'EXPLAIN', 'производительность']
+keywords: ['выполнение запросов', 'анализатор', 'оптимизация запросов', 'explain', 'производительность']
 ---
 
 import analyzer1 from '@site/static/images/guides/developer/analyzer1.png';
@@ -13,9 +13,6 @@ import analyzer3 from '@site/static/images/guides/developer/analyzer3.png';
 import analyzer4 from '@site/static/images/guides/developer/analyzer4.png';
 import analyzer5 from '@site/static/images/guides/developer/analyzer5.png';
 import Image from '@theme/IdealImage';
-
-
-# Понимание выполнения запросов с помощью анализатора \{#understanding-query-execution-with-the-analyzer\}
 
 ClickHouse обрабатывает запросы чрезвычайно быстро, но процесс их выполнения довольно сложен. Попробуем разобраться, как выполняется запрос `SELECT`. Чтобы проиллюстрировать это, добавим немного данных в таблицу ClickHouse:
 
@@ -41,14 +38,15 @@ INSERT INTO session_events SELECT * FROM generateRandom('clientId UUID,
 
 Давайте посмотрим на каждый объект в действии во время выполнения запроса. Мы возьмём несколько запросов и затем рассмотрим их с помощью оператора `EXPLAIN`.
 
-
 ## Парсер \{#parser\}
 
 Задача парсера — преобразовать текст запроса в AST (Abstract Syntax Tree, абстрактное синтаксическое дерево). Этот шаг можно визуализировать с помощью `EXPLAIN AST`:
 
 ```sql
 EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
+```
 
+```response
 ┌─explain────────────────────────────────────────────┐
 │ SelectWithUnionQuery (children 1)                  │
 │  ExpressionList (children 1)                       │
@@ -73,7 +71,6 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 
 Каждый узел имеет соответствующие дочерние элементы, а дерево целиком представляет структуру вашего запроса. Это логическая структура, помогающая при обработке запроса. С точки зрения конечного пользователя (если только его не интересует выполнение запроса) она не особенно полезна; этот инструмент в основном используется разработчиками.
 
-
 ## Анализатор \{#analyzer\}
 
 В ClickHouse в настоящее время есть две архитектуры анализатора. Вы можете использовать старую архитектуру, установив `enable_analyzer=0`. Новая архитектура включена по умолчанию. Здесь мы будем описывать только новую архитектуру, поскольку старая будет признана устаревшей, как только новый анализатор станет общедоступным.
@@ -82,11 +79,13 @@ EXPLAIN AST SELECT min(timestamp), max(timestamp) FROM session_events;
 Новая архитектура должна обеспечить более удобную основу для дальнейшего повышения производительности ClickHouse. Однако, поскольку это базовый компонент этапов обработки запроса, она также может оказывать негативное влияние на некоторые запросы, и существуют [известные несовместимости](/operations/analyzer#known-incompatibilities). Вы можете вернуться к старому анализатору, изменив настройку `enable_analyzer` на уровне запроса или пользователя.
 :::
 
-Анализатор — это важный этап выполнения запроса. Он принимает AST и преобразует его в дерево запроса. Основное преимущество дерева запроса по сравнению с AST заключается в том, что множество компонентов будет разрешено, например хранилище. Мы также знаем, из какой таблицы читать данные, разрешены алиасы, и дерево знает различные используемые типы данных. Обладая всеми этими преимуществами, анализатор может применять оптимизации. Эти оптимизации реализуются с помощью «проходов». Каждый проход ищет свои варианты оптимизаций. Вы можете увидеть все проходы [здесь](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249); давайте посмотрим на это на практике на примере нашего предыдущего запроса:
+Анализатор — это важный этап выполнения запроса. Он принимает AST и преобразует его в дерево запроса. Основное преимущество дерева запроса по сравнению с AST заключается в том, что множество компонентов будет разрешено, например хранилище. Мы также знаем, из какой таблицы читать данные, разрешены псевдонимы, и дерево знает различные используемые типы данных. Обладая всеми этими преимуществами, анализатор может применять оптимизации. Эти оптимизации реализуются с помощью «проходов». Каждый проход ищет свои варианты оптимизаций. Вы можете увидеть все проходы [здесь](https://github.com/ClickHouse/ClickHouse/blob/76578ebf92af3be917cd2e0e17fea2965716d958/src/Analyzer/QueryTreePassManager.cpp#L249); давайте посмотрим на это на практике на примере нашего предыдущего запроса:
 
 ```sql
 EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────────────────────────┐
 │ QUERY id: 0                                                                            │
 │   PROJECTION                                                                           │
@@ -107,7 +106,9 @@ EXPLAIN QUERY TREE passes=0 SELECT min(timestamp) AS minimum_date, max(timestamp
 
 ```sql
 EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestamp) AS maximum_date FROM session_events SETTINGS allow_experimental_analyzer=1;
+```
 
+```response
 ┌─explain───────────────────────────────────────────────────────────────────────────────────┐
 │ QUERY id: 0                                                                               │
 │   PROJECTION COLUMNS                                                                      │
@@ -131,7 +132,6 @@ EXPLAIN QUERY TREE passes=20 SELECT min(timestamp) AS minimum_date, max(timestam
 
 Между двумя выполнениями вы можете увидеть, как разрешаются псевдонимы и проекции.
 
-
 ## Планировщик \{#planner\}
 
 Планировщик принимает дерево запроса и на его основе строит план запроса. Дерево запроса описывает, что мы хотим сделать с конкретным запросом, а план запроса описывает, как мы это сделаем. Дополнительные оптимизации выполняются на этапе построения плана запроса. Вы можете использовать `EXPLAIN PLAN` или `EXPLAIN`, чтобы посмотреть план запроса (`EXPLAIN` выполнит `EXPLAIN PLAN`).
@@ -143,7 +143,9 @@ EXPLAIN PLAN WITH
        FROM session_events
    ) AS total_rows
 SELECT type, min(timestamp) AS minimum_date, max(timestamp) AS maximum_date, count(*) /total_rows * 100 AS percentage FROM session_events GROUP BY type
+```
 
+```response
 ┌─explain──────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))      │
 │   Aggregating                                    │
@@ -167,7 +169,9 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
+```
 
+```response
 ┌─explain──────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))      │
 │ Header: type String                              │
@@ -190,7 +194,6 @@ GROUP BY type
 
 Теперь вы знаете названия столбцов, которые нужно создать для последней проекции (`minimum_date`, `maximum_date` и `percentage`), но, возможно, вы также захотите получить подробные сведения обо всех действиях, которые должны быть выполнены. Для этого установите `actions=1`.
 
-
 ```sql
 EXPLAIN actions = 1
 WITH (
@@ -204,7 +207,9 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ Expression ((Projection + Before ORDER BY))                                                                                                │
 │ Actions: INPUT :: 0 -> type String : 0                                                                                                     │
@@ -245,7 +250,6 @@ GROUP BY type
 
 Теперь вы можете видеть все входные данные, функции, псевдонимы и типы данных, которые используются. Некоторые оптимизации, которые будет применять планировщик, можно посмотреть [здесь](https://github.com/ClickHouse/ClickHouse/blob/master/src/Processors/QueryPlan/Optimizations/Optimizations.h).
 
-
 ## Конвейер запроса \{#query-pipeline\}
 
 Конвейер запроса генерируется из плана запроса. Конвейер запроса очень похож на план запроса, но представляет собой не дерево, а граф. Он показывает, как ClickHouse будет выполнять запрос и какие ресурсы будут использоваться. Анализ конвейера запроса очень полезен для выявления узких мест с точки зрения ввода/вывода. Возьмём наш предыдущий запрос и посмотрим на выполнение конвейера запроса:
@@ -263,7 +267,9 @@ SELECT
    (count(*) / total_rows) * 100 AS percentage
 FROM session_events
 GROUP BY type;
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────────────┐
 │ (Expression)                                                               │
 │ ExpressionTransform × 2                                                    │
@@ -340,7 +346,7 @@ digraph
 
 Затем вы можете скопировать этот вывод и вставить его [сюда](https://dreampuf.github.io/GraphvizOnline), после чего будет построен следующий граф:
 
-<Image img={analyzer3} alt="Graph output" size="md" />
+<Image img={analyzer3} alt="Изображение графа" size="md" />
 
 Белый прямоугольник соответствует узлу пайплайна, серый прямоугольник — шагам плана запроса, а `x`, за которым следует число, обозначает количество используемых входов/выходов. Если вы не хотите видеть граф в компактном виде, вы всегда можете добавить `compact=0`:
 
@@ -379,7 +385,6 @@ digraph
  n3 -> n5;
 }
 ```
-
 
 <Image img={analyzer4} alt="Компактный вывод графика" size="md" />
 

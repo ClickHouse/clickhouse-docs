@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'JSONObjectEachRow 형식에 대한 문서'
+description: 'JSONObjectEachRow 포맷에 대한 문서'
 input_format: true
 keywords: ['JSONObjectEachRow']
 output_format: true
@@ -10,16 +10,12 @@ doc_type: 'reference'
 ---
 
 | 입력 | 출력 | 별칭 |
-|-------|--------|-------|
-| ✔     | ✔      |       |
-
-
+| -- | -- | -- |
+| ✔  | ✔  |    |
 
 ## 설명 \{#description\}
 
-이 형식에서는 모든 데이터가 하나의 JSON 객체로 표현되며, 각 행은 [`JSONEachRow`](./JSONEachRow.md) 형식과 유사하게 이 객체의 개별 필드로 표현됩니다.
-
-
+이 포맷에서는 모든 데이터가 하나의 JSON 객체로 표현되며, 각 행은 [`JSONEachRow`](./JSONEachRow.md) 포맷과 유사하게 이 객체의 개별 필드로 표현됩니다.
 
 ## 사용 예시 \{#example-usage\}
 
@@ -131,8 +127,7 @@ CREATE TABLE IF NOT EXISTS example_table
 
 ### 데이터 조회 \{#json-selecting-data\}
 
-예제로 `UserActivity` 테이블을 살펴보십시오:
-
+예를 들어 `UserActivity` 테이블을 살펴보겠습니다:
 
 ```response
 ┌──────────────UserID─┬─PageViews─┬─Duration─┬─Sign─┐
@@ -148,10 +143,10 @@ CREATE TABLE IF NOT EXISTS example_table
 {"UserID":"4324182021466249494","PageViews":6,"Duration":185,"Sign":1}
 ```
 
-[JSON](/interfaces/formats/JSON) 형식과 달리, 잘못된 UTF-8 시퀀스는 치환되지 않습니다. 값은 `JSON`과 동일한 방식으로 이스케이프됩니다.
+[JSON](/interfaces/formats/JSON) 포맷과 달리, 잘못된 UTF-8 시퀀스는 치환되지 않습니다. 값은 `JSON`과 동일한 방식으로 이스케이프됩니다.
 
 :::info
-문자열 값에 임의의 바이트 집합을 출력할 수 있습니다. 테이블의 데이터가 정보 손실 없이 JSON으로 포맷될 수 있다고 확신하는 경우 [`JSONEachRow`](./JSONEachRow.md) 형식을 사용하십시오.
+문자열 값에 임의의 바이트 집합을 출력할 수 있습니다. 테이블의 데이터가 정보 손실 없이 JSON으로 포맷될 수 있다고 확신하는 경우 [`JSONEachRow`](./JSONEachRow.md) 포맷을 사용하십시오.
 :::
 
 ### 중첩 구조 사용 \{#jsoneachrow-nested\}
@@ -160,13 +155,13 @@ CREATE TABLE IF NOT EXISTS example_table
 
 예를 들어, 다음과 같은 테이블을 가정해 보겠습니다:
 
-```sql
+```sql title="Query"
 CREATE TABLE json_each_row_nested (n Nested (s String, i Int32) ) ENGINE = Memory
 ```
 
-`Nested` 데이터 형식 설명에서 볼 수 있듯이, ClickHouse는 중첩 구조의 각 구성 요소를 별도의 컬럼으로 취급합니다(이 테이블에서는 `n.s`와 `n.i`). 데이터를 다음과 같이 삽입합니다.
+`Nested` 데이터 타입 설명에서 볼 수 있듯이, ClickHouse는 중첩 구조의 각 구성 요소를 별도의 컬럼으로 취급합니다(이 테이블에서는 `n.s`와 `n.i`). 데이터를 다음과 같이 삽입합니다.
 
-```sql
+```sql title="Query"
 INSERT INTO json_each_row_nested FORMAT JSONEachRow {"n.s": ["abc", "def"], "n.i": [1, 23]}
 ```
 
@@ -213,10 +208,7 @@ SELECT * FROM json_each_row_nested
 └───────────────┴────────┘
 ```
 
-
-## 형식 설정 \{#format-settings\}
-
-
+## 포맷 설정 \{#format-settings\}
 
 | 설정                                                                                                                                                                           | 설명                                                                                                                                                                                            | 기본값      | 비고                                                                                                                                                                   |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

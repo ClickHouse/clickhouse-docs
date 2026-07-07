@@ -8,12 +8,11 @@ doc_type: 'guide'
 keywords: ['data formats', 'templates', 'regex', 'custom formats', 'parsing']
 ---
 
-# Importing and exporting custom text data using templates and regex in ClickHouse
 
 We often have to deal with data in custom text formats. That could be a non-standard format, invalid JSON, or a broken CSV. Using standard parsers like CSV or JSON won't work in all such cases. But ClickHouse has us covered here with powerful Template and Regex formats.
 
 ## Importing based on a template {#importing-based-on-a-template}
-Suppose we want to import data from the following [log file](assets/error.log):
+Suppose we want to import data from the following [log file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log):
 
 ```bash
 head error.log
@@ -44,7 +43,7 @@ ENGINE = MergeTree
 ORDER BY (host, request, time)
 ```
 
-To import data using a given template, we have to save our template string in a file ([row.template](assets/row.template) in our case):
+To import data using a given template, we have to save our template string in a file ([row.template](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/row.template) in our case):
 
 ```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
@@ -91,7 +90,7 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 
 We can also export data to any text format using templates as well. In this case, we have to create two files:
 
-[Result set template](assets/output.results), which defines the layout for the whole result set:
+[Result set template](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.results), which defines the layout for the whole result set:
 
 ```response
 == Top 10 IPs ==
@@ -99,7 +98,7 @@ ${data}
 --- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
-Here, `rows_read` and `time` are system metrics available for each request. While `data` stands for generated rows (`${data}` should always come as a first placeholder in this file), based on a template defined in a [**row template file**](assets/output.rows):
+Here, `rows_read` and `time` are system metrics available for each request. While `data` stands for generated rows (`${data}` should always come as a first placeholder in this file), based on a template defined in a [**row template file**](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.rows):
 
 ```response
 ${ip:Escaped} generated ${total:Escaped} requests
@@ -132,7 +131,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 ```
 
 ### Exporting to HTML files {#exporting-to-html-files}
-Template-based results can also be exported to files using an [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) clause. Let's generate HTML files based on given [resultset](assets/html.results) and [row](assets/html.row) formats:
+Template-based results can also be exported to files using an [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) clause. Let's generate HTML files based on given [resultset](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.results) and [row](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.row) formats:
 
 ```sql
 SELECT
@@ -191,7 +190,7 @@ FORMAT XML
 
 ## Importing data based on regular expressions {#importing-data-based-on-regular-expressions}
 
-[Regexp](/interfaces/formats/Regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](assets/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
+[Regexp](/interfaces/formats/Regexp) format addresses more sophisticated cases when input data needs to be parsed in a more complex way. Let's parse our [error.log](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log) example file, but capture the file name and protocol this time to save them into separate columns. First, let's prepare a new table for that:
 
 ```sql
 CREATE TABLE error_log

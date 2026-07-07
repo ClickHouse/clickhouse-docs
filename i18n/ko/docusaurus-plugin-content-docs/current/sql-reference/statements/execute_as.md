@@ -7,6 +7,10 @@ title: 'EXECUTE AS SQL 문'
 doc_type: 'reference'
 ---
 
+import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
+
+<CloudNotSupportedBadge />
+
 # EXECUTE AS Statement \{#execute-as-statement\}
 
 다른 USER 권한으로 쿼리를 실행할 수 있습니다.

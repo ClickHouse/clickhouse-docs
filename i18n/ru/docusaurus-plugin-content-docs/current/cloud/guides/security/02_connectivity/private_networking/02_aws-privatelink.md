@@ -1,6 +1,6 @@
 ---
 title: 'AWS PrivateLink'
-description: 'В этом документе описывается, как подключиться к ClickHouse Cloud с использованием AWS PrivateLink.'
+description: 'В этом документе описано, как подключиться к ClickHouse Cloud с помощью AWS PrivateLink.'
 slug: /manage/security/aws-privatelink
 keywords: ['PrivateLink']
 doc_type: 'guide'
@@ -17,9 +17,6 @@ import aws_private_link_modify_dnsname from '@site/static/images/cloud/security/
 import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-remove-private-endpoint.png';
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
-
-
-# AWS PrivateLink \{#aws-privatelink\}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink" />
 
@@ -63,7 +60,7 @@ ClickHouse Cloud поддерживает [межрегиональный Privat
 
 **Выполните следующие шаги, чтобы включить AWS PrivateLink**:
 
-1. Получите «endpoint service name» конечной точки (Endpoint).
+1. Получите «Service name» конечной точки (Endpoint).
 2. Создайте AWS Endpoint.
 3. Добавьте «Endpoint ID» в организацию ClickHouse Cloud.
 4. Добавьте «Endpoint ID» в список разрешённых (allow list) для сервиса ClickHouse.

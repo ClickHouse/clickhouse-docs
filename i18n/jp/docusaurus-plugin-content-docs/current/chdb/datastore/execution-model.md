@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---
 
-# DataStore の実行モデル \{#datastore-execution-model\}
-
-DataStore の遅延評価モデルを理解することは、DataStore を効果的に利用し、パフォーマンスを最大化するための鍵となります。
+DataStore の遅延評価モデルを理解することは、DataStore を効果的に活用し、最適なパフォーマンスを得るうえで重要です。
 
 ## 遅延評価 \{#lazy-evaluation\}
 
@@ -176,7 +174,7 @@ result = (ds
 
 実行内容を確認するには、`explain()` を使用します：
 
-```python
+```python title="Query"
 ds = pd.read_csv("sales.csv")
 
 query = (ds
@@ -189,9 +187,7 @@ query = (ds
 query.explain()
 ```
 
-出力例:
-
-```text
+```text title="Response"
 Pipeline:
   1. Source: file('sales.csv', 'CSVWithNames')
   2. Filter: amount > 1000
@@ -214,7 +210,6 @@ query.explain(verbose=True)
 詳細については、[Debugging: explain()](../debugging/explain.md) を参照してください。
 
 ***
-
 
 ## キャッシュ \{#caching\}
 

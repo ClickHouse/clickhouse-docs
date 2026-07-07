@@ -6,10 +6,8 @@ description: 'ツールセクションのランディングページ'
 doc_type: 'landing-page'
 ---
 
-# ツール \{#tools\}
-
-| ページ              |
-|-------------------|
-| [ビジュアルインターフェース](/interfaces/third-party/gui) |
-| [プロキシ](/interfaces/third-party/proxy)         |
-| [連携](/interfaces/third-party/integrations)      |
+| ページ                                               |
+| ------------------------------------------------- |
+| [GUI](/interfaces/third-party/gui)                |
+| [プロキシ](/interfaces/third-party/proxy)             |
+| [インテグレーション](/interfaces/third-party/integrations) |

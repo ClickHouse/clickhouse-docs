@@ -130,7 +130,7 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### AvroSchemaCacheCells \{#avroschemacachecells\}
 
-Количество схем Avro в кэше
+Количество схем Avro в кэше, включая зарегистрированные и полученные схемы.
 
 ### AvroSchemaRegistryCacheBytes \{#avroschemaregistrycachebytes\}
 
@@ -326,11 +326,11 @@ SELECT * FROM system.metrics LIMIT 10
 
 ### CompiledExpressionCacheBytes \{#compiledexpressioncachebytes\}
 
-Общее количество байт, используемых для кэша JIT-скомпилированного кода
+Зарезервированный объём блоков страниц (округлённый до целых страниц с коэффициентом сверхрезервирования 2x), удерживаемый `JITModuleMemoryManager` для секций executable/data закэшированных JIT-скомпилированных функций. Это НЕ фактическое количество используемых байтов машинного кода (оно меньше). Память выделяется через `posix_memalign`, который перенаправляется в jemalloc, поэтому этот объём учитывается в пределах выделенной JIT-арены и является подмножеством `jemalloc.jit_arena.active_bytes`.
 
 ### CompiledExpressionCacheCount \{#compiledexpressioncachecount\}
 
-Общее количество записей в кэше JIT-скомпилированного кода
+Общее количество записей в кэше JIT-скомпилированного машинного кода.
 
 ### Сжатие \{#compressing\}
 
@@ -528,6 +528,18 @@ SELECT * FROM system.metrics LIMIT 10
 
 Устаревшая метрика; не показывает никаких данных.
 
+### DiskObjectStorageCopyObjectThreads \{#diskobjectstoragecopyobjectthreads\}
+
+Количество потоков в пуле потоков, используемом для распараллеливания вызовов copyObjectToAnotherObjectStorage в рамках транзакций диска объектного хранилища
+
+### DiskObjectStorageCopyObjectThreadsActive \{#diskobjectstoragecopyobjectthreadsactive\}
+
+Количество потоков в пуле потоков копирования для дискового объектного хранилища, выполняющих задачу
+
+### DiskObjectStorageCopyObjectThreadsScheduled \{#diskobjectstoragecopyobjectthreadsscheduled\}
+
+Количество задач в очереди или выполняющихся задач в пуле потоков копирования объектов для дискового объектного хранилища
+
 ### DiskPlainRewritableAzureDirectoryMapSize \{#diskplainrewritableazuredirectorymapsize\}
 
 Количество записей соответствий локальных и удалённых путей в хранимом в памяти map `plain_rewritable` для AzureObjectStorage.
@@ -687,6 +699,10 @@ SELECT * FROM system.metrics LIMIT 10
 ### FilesystemCacheKeys \{#filesystemcachekeys\}
 
 Количество ключей в файловом кэше
+
+### FilesystemCacheOvercommitUsers \{#filesystemcacheovercommitusers\}
+
+Количество пользователей, отслеживаемых политикой вытеснения файлового кэша при overcommit
 
 ### FilesystemCacheReadBuffers \{#filesystemcachereadbuffers\}
 
@@ -855,6 +871,22 @@ SELECT * FROM system.metrics LIMIT 10
 ### IcebergCatalogThreadsScheduled \{#icebergcatalogthreadsscheduled\}
 
 Количество задач в очереди или выполняющихся задач в пуле потоков IcebergCatalog.
+
+### IcebergCompactionSnapshots \{#icebergcompactionsnapshots\}
+
+Количество операций компакции Iceberg.
+
+### IcebergCompactionThreads \{#icebergcompactionthreads\}
+
+Число потоков в пуле потоков IcebergCompaction.
+
+### IcebergCompactionThreadsActive \{#icebergcompactionthreadsactive\}
+
+Количество потоков пула потоков IcebergCompaction, выполняющих задачу.
+
+### IcebergCompactionThreadsScheduled \{#icebergcompactionthreadsscheduled\}
+
+Количество задач, находящихся в очереди или выполняющихся, в пуле потоков IcebergCompaction.
 
 ### IcebergMetadataFilesCacheBytes \{#icebergmetadatafilescachebytes\}
 
@@ -1911,6 +1943,14 @@ SELECT * FROM system.metrics LIMIT 10
 ### UncompressedCacheCells \{#uncompressedcachecells\}
 
 Общее количество записей в несжатом кэше. Каждая запись представляет собой распакованный блок данных. Несжатый кэш обычно не повышает производительность, поэтому по возможности его следует избегать
+
+### UniqueKeyIndexCacheBytes \{#uniquekeyindexcachebytes\}
+
+Суммарный размер кэша индекса UNIQUE KEY в байтах
+
+### UniqueKeyIndexCacheEntries \{#uniquekeyindexcacheentries\}
+
+Общее количество блоков индекса UNIQUE KEY, хранящихся в кэше
 
 ### VectorSimilarityIndexCacheBytes \{#vectorsimilarityindexcachebytes\}
 

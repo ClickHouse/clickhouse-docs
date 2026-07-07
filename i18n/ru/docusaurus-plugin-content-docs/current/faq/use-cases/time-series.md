@@ -1,18 +1,14 @@
 ---
 slug: /faq/use-cases/time-series
-title: 'Могу ли я использовать ClickHouse в качестве базы данных временных рядов?'
+title: 'Могу ли я использовать ClickHouse как базу данных временных рядов?'
 toc_hidden: true
 toc_priority: 101
-description: 'Страница, описывающая, как использовать ClickHouse в качестве базы данных временных рядов'
+description: 'Страница с описанием того, как использовать ClickHouse как базу данных временных рядов'
 doc_type: 'guide'
-keywords: ['временные ряды', 'временные данные', 'сценарий использования', 'временная аналитика', 'временные ряды']
+keywords: ['временные ряды', 'временные данные', 'сценарий использования', 'анализ данных на основе времени', 'timeseries']
 ---
 
-
-
-# Могу ли я использовать ClickHouse как базу данных временных рядов? \{#can-i-use-clickhouse-as-a-time-series-database\}
-
-_Примечание: дополнительные примеры использования ClickHouse для анализа временных рядов см. в записи блога [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)._
+*Примечание: дополнительные примеры использования ClickHouse для анализа временных рядов см. в записи блога [Working with Time series data in ClickHouse](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse).*
 
 ClickHouse — это универсальное решение для хранения данных в задачах [OLAP](../../faq/general/olap.md), хотя существует много специализированных [систем управления базами данных временных рядов](https://clickhouse.com/engineering-resources/what-is-time-series-database). Тем не менее, [ориентация ClickHouse на скорость выполнения запросов](../../concepts/why-clickhouse-is-so-fast.mdx) позволяет ему во многих случаях превосходить специализированные системы. Существует много независимых бенчмарков на эту тему, поэтому мы не будем проводить ещё один. Вместо этого сосредоточимся на возможностях ClickHouse, которые важно использовать, если у вас именно такой сценарий.
 

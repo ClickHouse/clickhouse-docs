@@ -10,7 +10,6 @@ keywords: ['Node.js', 'traces', 'OTEL', 'ClickStack', 'distributed tracing']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import search_view from '@site/static/images/clickstack/nodejs/traces-search-view.png';
@@ -19,11 +18,8 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack를 사용한 Node.js 트레이스 모니터링 \{#nodejs-traces-clickstack\}
-
-:::note[TL;DR]
-OpenTelemetry 자동 계측을 사용해 ClickStack에서 Node.js 애플리케이션의 분산 트레이스를 수집합니다. 데모 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
+:::note[요약]
+OpenTelemetry 자동 계측을 사용하여 Node.js 애플리케이션의 분산 트레이스를 ClickStack에서 수집합니다. 데모 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 Node.js 애플리케이션과의 통합 \{#existing-nodejs\}
@@ -166,7 +162,7 @@ Node.js 애플리케이션 성능 모니터링을 바로 시작할 수 있도록
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">대시보드 구성 파일 다운로드</TrackedLink> \{#download-dashboard\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nodejs-traces-dashboard.json'} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">대시보드 구성 파일 다운로드</TrackedLink> \{#download-dashboard\}
 
 #### 사전 구성된 대시보드 가져오기 \{#import-dashboard\}
 

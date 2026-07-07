@@ -10,8 +10,6 @@ doc_type: 'guide'
 import billing_compliance from '@site/static/images/cloud/manage/billing_compliance.png';
 import Image from '@theme/IdealImage';
 
-# Соответствие требованиям биллинга ClickHouse Cloud \{#clickhouse-cloud-billing-compliance\}
-
 ## Соответствие требованиям биллинга \{#billing-compliance\}
 
 Для использования ClickHouse Cloud в вашей организации должен быть настроен

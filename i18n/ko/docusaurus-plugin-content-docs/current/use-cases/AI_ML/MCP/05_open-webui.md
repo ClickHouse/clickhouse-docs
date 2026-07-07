@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/open-webui
 sidebar_label: 'Open WebUI 통합'
-title: 'Open WebUI 및 ClickHouse Cloud와 함께 ClickHouse MCP 서버 설정하기'
+title: 'Open WebUI와 함께 ClickHouse MCP 서버 사용하기'
 pagination_prev: null
 pagination_next: null
 description: '이 가이드는 Docker를 사용하여 Open WebUI와 ClickHouse MCP 서버를 함께 설정하는 방법을 설명합니다.'
@@ -23,9 +23,7 @@ import AddConnection from '@site/static/images/use-cases/AI_ML/MCP/7_add_connect
 import OpenAIModels from '@site/static/images/use-cases/AI_ML/MCP/8_openai_models_more.png';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation.png';
 
-# Open WebUI와 함께 ClickHouse MCP 서버 사용하기 \{#using-clickhouse-mcp-server-with-open-webui\}
-
-> 이 가이드에서는 [Open WebUI](https://github.com/open-webui/open-webui)를 ClickHouse MCP 서버와 함께 설정하고
+> 이 가이드는 [Open WebUI](https://github.com/open-webui/open-webui)와 ClickHouse MCP 서버를 함께 설정하고
 > ClickHouse 예시 데이터셋에 연결하는 방법을 설명합니다.
 
 <VerticalStepper headerLevel="h2">
@@ -55,7 +53,7 @@ import Conversation from '@site/static/images/use-cases/AI_ML/MCP/9_conversation
   export CLICKHOUSE_PASSWORD=""
   ```
 
-  그리고 이후 `mcpo`를 실행하여 Open API 엔드포인트를 생성합니다.
+  그리고 이후 `mcpo`를 실행하여 Open API 엔드포인트를 생성합니다:
 
   ```bash
   uvx mcpo --port 8000 -- uv run --with mcp-clickhouse --python 3.10 mcp-clickhouse

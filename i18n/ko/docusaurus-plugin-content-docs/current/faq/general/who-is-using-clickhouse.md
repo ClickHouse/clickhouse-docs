@@ -1,14 +1,12 @@
 ---
 slug: /faq/general/who-is-using-clickhouse
-title: '어떤 고객들이 ClickHouse를 사용하나요?'
+title: '누가 ClickHouse를 사용하나요?'
 toc_hidden: true
 toc_priority: 9
-description: '어떤 고객들이 ClickHouse를 사용하는지 설명합니다'
+description: '누가 ClickHouse를 사용하는지 설명합니다'
 keywords: ['customer']
 doc_type: 'reference'
 ---
-
-# 누가 ClickHouse를 사용하나요? \{#who-is-using-clickhouse\}
 
 오픈 소스 제품이라는 특성 때문에 이 질문에 간단히 답하기는 어렵습니다. ClickHouse 사용을 시작하려면 누구에게도 알릴 필요가 없습니다. 소스 코드나 미리 컴파일된 패키지를 가져오기만 하면 됩니다. 서명해야 할 계약도 없고, [Apache 2.0 라이선스](https://github.com/ClickHouse/ClickHouse/blob/master/LICENSE)는 제약 없는 소프트웨어 배포를 허용합니다.
 

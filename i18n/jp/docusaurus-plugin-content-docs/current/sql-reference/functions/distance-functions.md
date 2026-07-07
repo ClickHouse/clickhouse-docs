@@ -1,13 +1,11 @@
 ---
-description: '距離関数に関するドキュメント'
+description: '距離関数のドキュメント'
 sidebar_label: '距離'
 slug: /sql-reference/functions/distance-functions
 title: '距離関数'
 keywords: ['距離関数', 'ノルム', '距離', 'ベクトル']
 doc_type: 'reference'
 ---
-
-# 距離関数 \{#distance-functions\}
 
 {/* 
   以下のタグの内側の内容は、ドキュメントフレームワークのビルド時に

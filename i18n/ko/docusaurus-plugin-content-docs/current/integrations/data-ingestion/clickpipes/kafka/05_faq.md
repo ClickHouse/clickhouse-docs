@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'FAQ'
-description: 'Kafka용 ClickPipes에 대한 자주 묻는 질문'
+description: 'Kafka용 ClickPipes에 대한 자주 묻는 질문.'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
 title: 'Kafka ClickPipes 자주 묻는 질문(FAQ)'
@@ -16,56 +16,55 @@ integration:
 ### 일반 \{#general\}
 
 <details>
+  <summary>Kafka용 ClickPipes는 어떻게 작동합니까?</summary>
 
-<summary>Kafka용 ClickPipes는 어떻게 작동합니까?</summary>
-
-ClickPipes는 Kafka Consumer API를 실행하는 전용 아키텍처를 사용하여 지정된 토픽에서 데이터를 읽은 다음 해당 데이터를 특정 ClickHouse Cloud 서비스의 ClickHouse 테이블에 삽입합니다.
+  ClickPipes는 Kafka Consumer API를 실행하는 전용 아키텍처를 사용하여 지정된 토픽에서 데이터를 읽은 다음 해당 데이터를 특정 ClickHouse Cloud 서비스의 ClickHouse 테이블에 삽입합니다.
 </details>
 
 <details>
+  <summary>ClickPipes와 ClickHouse Kafka Table Engine의 차이점은 무엇입니까?</summary>
 
-<summary>ClickPipes와 ClickHouse Kafka Table Engine의 차이점은 무엇입니까?</summary>
+  Kafka Table 엔진은 ClickHouse 서버 자체가 Kafka에 연결하여 이벤트를 가져온 후 로컬에 기록하는 「pull 모델」을 구현하는 ClickHouse의 핵심 기능입니다.
 
-Kafka Table 엔진은 ClickHouse 서버 자체가 Kafka에 연결하여 이벤트를 가져온 후 로컬에 기록하는 「pull 모델」을 구현하는 ClickHouse의 핵심 기능입니다.
-
-ClickPipes는 ClickHouse 서비스와 독립적으로 실행되는 별도의 클라우드 서비스입니다. 이 서비스는 Kafka(또는 다른 데이터 소스)에 연결하여 관련된 ClickHouse Cloud 서비스로 이벤트를 푸시합니다. 이러한 분리된(디커플드) 아키텍처는 우수한 운영 유연성, 명확한 책임 분리, 확장 가능한 수집, 원활한 장애 관리, 확장성 등을 가능하게 합니다.
+  ClickPipes는 ClickHouse 서비스와 독립적으로 실행되는 별도의 클라우드 서비스입니다. 이 서비스는 Kafka(또는 다른 데이터 소스)에 연결하여 관련된 ClickHouse Cloud 서비스로 이벤트를 푸시합니다. 이러한 분리된(디커플드) 아키텍처는 우수한 운영 유연성, 명확한 책임 분리, 확장 가능한 수집, 원활한 장애 관리, 확장성 등을 가능하게 합니다.
 </details>
 
 <details>
+  <summary>Kafka용 ClickPipes를 사용하기 위한 요구 사항은 무엇입니까?</summary>
 
-<summary>Kafka용 ClickPipes를 사용하기 위한 요구 사항은 무엇입니까?</summary>
-
-Kafka용 ClickPipes를 사용하려면 실행 중인 Kafka 브로커와 ClickPipes가 활성화된 ClickHouse Cloud 서비스가 필요합니다. 또한 ClickHouse Cloud가 Kafka 브로커에 접근할 수 있어야 합니다. 이를 위해 Kafka 측에서 원격 연결을 허용하고, Kafka 설정에서 [ClickHouse Cloud Egress IP 주소](/manage/data-sources/cloud-endpoints-api)를 화이트리스트에 추가하면 됩니다. 또는 [AWS PrivateLink](/integrations/clickpipes/aws-privatelink)를 사용하여 Kafka용 ClickPipes를 Kafka 브로커에 연결할 수 있습니다.
+  Kafka용 ClickPipes를 사용하려면 실행 중인 Kafka 브로커와 ClickPipes가 활성화된 ClickHouse Cloud 서비스가 필요합니다. 또한 ClickHouse Cloud가 Kafka 브로커에 접근할 수 있어야 합니다. 이를 위해 Kafka 측에서 원격 연결을 허용하고, Kafka 설정에서 [ClickHouse Cloud Egress IP 주소](/manage/data-sources/cloud-endpoints-api)를 화이트리스트에 추가하면 됩니다. 또는 [AWS PrivateLink](/integrations/clickpipes/aws-privatelink)를 사용하여 Kafka용 ClickPipes를 Kafka 브로커에 연결할 수 있습니다.
 </details>
 
 <details>
+  <summary>Kafka용 ClickPipes는 AWS PrivateLink를 지원합니까?</summary>
 
-<summary>Kafka용 ClickPipes는 AWS PrivateLink를 지원합니까?</summary>
-
-AWS PrivateLink가 지원됩니다. 설정 방법에 대해서는 [문서](/integrations/clickpipes/aws-privatelink)를 참조하십시오.
+  AWS PrivateLink가 지원됩니다. 설정 방법에 대해서는 [문서](/integrations/clickpipes/aws-privatelink)를 참조하십시오.
 </details>
 
 <details>
+  <summary>Kafka용 ClickPipes를 사용하여 Kafka 토픽에 데이터를 쓸 수 있습니까?</summary>
 
-<summary>Kafka용 ClickPipes를 사용하여 Kafka 토픽에 데이터를 쓸 수 있습니까?</summary>
-
-아니요, Kafka용 ClickPipes는 Kafka 토픽에서 데이터를 읽도록 설계되었으며, 여기에 데이터를 쓰기 위한 용도는 아닙니다. Kafka 토픽에 데이터를 쓰려면 전용 Kafka 프로듀서를 사용해야 합니다.
+  아니요, Kafka용 ClickPipes는 Kafka 토픽에서 데이터를 읽도록 설계되었으며, 여기에 데이터를 쓰기 위한 용도는 아닙니다. Kafka 토픽에 데이터를 쓰려면 전용 Kafka 프로듀서를 사용해야 합니다.
 </details>
 
 <details>
+  <summary>ClickPipes는 여러 브로커를 지원합니까?</summary>
 
-<summary>ClickPipes는 여러 브로커를 지원합니까?</summary>
-
-예, 브로커가 동일한 쿼럼(quorum)의 일부라면 `,`로 구분하여 함께 구성할 수 있습니다.
+  예, 브로커가 동일한 쿼럼(quorum)의 일부라면 `,`로 구분하여 함께 구성할 수 있습니다.
 </details>
 
 <details>
+  <summary>ClickPipes 레플리카는 확장할 수 있습니까?</summary>
 
-<summary>ClickPipes 레플리카는 확장할 수 있습니까?</summary>
+  예, 스트리밍용 ClickPipes는 수평 및 수직 확장이 모두 가능합니다.
+  수평 확장은 처리량을 높이기 위해 레플리카를 더 추가하는 것이고, 수직 확장은 보다 집약적인 워크로드를 처리하기 위해 각 레플리카에 할당된 리소스(CPU 및 RAM)를 늘리는 것입니다.
+  이는 ClickPipe를 생성할 때 또는 이후 언제든지 **Settings** -&gt; **Advanced Settings** -&gt; **Scaling**에서 구성할 수 있습니다.
+</details>
 
-예, 스트리밍용 ClickPipes는 수평 및 수직 확장이 모두 가능합니다.
-수평 확장은 처리량을 높이기 위해 레플리카를 더 추가하는 것이고, 수직 확장은 보다 집약적인 워크로드를 처리하기 위해 각 레플리카에 할당된 리소스(CPU 및 RAM)를 늘리는 것입니다.
-이는 ClickPipe를 생성할 때 또는 이후 언제든지 **Settings** -> **Advanced Settings** -> **Scaling**에서 구성할 수 있습니다.
+<details>
+  <summary>ClickPipes 설정 UI에서 일부 Kafka 토픽을 찾을 수 없습니다. 이유가 무엇입니까?</summary>
+
+  ClickPipes의 토픽 검색 UI에는 기본적으로 최대 1,500개의 토픽이 표시됩니다. Kafka 클러스터에 1,500개가 넘는 토픽이 있으면 일부 토픽이 드롭다운에 표시되지 않을 수 있습니다. 해당 토픽이 존재하는지 확인하려면 동일한 자격 증명을 사용하는 Kafka 클라이언트로 직접 확인하십시오. 존재가 확인되었고 표시 한도를 1,500개보다 크게 늘려야 하는 경우 ClickHouse Support에 문의하십시오.
 </details>
 
 ### Azure Event Hubs \{#azure-eventhubs\}

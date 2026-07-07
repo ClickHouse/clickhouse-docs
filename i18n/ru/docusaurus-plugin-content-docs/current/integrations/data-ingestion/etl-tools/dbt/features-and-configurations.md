@@ -11,11 +11,9 @@ doc_type: 'guide'
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Возможности и настройки \{#features-and-configurations\}
-
 <ClickHouseSupportedBadge />
 
-В этом разделе приведена документация по некоторым функциям dbt при работе с ClickHouse.
+В этом разделе приведена документация по некоторым возможностям dbt с ClickHouse.
 
 <TOCInline toc={toc} maxHeadingLevel={3} />
 

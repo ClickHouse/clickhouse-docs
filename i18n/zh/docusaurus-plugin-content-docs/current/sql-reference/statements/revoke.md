@@ -7,9 +7,7 @@ title: 'REVOKE 语句'
 doc_type: 'reference'
 ---
 
-# REVOKE 语句 \{#revoke-statement\}
-
-从用户或角色撤销已授予的权限。
+撤销用户或角色的权限。
 
 ## 语法 \{#syntax\}
 

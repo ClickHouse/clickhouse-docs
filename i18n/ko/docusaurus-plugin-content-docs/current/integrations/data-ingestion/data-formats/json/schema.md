@@ -1,5 +1,5 @@
 ---
-title: 'JSON 스키마 설계하기'
+title: '스키마 설계하기'
 slug: /integrations/data-formats/json/schema
 description: 'JSON 스키마를 최적으로 설계하는 방법'
 keywords: ['json', 'clickhouse', 'inserting', 'loading', 'formats', 'schema', 'structured', 'semi-structured']
@@ -12,10 +12,7 @@ import json_column_per_type from '@site/static/images/integrations/data-ingestio
 import json_offsets from '@site/static/images/integrations/data-ingestion/data-formats/json_offsets.png';
 import shared_json_column from '@site/static/images/integrations/data-ingestion/data-formats/json_shared_column.png';
 
-
-# 스키마 설계하기 \{#designing-your-schema\}
-
-[스키마 추론](/integrations/data-formats/json/inference)을 사용하면 JSON 데이터에 대한 초기 스키마를 정의하고, 예를 들어 S3에 있는 JSON 데이터 파일에 그대로 쿼리를 실행할 수 있습니다. 그러나 데이터에는 최적화된 버전 관리 스키마를 마련하는 것이 좋습니다. 아래에서 JSON 구조를 모델링하기 위한 권장 접근 방식을 설명합니다.
+[스키마 추론](/integrations/data-formats/json/inference)을 사용하면 JSON 데이터의 초기 스키마를 설정하고, 예를 들어 S3에 있는 JSON 데이터 파일을 있는 그대로 쿼리할 수 있지만, 데이터에는 최적화된 버전 관리 스키마를 구축하는 것을 목표로 해야 합니다. 아래에서는 JSON 구조를 모델링하기 위한 권장 접근 방식을 설명합니다.
 
 ## 정적 JSON과 동적 JSON \{#static-vs-dynamic-json\}
 
@@ -164,18 +161,22 @@ SELECT
  address.street,
  company.name
 FROM people
+```
 
+```response
 ┌─address.street────┬─company.name─┐
 │ ['Victor Plains'] │ ClickHouse   │
 └───────────────────┴──────────────┘
 ```
 
-`address.street` 컬럼이 `Array`로 반환되는 점에 유의하십시오. 배열 안의 특정 요소를 위치로 쿼리하려면 배열 오프셋을 컬럼 이름 뒤에 지정해야 합니다. 예를 들어 첫 번째 주소의 street에 접근하려면 다음과 같이 합니다.
+`address.street` 컬럼이 `배열`로 반환되는 점에 유의하십시오. 배열 안의 특정 요소를 위치로 쿼리하려면 배열 오프셋을 컬럼 이름 뒤에 지정해야 합니다. 예를 들어 첫 번째 주소의 street에 접근하려면 다음과 같이 합니다.
 
 ```sql
 SELECT address.street[1] AS street
 FROM people
+```
 
+```response
 ┌─street────────┐
 │ Victor Plains │
 └───────────────┘
@@ -201,7 +202,6 @@ CREATE TABLE people
 ENGINE = MergeTree
 ORDER BY company.name
 ```
-
 
 ### 기본값 처리 \{#handling-default-values\}
 
@@ -235,7 +235,9 @@ JSON 객체의 구조가 정해져 있더라도, 실제로는 알려진 키의 �
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","city":"Wisokyburgh","zipcode":"90566-7771"}],"website":"clickhouse.com","company":{"name":"ClickHouse"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -273,14 +275,15 @@ FORMAT PrettyJSONEachRow
   },
   "dob": "2007-03-31"
 }
+```
 
+```response
 1 row in set. Elapsed: 0.001 sec.
 ```
 
 :::note 빈 값과 null 구분하기
 값이 비어 있는 경우와 아예 제공되지 않은 경우를 구분해야 한다면 [널 허용(Nullable)](/sql-reference/data-types/nullable) 타입을 사용할 수 있습니다. 그러나 이 타입은 해당 컬럼의 저장 및 쿼리 성능에 부정적인 영향을 주므로, 반드시 필요한 경우가 아니라면 [사용을 피해야 합니다](/best-practices/select-data-types#avoid-nullable-columns).
 :::
-
 
 ### 새로운 컬럼 처리 \{#handling-new-columns\}
 
@@ -325,7 +328,9 @@ JSON 키가 고정되어 있을 때는 구조화된 접근 방식이 가장 간�
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","nickname":"Clicky","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics"},"dob":"2007-03-31"}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -350,7 +355,9 @@ INSERT INTO people FORMAT JSONEachRow
 
 -- select 2 rows
 SELECT id, nickname FROM people
+```
 
+```response
 ┌─id─┬─nickname────┐
 │  2 │ Clicky      │
 │  1 │ no_nickname │
@@ -358,7 +365,6 @@ SELECT id, nickname FROM people
 
 2 rows in set. Elapsed: 0.001 sec.
 ```
-
 
 ## 반정형/동적 구조 처리 \{#handling-semi-structured-dynamic-structures\}
 
@@ -496,7 +502,7 @@ SELECT id, nickname FROM people
 이 접근 방식은 프로토타이핑 및 데이터 엔지니어링 작업에 유용합니다. 프로덕션 환경에서는 필요한 경우에만 동적 하위 구조에 `JSON`을 사용하십시오.
 
 :::note 성능 고려사항
-단일 JSON 컬럼은 필요하지 않은 JSON 경로를 건너뛰어(저장하지 않고) 최적화할 수 있고, [type hints](#using-type-hints-and-skipping-paths)를 사용해 추가로 최적화할 수 있습니다. Type hint를 사용하면 서브 컬럼의 타입을 사용자가 명시적으로 정의할 수 있어, 쿼리 시점에 추론 및 간접 참조(indirection) 처리를 생략합니다. 이를 통해 명시적인 스키마를 사용했을 때와 동일한 성능을 확보할 수 있습니다. 자세한 내용은 [「Using type hints and skipping paths」](#using-type-hints-and-skipping-paths)를 참조하십시오.
+단일 JSON 컬럼은 필요하지 않은 JSON 경로를 건너뛰어(저장하지 않고) 최적화할 수 있고, [타입 힌트](#using-type-hints-and-skipping-paths)를 사용해 추가로 최적화할 수 있습니다. 타입 힌트를 사용하면 서브 컬럼의 타입을 사용자가 명시적으로 정의할 수 있어, 쿼리 시점에 추론 및 간접 참조(indirection) 처리를 생략합니다. 이를 통해 명시적인 스키마를 사용했을 때와 동일한 성능을 확보할 수 있습니다. 자세한 내용은 [「Using type hints and skipping paths」](#using-type-hints-and-skipping-paths)를 참조하십시오.
 :::
 
 여기에서 단일 JSON 컬럼에 대한 스키마는 다음과 같이 단순합니다:
@@ -523,19 +529,22 @@ INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.028 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
 1 row in set. Elapsed: 0.004 sec.
 ```
 
-
 ```sql
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 json: {"address":[{"city":"Dataford","geo":{"lat":40.7128,"lng":-74.006},"street":"Maple Avenue","suite":"Apt. 402","zipcode":"11223-4567"}],"company":{"catchPhrase":"Streamlined analytics at scale","labels":{"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]},"name":"FastData Inc."},"dob":"1992-07-15","id":"2","name":"Analytica Rowe","phone_numbers":["123-456-7890","555-867-5309"],"tags":{"car":{"model":"Audi e-tron","year":"2022"},"hobby":"Running simulations","holidays":[{"location":"Kyoto, Japan","year":"2023"}]},"username":"Analytica","website":"fastdata.io"}
@@ -547,7 +556,7 @@ json: {"address":[{"city":"Wisokyburgh","geo":{"lat":-43.9509,"lng":-34.4618},"s
 2 rows in set. Elapsed: 0.005 sec.
 ```
 
-[내부 점검 함수(introspection functions)](/sql-reference/data-types/newjson#introspection-functions)를 사용하여 추론된 하위 컬럼과 해당 타입을 확인할 수 있습니다. 예를 들어:
+[내부 점검 함수(인트로스펙션 함수)](/sql-reference/data-types/newjson#introspection-functions)를 사용하여 추론된 하위 컬럼과 해당 타입을 확인할 수 있습니다. 예를 들어:
 
 ```sql
 SELECT JSONDynamicPathsWithTypes(json) AS paths
@@ -594,7 +603,9 @@ FORMAT PrettyJsonEachRow
         "website": "String"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.009 sec.
 ```
 
@@ -604,7 +615,9 @@ FORMAT PrettyJsonEachRow
 
 ```sql
 SELECT json.name, json.email FROM people
+```
 
+```response
 ┌─json.name────────────┬─json.email────────────┐
 │ Analytica Rowe       │ ᴺᵁᴸᴸ                  │
 │ Clicky McCliickHouse │ clicky@clickhouse.com │
@@ -615,23 +628,28 @@ SELECT json.name, json.email FROM people
 
 행에 존재하지 않는 컬럼은 `NULL`로 반환됩니다.
 
-
-또한 동일한 타입을 가진 경로마다 별도의 하위 컬럼이 생성됩니다. 예를 들어 `String` 타입과 `Array(Nullable(String))` 타입 각각에 대해 `company.labels.type` 하위 컬럼이 존재합니다. 두 하위 컬럼을 모두 반환할 수 있는 경우에는 둘 다 반환되지만, `.:` 구문을 사용하여 특정 하위 컬럼만 대상으로 지정할 수 있습니다.
+또한 동일한 타입을 가진 경로마다 별도의 하위 컬럼이 생성됩니다. 예를 들어 `String` 타입과 `Array(Nullable(String))` 타입 각각에 대해 `company.labels.type` 서브컬럼이 존재합니다. 두 하위 컬럼을 모두 반환할 수 있는 경우에는 둘 다 반환되지만, `.:` 구문을 사용하여 특정 하위 컬럼만 대상으로 지정할 수 있습니다.
 
 ```sql
 SELECT json.company.labels.type
 FROM people
+```
 
+```response
 ┌─json.company.labels.type─┐
 │ database systems         │
 │ ['real-time processing'] │
 └──────────────────────────┘
 
 2 rows in set. Elapsed: 0.007 sec.
+```
 
+```sql
 SELECT json.company.labels.type.:String
 FROM people
+```
 
+```response
 ┌─json.company⋯e.:`String`─┐
 │ ᴺᵁᴸᴸ                     │
 │ database systems         │
@@ -646,18 +664,24 @@ FROM people
 -- sub objects will not be returned by default
 SELECT json.company.labels
 FROM people
+```
 
+```response
 ┌─json.company.labels─┐
 │ ᴺᵁᴸᴸ                │
 │ ᴺᵁᴸᴸ                │
 └─────────────────────┘
 
 2 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 -- return sub objects using ^ notation
 SELECT json.^company.labels
 FROM people
+```
 
+```response
 ┌─json.^`company`.labels─────────────────────────────────────────────────────────────────┐
 │ {"employees":"250","founded":"2021","type":"database systems"}                         │
 │ {"dissolved":"2023","employees":"10","founded":"2019","type":["real-time processing"]} │
@@ -665,7 +689,6 @@ FROM people
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### 대상 JSON 컬럼 \{#targeted-json-column\}
 
@@ -698,7 +721,9 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -709,7 +734,9 @@ INSERT INTO people FORMAT JSONEachRow
 SELECT *
 FROM people
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 id:            2
@@ -741,7 +768,6 @@ tags:          {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores,
 
 [Introspection functions](/sql-reference/data-types/newjson#introspection-functions)를 사용하여 `company.labels` 컬럼에 대해 유추된 경로와 데이터 타입을 확인할 수 있습니다.
 
-
 ```sql
 SELECT JSONDynamicPathsWithTypes(company.labels) AS paths
 FROM people
@@ -762,10 +788,11 @@ FORMAT PrettyJsonEachRow
         "type": "String"
  }
 }
-
-2 rows in set. Elapsed: 0.003 sec.
 ```
 
+```response
+2 rows in set. Elapsed: 0.003 sec.
+```
 
 ### 타입 힌트 사용과 경로 건너뛰기 \{#using-type-hints-and-skipping-paths\}
 
@@ -804,7 +831,9 @@ INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -834,12 +863,13 @@ FORMAT PrettyJsonEachRow
         "type": "Array(Nullable(String))"
  }
 }
+```
 
+```response
 2 rows in set. Elapsed: 0.003 sec.
 ```
 
 추가로, 저장할 필요가 없는 JSON 경로는 [`SKIP` 및 `SKIP REGEXP`](/sql-reference/data-types/newjson) 매개변수를 사용하여 건너뛸 수 있습니다. 이렇게 하면 저장 공간을 최소화하고 사용하지 않는 경로에 대한 불필요한 추론을 피할 수 있습니다. 예를 들어, 위 데이터에 단일 JSON 컬럼을 사용하는 경우 `address` 및 `company` 경로를 건너뛸 수 있습니다:
-
 
 ```sql
 CREATE TABLE people
@@ -853,7 +883,9 @@ INSERT INTO people FORMAT JSONAsObject
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021","employees":250}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
 
 1 row in set. Elapsed: 0.450 sec.
+```
 
+```sql
 INSERT INTO people FORMAT JSONAsObject
 {"id":2,"name":"Analytica Rowe","username":"Analytica","address":[{"street":"Maple Avenue","suite":"Apt. 402","city":"Dataford","zipcode":"11223-4567","geo":{"lat":40.7128,"lng":-74.006}}],"phone_numbers":["123-456-7890","555-867-5309"],"website":"fastdata.io","company":{"name":"FastData Inc.","catchPhrase":"Streamlined analytics at scale","labels":{"type":["real-time processing"],"founded":2019,"dissolved":2023,"employees":10}},"dob":"1992-07-15","tags":{"hobby":"Running simulations","holidays":[{"year":2023,"location":"Kyoto, Japan"}],"car":{"model":"Audi e-tron","year":2022}}}
 
@@ -863,7 +895,6 @@ INSERT INTO people FORMAT JSONAsObject
 컬럼들이 데이터에서 어떻게 제외되었는지 확인하십시오:
 
 ```sql
-
 SELECT *
 FROM people
 FORMAT PrettyJSONEachRow
@@ -921,10 +952,11 @@ FORMAT PrettyJSONEachRow
         "website" : "clickhouse.com"
     }
 }
-
-2 rows in set. Elapsed: 0.004 sec.
 ```
 
+```response
+2 rows in set. Elapsed: 0.004 sec.
+```
 
 #### 타입 힌트를 통한 성능 최적화 \{#optimizing-performance-with-type-hints\}
 

@@ -50,15 +50,12 @@ import adjust_axis_scale from '@site/static/images/cloud/sqlconsole/adjust-axis-
 import give_a_query_a_name from '@site/static/images/cloud/sqlconsole/give-a-query-a-name.png'
 import save_the_query from '@site/static/images/cloud/sqlconsole/save-the-query.png'
 
+SQL 控制台是在 ClickHouse Cloud 中探索和查询您的数据库最快、最简便的方式。您可以使用 SQL 控制台来：
 
-# SQL 控制台 \{#sql-console\}
-
-SQL 控制台是在 ClickHouse Cloud 中探索和查询数据库的最快且最简便的方式。您可以使用 SQL 控制台来：
-
-- 连接到您的 ClickHouse Cloud 服务
-- 查看、过滤和排序表数据
-- 执行查询，并只需点击几下即可可视化结果数据
-- 与团队成员共享查询并更高效地协作。
+* 连接到您的 ClickHouse Cloud 服务
+* 查看、过滤和排序表数据
+* 只需点击几下，即可执行查询并将结果数据可视化
+* 与团队成员共享查询，更高效地协作。
 
 ## 浏览表 \{#exploring-tables\}
 

@@ -2,12 +2,10 @@
 sidebar_label: '云访问管理'
 slug: /cloud/security/cloud_access_management
 title: '云访问管理'
-description: '进一步了解云访问管理'
+description: '了解有关云访问管理的更多信息'
 doc_type: 'landing-page'
 keywords: ['访问管理', '安全', '用户管理', '权限', '身份验证']
 ---
-
-# 云访问管理 \{#cloud-access-management\}
 
 本节包含关于在 ClickHouse Cloud 中进行访问管理的详细指南
 

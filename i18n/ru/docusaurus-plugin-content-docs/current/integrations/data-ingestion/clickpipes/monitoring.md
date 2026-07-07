@@ -1,13 +1,11 @@
 ---
 sidebar_label: 'Мониторинг'
-description: 'Мониторинг ClickPipes с помощью метрик Prometheus.'
+description: 'Мониторинг ClickPipes с использованием метрик Prometheus.'
 slug: /integrations/clickpipes/monitoring
 title: 'Мониторинг ClickPipes'
 doc_type: 'reference'
 keywords: ['ClickPipes', 'мониторинг', 'метрики', 'Prometheus', 'обсервабилити']
 ---
-
-# Мониторинг ClickPipes \{#monitoring-clickpipes\}
 
 Помимо мониторинга в консоли, ClickPipes предоставляет метрики через [конечную точку, совместимую с Prometheus](/integrations/prometheus), для сбора. Эти метрики публикуются вместе с другими метриками сервиса ClickHouse Cloud и позволяют интегрировать мониторинг ClickPipes с вашим существующим стеком обсервабилити (например, [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog)).
 

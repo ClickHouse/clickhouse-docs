@@ -1,7 +1,7 @@
 ---
 slug: /integrations/mysql
 sidebar_label: 'MySQL'
-title: 'MySQL'
+title: 'MySQL을 ClickHouse와 통합'
 hide_title: true
 description: 'MySQL 통합을 설명하는 페이지'
 doc_type: 'reference'
@@ -15,13 +15,10 @@ keywords: ['mysql', '데이터베이스 통합', '외부 테이블', '데이터 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# MySQL을 ClickHouse와 연동하기 \{#integrating-mysql-with-clickhouse\}
-
-이 페이지에서는 `MySQL` 테이블 엔진을 사용하여 MySQL 테이블에서 데이터를 읽는 방법을 설명합니다.
+이 페이지에서는 MySQL 테이블에서 데이터를 읽기 위해 `MySQL` 테이블 엔진을 사용하는 방법을 설명합니다.
 
 :::note
-ClickHouse Cloud에서는 [MySQL ClickPipe](/integrations/clickpipes/mysql) (현재 공개 베타)을 사용하여 MySQL 테이블의 데이터를 ClickHouse로 쉽게 전송할 수도 있습니다.
+ClickHouse Cloud에서는 [MySQL ClickPipe](/integrations/clickpipes/mysql)도 사용해 MySQL 테이블의 데이터를 ClickHouse로 손쉽게 옮길 수 있습니다(현재 공개 베타).
 :::
 
 ## MySQL 테이블 엔진을 사용하여 ClickHouse를 MySQL에 연결하기 \{#connecting-clickhouse-to-mysql-using-the-mysql-table-engine\}

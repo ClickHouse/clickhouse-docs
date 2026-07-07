@@ -11,9 +11,7 @@ integration:
   - category: 'language_client'
 ---
 
-# ClickHouse Rust 클라이언트 \{#clickhouse-rust-client\}
-
-ClickHouse에 연결하기 위한 공식 Rust 클라이언트로, 원래는 [Paul Loyd](https://github.com/loyd)가 개발했습니다. 클라이언트 소스 코드는 [GitHub 저장소](https://github.com/ClickHouse/clickhouse-rs)에서 확인할 수 있습니다.
+ClickHouse에 연결하기 위한 공식 Rust 클라이언트로, [Paul Loyd](https://github.com/loyd)가 처음 개발했습니다. 클라이언트 소스 코드는 [GitHub 저장소](https://github.com/ClickHouse/clickhouse-rs)에서 확인할 수 있습니다.
 
 ## 개요 \{#overview\}
 
@@ -176,8 +174,7 @@ insert.end().await?;
 
 * `end()`가 호출되지 않으면 `INSERT`는 취소됩니다.
 * 행은 네트워크 부하를 분산하기 위해 스트리밍 방식으로 순차적으로 전송됩니다.
-* ClickHouse는 모든 행이 동일한 파티션에 속하고 행 개수가 [`max_insert_block_size`](https://clickhouse.tech/docs/operations/settings/settings/#settings-max_insert_block_size)보다 작을 때에만 배치를 원자적으로 삽입합니다.
-
+* ClickHouse는 모든 행이 동일한 파티션에 속하고 행 개수가 [`max_insert_block_size`](/operations/settings/settings/#max_insert_block_size)보다 작을 때에만 배치를 원자적으로 삽입합니다.
 
 ### 비동기 insert (서버 측 배치) \{#async-insert-server-side-batching\}
 

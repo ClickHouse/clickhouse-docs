@@ -97,21 +97,16 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name[(name1 [type1], name2 [type2], ...)
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory AS SELECT 1;
 SELECT x, toTypeName(x) FROM t1;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─x─┬─toTypeName(x)─┐
 │ 1 │ String        │
 └───┴───────────────┘
 ```
-
 
 ## NULL 또는 NOT NULL 수정자 \{#null-or-not-null-modifiers\}
 
@@ -325,6 +320,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 많은 수의 제약 조건을 추가하면 대규모 `INSERT` 쿼리의 성능에 부정적인 영향을 줄 수 있습니다.
 
+모든 테이블에 존재하는 제약 조건은 [`system.constraints`](/operations/system-tables/constraints) 테이블에서 확인할 수 있습니다.
 
 ### ASSUME \{#assume\}
 
@@ -758,21 +754,16 @@ COMMENT 'Comment'
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE t1 (x String) ENGINE = Memory COMMENT 'The temporary table';
 SELECT name, comment FROM system.tables WHERE name = 't1';
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─name─┬─comment─────────────┐
 │ t1   │ The temporary table │
 └──────┴─────────────────────┘
 ```
-
 
 ## 관련 콘텐츠 \{#related-content\}
 

@@ -4,7 +4,7 @@ sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
 description: 'Официальный клиент C# для подключения к ClickHouse.'
-title: 'C#-драйвер ClickHouse'
+title: 'Клиент ClickHouse для C#'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -16,18 +16,15 @@ import Image from '@theme/IdealImage';
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
 
-
-# Клиент ClickHouse для C# \{#clickhouse-c-client\}
-
 Официальный клиент C# для подключения к ClickHouse.
 Исходный код клиента доступен в [репозитории GitHub](https://github.com/ClickHouse/clickhouse-cs).
 Изначально разработан [Oleg V. Kozlyuk](https://github.com/DarkWanderer).
 
 Библиотека предоставляет два основных API:
 
-- **`ClickHouseClient`** (рекомендуется): высокоуровневый, потокобезопасный клиент, предназначенный для использования в виде singleton. Предоставляет простой асинхронный API для выполнения запросов и пакетных вставок. Наиболее подходящий вариант для большинства приложений.
+* **`ClickHouseClient`** (рекомендуется): высокоуровневый, потокобезопасный клиент, предназначенный для использования в виде singleton. Предоставляет простой асинхронный API для выполнения запросов и пакетных вставок. Наиболее подходящий вариант для большинства приложений.
 
-- **ADO.NET** (`ClickHouseDataSource`, `ClickHouseConnection`, `ClickHouseCommand`): стандартные абстракции базы данных в .NET. Необходимы для интеграции с ORM (Dapper, Linq2db) и в случаях, когда требуется совместимость с ADO.NET. `ClickHouseBulkCopy` — вспомогательный класс для эффективной вставки данных с использованием подключения ADO.NET. `ClickHouseBulkCopy` объявлен устаревшим и будет удалён в одном из будущих релизов; вместо него используйте `ClickHouseClient.InsertBinaryAsync`.
+* **ADO.NET** (`ClickHouseDataSource`, `ClickHouseConnection`, `ClickHouseCommand`): стандартные абстракции базы данных в .NET. Необходимы для интеграции с ORM (Dapper, Linq2db) и в случаях, когда требуется совместимость с ADO.NET. `ClickHouseBulkCopy` — вспомогательный класс для эффективной вставки данных с использованием подключения ADO.NET. `ClickHouseBulkCopy` объявлен устаревшим и будет удалён в одном из будущих релизов; вместо него используйте `ClickHouseClient.InsertBinaryAsync`.
 
 Оба API используют общий пул HTTP‑подключений и могут использоваться вместе в одном приложении.
 

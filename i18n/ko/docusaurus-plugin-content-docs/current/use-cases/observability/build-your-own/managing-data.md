@@ -10,10 +10,7 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-
-# 데이터 관리 \{#managing-data\}
-
-관측성을 위해 ClickHouse를 배포하면 관리가 필요한 대용량 데이터셋이 필연적으로 수반됩니다. ClickHouse는 이러한 데이터 관리를 지원하는 다양한 기능을 제공합니다.
+관측성을 위한 ClickHouse 배포에서는 관리가 필요한 대규모 데이터셋을 다루는 경우가 많습니다. ClickHouse는 데이터 관리를 지원하는 여러 기능을 제공합니다.
 
 ## 파티션 \{#partitions\}
 
@@ -21,7 +18,7 @@ ClickHouse에서 파티션을 사용하면 데이터를 특정 컬럼이나 SQL 
 
 파티션은 테이블을 처음 정의할 때 `PARTITION BY` 절을 통해 지정합니다. 이 절에는 하나 이상의 컬럼에 대한 SQL 표현식을 포함할 수 있으며, 이 표현식의 결과에 따라 각 행이 어떤 파티션으로 전송될지 결정됩니다.
 
-<Image img={observability_14} alt="Partitions" size="md" />
+<Image img={observability_14} alt="파티션" size="md" />
 
 데이터 파트는 디스크 상에서 각 파티션과 공통 폴더 이름 접두사를 통해 논리적으로 연관되며, 개별적으로 쿼리할 수 있습니다. 아래 예시에서 기본 `otel_logs` 스키마는 `toDate(Timestamp)` 표현식을 사용하여 일 단위로 파티션을 나눕니다. 행이 ClickHouse에 삽입될 때마다 이 표현식이 각 행에 대해 평가되고, 해당 일자의 파티션이 존재하면 그 파티션으로 라우팅됩니다(해당 행이 그 날짜의 첫 번째 행이면, 그 날짜에 대한 파티션이 새로 생성됩니다).
 
@@ -45,7 +42,9 @@ SELECT Timestamp::Date AS day,
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 2333977 │
 │ 2019-01-23 │ 2326694 │
@@ -64,7 +63,9 @@ Peak memory usage: 4.41 MiB.
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'otel_logs'
+```
 
+```response
 ┌─partition──┐
 │ 2019-01-22 │
 │ 2019-01-23 │
@@ -78,7 +79,6 @@ WHERE `table` = 'otel_logs'
 
 오래된 데이터를 저장하기 위해 `otel_logs_archive`라는 또 다른 테이블을 둘 수 있습니다. 데이터는 파티션 단위로 이 테이블로 효율적으로 이동할 수 있으며, 이는 메타데이터만 변경하는 작업입니다.
 
-
 ```sql
 CREATE TABLE otel_logs_archive AS otel_logs
 --move data to archive table
@@ -91,7 +91,9 @@ SELECT
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 2333977 │
 │ 2019-01-23 │ 2326694 │
@@ -101,13 +103,17 @@ ORDER BY c DESC
 
 4 rows in set. Elapsed: 0.051 sec. Processed 8.38 million rows, 67.03 MB (163.52 million rows/s., 1.31 GB/s.)
 Peak memory usage: 4.40 MiB.
+```
 
+```sql
 SELECT Timestamp::Date AS day,
         count() AS c
 FROM otel_logs_archive
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-26 │ 1986456 │
 └────────────┴─────────┘
@@ -134,6 +140,9 @@ SELECT
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
+
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 4667954 │
 │ 2019-01-23 │ 4653388 │
@@ -144,7 +153,6 @@ ORDER BY c DESC
 :::note
 이 기능은 [`ttl_only_drop_parts=1`](/operations/settings/merge-tree-settings#ttl_only_drop_parts) 설정을 사용하는 경우 TTL에서 활용됩니다. 자세한 내용은 [TTL을 사용한 데이터 관리](#data-management-with-ttl-time-to-live)를 참조하십시오.
 :::
-
 
 ### Applications \{#applications\}
 
@@ -279,7 +287,7 @@ ClickHouse Cloud는 S3에 저장된 단일 데이터 사본과 SSD 기반 노드
 
 스키마 변경은 materialized view 변환 로직이나 이러한 새 컬럼을 전송하도록 하는 OTel collector 설정을 수정하기 전에 수행할 수 있습니다.
 
-스키마가 변경된 후에는 OTel collector를 다시 구성할 수 있습니다. OTel collector가 데이터를 Null table engine으로 전송하고, materialized view가 대상 스키마를 추출하여 결과를 저장용 대상 테이블로 전송하는 역할을 하도록 「[Extracting structure with SQL](/docs/use-cases/observability/schema-design#extracting-structure-with-sql)」에 설명된 권장 프로세스를 사용한다고 가정하면, [`ALTER TABLE ... MODIFY QUERY` 구문](/sql-reference/statements/alter/view)을 사용하여 뷰를 수정할 수 있습니다. 아래와 같이, OTel 구조화 로그에서 대상 스키마를 추출하기 위해 (「Extracting structure with SQL」에서 사용된 것과 유사한) 해당 materialized view가 연결된 대상 테이블이 있다고 가정해 보겠습니다:
+스키마가 변경된 후에는 OTel collector를 다시 구성할 수 있습니다. OTel collector가 데이터를 Null 테이블 엔진으로 전송하고, materialized view가 대상 스키마를 추출하여 결과를 저장용 대상 테이블로 전송하는 역할을 하도록 「[Extracting structure with SQL](/docs/use-cases/observability/schema-design#extracting-structure-with-sql)」에 설명된 권장 프로세스를 사용한다고 가정하면, [`ALTER TABLE ... MODIFY QUERY` 구문](/sql-reference/statements/alter/view)을 사용하여 뷰를 수정할 수 있습니다. 아래와 같이, OTel 구조화 로그에서 대상 스키마를 추출하기 위해 (「Extracting structure with SQL」에서 사용된 것과 유사한) 해당 materialized view가 연결된 대상 테이블이 있다고 가정해 보겠습니다:
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -338,6 +346,9 @@ ALTER TABLE otel_logs_v2
 SELECT Size
 FROM otel_logs_v2
 LIMIT 5
+```
+
+```response
 ┌──Size─┐
 │ 30577 │
 │  5667 │
@@ -350,7 +361,6 @@ LIMIT 5
 ```
 
 향후 입력되는 모든 데이터에 이 값이 삽입되도록 하려면, 아래와 같이 `ALTER TABLE` 구문을 사용하여 materialized view를 수정합니다:
-
 
 ```sql
 ALTER TABLE otel_logs_mv
@@ -391,7 +401,9 @@ FROM merge('otel_logs_v[2|3]')
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 38319300 │
 │   304  │  1360912 │
@@ -414,7 +426,9 @@ FROM otel_logs_merged
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 38319300 │
 │   304  │  1360912 │
@@ -439,7 +453,9 @@ FROM otel_logs_merged
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 39259996 │
 │   304  │  1378564 │

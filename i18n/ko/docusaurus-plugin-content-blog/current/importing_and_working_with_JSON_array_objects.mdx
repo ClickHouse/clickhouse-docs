@@ -181,7 +181,7 @@ Query id: 033a0c56-7bfa-4261-a334-7323bdc40f87
 6 rows in set. Elapsed: 0.001 sec. 
 ```
 
-`time` 값을 기준으로 쿼리하여, 예를 들어 특정 시간 범위의 모든 이벤트를 조회하려고 하지만, 해당 값이 `String`으로 가져와졌다는 것을 확인합니다:`
+`time` 값을 기준으로 쿼리하여, 예를 들어 특정 시간 범위의 모든 이벤트를 조회하려고 하지만, 해당 값이 `String`으로 가져와졌다는 것을 확인합니다:&#96;
 
 ```sql
 clickhousebook.local :) SELECT toTypeName(events.time) FROM sample_json_objects_array;

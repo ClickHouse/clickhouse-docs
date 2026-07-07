@@ -8,10 +8,6 @@ title: '外部用户认证器和目录'
 doc_type: 'reference'
 ---
 
-import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
-
-<SelfManaged />
-
 ClickHouse 支持通过外部服务进行用户身份验证和管理。
 
 支持以下外部身份验证器和用户目录：
@@ -20,3 +16,4 @@ ClickHouse 支持通过外部服务进行用户身份验证和管理。
 * Kerberos [身份验证器](/operations/external-authenticators/kerberos#kerberos-as-an-external-authenticator-for-existing-users)
 * [SSL X.509 身份验证](/operations/external-authenticators/ssl-x509)
 * HTTP [身份验证器](./http.md)
+* [JWT 身份验证](/operations/external-authenticators/jwt)

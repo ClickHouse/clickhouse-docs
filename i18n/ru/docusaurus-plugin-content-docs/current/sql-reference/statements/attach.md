@@ -45,18 +45,14 @@ ATTACH TABLE name FROM 'path/to/data/' (col1 Type1, ...)
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS test;
 INSERT INTO TABLE FUNCTION file('01188_attach/test/data.TSV', 'TSV', 's String, n UInt8') VALUES ('test', 42);
 ATTACH TABLE test FROM '01188_attach/test' (s String, n UInt8) ENGINE = File(TSV);
 SELECT * FROM test;
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 ┌─s────┬──n─┐
 │ test │ 42 │
 └──────┴────┘
@@ -99,13 +95,11 @@ SYSTEM RESTORE REPLICA test;
 
 Определите путь в ZooKeeper и имя реплики таблицы:
 
-```sql
+```sql title="Query"
 SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 ┌─replica_name─┬─zookeeper_path─────────────────────────────────────────────┐
 │ r1           │ /clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1 │
 └──────────────┴────────────────────────────────────────────────────────────┘
@@ -113,7 +107,7 @@ SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
 
 Подключите таблицу как нереплицируемую и удалите данные этой реплики из ZooKeeper:
 
-```sql
+```sql title="Query"
 DETACH TABLE test;
 ATTACH TABLE test AS NOT REPLICATED;
 SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1';
@@ -121,7 +115,7 @@ SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900
 
 ## Подключить существующий словарь \{#attach-existing-dictionary\}
 
-Подключает ранее отключённый словарь.
+Подключает ранее отсоединённый словарь.
 
 **Синтаксис**
 

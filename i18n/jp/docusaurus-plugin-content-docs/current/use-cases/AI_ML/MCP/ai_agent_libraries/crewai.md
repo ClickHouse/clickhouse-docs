@@ -4,13 +4,11 @@ sidebar_label: 'CrewAI を統合する'
 title: 'CrewAI と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'CrewAI と ClickHouse MCPサーバー を用いた AI エージェントの構築方法を学びます'
+description: 'CrewAI と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'CrewAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# CrewAI と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\}
 
 このガイドでは、[ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる [CrewAI](https://docs.crewai.com/) ベースの AI エージェントを、[ClickHouse の MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を使って構築する方法を解説します。
 

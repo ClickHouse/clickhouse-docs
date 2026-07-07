@@ -1,5 +1,5 @@
 ---
-title: '开放表格式入门'
+title: '数据湖入门'
 sidebar_label: '入门'
 slug: /use-cases/data-lake/getting-started
 sidebar_position: 1
@@ -16,13 +16,11 @@ import iceberg_query_engine from '@site/static/images/datalake/iceberg-query-eng
 import iceberg_query from '@site/static/images/datalake/iceberg-query.png';
 import clickhouse_query from '@site/static/images/datalake/clickhouse-query.png';
 
-# 数据湖入门 \{#data-lake-getting-started\}
-
-:::note[简述]
-通过动手实践，学习如何查询数据湖表、使用 MergeTree 为其加速，并将结果写回 Iceberg。所有步骤均使用公共数据集，并同时适用于 Cloud 和 OSS。
+:::note[摘要]
+通过动手实践了解如何查询数据湖表、使用 MergeTree 为其加速，并将结果写回 Iceberg。所有步骤均使用公共数据集，且同时适用于 Cloud 和 OSS。
 :::
 
-本指南中的截图来自 [ClickHouse Cloud](https://console.clickhouse.cloud) SQL 控制台。所有查询均适用于 Cloud 和自管理部署。
+本指南中的截图来自 [ClickHouse Cloud](https://console.clickhouse.cloud) 的 SQL 控制台。所有查询都适用于 Cloud 和自管理部署。
 
 <VerticalStepper headerLevel="h2">
   ## 直接查询 Iceberg 数据 \{#query-directly\}

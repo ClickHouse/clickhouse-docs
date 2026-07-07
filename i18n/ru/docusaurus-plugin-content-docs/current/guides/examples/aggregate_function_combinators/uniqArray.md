@@ -7,17 +7,15 @@ sidebar_label: 'uniqArray'
 doc_type: 'reference'
 ---
 
-# uniqArray \{#uniqarray\}
-
 ## Описание \{#description\}
 
-Комбинатор [`Array`](/sql-reference/aggregate-functions/combinators#-array) 
+Комбинатор [`Array`](/sql-reference/aggregate-functions/combinators#-array)
 можно применить к функции [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-для вычисления приблизительного количества уникальных элементов во всех массивах 
+для вычисления приблизительного количества уникальных элементов во всех массивах
 с использованием агрегатной агрегатной функции-комбинатора `uniqArray`.
 
-Функция `uniqArray` полезна, когда необходимо посчитать уникальные элементы во 
-множестве массивов в наборе данных. Она эквивалентна использованию `uniq(arrayJoin())`, где 
+Функция `uniqArray` полезна, когда необходимо посчитать уникальные элементы во
+множестве массивов в наборе данных. Она эквивалентна использованию `uniq(arrayJoin())`, где
 `arrayJoin` сначала разворачивает массивы, а затем `uniq` считает уникальные элементы.
 
 ## Пример использования \{#example-usage\}
@@ -56,7 +54,8 @@ FROM user_interests;
 ```
 
 ## См. также \{#see-also\}
-- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`arrayJoin`](/sql-reference/functions/array-join)
-- [`Комбинатор Array`](/sql-reference/aggregate-functions/combinators#-array)
-- [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)
+
+* [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+* [`arrayJoin`](/sql-reference/functions/array-join)
+* [`Комбинатор Array`](/sql-reference/aggregate-functions/combinators#-array)
+* [`uniqCombined`](/sql-reference/aggregate-functions/reference/uniqcombined)

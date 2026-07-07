@@ -1,13 +1,11 @@
 ---
-description: 'Документация по работе с ограничениями'
+description: 'Документация по управлению ограничениями'
 sidebar_label: 'CONSTRAINT'
 sidebar_position: 43
 slug: /sql-reference/statements/alter/constraint
-title: 'Работа с ограничениями'
+title: 'Управление ограничениями'
 doc_type: 'reference'
 ---
-
-# Управление ограничениями \{#manipulating-constraints\}
 
 Ограничения можно добавлять или удалять, используя следующий синтаксис:
 

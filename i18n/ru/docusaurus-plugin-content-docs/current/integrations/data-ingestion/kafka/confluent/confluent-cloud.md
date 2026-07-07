@@ -2,7 +2,7 @@
 sidebar_label: 'Коннектор Kafka Sink в Confluent Cloud'
 sidebar_position: 2
 slug: /integrations/kafka/cloud/confluent/sink-connector
-description: 'Руководство по использованию полностью управляемого коннектора ClickHouse Sink в Confluent Cloud'
+description: 'Руководство по использованию полностью управляемого ClickHouse Connector Sink в Confluent Cloud'
 title: 'Интеграция Confluent Cloud с ClickHouse'
 keywords: ['Kafka', 'Confluent Cloud']
 doc_type: 'guide'
@@ -15,19 +15,17 @@ integration:
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import Image from '@theme/IdealImage';
 
-
-# Интеграция Confluent Cloud с ClickHouse \{#integrating-confluent-cloud-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/SQAiPVbd3gg"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## Предварительные требования \{#prerequisites\}

@@ -6,8 +6,6 @@ title: '算術関数'
 doc_type: 'reference'
 ---
 
-# 算術関数 \{#arithmetic-functions\}
-
 ## 概要 \{#overview\}
 
 算術関数は、`UInt8`、`UInt16`、`UInt32`、`UInt64`、`Int8`、`Int16`、`Int32`、`Int64`、`Float32`、`Float64` 型の任意の 2 つのオペランドに対して動作します。
@@ -592,9 +590,9 @@ SELECT intDivOrZero(0.05, -1)
 
 ## isFinite \{#isFinite\}
 
-導入: v1.1.0
+導入バージョン: v1.1.0
 
-Float32 または Float64 の引数が無限大ではなく、かつ `NaN` でもない場合に `1` を返し、
+Float32、Float64、または BFloat16 の引数が無限大ではなく、かつ `NaN` でもない場合に `1` を返し、
 それ以外の場合は `0` を返します。
 
 **構文**
@@ -605,7 +603,7 @@ isFinite(x)
 
 **引数**
 
-* `x` — 有限かどうかを判定する数値。[`Float*`](/sql-reference/data-types/float)
+* `x` — 有限かどうかを判定する数値。[`Float*`](/sql-reference/data-types/float) または [`BFloat16`](/sql-reference/data-types/float)
 
 **戻り値**
 
@@ -627,7 +625,7 @@ SELECT isFinite(inf)
 
 導入バージョン: v1.1.0
 
-Float32 または Float64 型の引数が無限大である場合は `1` を返し、それ以外の場合、この関数は `0` を返します。
+Float32 または Float64、あるいは BFloat16 型の引数が無限大である場合は `1` を返し、それ以外の場合、この関数は `0` を返します。
 `NaN` の場合も `0` が返されることに注意してください。
 
 **構文**
@@ -638,7 +636,7 @@ isInfinite(x)
 
 **引数**
 
-* `x` — 無限大かどうかを判定する数値。[`Float*`](/sql-reference/data-types/float)
+* `x` — 無限大かどうかを判定する数値。[`Float*`](/sql-reference/data-types/float) または [`BFloat16`](/sql-reference/data-types/float)
 
 **戻り値**
 
@@ -658,9 +656,9 @@ SELECT isInfinite(inf), isInfinite(NaN), isInfinite(10))
 
 ## isNaN \{#isNaN\}
 
-導入: v1.1.0
+導入バージョン: v1.1.0
 
-Float32 および Float64 型の引数が `NaN` の場合は `1` を返し、それ以外の場合は `0` を返します。
+Float32 または Float64、あるいは BFloat16 型の引数が `NaN` の場合は `1` を返し、それ以外の場合は `0` を返します。
 
 **構文**
 
@@ -670,7 +668,7 @@ isNaN(x)
 
 **引数**
 
-* `x` — `NaN` かどうかを判定する対象。[`Float*`](/sql-reference/data-types/float)
+* `x` — `NaN` かどうかを判定する対象。[`Float*`](/sql-reference/data-types/float) または [`BFloat16`](/sql-reference/data-types/float)
 
 **戻り値**
 

@@ -56,6 +56,10 @@ import step_6 from '@site/static/images/cloud/guides/control_plane/manage_custom
   Убедитесь, что у пользователей, которые будут входить в консоль, есть как минимум разрешение Organization &gt; Access organization.
   :::
 
+  :::note[Доступ к вкладке Data Sources]
+  Для доступа к вкладке **Data Sources** в настоящее время роли требуется разрешение `Manage and Delete Selected Services`.
+  :::
+
   <Image img={step_5} size="md" />
 
   ### Проверьте новую роль \{#review-role\}

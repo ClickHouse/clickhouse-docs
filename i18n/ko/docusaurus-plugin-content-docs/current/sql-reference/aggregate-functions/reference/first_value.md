@@ -1,11 +1,9 @@
 ---
-description: 'any의 별칭(alias)이지만 Window Functions와의 호환성을 위해 도입되었습니다. Window Functions에서는 때때로 `NULL` 값을 처리해야 하는데, 기본적으로 모든 ClickHouse 집계 함수는 `NULL` 값을 무시합니다.'
+description: '[`any`](../../../sql-reference/aggregate-functions/reference/any.md)의 별칭이며, [Window Functions](../../window-functions/index.md)과의 호환성을 위해 도입되었습니다. 기본적으로 모든 ClickHouse 집계 함수는 `NULL` 값을 무시하므로, Window Functions에서는 때때로 이러한 `NULL` 값을 그대로 처리해야 할 때 이 함수를 사용합니다.'
 slug: /sql-reference/aggregate-functions/reference/first_value
 title: 'first_value'
 doc_type: 'reference'
 ---
-
-# first_value \{#first_value\}
 
 [`any`](../../../sql-reference/aggregate-functions/reference/any.md)의 별칭이며, [Window Functions](../../window-functions/index.md)과의 호환성을 위해 도입되었습니다. 기본적으로 모든 ClickHouse 집계 함수는 `NULL` 값을 무시하므로, Window Functions에서는 때때로 이러한 `NULL` 값을 그대로 처리해야 할 때 이 함수를 사용합니다.
 

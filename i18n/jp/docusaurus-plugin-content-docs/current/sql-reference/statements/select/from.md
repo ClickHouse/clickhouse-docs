@@ -1,22 +1,20 @@
 ---
-description: 'FROM 句に関するドキュメント'
+description: 'FROM 句のドキュメント'
 sidebar_label: 'FROM'
 slug: /sql-reference/statements/select/from
 title: 'FROM 句'
 doc_type: 'reference'
 ---
 
-# FROM 句 \{#from-clause\}
-
 `FROM` 句は、データを読み取る元となるソースを指定します。
 
 * [テーブル](../../../engines/table-engines/index.md)
-* [副問い合わせ](../../../sql-reference/statements/select/index.md)
+* [サブクエリ](../../../sql-reference/statements/select/index.md)
 * [テーブル関数](/sql-reference/table-functions)
 
 [JOIN](../../../sql-reference/statements/select/join.md) および [ARRAY JOIN](../../../sql-reference/statements/select/array-join.md) 句を使用して、`FROM` 句の機能を拡張することもできます。
 
-副問い合わせは、`FROM` 句の中で丸括弧で指定できる、別の `SELECT` クエリです。
+サブクエリは、`FROM` 句の中で丸括弧で指定できる、別の `SELECT` クエリです。
 
 SQL 標準の `VALUES` 句も、テーブル式として使用できます。
 

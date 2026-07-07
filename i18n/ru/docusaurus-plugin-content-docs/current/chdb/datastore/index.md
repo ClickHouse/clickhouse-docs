@@ -1,5 +1,5 @@
 ---
-title: 'DataStore - API, совместимый с Pandas'
+title: 'DataStore: API, совместимый с Pandas, с оптимизацией SQL'
 sidebar_label: 'Обзор'
 slug: /chdb/datastore
 description: 'DataStore предоставляет API, совместимый с pandas, с оптимизацией для SQL для высокопроизводительного анализа данных'
@@ -10,9 +10,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import data_store from '@site/static/images/chdb/datastore_architecture.png'
 
-# DataStore: API chDB, совместимый с pandas и оптимизированный для SQL \{#datastore-pandas-compatible-api-with-sql-optimization\}
-
-DataStore — это API chDB, совместимый с pandas, который сочетает привычный интерфейс pandas DataFrame с мощью оптимизации SQL‑запросов и позволяет писать код в стиле pandas, получая производительность ClickHouse.
+DataStore — это API chDB, совместимый с pandas, который объединяет привычный интерфейс pandas DataFrame с возможностями оптимизации SQL-запросов и позволяет писать код в стиле pandas, сохраняя при этом производительность ClickHouse.
 
 ## Ключевые возможности \{#key-features\}
 

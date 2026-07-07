@@ -2,9 +2,9 @@
 sidebar_label: 'Нативный коннектор Spark'
 sidebar_position: 2
 slug: /integrations/apache-spark/spark-native-connector
-description: 'Введение в Apache Spark с ClickHouse'
+description: 'Введение в Apache Spark и ClickHouse'
 keywords: ['clickhouse', 'Apache Spark', 'миграция', 'данные']
-title: 'Коннектор Spark'
+title: 'Spark-коннектор'
 doc_type: 'guide'
 ---
 
@@ -12,9 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
-
-# Коннектор Spark \{#spark-connector\}
 
 <ClickHouseSupportedBadge />
 

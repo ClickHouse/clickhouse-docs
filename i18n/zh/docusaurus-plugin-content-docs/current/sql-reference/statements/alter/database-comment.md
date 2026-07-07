@@ -8,9 +8,9 @@ keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-# ALTER DATABASE ... MODIFY COMMENT \{#alter-database-modify-comment\}
-
-添加、修改或删除数据库注释（无论之前是否已设置）。注释的变更会同时体现在 [`system.databases`](/operations/system-tables/databases.md) 表和 `SHOW CREATE DATABASE` 查询中。
+添加、修改或删除数据库注释，无论之前是否已设置该注释。
+注释的变更会同时反映在 [`system.databases`](/operations/system-tables/databases.md)
+和 `SHOW CREATE DATABASE` 查询中。
 
 ## 语法 \{#syntax\}
 
@@ -22,34 +22,34 @@ ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 要创建带注释的 `DATABASE`：
 
-```sql
-CREATE DATABASE database_with_comment ENGINE = Memory COMMENT '临时数据库';
+```sql title="Query"
+CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
 ```
 
 如需修改注释：
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT 'new comment on a database';
 ```
 
 要查看修改后的注释：
 
-```sql
+```sql title="Query"
 SELECT comment 
 FROM system.databases 
 WHERE name = 'database_with_comment';
 ```
 
-```text
+```text title="Response"
 ┌─comment─────────────────┐
-│ database_with_comment │
+│ new comment on database │
 └─────────────────────────┘
 ```
 
 要移除数据库注释：
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```
@@ -63,12 +63,12 @@ WHERE  name = 'database_with_comment';
 ```
 
 ```text title="Response"
-┌─注释─┐
-│      │
-└──────┘
+┌─comment─┐
+│         │
+└─────────┘
 ```
 
 ## 相关内容 \{#related-content\}
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 子句
-- [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)
+* [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 子句
+* [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)

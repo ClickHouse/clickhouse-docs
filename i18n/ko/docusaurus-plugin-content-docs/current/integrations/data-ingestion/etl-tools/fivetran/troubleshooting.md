@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['Fivetran', 'ClickHouse destination', '문제 해결', '모범 사례', '디버깅']
 ---
 
-# 문제 해결 및 모범 사례 \{#troubleshooting-best-practices\}
-
 ## 자주 발생하는 오류 \{#common-errors\}
 
 ### 권한 관련 Grants 테스트가 실패하거나 작업이 실패하는 경우 \{#grants-test-failed\}

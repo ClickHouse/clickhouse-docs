@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/crewai
-sidebar_label: 'Интеграция с CrewAI'
+sidebar_label: 'Интеграция CrewAI'
 title: 'Как создать агента ИИ с помощью CrewAI и сервера ClickHouse MCP'
 pagination_prev: null
 pagination_next: null
@@ -9,8 +9,6 @@ keywords: ['ClickHouse', 'MCP', 'CrewAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# Как создать агента ИИ с помощью CrewAI и сервера ClickHouse MCP \{#how-to-build-an-ai-agent-with-crewai-and-the-clickhouse-mcp-server\}
 
 В этом руководстве вы узнаете, как создать агента ИИ в [CrewAI](https://docs.crewai.com/), который может взаимодействовать с
 [SQL-песочницей ClickHouse](https://sql.clickhouse.com/), используя [сервер ClickHouse MCP](https://github.com/ClickHouse/mcp-clickhouse).

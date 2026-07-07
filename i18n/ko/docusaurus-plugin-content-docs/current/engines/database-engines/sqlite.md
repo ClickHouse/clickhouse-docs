@@ -7,9 +7,7 @@ title: 'SQLite'
 doc_type: 'reference'
 ---
 
-# SQLite \{#sqlite\}
-
-[SQLite](https://www.sqlite.org/index.html) 데이터베이스에 연결하고 `INSERT` 및 `SELECT` 쿼리를 실행하여 ClickHouse와 SQLite 간에 데이터를 교환합니다.
+[SQLite](https://www.sqlite.org/index.html) 데이터베이스에 연결하여 `INSERT` 및 `SELECT` 쿼리를 실행함으로써 ClickHouse와 SQLite 간에 데이터를 교환할 수 있습니다.
 
 ## 데이터베이스 생성 \{#creating-a-database\}
 

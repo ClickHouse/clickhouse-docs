@@ -6,8 +6,6 @@ title: 'Условные функции'
 doc_type: 'reference'
 ---
 
-# Условные функции \{#conditional-functions\}
-
 ## Обзор \{#overview\}
 
 ### Прямое использование результатов условных выражений \{#using-conditional-results-directly\}

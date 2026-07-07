@@ -1,5 +1,5 @@
 ---
-title: 'BigQuery와 ClickHouse Cloud 비교'
+title: 'ClickHouse Cloud와 BigQuery 비교'
 slug: /migrations/bigquery/biquery-vs-clickhouse-cloud
 description: 'BigQuery와 ClickHouse Cloud의 차이점'
 keywords: ['BigQuery']
@@ -10,9 +10,6 @@ doc_type: 'guide'
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
-
-
-# ClickHouse Cloud와 BigQuery 비교  \{#comparing-clickhouse-cloud-and-bigquery\}
 
 ## 리소스 구성 \{#resource-organization\}
 
@@ -156,7 +153,7 @@ BigQuery와 비교하면 ClickHouse는 훨씬 더 다양한 파일 포맷과 데
 
 ClickHouse는 분석 작업에 보다 적합하게 만들어 주는 다양한 확장과 개선 사항을 포함한 표준 SQL을 제공합니다. 예를 들어, ClickHouse SQL은 [람다 함수](/sql-reference/functions/overview#arrow-operator-and-lambda)와 고차 함수(higher order functions)를 지원하므로, 변환을 적용할 때 배열을 unnest/explode 연산으로 펼칠 필요가 없습니다. 이는 BigQuery와 같은 다른 시스템에 비해 큰 장점입니다.
 
-## 배열(Arrays) \{#arrays\}
+## 배열 \{#arrays\}
 
 BigQuery의 배열 함수가 8개인 것과 비교하면, ClickHouse에는 다양한 문제를 우아하고 단순하게 모델링하고 해결하기 위한 80개가 넘는 [내장 배열 함수](/sql-reference/functions/array-functions)가 있습니다.
 
@@ -173,7 +170,7 @@ ClickHouse SQL은 [고차 람다 함수](/sql-reference/functions/overview#arrow
 | [ARRAY&#95;REVERSE](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array_reverse)         | [arrayReverse](/sql-reference/functions/array-functions#arrayReverse)                       |
 | [ARRAY&#95;TO&#95;STRING](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array_to_string) | [arrayStringConcat](/sql-reference/functions/splitting-merging-functions#arrayStringConcat) |
 | [GENERATE&#95;ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#generate_array)       | [range](/sql-reference/functions/array-functions#range)                                     |
-| [ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array)                             | [array](/sql-reference/data-types/array)                                                    |
+| [ARRAY](https://cloud.google.com/bigquery/docs/reference/standard-sql/array_functions#array)                             | [array](/sql-reference/functions/array-functions)                                           |
 
 **서브쿼리의 각 행마다 하나의 요소를 가진 배열 생성**
 
@@ -208,6 +205,9 @@ FROM
     UNION ALL
     SELECT 3
 )
+```
+
+```response
    ┌─new_array─┐
 1. │ [1,2,3]   │
    └───────────┘
@@ -243,7 +243,6 @@ ORDER BY offset;
 *ClickHouse*
 
 [ARRAY JOIN](/sql-reference/statements/select/array-join) 절
-
 
 ```sql
 WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values
@@ -287,7 +286,9 @@ SELECT GENERATE_DATE_ARRAY('2016-10-05', '2016-10-08') AS example;
 
 ```sql
 SELECT arrayMap(x -> (toDate('2016-10-05') + x), range(toUInt32((toDate('2016-10-08') - toDate('2016-10-05')) + 1))) AS example
+```
 
+```response
    ┌─example───────────────────────────────────────────────┐
 1. │ ['2016-10-05','2016-10-06','2016-10-07','2016-10-08'] │
    └───────────────────────────────────────────────────────┘
@@ -316,7 +317,9 @@ SELECT GENERATE_TIMESTAMP_ARRAY('2016-10-05 00:00:00', '2016-10-07 00:00:00',
 
 ```sql
 SELECT arrayMap(x -> (toDateTime('2016-10-05 00:00:00') + toIntervalDay(x)), range(dateDiff('day', toDateTime('2016-10-05 00:00:00'), toDateTime('2016-10-07 00:00:00')) + 1)) AS timestamp_array
+```
 
+```response
 Query id: b324c11f-655b-479f-9337-f4d34fd02190
 
    ┌─timestamp_array─────────────────────────────────────────────────────┐
@@ -354,7 +357,6 @@ FROM Sequences;
 
 [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) 함수
 
-
 ```sql
 WITH Sequences AS
     (
@@ -366,6 +368,9 @@ WITH Sequences AS
     )
 SELECT arrayMap(x -> (x * 2), arrayFilter(x -> (x < 5), some_numbers)) AS doubled_less_than_five
 FROM Sequences;
+```
+
+```response
    ┌─doubled_less_than_five─┐
 1. │ [0,2,2,4,6]            │
    └────────────────────────┘
@@ -425,6 +430,9 @@ WITH Combinations AS
     )
 SELECT arrayZip(letters, arrayResize(numbers, length(letters))) AS pairs
 FROM Combinations;
+```
+
+```response
    ┌─pairs─────────────┐
 1. │ [('a',1),('b',2)] │
    └───────────────────┘
@@ -459,7 +467,6 @@ FROM Sequences AS s;
 
 [arraySum](/sql-reference/functions/array-functions#arraySum), [arrayAvg](/sql-reference/functions/array-functions#arrayAvg) 등의 함수나 90개가 넘는 기존 집계 함수 이름을 [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) 함수의 인자로 사용
 
-
 ```sql
 WITH Sequences AS
     (
@@ -473,6 +480,9 @@ SELECT
     some_numbers,
     arraySum(some_numbers) AS sums
 FROM Sequences;
+```
+
+```response
    ┌─some_numbers──┬─sums─┐
 1. │ [0,1,1,2,3,5] │   12 │
    └───────────────┴──────┘

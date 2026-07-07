@@ -6,8 +6,6 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-# 使用命名集合将 ClickHouse 与 Kafka 集成 \{#integrating-clickhouse-with-kafka-using-named-collections\}
-
 ## 介绍 \{#introduction\}
 
 在本指南中，我们将介绍如何使用命名集合将 ClickHouse 连接到 Kafka。使用命名集合的配置文件具有以下优势：
@@ -208,7 +206,7 @@ SELECT * FROM second_replicated_table LIMIT 10;
 
 示例输出：
 
-```sql
+```response
 ┌─id─┬─first_name─┬─last_name─┐
 │  0 │ FirstName0 │ LastName0 │
 │  1 │ FirstName1 │ LastName1 │

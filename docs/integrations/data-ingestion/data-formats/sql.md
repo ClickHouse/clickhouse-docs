@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['sql format', 'data export', 'data import', 'backup', 'sql dumps']
 ---
 
-# Inserting and dumping SQL data in ClickHouse
 
 ClickHouse can be easily integrated into OLTP database infrastructures in many ways. One way is to transfer data between other databases and ClickHouse using SQL dumps.
 
@@ -28,7 +27,7 @@ Column names can be omitted by disabling [`output_format_sql_insert_include_colu
 SET output_format_sql_insert_include_column_names = 0
 ```
 
-Now we can feed [dump.sql](assets/dump.sql) file to another OLTP database:
+Now we can feed [dump.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/dump.sql) file to another OLTP database:
 
 ```bash
 mysql some_db < dump.sql
@@ -72,7 +71,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-By default, ClickHouse will skip unknown columns (controlled by [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) option) and process data for the first found table in a dump (in case multiple tables were dumped to a single file). DDL statements will be skipped. To load data from MySQL dump into a table ([mysql.sql](assets/mysql.sql) file):
+By default, ClickHouse will skip unknown columns (controlled by [input_format_skip_unknown_fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) option) and process data for the first found table in a dump (in case multiple tables were dumped to a single file). DDL statements will be skipped. To load data from MySQL dump into a table ([mysql.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/mysql.sql) file):
 
 ```sql
 INSERT INTO some_data

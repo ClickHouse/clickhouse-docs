@@ -1,19 +1,17 @@
 ---
 
 
-sidebar_label: 'Kafka와 ClickHouse 통합'
+sidebar_label: 'Kafka를 ClickHouse와 통합하기'
 sidebar_position: 1
 slug: /integrations/kafka
-description: 'Kafka와 ClickHouse 통합 소개'
-title: 'Kafka와 ClickHouse 통합'
+description: 'ClickHouse와 Kafka 소개'
+title: 'Kafka를 ClickHouse와 통합하기'
 keywords: ['Apache Kafka', '이벤트 스트리밍', '데이터 파이프라인', '메시지 브로커', '실시간 데이터']
 doc_type: 'guide'
 integration:
   - support_level: 'core'
   - category: 'data_ingestion'
 ---
-
-# Kafka를 ClickHouse와 통합하기 \{#integrating-kafka-with-clickhouse\}
 
 [Apache Kafka](https://kafka.apache.org/)는 고성능 데이터 파이프라인, 스트리밍 분석, 데이터 통합, 미션 크리티컬 애플리케이션을 위해 수천 개의 기업에서 사용하는 오픈 소스 분산 이벤트 스트리밍 플랫폼입니다. ClickHouse는 Kafka 및 Redpanda, Amazon MSK와 같은 Kafka API와 호환되는 브로커와 간에 데이터를 **읽고** **쓸 수 있는** 여러 가지 옵션을 제공합니다.
 
@@ -39,15 +37,13 @@ ClickHouse Cloud를 사용하는 경우 이 옵션을 권장합니다. ClickPipe
 
 #### 주요 기능 \{#clickpipes-for-kafka-main-features\}
 
-[//]: # "TODO Terraform provider 알파 릴리스에 대한 정적 링크는 최적이 아닙니다. 사용 가능해지면 Terraform 가이드로 연결하십시오."
-
 * ClickHouse Cloud에 최적화되어 초고속 성능을 제공합니다.
 * 고처리량 워크로드를 위한 수평 및 수직 확장성을 제공합니다.
 * 구성 가능한 레플리카 및 자동 재시도를 통한 내장된 장애 허용 기능
-* ClickHouse Cloud UI, [Open API](/cloud/manage/api/api-overview), 또는 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.3.3-alpha2/docs/resources/clickpipe)을 통한 배포 및 관리
+* ClickHouse Cloud UI, [Open API](/integrations/clickpipes/programmatic-access/openapi), 또는 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 통한 배포 및 관리
 * Cloud 네이티브 권한 부여(IAM) 및 프라이빗 연결(PrivateLink)을 지원하는 엔터프라이즈급 보안
 * Confluent Cloud, Amazon MSK, Redpanda Cloud, Azure Event Hubs 등을 포함한 광범위한 [데이터 소스](/integrations/clickpipes/kafka/reference/) 지원
-* JSON, Avro, Protobuf(지원 예정)를 포함한 대부분의 일반적인 직렬화 형식 지원
+* JSON, Avro, Protobuf를 포함한 대부분의 일반적인 직렬화 형식 지원
 
 #### 시작하기 \{#clickpipes-for-kafka-getting-started\}
 

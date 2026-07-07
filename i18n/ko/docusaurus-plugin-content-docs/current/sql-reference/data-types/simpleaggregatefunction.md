@@ -7,8 +7,6 @@ title: 'SimpleAggregateFunction 타입'
 doc_type: 'reference'
 ---
 
-# SimpleAggregateFunction 데이터 타입 \{#simpleaggregatefunction-type\}
-
 ## Description \{#description\}
 
 `SimpleAggregateFunction` 데이터 타입은 [`AggregateFunction`](../../sql-reference/data-types/aggregatefunction.md) 타입처럼 집계 함수의 전체 상태가 아니라, 집계 함수의 중간 상태만을 저장합니다.

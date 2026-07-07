@@ -1,14 +1,12 @@
 ---
-description: 'カラムを値で埋めるための一時ストレージを作成します。'
-keywords: ['値', 'テーブル関数']
+description: '値でカラムを埋める一時的なストレージを作成します。'
+keywords: ['values', 'table function']
 sidebar_label: 'values'
 sidebar_position: 210
 slug: /sql-reference/table-functions/values
 title: 'values'
 doc_type: 'reference'
 ---
-
-# Values テーブル関数 \{#values-table-function\}
 
 `Values` テーブル関数を使用すると、一時的なストレージを作成し、そのカラムを値で埋めることができます。簡単なテストやサンプルデータの生成に便利です。
 
@@ -155,7 +153,7 @@ FROM VALUES(
     └──────────┴───────────┘
 ```
 
-```sql
+```sql title="Query"
 -- single values
 SELECT *
 FROM VALUES(

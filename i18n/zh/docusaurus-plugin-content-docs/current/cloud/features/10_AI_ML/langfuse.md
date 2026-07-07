@@ -10,8 +10,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Langfuse \{#langfuse\}
-
 ## 什么是 Langfuse？ \{#what-is-langfuse\}
 
 [Langfuse](https://langfuse.com) 是一个开源的大语言模型（LLM）工程平台，帮助团队协作调试、分析并迭代其 LLM 应用。它是 ClickHouse 生态系统的一部分，以 **ClickHouse** 为核心，提供可扩展、高性能的可观测性后端。

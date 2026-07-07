@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'pandas', 'differences', 'behavior']
 doc_type: 'guide'
 ---
 
-# Ключевые отличия от pandas \{#key-differences-from-pandas\}
-
-Хотя DataStore в значительной степени совместим с pandas, важно понимать некоторые важные отличия.
+Хотя DataStore в значительной степени совместим с pandas, важно понимать, что между ними есть существенные отличия.
 
 ## Сводная таблица \{#summary\}
 

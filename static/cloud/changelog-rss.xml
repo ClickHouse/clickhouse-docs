@@ -7,6 +7,116 @@
     <language>en-us</language>
     <atom:link href="https://clickhouse.com/docs/cloud/changelog-rss.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>ClickHouse Cloud - June 30, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-06-30</link>
+      <description>Kafka exactly-once delivery in ClickPipes:
+
+Unified TLS controls for CDC sources:
+
+Replicated databases return to the ClickPipes picker:
+
+Postgres query insights and metrics:
+
+ClickHouse Agents updates (public beta):
+
+ClickHouse BYOC on the Azure Marketplace:
+
+Official ClickHouse Airflow provider:
+
+Billing visibility and marketplace improvements:</description>
+      <pubDate>Tue, 30 Jun 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-06-30</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - June 3, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-06-03</link>
+      <description>ClickPipes now runs natively on GCP with Private Service Connect:
+
+ClickPipes for GCP Pub/Sub (private preview):
+
+ClickHouse Agents: Claude-powered agentic analytics (public beta):
+
+ClickHouse Postgres (public beta):
+
+ClickStack Cloud: serverless observability (private preview):
+
+AI Notebooks for Managed ClickStack (beta):
+- ClickStack AI Notebooks docs
+- AI Notebooks in beta (blog)
+
+Horizontal autoscaling (private preview):
+
+ClickStack MCP Server (open source):
+
+Executable User Defined Functions:</description>
+      <pubDate>Wed, 03 Jun 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-06-03</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - May 25, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-05-25</link>
+      <description>GA release of organization spend alerts:
+
+New ClickPipes AWS regions:
+
+Primary service idling for compute-compute separation now generally available:</description>
+      <pubDate>Mon, 25 May 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-05-25</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - May 18, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-05-18</link>
+      <description>Python client v1.0.0:
+- First-class SQLAlchemy dialect with deeper support for ClickHouse-specific SQL
+- Native async client built on aiohttp with full feature parity, including streaming
+- Significant performance improvements for DateTime, DateTime64, fixed-width numeric inserts, Maps, Decimals, and BigDecimals
+- Timezone handling redesign with new tzmode and tzsource parameters
+- Native Variant column writes
+- Lazy imports for optional dependencies (numpy, pandas, pyarrow, polars), speeding up bare import by 4x
+- Experimental Python 3.14 free-threading support
+
+SQL-based charting and alerting in ClickStack:
+
+New region support:
+- AWS Mexico (mx-central-1) — Private Region, PCI
+- Azure Australia East — Private Region
+
+Protobuf support for Kafka ClickPipes:</description>
+      <pubDate>Mon, 18 May 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-05-18</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - May 8, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-05-08</link>
+      <description>Postgres query insights (private preview):
+- Overview: — one-screen database health
+- Patterns: — table sortable by runtime, CPU, errors, and P95
+- Per-pattern flyout: — latency percentiles, CPU vs I/O, cache vs disk, temp spills, parallel-worker shortfalls, and WAL volume
+
+Data catalog integration expansions:
+- IAM support for AWS Glue Catalog
+- BigLake Metastore support for data catalog integration
+- Delta Tables support on Unity Catalog</description>
+      <pubDate>Fri, 08 May 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-05-08</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - May 2, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-05-02</link>
+      <description>New GCP London region (europe-west2):</description>
+      <pubDate>Sat, 02 May 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-05-02</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - April 25, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-04-25</link>
+      <description>Index sharding (private preview):
+
+Terraform &amp; OpenAPI for ClickPipes (general access):</description>
+      <pubDate>Sat, 25 Apr 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-04-25</guid>
+    </item>
+    <item>
       <title>ClickHouse Cloud - April 17, 2026</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#april-17-2026</link>
       <description>Refunds visible in billing UI:
@@ -14,8 +124,20 @@
 Organization spend alerts (Private Preview):
 
 ClickPipes region parity on AWS:</description>
-      <pubDate>Fri, 17 Apr 2026 00:00:00 +0900</pubDate>
+      <pubDate>Fri, 17 Apr 2026 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#april-17-2026</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - April 10, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-04-10</link>
+      <description>Centralized marketplace billing:
+- Marketplace Subscription Sharing:: Switch an organization from credit card billing to an existing marketplace subscription from another organization, removing the need to set up an additional marketplace subscription. Only PAYG usage is consolidated (not prepaid credits).
+- Update Marketplace Subscriptions:: Swap an organization&apos;s marketplace subscription to one used by a different organization.
+- Backup Payment Method:: Organizations on marketplace billing can now add a credit card as a fallback if the primary marketplace subscription is cancelled or expires.
+
+clickhousectl CLI (public beta):</description>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-04-10</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - April 3, 2026</title>
@@ -26,21 +148,21 @@ ClickPipes region parity on AWS:</description>
 - Data Catalog integration:: ClickHouse Cloud now supports Iceberg REST Catalog and Microsoft OneLake as data lake catalog integrations in the data sources UI. Once connected, the catalog appears as a database, allowing you to read Iceberg tables directly, without duplicating data.
 - Bring Your Own Cloud (BYOC) on GCP is now generally available:: ClickHouse BYOC is now GA on Google Cloud, allowing you to deploy ClickHouse services in your own GCP project, and comply with strict data residency requirements. Read the documentation and the blog post for more details. You can contact us to request access.
 - Billing notifications for prepaid credits and payment method changes:: ClickHouse Cloud now sends notifications when prepaid credits are added to your organization following a committed contract, or when a payment method is updated (credit card or marketplace subscription). Notifications are enabled by default for UI and email, and can be configured to also send to Slack.</description>
-      <pubDate>Fri, 03 Apr 2026 00:00:00 +0900</pubDate>
+      <pubDate>Fri, 03 Apr 2026 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#april-3-2026</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - March 20, 2026</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#march-20-2026</link>
       <description>- Custom date range for Usage Breakdown:: You can now view your usage costs across all billing dimensions on the usage breakdown screen using a custom date range.</description>
-      <pubDate>Fri, 20 Mar 2026 00:00:00 +0900</pubDate>
+      <pubDate>Fri, 20 Mar 2026 00:00:00 +0100</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#march-20-2026</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - February 20, 2026</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#february-20-2026</link>
       <description>- ClickPipes:: Reverse private endpoints in an inactive state will now be automatically removed after a defined grace period. This ensures unused or misconfigured endpoints are not persisted indefinitely in the backend. See the automatic clean up documentation for more details.</description>
-      <pubDate>Fri, 20 Feb 2026 00:00:00 +0900</pubDate>
+      <pubDate>Fri, 20 Feb 2026 00:00:00 +0100</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-20-2026</guid>
     </item>
     <item>
@@ -52,14 +174,14 @@ ClickPipes region parity on AWS:</description>
 - GCP us-central1 (Iowa)
 - GCP us-east1 (South Carolina)
 - Crash report collection preferences can now be configured at the organization level. This setting was previously available only at the service level. When disabled at the organization level, all existing and future services will be opted out automatically.</description>
-      <pubDate>Fri, 13 Feb 2026 00:00:00 +0900</pubDate>
+      <pubDate>Fri, 13 Feb 2026 00:00:00 +0100</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#february-13-2026</guid>
     </item>
     <item>
       <title>ClickHouse Cloud - January 23, 2026</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#january-23-2026</link>
       <description>- ClickPipes is now available in AWS eu-west-1. For new ClickHouse Cloud services created from January 20 in that region, the matching region will be used for ClickPipes. For older services, ClickPipes defaults to eu-central-1. See the documentation for more details.</description>
-      <pubDate>Fri, 23 Jan 2026 00:00:00 +0900</pubDate>
+      <pubDate>Fri, 23 Jan 2026 00:00:00 +0100</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#january-23-2026</guid>
     </item>
     <item>
@@ -70,7 +192,7 @@ ClickPipes region parity on AWS:</description>
 - ClickPipes:
 - The MongoDB connector has been promoted to Public Beta, and is now available to new and existing ClickHouse Cloud customers, in all service tiers. Read the blogpost for an overview of new features and head to the documentation to get started.
 - The S3 ClickPipe is now compatible with OVH Object Storage, the S3 API-compatible object storage service in OVHcloud.</description>
-      <pubDate>Fri, 16 Jan 2026 00:00:00 +0900</pubDate>
+      <pubDate>Fri, 16 Jan 2026 00:00:00 +0100</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#january-16-2026</guid>
     </item>
 

@@ -10,18 +10,15 @@ keywords: ['Google Dataflow ClickHouse', 'Dataflow ClickHouse integration', 'Apa
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Google Dataflow と ClickHouse の統合 \{#integrating-google-dataflow-with-clickhouse\}
+[Google Dataflow](https://cloud.google.com/dataflow) は、完全マネージド型のストリームおよびバッチ データ処理サービスです。Java または Python で記述されたパイプラインをサポートしており、Apache Beam SDK 上に構築されています。
 
-<ClickHouseSupportedBadge/>
+Google Dataflow を ClickHouse と組み合わせて使用する主な方法は 2 つあり、いずれも [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam) を利用します。
+以下の 2 つです。
 
-[Google Dataflow](https://cloud.google.com/dataflow) は、フルマネージドなストリーミングおよびバッチのデータ処理サービスです。Java または Python で記述されたパイプラインをサポートしており、Apache Beam SDK 上に構築されています。
-
-Google Dataflow を ClickHouse と組み合わせて利用する主な方法は 2 つあり、どちらも [`ClickHouseIO Apache Beam connector`](/integrations/apache-beam) を利用します。
-それらは次のとおりです:
-
-- [Java runner](#1-java-runner)
-- [Predefined templates](#2-predefined-templates)
+* [Java runner](#1-java-runner)
+* [事前定義済みテンプレート](#2-predefined-templates)
 
 ## Java runner \{#1-java-runner\}
 
@@ -36,7 +33,7 @@ Google Dataflow を ClickHouse と組み合わせて利用する主な方法は 
 
 ## 事前定義済みテンプレート \{#2-predefined-templates\}
 
-ClickHouse は、BigQuery から ClickHouse へのデータインポートなど、特定のユースケース向けに設計された[事前定義済みテンプレート](./templates)を提供しています。これらのテンプレートはすぐに利用可能で、連携プロセスを簡素化するため、ノーコードソリューションを好む場合に最適な選択肢です。
+ClickHouse は、BigQuery からのバッチインポートや、Pub/Sub から ClickHouse へのストリーミング インジェストなど、特定のユースケース向けに設計された[事前定義済みテンプレート](./templates)を提供しています。これらのテンプレートはすぐに利用可能で、連携プロセスを簡素化するため、ノーコードソリューションを好む場合に最適な選択肢です。
 
 ### 主な特長 \{#key-features-1\}
 

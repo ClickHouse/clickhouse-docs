@@ -70,7 +70,9 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 ## date_time_input_format \{#date_time_input_format\}
 
-<SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
+<SettingsInfoBlock type="DateTimeInputFormat" default_value="best_effort" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "best_effort"},{"label": "更好的易用性"}]}]} />
 
 允许选择用于解析日期和时间文本表示形式的解析器。
 
@@ -78,22 +80,20 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 可能的取值：
 
-- `'best_effort'` — 启用扩展解析。
+* `'best_effort'` — 启用扩展解析。
 
-    ClickHouse 可以解析基本格式 `YYYY-MM-DD HH:MM:SS` 以及所有 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日期和时间格式。例如，`'2018-06-08T01:02:03.000Z'`。
+  ClickHouse 可以解析基本格式 `YYYY-MM-DD HH:MM:SS` 以及所有 [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) 日期和时间格式。例如，`'2018-06-08T01:02:03.000Z'`。
 
-- `'best_effort_us'` — 与 `best_effort` 类似（差异见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS)）。
+* `'best_effort_us'` — 与 `best_effort` 类似 (差异见 [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS)) 。
 
-- `'basic'` — 使用基本解析器。
+* `'basic'` — 使用基本解析器。
 
-    ClickHouse 只能解析基本格式 `YYYY-MM-DD HH:MM:SS` 或 `YYYY-MM-DD`。例如，`2019-08-20 10:18:56` 或 `2019-08-20`。
-
-Cloud 默认值：`'best_effort'`。
+  ClickHouse 只能解析基本格式 `YYYY-MM-DD HH:MM:SS` 或 `YYYY-MM-DD`。例如，`2019-08-20 10:18:56` 或 `2019-08-20`。
 
 另请参阅：
 
-- [DateTime 数据类型。](../../sql-reference/data-types/datetime.md)
-- [用于处理日期和时间的函数。](../../sql-reference/functions/date-time-functions.md)
+* [DateTime 数据类型。](../../sql-reference/data-types/datetime.md)
+* [用于处理日期和时间的函数。](../../sql-reference/functions/date-time-functions.md)
 
 ## date_time_output_format \{#date_time_output_format\}
 
@@ -139,6 +139,30 @@ Cloud 默认值：`'best_effort'`。
 <SettingsInfoBlock type="String" default_value="CSV" />
 
 用于将错误写入文本输出的格式。
+
+## format_avro_schema_registry_connection_timeout \{#format_avro_schema_registry_connection_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于控制 AvroConfluent 格式所使用的 Confluent Schema Registry HTTP 客户端的连接超时时间（以秒为单位）。"}]}]} />
+
+对于 AvroConfluent 格式：Confluent Schema Registry HTTP 客户端的连接超时时间 (以秒为单位) 。同时用于 schema 拉取和 schema 注册。该值必须大于 0 且小于 600 (10 分钟) 。
+
+## format_avro_schema_registry_receive_timeout \{#format_avro_schema_registry_receive_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于控制 AvroConfluent 格式所使用的 Confluent Schema Registry HTTP 客户端的接收超时时间（以秒为单位）。"}]}]} />
+
+对于 AvroConfluent 格式：Confluent Schema Registry HTTP 客户端的接收超时时间，单位为秒。该设置同时用于 schema 拉取和 schema 注册。必须大于 0 且小于 600 (10 分钟) 。
+
+## format_avro_schema_registry_send_timeout \{#format_avro_schema_registry_send_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "新增设置，用于控制 AvroConfluent 格式使用的 Confluent Schema Registry HTTP 客户端的发送超时时间（以秒为单位）。"}]}]} />
+
+对于 AvroConfluent 格式：Confluent Schema Registry HTTP 客户端的发送超时时间 (以秒为单位) 。同时用于 schema 拉取和 schema 注册。该值必须大于 0 且小于 600 (10 分钟) 。
 
 ## format_avro_schema_registry_url \{#format_avro_schema_registry_url\}
 
@@ -394,8 +418,11 @@ TSV 格式中 NULL 的自定义表示形式
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-允许在读取 ORC/Parquet/Arrow 输入格式的数据时进行随机访问（seek）。
-
+允许在读取 ORC、Parquet 和 Arrow 输入格式时进行随机访问 (seek) 或范围读取。
+启用后，如果源支持此功能 (例如本地文件、S3、支持范围读取且大小已知的 HTTP) ，
+ClickHouse 只会读取所需的字节范围，并使用更少的内存。
+禁用后，或者当源不支持随机访问 (例如文件大小未知，或 stream 不可寻道) 时，
+某些读取器可能会回退为将整个文件完整加载到内存中。
 默认启用。
 
 ## input_format_arrow_allow_missing_columns \{#input_format_arrow_allow_missing_columns\}
@@ -1644,6 +1671,12 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 
 输出时使用的压缩编解码器。可选值：'null'、'deflate'、'snappy'、'zstd'。
 
+## output_format_avro_confluent_subject \{#output_format_avro_confluent_subject\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": ""},{"label": "新增设置，用于指定在写入 AvroConfluent 输出时，在 Confluent Schema Registry 中注册 schema 所使用的 subject 名称。"}]}]} />
+
+对于 AvroConfluent 输出格式：schema 在 Confluent Schema Registry 中注册时使用的 subject 名称。写入 AvroConfluent 输出时必需。
+
 ## output_format_avro_rows_in_file \{#output_format_avro_rows_in_file\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -1725,6 +1758,19 @@ Arrow 输出格式使用的压缩算法。支持的编解码器：lz4_frame、zs
 在输出 Decimal 值时保留末尾的零。例如将 1.23 输出为 1.230000。
 
 默认禁用。
+
+## output_format_float_precision \{#output_format_float_precision\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "用于控制浮点数输出中小数位数的新设置"}]}]} />
+
+当该值非 0 时，浮点数输出 (`Float32`、`Float64`、`BFloat16`) 将按小数点后最多保留这么多位进行格式化 (末尾的零会被去掉) 。
+当该值为 0 (默认值) 时，使用最短的往返表示。
+
+对于不适合使用定点表示法的大数值，以及量级非常小、按所请求精度舍入后会丢失所有有效数字的值 (即尾数会变为 `±0`) ，则会改用科学计数法输出。在这些回退情况下，尾数的小数位数可能会超过所请求的位数。
+
+有效范围：0 到 100。
 
 ## output_format_json_array_of_rows \{#output_format_json_array_of_rows\}
 

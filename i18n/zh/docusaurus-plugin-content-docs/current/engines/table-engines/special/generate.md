@@ -7,14 +7,12 @@ title: 'GenerateRandom 表引擎'
 doc_type: 'reference'
 ---
 
-# GenerateRandom 表引擎 \{#generaterandom-table-engine\}
-
-`GenerateRandom` 表引擎根据给定的表结构生成随机数据。
+GenerateRandom 表引擎根据给定的表 schema 生成随机数据。
 
 使用示例：
 
-- 在测试中用于填充可复现的大规模表数据。
-- 为模糊测试（fuzzing）生成随机输入。
+* 在测试中使用，以填充可复现的大型表。
+* 为模糊测试生成随机输入。
 
 ## 在 ClickHouse Server 中的使用 \{#usage-in-clickhouse-server\}
 
@@ -24,7 +22,7 @@ ENGINE = GenerateRandom([random_seed [,max_string_length [,max_array_length]]])
 
 `max_array_length` 和 `max_string_length` 参数分别指定在生成的数据中，所有数组或 map 列以及字符串的最大长度。
 
-`Generate` 表引擎仅支持 `SELECT` 查询。
+`GenerateRandom` 表引擎仅支持 `SELECT` 查询。
 
 它支持所有可以存储在表中的 [DataTypes](../../../sql-reference/data-types/index.md)，`AggregateFunction` 类型除外。
 
@@ -52,9 +50,9 @@ SELECT * FROM generate_engine_table LIMIT 3
 
 ## 实现细节 \{#details-of-implementation\}
 
-- 不支持：
-  - `ALTER`
-  - `SELECT ... SAMPLE`
-  - `INSERT`
-  - 索引
-  - 复制
+* 不支持：
+  * `ALTER`
+  * `SELECT ... SAMPLE`
+  * `INSERT`
+  * 索引
+  * 复制

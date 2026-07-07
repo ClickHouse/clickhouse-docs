@@ -7,14 +7,12 @@ sidebar_label: 'groupArrayResample'
 doc_type: 'reference'
 ---
 
-# groupArrayResample \{#grouparrayresample\}
-
 ## Описание \{#description\}
 
-Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 может быть применён к агрегатной функции [`groupArray`](/sql-reference/aggregate-functions/reference/sum),
-чтобы разделить диапазон заданного ключевого столбца на фиксированное количество интервалов (`N`) 
-и сформировать результирующий массив, выбирая по одному представительному значению 
+чтобы разделить диапазон заданного ключевого столбца на фиксированное количество интервалов (`N`)
+и сформировать результирующий массив, выбирая по одному представительному значению
 (соответствующему минимальному ключу) из точек данных, попадающих в каждый интервал.
 Он формирует укрупнённое (downsampled) представление данных вместо сбора всех значений.
 
@@ -61,5 +59,6 @@ SELECT groupArrayResample(30, 75, 30)(name, age) FROM employee_data
 ```
 
 ## См. также \{#see-also\}
-- [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Комбинатор Resample`](/sql-reference/aggregate-functions/combinators#-resample)
+
+* [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
+* [`Комбинатор Resample`](/sql-reference/aggregate-functions/combinators#-resample)

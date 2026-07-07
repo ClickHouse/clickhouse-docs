@@ -8,13 +8,8 @@ keywords: ['ALTER DATABASE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-
-
-# ALTER DATABASE ... MODIFY COMMENT \{#alter-database-modify-comment\}
-
-데이터베이스에 대한 주석을, 이전에 설정되어 있었는지와 관계없이 추가, 수정 또는 제거합니다. 주석 변경 사항은 [`system.databases`](/operations/system-tables/databases.md)와 `SHOW CREATE DATABASE` 쿼리 모두에 반영됩니다.
-
-
+이전에 설정되었는지 여부와 관계없이 데이터베이스 주석을 추가, 수정 또는 제거합니다. 주석 변경 사항은 [`system.databases`](/operations/system-tables/databases.md)
+및 `SHOW CREATE DATABASE` 쿼리에 모두 반영됩니다.
 
 ## 구문 \{#syntax\}
 
@@ -22,31 +17,30 @@ doc_type: 'reference'
 ALTER DATABASE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 ```
 
-
 ## 예시 \{#examples\}
 
 주석이 있는 `DATABASE`를 생성하려면 다음과 같이 합니다:
 
-```sql
+```sql title="Query"
 CREATE DATABASE database_with_comment ENGINE = Memory COMMENT 'The temporary database';
 ```
 
 주석을 수정하려면:
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT 'new comment on a database';
 ```
 
 수정된 주석을 확인하려면:
 
-```sql
+```sql title="Query"
 SELECT comment 
 FROM system.databases 
 WHERE name = 'database_with_comment';
 ```
 
-```text
+```text title="Response"
 ┌─comment─────────────────┐
 │ new comment on database │
 └─────────────────────────┘
@@ -54,7 +48,7 @@ WHERE name = 'database_with_comment';
 
 데이터베이스 주석을 제거하려면 다음과 같이 합니다:
 
-```sql
+```sql title="Query"
 ALTER DATABASE database_with_comment 
 MODIFY COMMENT '';
 ```
@@ -73,8 +67,7 @@ WHERE  name = 'database_with_comment';
 └─────────┘
 ```
 
-
 ## 관련 콘텐츠 \{#related-content\}
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 절
-- [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)
+* [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 절
+* [`ALTER TABLE ... MODIFY COMMENT`](./comment.md)

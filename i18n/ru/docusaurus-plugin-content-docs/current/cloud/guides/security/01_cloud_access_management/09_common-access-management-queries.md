@@ -9,14 +9,11 @@ doc_type: 'guide'
 
 import CommonUserRolesContent from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_users-and-roles-common.md';
 
-
-# Распространённые вопросы по управлению доступом \{#common-access-management-queries\}
-
-:::tip Самостоятельное развертывание
-Если вы работаете с самостоятельно управляемым (self-managed) ClickHouse, см. раздел [SQL-пользователи и роли](/guides/sre/user-management/index.md).
+:::tip Самоуправляемый
+Если вы работаете с самоуправляемым ClickHouse, см. [SQL-пользователи и роли](/guides/sre/user-management/index.md).
 :::
 
-В этой статье рассматриваются основы создания SQL-пользователей и ролей и назначения привилегий и прав доступа к базам данных, таблицам, строкам и столбцам.
+В этой статье описаны основы создания SQL-пользователей и ролей, а также назначения их привилегий и прав базам данных, таблицам, строкам и столбцам.
 
 ## Пользователь-администратор \{#admin-user\}
 

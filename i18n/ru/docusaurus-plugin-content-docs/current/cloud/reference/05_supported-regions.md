@@ -10,8 +10,6 @@ doc_type: 'reference'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# Поддерживаемые регионы Cloud \{#supported-cloud-regions\}
-
 ## Регионы AWS \{#aws-regions\}
 
 * ap-northeast-1 (Токио)
@@ -116,6 +114,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 * AWS eu-north-1 (Стокгольм) **Частный регион**
 * AWS eu-west-1 (Ирландия)
 * AWS eu-west-2 (Лондон)
+* AWS mx-central-1 (Мексика) **Частный регион**
 * AWS sa-east-1 (Южная Америка) **Частный регион**
 * AWS us-east-1 (Северная Вирджиния)
 * AWS us-east-2 (Огайо)

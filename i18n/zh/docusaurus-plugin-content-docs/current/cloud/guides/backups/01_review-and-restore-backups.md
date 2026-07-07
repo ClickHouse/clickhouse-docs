@@ -2,7 +2,7 @@
 sidebar_label: '查看和恢复备份'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: '概览'
+title: '查看和恢复备份'
 keywords: ['备份', 'Cloud 备份', '恢复']
 description: '提供 ClickHouse Cloud 中备份的概览'
 doc_type: 'guide'
@@ -17,14 +17,11 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
+本指南介绍 ClickHouse Cloud 中备份的工作原理、可用于为您的服务配置备份的选项，以及如何从备份中恢复。
 
-# 查看和恢复备份 \{#review-and-restore-backups\}
+**前置条件**
 
-本指南介绍 ClickHouse Cloud 中备份的工作原理、为服务配置备份时可用的选项，以及如何从备份中恢复。
-
-**前提条件**
-
-- 您已经阅读了[《ClickHouse Cloud 中的备份工作原理》](/cloud/features/backups#how-backups-work-in-clickhouse-cloud)（功能概览页）
+* 您已阅读[&quot;ClickHouse Cloud 中备份的工作原理&quot;](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) (功能概览页面)
 
 ## 备份状态列表 \{#backup-status-list\}
 
@@ -36,16 +33,16 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 根据默认策略，ClickHouse Cloud 要求每天执行一次备份，保留时间为 24 小时。选择需要保留更多数据或更频繁备份的计划，将会为备份产生额外的存储费用。
 
-要了解备份成本，您可以在使用情况界面中查看各服务的备份成本（如下图所示）。在使用自定义计划运行备份几天后，您就可以大致了解成本情况，并据此推算每月的备份成本。
+要了解备份成本，您可以在使用情况界面中查看各服务的备份成本 (如下图所示) 。在使用自定义计划运行备份几天后，您就可以大致了解成本情况，并据此推算每月的备份成本。
 
-<Image img={backup_usage} size="md" alt="ClickHouse Cloud 中的备份使用情况图表" border/>
+<Image img={backup_usage} size="md" alt="ClickHouse Cloud 中的备份使用情况图表" border />
 
-要估算备份的总成本，您需要先设置一个计划。我们也在更新我们的[价格计算器](https://clickhouse.com/pricing)，这样您可以在设置计划之前预估每月的备份成本。您需要提供以下信息来估算成本：
+要估算备份的总成本，您需要先设置一个计划。在设置计划之前，您可以使用[定价计算器](https://clickhouse.com/pricing)，通过提供以下信息来获取每月成本估算：
 
-- 完全备份和增量备份的大小
-- 期望的备份频率
-- 期望的保留时间
-- Cloud 提供商和区域
+* 全量备份和增量备份的大小
+* 期望的备份频率
+* 期望的备份保留时间
+* Cloud 提供商和区域
 
 :::note
 请注意，随着服务中数据规模随时间增长，备份的预估成本也会随之变化。

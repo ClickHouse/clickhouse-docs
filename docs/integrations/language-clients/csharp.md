@@ -4,7 +4,7 @@ sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
 description: 'The official C# client for connecting to ClickHouse.'
-title: 'ClickHouse C# driver'
+title: 'ClickHouse C# client'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -15,8 +15,6 @@ integration:
 import Image from '@theme/IdealImage';
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
-
-# ClickHouse C# client
 
 The official C# client for connecting to ClickHouse.
 The client source code is available in the [GitHub repository](https://github.com/ClickHouse/clickhouse-cs).
@@ -45,6 +43,10 @@ Both APIs share the same underlying HTTP connection pool and can be used togethe
 * .NET 8.0
 * .NET 9.0
 * .NET 10.0
+
+## Supported ClickHouse versions {#supported-clickhouse-versions}
+
+The client officially supports the last 3 releases plus the last two LTS releases.
 
 ## Installation {#installation}
 
@@ -103,7 +105,10 @@ Below is a full list of all the settings, their default values, and their effect
 | UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | Use `ClickHouseDecimal` for arbitrary precision; if false, uses .NET `decimal` (128-bit limit) |
 | ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | Read `String` and `FixedString` columns as `byte[]` instead of `string`; useful for binary data |
 | UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | Send parameters as form data instead of URL query string |
+| ReadBufferSize | `int` | `8192` (8 KiB) | `ReadBufferSize` | Size in bytes of the buffer used to read HTTP query responses. Increase to reduce buffer refills for large result sets. Values at or above 85,000 bytes are allocated on the Large Object Heap, which can cause LOH fragmentation and longer GC pauses. |
 | ParameterTypeResolver | `IParameterTypeResolver` | `null` | — | Custom resolver for `@`-style parameter type mapping; see [Custom parameter type mapping](#parameter-type-mapping) |
+| ParameterFormatter | `IParameterFormatter` | `null` | — | Custom formatter for parameter value serialization; see [Custom parameter value formatting](#parameter-value-formatting) |
+| ReadValueConverter | `IReadValueConverter` | `null` | — | Custom transform applied to values returned by the data reader; see [Custom read value conversion](#read-value-conversion) |
 | JsonReadMode | `JsonReadMode` | `Binary` | `JsonReadMode` | How JSON data is returned: `Binary` (returns `JsonObject`) or `String` (returns raw JSON string) |
 | JsonWriteMode | `JsonWriteMode` | `String` | `JsonWriteMode` | How JSON data is sent: `String` (serializes via `JsonSerializer`, accepts all inputs) or `Binary` (registered POCOs only with type hints) |
 
@@ -147,6 +152,7 @@ The `ClickHouseConnection` class normally allows for parallel operation (multipl
 |----------|------|---------|----------------------|-------------|
 | CustomSettings | `IDictionary<string, object>` | Empty | `set_*` prefix | ClickHouse server settings, see note below |
 | Roles | `IReadOnlyList<string>` | Empty | `Roles` | Comma-separated ClickHouse roles (e.g., `Roles=admin,reader`) |
+| ApplicationInfo | `IReadOnlyDictionary<string, string>` | Empty | — | Free-form tags appended to the HTTP `User-Agent` header for per-application query attribution. |
 
 :::note
 When using a connection string to set custom settings, use the `set_` prefix, e.g. "set_max_threads=4". When using a ClickHouseClientSettings object, don't use the `set_` prefix.
@@ -187,7 +193,10 @@ Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 | SessionId | `string` | Session ID for this query (requires `UseSession = true`) |
 | BearerToken | `string` | Override authentication token for this query |
 | ParameterTypeResolver | `IParameterTypeResolver` | Override client-level resolver for `@`-style parameter type mapping; see [Custom parameter type mapping](#parameter-type-mapping) |
+| ParameterFormatter | `IParameterFormatter` | Override client-level formatter for `@`-style parameter value serialization; see [Custom parameter value formatting](#parameter-value-formatting) |
+| ReadValueConverter | `IReadValueConverter` | Override client-level transform applied to values returned by the data reader; see [Custom read value conversion](#read-value-conversion) |
 | MaxExecutionTime | `TimeSpan?` | Server-side query timeout (passed as `max_execution_time` setting); server cancels query if exceeded |
+| AcceptEncoding | `string` | Per-query `Accept-Encoding` header override (e.g., `"zstd"`, `"zstd, gzip;q=0.5"`); also forces `enable_http_compression=1` on the URL. See [Per-query transport compression](#per-query-accept-encoding). |
 
 **Example:**
 
@@ -525,6 +534,67 @@ while (reader.Read())
 }
 ```
 
+#### POCO reads {#poco-read}
+
+Instead of reading columns by index or name, you can stream query results directly into your own classes. Register the type once with the client, then use `QueryAsync<T>`:
+
+```csharp
+// Define a POCO matching your result columns
+public class SensorReading
+{
+    public ulong Id { get; set; }
+    public DateTime Timestamp { get; set; }
+
+    [ClickHouseColumn(Name = "sensor_name")]
+    public string SensorName { get; set; }
+    public double Value { get; set; }
+
+}
+
+// Register the type (once per client lifetime)
+client.RegisterPocoType<SensorReading>();
+
+// Stream results as typed objects
+await foreach (var reading in client.QueryAsync<SensorReading>(
+    "SELECT Id, sensor_name, Value, Timestamp FROM sensors"))
+{
+    Console.WriteLine($"{reading.SensorName}: {reading.Value}");
+}
+```
+
+##### Registration {#poco-read-registration}
+
+`RegisterPocoType<T>()` sets up both the insert and read mappings and validates both up front. `RegisterBinaryInsertType<T>()` is unchanged and remains insert-only for backwards compatibility.
+
+A registered type must have:
+
+- A public parameterless constructor.
+- At least one public property with a public, non-`init` setter. `required` properties are supported.
+
+##### Column matching {#poco-read-column-matching}
+
+Column matching is case-sensitive. Missing result columns leave properties at their default value; extra result columns are ignored.
+
+There are no automatic conversions and a type mismatch throws `InvalidOperationException`.
+
+##### Materializing a single row {#poco-read-mapto}
+
+When iterating a reader manually, use `ClickHouseDataReader.MapTo<T>()` to materialize the current row into a registered POCO without advancing the reader:
+
+```csharp
+var reader = await client.ExecuteReaderAsync("SELECT Id, SensorName, Value, Timestamp FROM sensors");
+
+while (reader.Read())
+{
+    SensorReading reading = reader.MapTo<SensorReading>();
+    Console.WriteLine($"{reading.SensorName}: {reading.Value}");
+}
+```
+
+##### Registration diagnostics {#poco-read-diagnostics}
+
+When a `LoggerFactory` is configured, `RegisterPocoType<T>()` and `RegisterBinaryInsertType<T>()` emit a `Debug`-level log (category `ClickHouse.Driver.Client`) listing which properties mapped to which columns, and which were skipped and why. See [Logging and diagnostics](#logging-and-diagnostics).
+
 ---
 
 ### SQL parameters {#sql-parameters}
@@ -548,6 +618,26 @@ INSERT INTO table VALUES ({val1:Int32}, {val2:Array(UInt8)})
 :::note
 SQL 'bind' parameters are passed as HTTP URI query parameters, so using too many of them may result in a "URL too long" exception. Use `InsertBinaryAsync` for bulk data insertion to avoid this limitation.
 :::
+
+#### Identifier parameters {#identifier-parameters}
+
+The `Identifier` parameter type lets you safely bind a database, table, or column name instead of a quoted string literal. Use it via the `{name:Identifier}` syntax in SQL, or by setting `ClickHouseDbParameter.ClickHouseType = "Identifier"`:
+
+```csharp
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("name", "my_database");
+
+await client.ExecuteNonQueryAsync("CREATE DATABASE {name:Identifier}", parameters);
+```
+
+```csharp
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("col", "user_id");
+
+var reader = await client.ExecuteReaderAsync("SELECT {col:Identifier} FROM t", parameters);
+```
+
+The value is sent verbatim, and the server substitutes it as a bare SQL identifier, applying its own backtick quoting and escaping. Identifiers containing special characters (including backticks) round-trip safely.
 
 ---
 
@@ -576,7 +666,13 @@ If you're specifying a custom `QueryId`, ensure it is unique for every call. A r
 
 ### Custom parameter type mapping {#parameter-type-mapping}
 
-When using `@`-style parameters (e.g., `WHERE id = @id`), the driver automatically infers the ClickHouse type from the .NET value type. For example, `int` maps to `Int32`, and `DateTime` maps to `DateTime`.
+When using `@`-style parameters (e.g., `WHERE id = @id`), the driver automatically infers the ClickHouse type from the .NET value type. For example, `int` maps to `Int32`.
+
+:::warning Behavior for inferred DateTime parameters
+For `@`-style parameters with no `{name:Type}` hint in the SQL and no `ClickHouseType` set, instant-bearing values are inferred as `DateTime('UTC')` rather than a bare `DateTime`. `DateTime` with `Kind` of `Utc` or `Local`, and all `DateTimeOffset` values, are sent as `DateTime('UTC')`, preserving the instant across any server timezone.
+
+Explicit hints (`{name:DateTime}`) take precedence over inference and are the recommended way of building queries.
+:::
 
 To override these defaults, set `ParameterTypeResolver` on `ClickHouseClientSettings`. This is useful when you want all `DateTime` parameters to use `DateTime64(3)` for millisecond precision, or all decimals to use a specific scale, without setting `ClickHouseType` on every individual parameter.
 
@@ -635,6 +731,124 @@ The resolver also works with the ADO.NET `ClickHouseConnection` path — the set
 
 ---
 
+### Custom parameter value formatting {#parameter-value-formatting}
+
+`IParameterFormatter` is a hook that decides how parameter values are serialized. Use it when the built-in formatting (e.g. DateTime precision, decimal culture, string escaping, number representation) does not match what your schema or downstream tools expect.
+
+Set `ParameterFormatter` on `ClickHouseClientSettings` to install a formatter for all parameterized queries. The formatter receives the value, the resolved ClickHouse type name, and the parameter name, and returns the string representation that is sent to the server. Return `null` to fall through to the default formatter.
+
+**Using `DictionaryParameterFormatter` for simple per-CLR-type formatting:**
+
+```csharp
+using ClickHouse.Driver.ADO.Parameters;
+
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    ParameterFormatter = new DictionaryParameterFormatter(new Dictionary<Type, Func<object, string>>
+    {
+        [typeof(DateTime)] = v => ((DateTime)v).ToString("yyyy-MM-ddTHH:mm:ss.ffffff",
+            System.Globalization.CultureInfo.InvariantCulture),
+        [typeof(decimal)] = v => ((decimal)v).ToString("F4",
+            System.Globalization.CultureInfo.InvariantCulture),
+    }),
+};
+using var client = new ClickHouseClient(settings);
+```
+
+**Custom `IParameterFormatter` for advanced scenarios:**
+
+```csharp
+public class FixedDecimalFormatter : IParameterFormatter
+{
+    public string Format(object value, string typeName, string parameterName)
+    {
+        if (value is decimal d)
+            return d.ToString("F4", System.Globalization.CultureInfo.InvariantCulture);
+        return null; // Fall through for anything else
+    }
+}
+```
+
+You can also set a formatter per-query via `QueryOptions.ParameterFormatter`. When set, it takes precedence over the client-level formatter.
+
+**Composite values:**
+
+The formatter runs both for top-level collection parameters and every element inside composite values (`Array`, `Tuple`, `Map`, `Nullable`, `LowCardinality`, `Variant`). For example, a `typeof(int)` mapping formats every `Int32` element of an `Array(Int32)` individually.
+
+**Single-quote wrapping in composite contexts:**
+
+For string-like ClickHouse types (`String`, `FixedString`, `Enum8`, `Enum16`, `IPv4`, `IPv6`, `UUID`) embedded inside a composite literal, the driver wraps the formatter's output in single quotes but does not escape its contents. If your returned string contains an unescaped single quote or backslash, the composite literal will be malformed and the server will reject the query.
+
+Top-level string parameters (not embedded in a composite) are used verbatim without wrapping, so escaping is not required there.
+
+**Formatter precedence:**
+
+1. `IParameterFormatter` (from `QueryOptions.ParameterFormatter`, falling back to `ClickHouseClientSettings.ParameterFormatter`). If it returns non-null, that value is used.
+2. Built-in type-specific formatting in `HttpParameterFormatter`.
+
+The formatter is not consulted for `null` or `DBNull` values, those are always serialized as the ClickHouse null sentinel (`\N`).
+
+---
+
+### Custom read value conversion {#read-value-conversion}
+
+`IReadValueConverter` lets you transform values returned by the data reader after deserialization, without changing their CLR type. Typical uses: setting `DateTime.Kind = Utc` on a `DateTime` column that has no timezone, trimming or normalizing strings, or post-processing a JSON column before it reaches application code.
+
+Set `ReadValueConverter` on `ClickHouseClientSettings` to install a converter for all reads. The converter is invoked once per column per row through both the boxed (`GetValue`) and generic (`GetFieldValue<T>`) paths. When no converter is set, there is zero overhead — the reader returns values directly.
+
+**Using `DictionaryReadValueConverter` for simple per-CLR-type conversion:**
+
+```csharp
+using ClickHouse.Driver.ADO.Readers;
+
+var converter = new DictionaryReadValueConverter()
+    .For<DateTime>(dt => DateTime.SpecifyKind(dt, DateTimeKind.Utc))
+    .For<string>(s => s.Trim());
+
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    ReadValueConverter = converter,
+};
+using var client = new ClickHouseClient(settings);
+```
+
+Values whose runtime CLR type is not registered with `For<T>` pass through unchanged. The dispatch is by exact CLR type, so register the actual type the reader produces (e.g., `For<JsonObject>` for a JSON column in `JsonReadMode.Binary`).
+
+**Custom `IReadValueConverter` for advanced scenarios:**
+
+If you need to dispatch on the ClickHouse-side type string (for example, to distinguish `DateTime` from `DateTime('UTC')` — both surface as the same CLR type), implement `IReadValueConverter` directly:
+
+```csharp
+public class UtcKindForNoTzDateTimeConverter : IReadValueConverter
+{
+    public object ConvertValue(object value, string columnName, string clickHouseType)
+    {
+        if (value is DateTime dt && clickHouseType == "DateTime")
+            return DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+        return value;
+    }
+
+    public T ConvertValue<T>(T value, string columnName, string clickHouseType)
+    {
+        if (typeof(T) == typeof(DateTime) && value is DateTime dt && clickHouseType == "DateTime")
+            return (T)(object)DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+        return value;
+    }
+}
+```
+
+The converter must preserve the runtime CLR type; column metadata (`GetFieldType`, `GetSchemaTable`) is not rerouted through it and must remain consistent with what is returned.
+
+You can also set a converter per-query via `QueryOptions.ReadValueConverter`; when set, it takes precedence over the client-level converter.
+
+**Dispatch boundary:**
+
+The converter is invoked once per column with the entire deserialized cell value, it does **not** recurse into composite containers. For an `Array(Int32)` column the value passed in is an `int[]`; for `Tuple(Int32, String)` it is an `ITuple`.
+
+The converter works with the ADO.NET `ClickHouseConnection` path — the settings are inherited by connections created from the client.
+
+---
+
 ### Raw streaming {#raw-streaming}
 
 Use `ExecuteRawResultAsync` to stream query results in a specific format directly, bypassing the data reader. This is useful for exporting data to files or passing through to other systems:
@@ -650,6 +864,37 @@ var json = await reader.ReadToEndAsync();
 ```
 
 Common formats: `JSONEachRow`, `CSV`, `TSV`, `Parquet`, `Native`. See the [formats documentation](/docs/interfaces/formats) for all options.
+
+---
+
+### Per-query transport compression {#per-query-accept-encoding}
+
+By default, the client negotiates `gzip, deflate` when `Compression=true` (the connection-string default) and the HTTP client decompresses the stream transparently.
+
+For raw exports (e.g. Parquet, Arrow, Native) you may want to negotiate a different codec (e.g. `zstd` or `lz4`) to trade CPU for bandwidth without changing the connection-wide setting. `QueryOptions.AcceptEncoding` and `ClickHouseCommand.AcceptEncoding` set the HTTP `Accept-Encoding` header for a single request, replacing whatever default was attached, and force `enable_http_compression=1` on the URL (which ClickHouse requires before it will honor `Accept-Encoding`).
+
+```csharp
+using var result = await client.ExecuteRawResultAsync(
+    "SELECT * FROM events FORMAT Parquet",
+    options: new QueryOptions { AcceptEncoding = "zstd" });
+
+// Decode yourself or write to a file
+await using var body = await result.ReadAsStreamAsync();
+```
+
+#### HttpClient configuration {#per-query-accept-encoding-httpclient}
+
+The default `HttpClient` the driver builds has `AutomaticDecompression = GZip | Deflate`, which transparently decompresses those algorithms and strips `Content-Encoding` from the response. This is what you want for normal queries, but not if you want to handle the raw, compressed data yourself.
+
+In that case, pass an `HttpClient` or `HttpClientFactory` to the ClickHouseClient with `AutomaticDecompression = DecompressionMethods.None`
+
+:::warning
+If `AcceptEncoding` requests a codec the configured `HttpClient` cannot auto-decompress, only `ExecuteRawResultAsync` is safe. Calling `ExecuteReaderAsync`, `ExecuteScalarAsync`, or `ExecuteNonQueryAsync` on that same query path will try to parse the compressed bytes as the regular result format and produce garbage.
+:::
+
+#### Error bodies {#per-query-accept-encoding-errors}
+
+When the server responds with a 4xx/5xx and `enable_http_compression=1` was set, it compresses the error body with the same codec it would have used for a successful response. The driver decompresses these for codecs the BCL ships with (`gzip`, `deflate`, `br`/`brotli`) so the message surfaced on `ClickHouseServerException` is readable. For codecs it cannot decode (`zstd`, `lz4`, …), the driver returns a placeholder message that names the codec and points at `system.query_log` for the original error text.
 
 ---
 
@@ -1080,7 +1325,7 @@ var settings = new ClickHouseClientSettings("Host=localhost")
 | IPv6 | `IPAddress` |
 | Nothing | `DBNull` |
 | Dynamic | See note |
-| Array(T) | `T[]` |
+| Array(T) | `T[]` (nested `Array(Array(T))` reads as jagged `T[][]`; use `reader.GetFieldValue<T[,]>(ordinal)` to materialize rectangular data as a multidimensional CLR array) |
 | Tuple(T1, T2, ...) | `Tuple<T1, T2, ...>` / `LargeTuple` |
 | Map(K, V) | `Dictionary<K, V>` |
 | Nullable(T) | `T?` |
@@ -1170,13 +1415,17 @@ When inserting data, the driver converts .NET types to their corresponding Click
 
 | ClickHouse Type | Accepted .NET Types | Notes |
 |-----------------|---------------------|-------|
-| Date | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Converted to Unix days as UInt16 |
-| Date32 | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Converted to Unix days as Int32 |
-| DateTime | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | See below for details|
+| Date | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Converted to Unix days as UInt16; supported range `[1970-01-01, 2149-06-06]` |
+| Date32 | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Converted to Unix days as Int32; supported range `[1900-01-01, 2299-12-31]` |
+| DateTime | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | See below for details; supported range `[1970-01-01, 2106-02-07 06:28:15]` UTC |
 | DateTime32 | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Same as DateTime |
 | DateTime64 | `DateTime`, `DateTimeOffset`, `DateOnly`, NodaTime types | Precision based on Scale parameter |
 | Time | `TimeSpan`, `int` | Clamped to ±999:59:59; int treated as seconds |
 | Time64 | `TimeSpan`, `decimal`, `double`, `float`, `int`, `long`, `string` | String parsed as `[-]HHH:MM:SS[.fraction]`; clamped to ±999:59:59.999999999 |
+
+:::note Out-of-range values
+On the binary write path, `Date`, `Date32`, `DateTime`, and `DateTime32` values outside their supported range throw `ArgumentOutOfRangeException` at `Write` time, naming the column type and the supported range. Previously, out-of-range values could be silently truncated through a 32-bit integer and reinterpreted by the server, producing real-but-wrong timestamps.
+:::
 
 The driver respects `DateTime.Kind` when writing values:
 
@@ -1356,8 +1605,8 @@ Property name matching with column type hints is case-sensitive. A property `Use
 | IPv6 | `IPAddress`, `string` | Must be IPv6; string parsed via `IPAddress.Parse()` |
 | Nothing | Any | Writes nothing (no-op) |
 | Dynamic | — | **Not supported** (throws `NotImplementedException`) |
-| Array(T) | `IList`, `null` | Null writes empty array |
-| Tuple(T1, T2, ...) | `ITuple`, `IList` | Element count must match tuple arity |
+| Array(T) | `IList`, `null` | Null writes empty array. For nested types (`Array(Array(T))` and deeper) both jagged shapes (`T[][]`, `List<List<T>>`) and rectangular multidimensional CLR arrays (`T[,]`, `T[,,]`, …) are accepted; the CLR rank must match the ClickHouse nesting depth. |
+| Tuple(T1, T2, ...) | `ITuple`, `IList` | Element count must match tuple arity. See [ValueTuple caveat](#valuetuple-caveat) for >7 elements. |
 | Map(K, V) | `IDictionary` | |
 | Nullable(T) | `null`, `DBNull`, or types accepted by T | Writes null flag byte before value |
 | Enum8 | `string`, `sbyte`, numeric types | String looked up in enum dictionary |
@@ -2329,6 +2578,33 @@ Beyond migrations, the provider also does not yet support:
 - **JSON path query translation**: `entity.Data["key"]` in LINQ does not translate to ClickHouse's `data.key` SQL syntax. Filter on non-JSON columns and inspect JSON in memory.
 
 ## Limitations {#limitations}
+
+### Tuples with 8+ elements and a nested tuple in the last position {#valuetuple-caveat}
+
+C# `ValueTuple` types with more than 7 elements use a compiler-generated nesting scheme: the 8th generic argument (`TRest`) is itself a `ValueTuple` holding the remaining elements. For example, `(int, int, int, int, int, int, int, string, string)` compiles to `ValueTuple<int, int, int, int, int, int, int, ValueTuple<string, string>>`.
+
+This creates an ambiguity when the ClickHouse column is an 8-element tuple where the last element is itself a tuple — e.g., `Tuple(Int32, Int32, Int32, Int32, Int32, Int32, Int32, Tuple(String, String))`. The driver cannot distinguish between:
+
+- A **9-element flat tuple** (compiler-generated TRest nesting)
+- An **8-element tuple** where the last element is a nested `Tuple(String, String)`
+
+Both produce the same .NET type: `ValueTuple<int, int, int, int, int, int, int, ValueTuple<string, string>>`.
+
+The driver treats the 8th argument as TRest (i.e., flattens it), which means the 8-element-with-nested-tuple case will be serialized incorrectly.
+
+This affects both `System.Tuple` and `ValueTuple` since both use TRest nesting for >7 elements. Tuples with 7 or fewer elements, or tuples where the last element is not itself a tuple, are not affected.
+
+**Workaround:** Wrap the inner tuple in an extra layer so the driver can distinguish it from TRest nesting:
+
+```csharp
+// Instead of this (ambiguous — is it 8 elements or 9 flat?):
+Tuple.Create(1, 2, 3, 4, 5, 6, 7, Tuple.Create("a", "b"))
+
+// Do this (unambiguous — inner tuple is wrapped):
+Tuple.Create(1, 2, 3, 4, 5, 6, 7, Tuple.Create(Tuple.Create("a", "b")))
+```
+
+---
 
 ### AggregateFunction columns {#aggregatefunction-columns}
 

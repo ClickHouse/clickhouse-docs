@@ -10,13 +10,12 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Chainlit と ClickHouse MCPサーバー を使って AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server\}
-
-このガイドでは、強力なチャットインターフェース用フレームワークである Chainlit と
-ClickHouse Model Context Protocol (MCP) Server を組み合わせて、対話型のデータ
-アプリケーションを構築する方法を解説します。Chainlit を使用すると、最小限のコードで
-AI アプリケーション向けの会話型インターフェースを構築でき、ClickHouse MCPサーバー により、
-高性能なカラム型データベースである ClickHouse とのシームレスな統合が可能になります。
+このガイドでは、Chainlit の強力なチャットインターフェイスフレームワークを
+ClickHouse Model Context Protocol (MCP) Server と組み合わせて、対話型データ
+アプリケーションを構築する方法を紹介します。Chainlit を使用すると、AI
+アプリケーション向けの会話型インターフェイスを最小限のコードで構築でき、
+ClickHouse MCPサーバー により ClickHouse の高性能な列指向データベースとシームレスに
+連携できます。
 
 ## 前提条件 \{#prerequisites\}
 

@@ -7,8 +7,6 @@ title: 'first_value'
 doc_type: 'reference'
 ---
 
-# first&#95;value \{#first&#95;value\}
-
 返回在其排序窗口内计算得到的第一个值。默认情况下会跳过 NULL 参数，不过可以使用 `RESPECT NULLS` 修饰符来改变此行为。
 
 **语法**
@@ -40,9 +38,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 
 在此示例中，使用 `first_value` 函数从一个虚构的英超联赛足球运动员薪资数据集中找出薪资最高的球员。
 
-查询：
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -63,15 +59,13 @@ INSERT INTO salaries FORMAT VALUES
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, 
        first_value(player) OVER (ORDER BY salary DESC) AS highest_paid_player
 FROM salaries;
 ```
 
-结果：
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─highest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Gary Chen           │
 2. │ Robert George   │ 195000 │ Gary Chen           │

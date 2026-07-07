@@ -1,13 +1,11 @@
 ---
-description: 'lead ウィンドウ関数に関するドキュメント'
+description: 'lead ウィンドウ関数のドキュメント'
 sidebar_label: 'lead'
 sidebar_position: 10
 slug: /sql-reference/window-functions/lead
 title: 'lead'
 doc_type: 'reference'
 ---
-
-# lead \{#lead\}
 
 並べ替えられたフレーム内で、現在の行から `offset` 行後の行で評価された値を返します。
 この関数は [`leadInFrame`](./leadInFrame.md) と類似していますが、常に `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING` というフレームを使用します。
@@ -26,8 +24,8 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 **パラメーター**
 
 * `x` — 列名。
-* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。（省略可。省略時は `1`）
-* `default` — 計算対象の行がウィンドウフレームの範囲外となった場合に返す値。（省略可。省略時は列の型のデフォルト値）
+* `offset` — 適用するオフセット。[(U)Int*](../data-types/int-uint.md)。 (省略可。省略時は `1`) 
+* `default` — 計算対象の行がウィンドウフレームの範囲外となった場合に返す値。 (省略可。省略時は列の型のデフォルト値) 
 
 **戻り値**
 

@@ -7,8 +7,6 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState \{#minsimplestate\}
-
 ## Описание \{#description\}
 
 Комбинатор [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) может быть применён к функции [`min`](/sql-reference/aggregate-functions/reference/min)
@@ -150,7 +148,7 @@ ORDER BY location_id;
 Теперь мы получаем ожидаемый результат:
 
 
-```sql
+```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ North         │        3 │        8 │
 │           2 │ South         │       15 │       18 │
@@ -163,7 +161,6 @@ ORDER BY location_id;
 С `SimpleState` вам не нужно использовать комбинатор `Merge` для объединения
 частичных агрегатных состояний.
 :::
-
 
 ## См. также \{#see-also\}
 

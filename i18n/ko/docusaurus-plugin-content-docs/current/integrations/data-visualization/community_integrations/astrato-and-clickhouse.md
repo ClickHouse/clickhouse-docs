@@ -25,12 +25,9 @@ import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Astrato를 ClickHouse에 연결하기 \{#connecting-astrato-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-Astrato는 Pushdown SQL을 사용하여 ClickHouse Cloud 또는 온프레미스 ClickHouse 배포 환경에 직접 쿼리를 실행합니다. 즉, 업계 선도적인 ClickHouse 성능을 기반으로 필요한 모든 데이터에 자유롭게 접근할 수 있습니다.
+Astrato는 Pushdown SQL을 사용해 ClickHouse Cloud 또는 온프레미스 배포 환경에 직접 쿼리를 실행합니다. 즉, 업계 최고 수준의 ClickHouse 성능을 바탕으로 필요한 모든 데이터에 액세스할 수 있습니다.
 
 ## 필요한 연결 데이터 \{#connection-data-required\}
 

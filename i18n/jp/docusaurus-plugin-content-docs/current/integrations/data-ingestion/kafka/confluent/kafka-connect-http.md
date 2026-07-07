@@ -3,9 +3,10 @@ sidebar_label: 'Confluent Platform 用 HTTP Sink Connector'
 sidebar_position: 4
 slug: /integrations/kafka/cloud/confluent/http
 description: 'HTTP Sink Connector を Kafka Connect と ClickHouse と共に使用する'
-title: 'Confluent HTTP Sink Connector'
+title: 'Confluent HTTP sink connector'
 doc_type: 'guide'
-keywords: ['Confluent HTTP Sink Connector', 'HTTP Sink ClickHouse', 'Kafka HTTP connector', 'ClickHouse HTTP 連携', 'Confluent Cloud HTTP Sink']
+keywords: ['Confluent HTTP Sink Connector', 'HTTP Sink ClickHouse', 'Kafka HTTP connector
+', 'ClickHouse HTTP 連携', 'Confluent Cloud HTTP Sink']
 ---
 
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
@@ -15,15 +16,12 @@ import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/conf
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
+The HTTP Sink Connector はデータ型に依存しないため、Kafka のスキーマを必要とせず、Map や Array などの ClickHouse 固有のデータ型にも対応しています。この柔軟性が高まる一方で、設定はやや複雑になります。
 
-# Confluent HTTP シンクコネクタ \{#confluent-http-sink-connector\}
-
-HTTP シンクコネクタはデータ型に依存しないため Kafka のスキーマを必要とせず、さらに Maps や Arrays のような ClickHouse 固有のデータ型もサポートします。この追加の柔軟性により、設定はわずかに複雑になります。
-
-以下では、単一の Kafka トピックからメッセージを取得し、ClickHouse テーブルに行を挿入するシンプルなセットアップ方法について説明します。
+以下では、単一の Kafkaトピック からメッセージを取得し、ClickHouse テーブルに行を挿入するシンプルなインストール方法について説明します。
 
 :::note
-HTTP コネクタは [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license) の下で配布されています。
+HTTP Connector は [Confluent Enterprise License](https://docs.confluent.io/kafka-connect-http/current/overview.html#license) に基づいて配布されています。
 :::
 
 ### クイックスタート手順 \{#quick-start-steps\}

@@ -1,5 +1,5 @@
 ---
-description: 'クラウドのオブジェクトストレージを使用して、クラウドネイティブテーブルの軽量なスナップショットを作成・復元する方法。'
+description: 'クラウドオブジェクトストレージを使用して、クラウドネイティブテーブルの軽量なスナップショットを作成および復元する方法。'
 sidebar_label: 'スナップショットバックアップ'
 sidebar_position: 5
 slug: /operations/backup/snapshot
@@ -7,8 +7,6 @@ title: 'スナップショットバックアップと復元'
 doc_type: 'guide'
 keywords: ['スナップショット', 'バックアップ', '復元', 'SharedMergeTree', 'SharedSet', 'SharedJoin', '軽量バックアップ', 'クラウドバックアップ', 'S3', 'Azure Blob Storage', 'snapshot_locks', 'snapshot_parts', 'experimental_lightweight_snapshot']
 ---
-
-# スナップショットバックアップと復元 \{#snapshot-backup-and-restore\}
 
 スナップショットバックアップは、クラウドネイティブなテーブルエンジン向けの軽量なバックアップモードです。データをコピーする代わりに、各パーツごとのロックノードを ClickHouse Keeper に書き込みます。これらのロックにより、スナップショットが保持されている限り、参照先のオブジェクトストレージパーツがサーバーによって削除されるのを防ぎます。その後、バックアップではデータを物理的にコピーするのではなく、オブジェクトストレージへの参照を記録するため、テーブルサイズに関係なくスナップショットをすばやく作成できます。
 

@@ -10,7 +10,6 @@ integration:
    - category: 'clickpipes'
 ---
 
-# Generic MariaDB source setup guide
 
 :::info
 

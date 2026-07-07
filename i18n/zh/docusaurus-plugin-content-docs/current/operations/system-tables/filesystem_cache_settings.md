@@ -37,6 +37,7 @@ doc_type: 'reference'
 * `bypass_cache_threshold` ([UInt64](../../sql-reference/data-types/)) — 未在文档中说明。不建议使用
 * `write_cache_per_user_id_directory` ([UInt8](../../sql-reference/data-types/)) — ClickHouse Cloud 内部设置
 * `allow_dynamic_cache_resize` ([UInt8](../../sql-reference/data-types/)) — 允许动态调整文件系统缓存大小
+* `dynamic_resize_lock_wait_ms` ([UInt64](../../sql-reference/data-types/)) — 在跳过此次调整大小尝试之前，获取动态调整大小独占锁的超时时间 (毫秒)
 * `max_size_ratio_to_total_space` ([Float64](../../sql-reference/data-types/)) — `max_size` 与磁盘总空间的比例
 * `skip_cache_on_disk_failure` ([UInt8](../../sql-reference/data-types/)) — 如果为 true，则在发生磁盘 IO 错误时静默跳过文件系统缓存操作。如果为 false (默认) ，则磁盘 IO 错误会作为启动失败向上传播。
 * `use_split_cache` ([UInt8](../../sql-reference/data-types/)) — 使用 system/data 分离的文件方式。

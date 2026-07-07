@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'remoteSecure 사용하기'
 slug: /cloud/migration/clickhouse-to-cloud
-title: '자가 관리형 ClickHouse와 ClickHouse Cloud 간 마이그레이션'
+title: 'remoteSecure를 사용한 자가 관리형 ClickHouse와 ClickHouse Cloud 간 마이그레이션'
 description: '자가 관리형 ClickHouse와 ClickHouse Cloud 간 마이그레이션 방법을 설명하는 페이지'
 doc_type: 'guide'
 keywords: ['마이그레이션', 'ClickHouse Cloud', 'OSS', '자가 관리형에서 Cloud로 마이그레이션']
@@ -17,13 +17,10 @@ import self_managed_05 from '@site/static/images/integrations/migration/self-man
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 import CompatibilityNote from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/compatibility.mdx'
 
+<Image img={self_managed_01} size="lg" alt="자가 관리형 ClickHouse 마이그레이션" />
 
-# remoteSecure를 사용하여 자가 관리형 ClickHouse와 ClickHouse Cloud 간 마이그레이션 \{#migrating-between-self-managed-clickhouse-and-clickhouse-cloud-using-remotesecure\}
-
-<Image img={self_managed_01} size='lg' alt='자가 관리형 ClickHouse 마이그레이션'/>
-
-이 가이드는 자가 관리형 ClickHouse 서버에서 ClickHouse Cloud로 마이그레이션하는 방법과 ClickHouse Cloud 서비스 간에 마이그레이션하는 방법을 설명합니다.
-[`remoteSecure`](/sql-reference/table-functions/remote) 함수는 `SELECT` 및 `INSERT` 쿼리에서 사용되어 원격 ClickHouse 서버에 접근할 수 있게 해주며, 포함된 `SELECT`를 사용한 `INSERT INTO` 쿼리를 작성하는 것만으로 테이블을 손쉽게 마이그레이션할 수 있게 해줍니다.
+이 가이드는 자가 관리형 ClickHouse 서버에서 ClickHouse Cloud로 마이그레이션하는 방법과 ClickHouse Cloud 서비스 간에 마이그레이션하는 방법도 설명합니다.
+[`remoteSecure`](/sql-reference/table-functions/remote) 함수는 원격 ClickHouse 서버에 액세스할 수 있도록 `SELECT` 및 `INSERT` 쿼리에서 사용되며, 따라서 `SELECT`를 포함한 `INSERT INTO` 쿼리만 작성하면 테이블을 간단하게 마이그레이션할 수 있습니다.
 
 ## 자가 관리형 ClickHouse에서 ClickHouse Cloud로 마이그레이션 \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud\}
 

@@ -18,19 +18,18 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# 将 Vector 与 ClickHouse 集成 \{#integrating-vector-with-clickhouse\}
-
 <PartnerBadge />
 
-实时分析日志对于生产应用程序至关重要。
-ClickHouse 在存储和分析日志数据方面表现卓越，这得益于其出色的压缩能力 (日志压缩率可达 [170 倍](https://clickhouse.com/blog/log-compression-170x)) 以及快速聚合海量数据的能力。
+能够实时分析日志对于生产环境中的应用至关重要。
+ClickHouse 凭借出色的压缩能力 (对于日志最高可达 [170x](https://clickhouse.com/blog/log-compression-170x))
+以及快速聚合海量数据的能力，在存储和分析日志数据方面表现卓越。
 
-本指南将介绍如何使用流行的数据管道工具 [Vector](https://vector.dev/docs/about/what-is-vector/) 来跟踪 Nginx 日志文件并将其发送到 ClickHouse。
-以下步骤同样适用于跟踪任何类型的日志文件。
+本指南将向您展示如何使用流行的数据管道 [Vector](https://vector.dev/docs/about/what-is-vector/) 来 tail Nginx 日志文件并将其发送到 ClickHouse。
+下面的步骤同样适用于 tail 任何类型的日志文件。
 
 **前置条件：**
 
-* 您已部署并运行 ClickHouse
+* 您已成功运行 ClickHouse
 * 您已安装 Vector
 
 <VerticalStepper headerLevel="h2">

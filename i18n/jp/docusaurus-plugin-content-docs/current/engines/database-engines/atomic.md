@@ -1,5 +1,7 @@
 ---
-description: '`Atomic` エンジンは、非ブロッキングな `DROP TABLE` および `RENAME TABLE` クエリと、アトミックな `EXCHANGE TABLES` クエリをサポートします。`Atomic` データベースエンジンはデフォルトで使用されます。'
+description: '`Atomic` エンジンは、ノンブロッキングな `DROP TABLE` および `RENAME TABLE`
+  クエリに加え、アトミックな `EXCHANGE TABLES` クエリをサポートします。`Atomic` データベースエンジンは、
+  デフォルトで使用されます。'
 sidebar_label: 'Atomic'
 sidebar_position: 10
 slug: /engines/database-engines/atomic
@@ -7,9 +9,7 @@ title: 'Atomic'
 doc_type: 'reference'
 ---
 
-# Atomic  \{#atomic\}
-
-`Atomic` エンジンは、ノンブロッキングな [`DROP TABLE`](#drop-detach-table) および [`RENAME TABLE`](#rename-table) クエリに加え、アトミックな [`EXCHANGE TABLES`](#exchange-tables) クエリをサポートします。`Atomic` データベースエンジンは、オープンソース版の ClickHouse でデフォルトとして使用されています。 
+`Atomic` エンジンは、ノンブロッキングな [`DROP TABLE`](#drop-detach-table) および [`RENAME TABLE`](#rename-table) クエリに加え、アトミックな [`EXCHANGE TABLES`](#exchange-tables) クエリをサポートします。`Atomic` データベースエンジンは、オープンソース版の ClickHouse でデフォルトとして使用されています。
 
 :::note
 ClickHouse Cloud では、デフォルトで [`Shared` データベースエンジン](/cloud/reference/shared-catalog#shared-database-engine) が使用されており、上記の操作もサポートしています。
@@ -85,4 +85,4 @@ CREATE TABLE db (n UInt64) ENGINE = Atomic SETTINGS disk=disk(type='local', path
 
 ## 関連項目 \{#see-also\}
 
-- [system.databases](../../operations/system-tables/databases.md) システムテーブル
+* [system.databases](../../operations/system-tables/databases.md) システムテーブル

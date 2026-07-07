@@ -7,9 +7,7 @@ title: '集約関数コンビネータ'
 doc_type: 'reference'
 ---
 
-# 集約関数のコンビネータ \{#aggregate-function-combinators\}
-
-集約関数の名前には、サフィックスを付けることができます。これにより、その集約関数の挙動が変化します。
+集約関数の名前には接尾辞を追加できます。これにより、集約関数の動作が変わります。
 
 ## -If \{#-if\}
 
@@ -83,15 +81,11 @@ GROUP BY timeslot;
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─toTypeName(c)────────────────────────┬─c─┐
 │ SimpleAggregateFunction(any, UInt64) │ 0 │
 └──────────────────────────────────────┴───┘
@@ -156,15 +150,11 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 **例**
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─avg(number)─┬─avgOrDefault(number)─┐
 │         nan │                    0 │
 └─────────────┴──────────────────────┘
@@ -172,9 +162,7 @@ SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 
 また `-OrDefault` は他のコンビネータと組み合わせて使用できます。これは、集約関数が空の入力を受け付けない場合に有用です。
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT avgOrDefaultIf(x, x > 10)
 FROM
 (
@@ -182,9 +170,7 @@ FROM
 )
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─avgOrDefaultIf(x, greater(x, 10))─┐
 │                              0.00 │
 └───────────────────────────────────┘
@@ -219,15 +205,11 @@ FROM
 
 集約関数名の末尾に `-orNull` を追加します。
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE number > 10
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─sumOrNull(number)─┬─toTypeName(sumOrNull(number))─┐
 │              ᴺᵁᴸᴸ │ Nullable(UInt64)              │
 └───────────────────┴───────────────────────────────┘
@@ -235,9 +217,7 @@ SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE n
 
 `-OrNull` は他のコンビネータと組み合わせて使用することもできます。これは、集約関数が空の入力を受け付けない場合に有用です。
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT avgOrNullIf(x, x > 10)
 FROM
 (
@@ -245,9 +225,7 @@ FROM
 )
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─avgOrNullIf(x, greater(x, 10))─┐
 │                           ᴺᵁᴸᴸ │
 └────────────────────────────────┘

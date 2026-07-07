@@ -1,12 +1,10 @@
 ---
-description: '난수 생성 함수에 대한 문서'
-sidebar_label: '난수'
+description: '무작위 수 생성에 사용되는 함수에 대한 문서'
+sidebar_label: '무작위 수'
 slug: /sql-reference/functions/random-functions
-title: '난수 생성 함수'
+title: '무작위 수 생성 함수'
 doc_type: 'reference'
 ---
-
-# 무작위 수 생성 함수 \{#functions-for-generating-random-numbers\}
 
 이 섹션의 모든 함수는 0개 또는 1개의 인수를 허용합니다. 인수(제공된 경우)의 유일한 목적은 [공통 부분식 제거](/sql-reference/functions/overview#common-subexpression-elimination)를 방지하여, 하나의 행 내에서 동일한 무작위 함수가 여러 번 실행되더라도 서로 다른 무작위 값을 반환하도록 하는 것입니다.
 

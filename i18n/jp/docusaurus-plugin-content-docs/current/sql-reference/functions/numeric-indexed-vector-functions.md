@@ -1,12 +1,10 @@
 ---
-description: 'NumericIndexedVector に関するドキュメント'
+description: 'NumericIndexedVector とその関数のドキュメント'
 sidebar_label: 'NumericIndexedVector'
 slug: /sql-reference/functions/numeric-indexed-vector-functions
 title: 'NumericIndexedVector 関数'
 doc_type: 'reference'
 ---
-
-# NumericIndexedVector \{#numericindexedvector\}
 
 NumericIndexedVector は、ベクトルをカプセル化し、ベクトルの集約演算および要素ごとの演算を実装する抽象データ構造です。ストレージ方式として Bit-Sliced Index を利用します。理論的背景およびユースケースについては、論文 [Large-Scale Metric Computation in Online Controlled Experiment Platform](https://arxiv.org/pdf/2405.08411) を参照してください。
 

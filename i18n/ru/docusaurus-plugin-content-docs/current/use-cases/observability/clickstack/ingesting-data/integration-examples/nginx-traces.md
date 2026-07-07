@@ -10,17 +10,14 @@ keywords: ['ClickStack', 'Nginx', 'traces', 'OTel']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-nginx-traces-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг трейсов Nginx с помощью ClickStack \{#nginx-traces-clickstack\}
-
 :::note[TL;DR]
-Собирайте распределённые трейсы из Nginx в ClickStack с помощью модуля OpenTelemetry для Nginx. Включает демонстрационный набор данных и готовую панель мониторинга.
+Собирайте распределенные трейсы из Nginx в ClickStack с помощью модуля OpenTelemetry для Nginx. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим Nginx \{#existing-nginx\}
@@ -250,7 +247,7 @@ HyperDX отображает метки времени в локальном ч�
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nginx-traces-dashboard.json'} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
 
 #### Импортируйте готовый дашборд \{#import-dashboard\}
 1. Откройте HyperDX и перейдите в раздел Dashboards.

@@ -54,65 +54,60 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 `*Log` 패밀리의 엔진은 장애 발생 시 자동 데이터 복구를 제공하지 않습니다. `CHECK TABLE` 쿼리를 사용하여 데이터 손실을 적시에 추적하십시오.
 
 
-## 예제 \{#examples\}
+## 예시 \{#examples\}
 
-기본적으로 `CHECK TABLE` 쿼리는 테이블의 전반적인 검사 결과를 보여줍니다:
+기본적으로 `CHECK TABLE` 쿼리는 테이블의 전반적인 검사 상태를 표시합니다:
 
-```sql
+```sql title="Query"
 CHECK TABLE test_table;
 ```
 
-```text
+```text title="Response"
 ┌─result─┐
 │      1 │
 └────────┘
 ```
 
-각 데이터 파트별 검사 상태를 확인하려면 `check_query_single_value_result` 설정을 사용할 수 있습니다.
+각 데이터 파트의 검사 상태를 개별적으로 확인하려면 `check_query_single_value_result` 설정을 사용할 수 있습니다.
 
-또한 테이블의 특정 파티션만 검사하려면 `PARTITION` 키워드를 사용할 수 있습니다.
+또한 테이블의 특정 파티션을 검사하려면 `PARTITION` 키워드를 사용할 수 있습니다.
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-출력:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 │ 201003_3_3_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-마찬가지로 `PART` 키워드를 사용하여 테이블의 특정 파트를 조회할 수 있습니다.
+마찬가지로, `PART` 키워드를 사용하면 테이블의 특정 파트를 확인할 수 있습니다.
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_7_7_0'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-출력:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-part가 존재하지 않으면 쿼리 실행 시 오류가 발생합니다.
+파트가 존재하지 않으면 쿼리에서 오류가 반환됩니다:
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_111_222_0'
 ```
 
-```text
+```text title="Response"
 DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
-
 
 ### &#39;Corrupted&#39; 결과를 받는 경우 \{#receiving-a-corrupted-result\}
 
@@ -126,20 +121,18 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-````sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
+```
 
-
-Output:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message──────────────────────────────────┐
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │
 └──────────────┴───────────┴──────────────────────────────────────────┘
-````
+```
 
 checksums.txt 파일이 없더라도 복구할 수 있습니다. 특정 파티션에 대해 `CHECK TABLE` 명령을 실행하는 동안 체크섬이 다시 계산되고 다시 기록되며, 상태는 계속해서 &#39;is&#95;passed = 1&#39;로 보고됩니다.
 
@@ -166,8 +159,7 @@ SETTINGS check_query_single_value_result = 0
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
 
-
-## 데이터가 손상된 경우 {#if-the-data-is-corrupted}
+## 데이터가 손상된 경우 \{#if-the-data-is-corrupted\}
 
 테이블이 손상된 경우 손상되지 않은 데이터를 다른 테이블로 복사할 수 있습니다. 이를 위해서는 다음과 같이 합니다:
 

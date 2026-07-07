@@ -31,12 +31,9 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Explo を ClickHouse に接続する \{#connecting-explo-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-あらゆるプラットフォームに対応した顧客向けアナリティクス。美しい可視化のためにデザインされ、シンプルさを徹底して設計されています。
+あらゆるプラットフォーム向けの顧客向け分析。美しい可視化を実現するために設計され、シンプルさを追求しています。
 
 ## ゴール \{#goal\}
 

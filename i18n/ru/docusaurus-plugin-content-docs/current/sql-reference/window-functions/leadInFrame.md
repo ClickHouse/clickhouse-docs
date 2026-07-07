@@ -7,8 +7,6 @@ title: 'leadInFrame'
 doc_type: 'reference'
 ---
 
-# leadInFrame \{#leadinframe\}
-
 Возвращает значение, вычисленное для строки, которая находится через `offset` строк после текущей строки в упорядоченной рамке окна.
 
 :::warning
@@ -43,15 +41,13 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 В этом примере используется [исторический набор данных](https://www.kaggle.com/datasets/sazidthe1/nobel-prize-data) по лауреатам Нобелевской премии и функция `leadInFrame` для вывода списка последовательных лауреатов в категории «Физика».
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE OR REPLACE VIEW nobel_prize_laureates
 AS SELECT *
 FROM file('nobel_laureates_data.csv');
 ```
 
-```sql
+```sql title="Query"
 SELECT
     fullName,
     leadInFrame(year, 1, year) OVER (PARTITION BY category ORDER BY year ASC
@@ -65,9 +61,7 @@ ORDER BY year DESC
 LIMIT 9
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─fullName─────────┬─year─┬─category─┬─motivation─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 1. │ Anne L Huillier  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │
 2. │ Pierre Agostini  │ 2023 │ physics  │ for experimental methods that generate attosecond pulses of light for the study of electron dynamics in matter                     │

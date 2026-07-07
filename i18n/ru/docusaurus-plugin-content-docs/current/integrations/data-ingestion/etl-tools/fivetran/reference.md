@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['fivetran', 'назначение ClickHouse в Fivetran', 'технический справочник']
 ---
 
-# Технический справочник \{#technical-reference\}
-
 ## Сведения о настройке \{#setup-details\}
 
 ### Управление пользователями и ролями \{#user-and-role-management\}

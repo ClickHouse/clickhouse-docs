@@ -168,30 +168,30 @@ SELECT tupleConcat((1, 2), ('a',), (true, false))
 
 導入バージョン: v21.11.0
 
-同じ長さの 2 つのタプルにおける、対応する要素同士の除算を計算します。
+同じサイズの2 つ以上のタプルに対して、左から右の順に要素ごとの除算を行います。
 
 :::note
-0 での除算は `inf` を返します。
+0 で除算すると `inf` が返されます。
 :::
 
 **構文**
 
 ```sql
-tupleDivide(t1, t2)
+tupleDivide(t1, t2[, tN, ...])
 ```
 
 **引数**
 
-* `t1` — 1 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 2 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 1 つ目の入力タプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 追加の入力タプルを 1 つ以上。すべてのタプルは同じ要素数である必要があります。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返される値**
+**戻り値**
 
-除算結果を格納したタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+要素ごとの商からなるタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **例**
 
-**基本的な使用方法**
+**2 つのタプル**
 
 ```sql title=Query
 SELECT tupleDivide((1, 2), (2, 3))
@@ -201,6 +201,15 @@ SELECT tupleDivide((1, 2), (2, 3))
 (0.5, 0.6666666666666666)
 ```
 
+**3つのタプル**
+
+```sql title=Query
+SELECT tupleDivide((100.0, 60.0), (5.0, 3.0), (2.0, 4.0))
+```
+
+```response title=Response
+(10, 5)
+```
 
 ## tupleDivideByNumber \{#tupleDivideByNumber\}
 
@@ -396,28 +405,28 @@ SELECT tupleHammingDistance(wordShingleMinHash(string), wordShingleMinHashCaseIn
 
 導入バージョン: v23.8.0
 
-分子のタプルと分母のタプルを用いて整数除算を実行します。商のタプルを返します。
-いずれかのタプルに非整数要素が含まれている場合、各非整数の分子または除数は最も近い整数に丸められてから結果が計算されます。
-0 による除算はエラーをスローします。
+同じサイズの2つ以上のタプルに対して、左から右へ要素ごとの整数除算を行います。結果として、商からなるタプルを返します。
+いずれかのタプルに整数以外の要素が含まれている場合は、整数でない各被除数または除数を最も近い整数に丸めて結果を計算します。
+0で除算すると、例外が発生します。
 
 **構文**
 
 ```sql
-tupleIntDiv(tuple_num, tuple_div)
+tupleIntDiv(t1, t2[, tN, ...])
 ```
 
 **引数**
 
-* `tuple_num` — 分子値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_div` — 除数値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 最初の入力タプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 追加の入力タプルを 1 つ以上。すべてのタプルのサイズは同じである必要があります。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-商を要素とするタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+整数商からなるタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **例**
 
-**基本的な使い方**
+**2つのタプル**
 
 ```sql title=Query
 SELECT tupleIntDiv((15, 10, 5), (5, 5, 5))
@@ -437,6 +446,15 @@ SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5))
 (2, 1, 0)
 ```
 
+**3つのタプル**
+
+```sql title=Query
+SELECT tupleIntDiv((120, 60), (4, 3), (2, 4))
+```
+
+```response title=Response
+(15, 5)
+```
 
 ## tupleIntDivByNumber \{#tupleIntDivByNumber\}
 
@@ -488,24 +506,24 @@ SELECT tupleIntDivByNumber((15.2, 10.7, 5.5), 5.8)
 
 導入バージョン: v23.8.0
 
-[`tupleIntDiv`](#tupleIntDiv) と同様に、分子のタプルと分母のタプルに対して整数除算を実行し、商のタプルを返します。
-0 での除算が発生した場合、例外をスローする代わりに、その商を 0 として返します。
+[`tupleIntDiv`](#tupleIntDiv) と同様に、同じサイズの 2 つ以上のタプルに対して、左から右に要素ごとの整数除算を実行します。
+0 での除算が発生した場合、例外をスローする代わりに、その要素については 0 を返します。
 いずれかのタプルに整数以外の要素が含まれている場合は、整数以外の分子または除数ごとに最も近い整数に丸めてから結果を計算します。
 
 **構文**
 
 ```sql
-tupleIntDivOrZero(tuple_num, tuple_div)
+tupleIntDivOrZero(t1, t2[, tN, ...])
 ```
 
 **引数**
 
-* `tuple_num` — 分子となる値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_div` — 分母となる値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 最初の入力タプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 追加の入力タプルを 1 つ以上。すべてのタプルは同じサイズでなければなりません。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-商のタプルを返します。分母が 0 の要素については商として 0 を返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+整数の商からなるタプルを返します。分母が 0 の要素については 0 を返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **例**
 
@@ -519,6 +537,15 @@ SELECT tupleIntDivOrZero((5, 10, 15), (0, 0, 0))
 (0, 0, 0)
 ```
 
+**3つのタプル**
+
+```sql title=Query
+SELECT tupleIntDivOrZero((120, 60), (4, 3), (2, 4))
+```
+
+```response title=Response
+(15, 5)
+```
 
 ## tupleIntDivOrZeroByNumber \{#tupleIntDivOrZeroByNumber\}
 
@@ -570,28 +597,28 @@ SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 0)
 
 導入バージョン: v21.11.0
 
-同じサイズの2つのタプルについて、対応する要素間の差を計算します。
+同じサイズの 2 つ以上のタプルに対して、左から右の順に要素ごとの差分を計算します。
 
 **構文**
 
 ```sql
-tupleMinus(t1, t2)
+tupleMinus(t1, t2[, tN, ...])
 ```
 
 **別名**: `vectorDifference`
 
 **引数**
 
-* `t1` — 1 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 2 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 最初の入力タプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 追加の入力タプルを1つ以上。すべてのタプルは同じ要素数である必要があります。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-減算結果を含むタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+要素ごとの差を含むタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **例**
 
-**基本的な使い方**
+**2つのタプル**
 
 ```sql title=Query
 SELECT tupleMinus((1, 2), (2, 3))
@@ -601,31 +628,40 @@ SELECT tupleMinus((1, 2), (2, 3))
 (-1, -1)
 ```
 
+**3つのタプル**
+
+```sql title=Query
+SELECT tupleMinus((10, 10), (3, 4), (2, 1))
+```
+
+```response title=Response
+(5, 5)
+```
 
 ## tupleModulo \{#tupleModulo\}
 
 導入バージョン: v23.8.0
 
-2 つのタプルの要素同士を割り算した際の余り（剰余）からなるタプルを返します。
+同じサイズの2つ以上のタプル同士を左から右の順に割り、要素ごとの剰余からなるタプルを返します。
 
 **構文**
 
 ```sql
-tupleModulo(tuple_num, tuple_mod)
+tupleModulo(t1, t2[, tN, ...])
 ```
 
 **引数**
 
-* `tuple_num` — 分子となる値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_mod` — 法（modulus）となる値のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 1 つ目の入力タプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 追加の入力タプルを 1 つ以上指定します。すべてのタプルは同じ要素数である必要があります。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返される値**
+**戻り値**
 
-除算の剰余のタプルを返します。0 による除算が行われた場合はエラーをスローします。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+各要素ごとの剰余からなるタプルを返します。0 による除算では例外が発生します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **例**
 
-**基本的な使い方**
+**2 つのタプル**
 
 ```sql title=Query
 SELECT tupleModulo((15, 10, 5), (5, 3, 2))
@@ -635,6 +671,15 @@ SELECT tupleModulo((15, 10, 5), (5, 3, 2))
 (0, 1, 1)
 ```
 
+**3つのタプル**
+
+```sql title=Query
+SELECT tupleModulo((10, 20), (7, 9), (3, 5))
+```
+
+```response title=Response
+(0, 2)
+```
 
 ## tupleModuloByNumber \{#tupleModuloByNumber\}
 
@@ -674,26 +719,26 @@ SELECT tupleModuloByNumber((15, 10, 5), 2)
 
 導入バージョン: v21.11.0
 
-同じ長さの 2 つのタプルについて、対応する要素同士の積を計算します。
+同じサイズの2 つ以上のタプルの要素ごとの積を計算します。
 
 **構文**
 
 ```sql
-tupleMultiply(t1, t2)
+tupleMultiply(t1, t2[, tN, ...])
 ```
 
 **引数**
 
-* `t1` — 1 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 2 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 1 つ目の入力タプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 2 つ目以降の入力タプルを 1 つ以上。すべてのタプルは同じサイズである必要があります。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**返される値**
+**戻り値**
 
-乗算結果を含むタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+各要素ごとの積を含むタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**使用例**
+**例**
 
-**基本的な使用方法**
+**2 つのタプル**
 
 ```sql title=Query
 SELECT tupleMultiply((1, 2), (2, 3))
@@ -703,6 +748,15 @@ SELECT tupleMultiply((1, 2), (2, 3))
 (2, 6)
 ```
 
+**3つのタプル**
+
+```sql title=Query
+SELECT tupleMultiply((1, 2), (2, 3), (1, 2))
+```
+
+```response title=Response
+(2, 12)
+```
 
 ## tupleMultiplyByNumber \{#tupleMultiplyByNumber\}
 
@@ -806,28 +860,28 @@ SELECT tupleNegate((1, 2))
 
 導入バージョン: v21.11.0
 
-同じ長さの2つのタプルについて、対応する要素同士の合計を計算します。
+同じサイズの2つ以上のタプルについて、要素ごとの和を計算します。
 
 **構文**
 
 ```sql
-tuplePlus(t1, t2)
+tuplePlus(t1, t2[, tN, ...])
 ```
 
 **別名**: `vectorSum`
 
 **引数**
 
-* `t1` — 1 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 2 番目のタプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 最初の入力タプル。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 追加の入力タプルを1つ以上。すべてのタプルは同じサイズである必要があります。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **戻り値**
 
-対応する入力タプル要素同士を加算した結果を要素として持つタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+要素ごとの和を含むタプルを返します。[`Tuple((U)Int*)`](/sql-reference/data-types/tuple) または [`Tuple(Float*)`](/sql-reference/data-types/tuple) または [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **例**
 
-**基本的な使用方法**
+**2つのタプル**
 
 ```sql title=Query
 SELECT tuplePlus((1, 2), (2, 3))
@@ -837,6 +891,15 @@ SELECT tuplePlus((1, 2), (2, 3))
 (3, 5)
 ```
 
+**3つのタプル**
+
+```sql title=Query
+SELECT tuplePlus((1, 2), (2, 3), (3, 4))
+```
+
+```response title=Response
+(6, 9)
+```
 
 ## tuplePositiveModuloByNumber \{#tuplePositiveModuloByNumber\}
 
@@ -957,15 +1020,11 @@ untuple(x)
 
 `untuple` 関数の引数として `Tuple` 型の列を使用する例：
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT untuple(v6) FROM kv;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─_ut_1─┬─_ut_2─┐
 │    33 │ ab    │
 │    44 │ cd    │
@@ -977,15 +1036,11 @@ SELECT untuple(v6) FROM kv;
 
 `EXCEPT` 式の使用例:
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v4─┬─v5─┬─v6────────┐
 │   1 │ 10 │ 30 │ 15 │ (33,'ab') │
 │   2 │ 25 │ 40 │  6 │ (44,'cd') │
@@ -994,7 +1049,6 @@ SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 │   5 │ 30 │ 25 │ 55 │ (77,'kl') │
 └─────┴────┴────┴────┴───────────┘
 ```
-
 
 ## 距離関数 \{#distance-functions\}
 

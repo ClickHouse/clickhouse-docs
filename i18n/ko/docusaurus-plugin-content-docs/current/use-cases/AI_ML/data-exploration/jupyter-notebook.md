@@ -1,8 +1,8 @@
 ---
 slug: /use-cases/AI/jupyter-notebook
-sidebar_label: 'Jupyter 노트북과 chDB를 사용한 데이터 탐색'
-title: 'Jupyter 노트북에서 chDB를 사용해 데이터 탐색'
-description: '이 가이드는 Jupyer 노트북에서 ClickHouse Cloud 또는 로컬 파일에 있는 데이터를 탐색할 수 있도록 chDB를 설정하고 사용하는 방법을 설명합니다'
+sidebar_label: 'Jupyter 노트북과 chDB로 데이터 탐색하기'
+title: 'Jupyter 노트북과 chDB로 데이터 탐색하기'
+description: '이 가이드는 Jupyter 노트북에서 ClickHouse Cloud 또는 로컬 파일의 데이터를 탐색할 수 있도록 chDB를 설정하고 사용하는 방법을 설명합니다'
 keywords: ['ML', 'Jupyer', 'chDB', 'pandas']
 doc_type: 'guide'
 ---
@@ -18,15 +18,12 @@ import image_7 from '@site/static/images/use-cases/AI_ML/jupyter/7.png';
 import image_8 from '@site/static/images/use-cases/AI_ML/jupyter/8.png';
 import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
-
-# Jupyter 노트북과 chDB로 데이터 탐색하기 \{#exploring-data-with-jupyter-notebooks-and-chdb\}
-
 이 가이드에서는 ClickHouse 기반의 빠른 인프로세스 SQL OLAP Engine인 [chDB](/chdb)를 사용하여 Jupyter 노트북에서 ClickHouse Cloud의 데이터셋을 탐색하는 방법을 설명합니다.
 
 **사전 준비 사항**:
 
-- 가상 환경
-- 동작 중인 ClickHouse Cloud 서비스와 [연결 정보](/cloud/guides/sql-console/gather-connection-details)
+* 가상 환경
+* 동작 중인 ClickHouse Cloud 서비스와 [연결 정보](/cloud/guides/sql-console/gather-connection-details)
 
 :::tip
 아직 ClickHouse Cloud 계정이 없다면, [회원 가입](https://console.clickhouse.cloud/signUp?loc=docs-juypter-chdb)을 통해
@@ -35,10 +32,10 @@ import image_9 from '@site/static/images/use-cases/AI_ML/jupyter/9.png';
 
 **학습 내용:**
 
-- Jupyter 노트북에서 chDB를 사용하여 ClickHouse Cloud에 연결하기
-- 원격 데이터셋을 쿼리하고 결과를 Pandas DataFrame으로 변환하기
-- 분석을 위해 Cloud의 데이터와 로컬 CSV 파일을 결합하기
-- matplotlib을 사용해 데이터 시각화하기
+* Jupyter 노트북에서 chDB를 사용하여 ClickHouse Cloud에 연결하기
+* 원격 데이터셋을 쿼리하고 결과를 Pandas DataFrame으로 변환하기
+* 분석을 위해 Cloud의 데이터와 로컬 CSV 파일을 결합하기
+* matplotlib을 사용해 데이터 시각화하기
 
 이 가이드에서는 시작용 데이터셋 중 하나로 ClickHouse Cloud에서 제공되는 UK Property Price 데이터셋을 사용합니다.
 이 데이터셋에는 1995년부터 2024년까지 영국 내 주택 판매 가격에 대한 데이터가 포함되어 있습니다.

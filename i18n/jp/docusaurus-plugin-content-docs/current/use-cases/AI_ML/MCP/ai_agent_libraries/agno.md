@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/agno
 sidebar_label: 'Agno を統合する'
-title: 'Agno と ClickHouse MCPサーバー を使用して AI エージェントを構築する方法'
+title: 'Agno と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'Agno と ClickHouse MCPサーバー を使用して AI エージェントを構築する方法を学ぶ'
+description: 'Agno と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'Agno']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# Agno と ClickHouse MCPサーバーを使用して AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-agno-and-the-clickhouse-mcp-server\}
 
 このガイドでは、[Agno](https://github.com/agno-agi/agno) を使って、[ClickHouse の MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を介して [ClickHouse の SQL playground](https://sql.clickhouse.com/) と対話できる AI エージェントを構築する方法を説明します。
 

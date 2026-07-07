@@ -1,13 +1,11 @@
 ---
-description: 'DROP SQL 문 문서'
+description: 'DROP SQL 문에 대한 문서'
 sidebar_label: 'DROP'
 sidebar_position: 44
 slug: /sql-reference/statements/drop
 title: 'DROP SQL 문'
 doc_type: 'reference'
 ---
-
-# DROP SQL 문 \{#drop-statements\}
 
 기존 엔터티를 삭제합니다. `IF EXISTS` 절을 지정하면, 엔터티가 존재하지 않아도 해당 쿼리는 오류를 반환하지 않습니다. `SYNC` 수정자를 지정하면, 엔터티는 지연 없이 바로 삭제됩니다.
 

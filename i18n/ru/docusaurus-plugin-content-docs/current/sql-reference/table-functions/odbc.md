@@ -7,9 +7,7 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-# Табличная функция ODBC \{#odbc-table-function\}
-
-Возвращает таблицу, подключённую через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
+Возвращает таблицу, подключенную через [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity).
 
 ## Синтаксис \{#syntax\}
 

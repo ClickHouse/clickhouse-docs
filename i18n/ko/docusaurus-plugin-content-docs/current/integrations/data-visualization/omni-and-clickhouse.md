@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'Omni'
 slug: /integrations/omni
-keywords: ['clickhouse', 'Omni', 'connect', 'integrate', 'ui']
-description: 'Omni는 BI, 데이터 애플리케이션 및 임베디드 분석을 위한 엔터프라이즈 플랫폼으로, 실시간으로 인사이트를 탐색하고 공유할 수 있도록 지원합니다.'
+keywords: ['clickhouse', 'Omni', '연결', '통합', 'ui']
+description: 'Omni는 실시간으로 인사이트를 탐색하고 공유할 수 있도록 지원하는 BI, 데이터 애플리케이션, 임베디드 분석용 기업 플랫폼입니다.'
 title: 'Omni'
 doc_type: 'guide'
 integration:
@@ -16,12 +16,9 @@ import omni_01 from '@site/static/images/integrations/data-visualization/omni_01
 import omni_02 from '@site/static/images/integrations/data-visualization/omni_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Omni \{#omni\}
-
-<PartnerBadge/>
-
-Omni는 공식 ClickHouse 데이터 소스를 통해 ClickHouse Cloud 또는 온프레미스 ClickHouse 배포에 연결할 수 있습니다.
+Omni는 공식 ClickHouse 데이터 소스를 통해 ClickHouse Cloud 또는 온프레미스 배포 환경에 연결할 수 있습니다.
 
 ## 1. 연결 세부 정보 준비하기 \{#1-gather-your-connection-details\}
 

@@ -2,7 +2,7 @@
 sidebar_label: '업그레이드'
 slug: /manage/updates
 title: '업그레이드'
-description: 'ClickHouse Cloud를 사용하면 패치와 업그레이드를 신경 쓸 필요가 없습니다. 수정 사항, 신규 기능, 성능 향상이 포함된 업그레이드를 주기적으로 적용합니다.'
+description: 'ClickHouse Cloud를 사용하면 패치와 업그레이드를 직접 관리할 필요가 없습니다. 수정 사항, 신규 기능, 성능 향상이 포함된 업그레이드를 주기적으로 적용합니다.'
 doc_type: 'guide'
 keywords: ['업그레이드', '버전 관리', 'Cloud 기능', '유지 관리', '업데이트']
 ---
@@ -13,9 +13,6 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
-
-
-# 업그레이드 \{#upgrades\}
 
 ClickHouse Cloud를 사용하면 패치와 업그레이드를 직접 관리할 필요가 없습니다. 수정 사항, 신규 기능, 성능 향상이 포함된 업그레이드를 주기적으로 적용합니다. ClickHouse에 어떤 새로운 기능이 추가되었는지에 대한 전체 목록은 [Cloud changelog](/whats-new/changelog/cloud)를 참고하십시오.
 
@@ -100,7 +97,7 @@ Basic 티어 서비스는 Fast 릴리스 채널 이후 곧 업그레이드됩니
 릴리스 채널은 언제든지 변경할 수 있습니다. 다만, 일부 경우에는 변경 사항이 향후 릴리스부터 적용됩니다.
 
 * 더 빠른 채널로 이동하면 서비스가 즉시 업그레이드됩니다. 예: Slow → Regular, Regular → Fast
-* 서비스가 [예약된 업그레이드](#scheduled-upgrades))를 사용 중인 경우에는, 대신 다음 예약된 업그레이드 시점에 업그레이드가 수행됩니다.
+* 서비스가 [예약된 업그레이드](#scheduled-upgrades)를 사용 중인 경우에는, 대신 다음 예약된 업그레이드 시점에 업그레이드가 수행됩니다.
 * 더 느린 채널로 이동해도 서비스가 다운그레이드되지는 않으며, 해당 채널에서 더 새로운 버전이 제공될 때까지 현재 버전으로 유지됩니다. 예: Regular → Slow, Fast → Regular 또는 Slow
   :::
 

@@ -6,7 +6,6 @@ slug: /integrations/data-ingestion/kafka/kafka-table-engine-named-collections
 doc_type: 'guide'
 ---
 
-# Integrating ClickHouse with Kafka using named collections
 
 ## Introduction {#introduction}
 
@@ -205,7 +204,7 @@ In this guide, the data ingested in both Kafka topics is the same. In your case,
 
 Example output:
 
-```sql
+```response
 ┌─id─┬─first_name─┬─last_name─┐
 │  0 │ FirstName0 │ LastName0 │
 │  1 │ FirstName1 │ LastName1 │

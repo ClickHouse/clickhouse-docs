@@ -1,0 +1,10 @@
+{
+  "collapsed": true,
+  "collapsible": true,
+  "label": "ClickHouse Agents",
+  "link": {
+    "id": "cloud/features/AI_ML/agents/index",
+    "type": "doc"
+  },
+  "position": 1
+}

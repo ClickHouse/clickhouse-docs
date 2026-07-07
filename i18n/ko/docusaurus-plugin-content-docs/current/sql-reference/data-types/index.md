@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse 데이터 타입에 대한 문서'
+description: 'ClickHouse의 데이터 타입에 대한 문서'
 sidebar_label: '데이터 타입 목록'
 sidebar_position: 1
 slug: /sql-reference/data-types/
-title: 'ClickHouse 데이터 타입'
+title: 'ClickHouse의 데이터 타입'
 doc_type: 'reference'
 ---
-
-# ClickHouse의 데이터 타입 \{#data-types-in-clickhouse\}
 
 이 섹션에서는 ClickHouse에서 지원하는 데이터 타입을 설명합니다. 예를 들어 [정수](int-uint.md), [실수](float.md), [문자열](string.md) 등이 있습니다.
 

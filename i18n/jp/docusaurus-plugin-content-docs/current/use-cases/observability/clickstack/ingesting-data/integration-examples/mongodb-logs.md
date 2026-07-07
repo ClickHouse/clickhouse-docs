@@ -10,7 +10,6 @@ keywords: ['MongoDB', 'ログ', 'OTel', 'ClickStack', 'データベース監視'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import log_view from '@site/static/images/clickstack/mongodb/log-view.png';
@@ -20,11 +19,8 @@ import finish_import from '@site/static/images/clickstack/mongodb/finish-import.
 import example_dashboard from '@site/static/images/clickstack/mongodb/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStackでMongoDBログを監視する \{#mongodb-logs-clickstack\}
-
 :::note[要点]
-OTel `filelog` レシーバーを使用して、MongoDBサーバーのログ (4.4以降のJSON形式) をClickStackで収集・可視化します。デモ用データセットと事前構築済みダッシュボードが含まれます。
+OTel の `filelog` レシーバーを使用して、MongoDB サーバーログ (4.4+ の JSON フォーマット) を ClickStack で収集・可視化します。デモ用データセットと事前構築済みダッシュボードが含まれます。
 :::
 
 ## 既存のMongoDBとの統合 \{#existing-mongodb\}
@@ -292,7 +288,7 @@ OTel `filelog` レシーバーを使用して、MongoDBサーバーのログ (4.
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード設定を<TrackedLink href={useBaseUrl('/examples/mongodb-logs-dashboard.json')} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">ダウンロード</TrackedLink>する \{#download\}
+#### ダッシュボード設定を<TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/mongodb-logs-dashboard.json'} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">ダウンロード</TrackedLink>する \{#download\}
 
 #### 事前構築済みダッシュボードをインポートする \{#import-dashboard\}
 

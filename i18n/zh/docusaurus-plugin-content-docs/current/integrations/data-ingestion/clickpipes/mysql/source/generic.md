@@ -10,11 +10,9 @@ integration:
    - category: 'clickpipes'
 ---
 
-# 通用 MySQL 源配置指南 \{#generic-mysql-source-setup-guide\}
-
 :::info
 
-如果您使用的是侧边栏中列出的受支持服务提供商之一，请参考该服务提供商对应的专用指南。
+如果您使用的是侧边栏中列出的受支持提供商之一，请参阅该提供商的专门指南。
 
 :::
 

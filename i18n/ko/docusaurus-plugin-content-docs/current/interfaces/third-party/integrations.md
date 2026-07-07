@@ -7,73 +7,78 @@ title: '타사 개발자의 통합 라이브러리'
 doc_type: 'reference'
 ---
 
-# 서드파티 개발자의 통합 라이브러리 \{#integration-libraries-from-third-party-developers\}
-
 :::warning 면책 조항
-ClickHouse, Inc.는 아래에 나열된 도구와 라이브러리를 직접 유지 관리하지 않으며, 품질을 보장하기 위한 광범위한 테스트를 수행하지도 않았습니다.
-공식 통합에 대해서는 [integrations 페이지](/integrations)를 참고하십시오.
+ClickHouse, Inc.는 아래 나열된 도구와 라이브러리를 유지 관리하지 않으며, 품질을 보장하기 위한 충분한 테스트도 수행하지 않았습니다.
+공식 통합은 [통합 페이지](/integrations)를 참조하십시오.
 :::
 
 ## 인프라 제품 \{#infrastructure-products\}
 
 <details>
-<summary>관계형 데이터베이스 관리 시스템</summary>
-  
-- [MySQL](https://www.mysql.com)
-  - [mysql2ch](https://github.com/long2ice/mysql2ch)
-  - [ProxySQL](https://github.com/sysown/proxysql/wiki/ClickHouse-Support)
-  - [clickhouse-mysql-data-reader](https://github.com/Altinity/clickhouse-mysql-data-reader)
-  - [horgh-replicator](https://github.com/larsnovikov/horgh-replicator)
-- [PostgreSQL](https://www.postgresql.org)
-  - [clickhousedb_fdw](https://github.com/Percona-Lab/clickhousedb_fdw)
-  - [infi.clickhouse_fdw](https://github.com/Infinidat/infi.clickhouse_fdw) ([infi.clickhouse_orm](https://github.com/Infinidat/infi.clickhouse_orm) 사용)
-  - [pg2ch](https://github.com/mkabilov/pg2ch)
-  - [clickhouse_fdw](https://github.com/adjust/clickhouse_fdw)
-- [MSSQL](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
-  - [ClickHouseMigrator](https://github.com/zlzforever/ClickHouseMigrator)
+  <summary>관계형 데이터베이스 관리 시스템</summary>
+
+  * [MySQL](https://www.mysql.com)
+    * [mysql2ch](https://github.com/long2ice/mysql2ch)
+    * [ProxySQL](https://github.com/sysown/proxysql/wiki/ClickHouse-Support)
+    * [clickhouse-mysql-data-reader](https://github.com/Altinity/clickhouse-mysql-data-reader)
+    * [horgh-replicator](https://github.com/larsnovikov/horgh-replicator)
+  * [PostgreSQL](https://www.postgresql.org)
+    * [clickhousedb&#95;fdw](https://github.com/Percona-Lab/clickhousedb_fdw)
+    * [infi.clickhouse&#95;fdw](https://github.com/Infinidat/infi.clickhouse_fdw) ([infi.clickhouse&#95;orm](https://github.com/Infinidat/infi.clickhouse_orm) 사용)
+    * [pg2ch](https://github.com/mkabilov/pg2ch)
+    * [clickhouse&#95;fdw](https://github.com/adjust/clickhouse_fdw)
+  * [MSSQL](https://en.wikipedia.org/wiki/Microsoft_SQL_Server)
+    * [ClickHouseMigrator](https://github.com/zlzforever/ClickHouseMigrator)
 </details>
 
 <details>
-<summary>메시지 큐</summary>
-  
-- [Kafka](https://kafka.apache.org)
-  - [clickhouse_sinker](https://github.com/housepower/clickhouse_sinker) ([Go client](https://github.com/ClickHouse/clickhouse-go/) 사용)
-  - [stream-loader-clickhouse](https://github.com/adform/stream-loader)
+  <summary>스키마 마이그레이션 도구</summary>
+
+  * [clicko](https://github.com/arsura/clicko) - 클러스터를 인식하며 Go와 통합됩니다.
 </details>
 
 <details>
-<summary>배치 처리</summary>
+  <summary>메시지 큐</summary>
 
-- [Spark](https://spark.apache.org)
-  - [spark-clickhouse-connector](https://github.com/housepower/spark-clickhouse-connector)
+  * [Kafka](https://kafka.apache.org)
+    * [clickhouse&#95;sinker](https://github.com/housepower/clickhouse_sinker) ([Go client](https://github.com/ClickHouse/clickhouse-go/) 사용)
+    * [stream-loader-clickhouse](https://github.com/adform/stream-loader)
 </details>
 
 <details>
-<summary>스트림 처리</summary>
-  
-- [Flink](https://flink.apache.org)
-  - [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
+  <summary>배치 처리</summary>
+
+  * [Spark](https://spark.apache.org)
+    * [spark-clickhouse-connector](https://github.com/housepower/spark-clickhouse-connector)
 </details>
 
 <details>
-<summary>객체 스토리지</summary>
-  
-- [S3](https://en.wikipedia.org/wiki/Amazon_S3)
-  - [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)
+  <summary>스트림 처리</summary>
+
+  * [Flink](https://flink.apache.org)
+    * [flink-clickhouse-sink](https://github.com/ivi-ru/flink-clickhouse-sink)
 </details>
 
 <details>
-<summary>컨테이너 오케스트레이션</summary>
-  
-- [Kubernetes](https://kubernetes.io)
-  - [clickhouse-operator](https://github.com/Altinity/clickhouse-operator)
+  <summary>객체 스토리지</summary>
+
+  * [S3](https://en.wikipedia.org/wiki/Amazon_S3)
+    * [clickhouse-backup](https://github.com/AlexAkulov/clickhouse-backup)
 </details>
 
 <details>
-<summary>구성 관리</summary>
-- [puppet](https://puppet.com)
-  - [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
-  - [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
+  <summary>컨테이너 오케스트레이션</summary>
+
+  * [Kubernetes](https://kubernetes.io)
+    * [clickhouse-operator](https://github.com/Altinity/clickhouse-operator)
+</details>
+
+<details>
+  <summary>구성 관리</summary>
+
+  * [puppet](https://puppet.com)
+    * [innogames/clickhouse](https://forge.puppet.com/innogames/clickhouse)
+    * [mfedotov/clickhouse](https://forge.puppet.com/mfedotov/clickhouse)
 </details>
 
 <details>

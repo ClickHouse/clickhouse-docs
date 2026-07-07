@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['ClickPipes', '监控', '指标', 'Prometheus', '可观测性']
 ---
 
-# 监控 ClickPipes \{#monitoring-clickpipes\}
-
 除了在控制台中监控外，ClickPipes 还通过一个[兼容 Prometheus 的端点](/integrations/prometheus)公开指标，以供抓取。这些指标会与其他 ClickHouse Cloud 服务指标一同发布，使您能够将 ClickPipes 监控集成到现有的可观测性堆栈中 (例如 [Grafana](/integrations/prometheus#integrating-with-grafana)、[Datadog](/integrations/prometheus#integrating-with-datadog)) 。
 
 ## 指标标签 \{#metric-labels\}

@@ -18,8 +18,6 @@ import databrain_06 from '@site/static/images/integrations/data-visualization/da
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Connecting Databrain to ClickHouse
-
 <CommunityMaintainedBadge/>
 
 [Databrain](https://usedatabrain.com) is an embedded analytics platform that enables you to build and share interactive dashboards, metrics, and data visualizations with your customers. Databrain connects to ClickHouse using the HTTPS interface, making it easy to visualize and analyze your ClickHouse data with a modern, user-friendly interface.

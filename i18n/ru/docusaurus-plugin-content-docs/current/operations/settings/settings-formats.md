@@ -70,7 +70,9 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 ## date_time_input_format \{#date_time_input_format\}
 
-<SettingsInfoBlock type="DateTimeInputFormat" default_value="basic" />
+<SettingsInfoBlock type="DateTimeInputFormat" default_value="best_effort" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "best_effort"},{"label": "Повышенное удобство использования"}]}]} />
 
 Позволяет выбрать парсер текстового представления даты и времени.
 
@@ -78,22 +80,20 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 Возможные значения:
 
-- `'best_effort'` — Включает расширенный режим разбора.
+* `'best_effort'` — Включает расширенный режим разбора.
 
-    ClickHouse может разбирать базовый формат `YYYY-MM-DD HH:MM:SS` и все форматы даты и времени [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). Например, `'2018-06-08T01:02:03.000Z'`.
+  ClickHouse может разбирать базовый формат `YYYY-MM-DD HH:MM:SS` и все форматы даты и времени [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601). Например, `'2018-06-08T01:02:03.000Z'`.
 
-- `'best_effort_us'` — Аналогично `best_effort` (см. различия в [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS))
+* `'best_effort_us'` — Аналогично `best_effort` (см. различия в [parseDateTimeBestEffortUS](../../sql-reference/functions/type-conversion-functions#parseDateTimeBestEffortUS))
 
-- `'basic'` — Использовать базовый парсер.
+* `'basic'` — Использовать базовый парсер.
 
-    ClickHouse может разбирать только базовый формат `YYYY-MM-DD HH:MM:SS` или `YYYY-MM-DD`. Например, `2019-08-20 10:18:56` или `2019-08-20`.
-
-Значение по умолчанию в Cloud: `'best_effort'`.
+  ClickHouse может разбирать только базовый формат `YYYY-MM-DD HH:MM:SS` или `YYYY-MM-DD`. Например, `2019-08-20 10:18:56` или `2019-08-20`.
 
 См. также:
 
-- [Тип данных DateTime.](../../sql-reference/data-types/datetime.md)
-- [Функции для работы с датами и временем.](../../sql-reference/functions/date-time-functions.md)
+* [Тип данных DateTime.](../../sql-reference/data-types/datetime.md)
+* [Функции для работы с датами и временем.](../../sql-reference/functions/date-time-functions.md)
 
 ## date_time_output_format \{#date_time_output_format\}
 
@@ -139,6 +139,30 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 <SettingsInfoBlock type="String" default_value="CSV" />
 
 Способ вывода ошибок в текстовом формате.
+
+## format_avro_schema_registry_connection_timeout \{#format_avro_schema_registry_connection_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка для управления тайм-аутом подключения (в секундах) для HTTP-клиента Confluent Schema Registry, используемого форматом AvroConfluent."}]}]} />
+
+Для формата AvroConfluent: тайм-аут подключения в секундах для HTTP-клиента Confluent Schema Registry. Используется как при получении схемы, так и при её регистрации. Должен быть больше 0 и меньше 600 (10 минут).
+
+## format_avro_schema_registry_receive_timeout \{#format_avro_schema_registry_receive_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка для управления тайм-аутом получения (в секундах) для HTTP-клиента Confluent Schema Registry, используемого форматом AvroConfluent."}]}]} />
+
+Для формата AvroConfluent: тайм-аут получения в секундах для HTTP-клиента Confluent Schema Registry. Используется как при получении схемы, так и при её регистрации. Должен быть больше 0 и меньше 600 (10 минут).
+
+## format_avro_schema_registry_send_timeout \{#format_avro_schema_registry_send_timeout\}
+
+<SettingsInfoBlock type="UInt64" default_value="1" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": "1"},{"label": "Новая настройка для управления тайм-аутом отправки (в секундах) HTTP-клиента Confluent Schema Registry, используемого форматом AvroConfluent."}]}]} />
+
+Для формата AvroConfluent: тайм-аут отправки в секундах для HTTP-клиента Confluent Schema Registry. Используется как для получения схемы, так и для её регистрации. Должен быть больше 0 и меньше 600 (10 минут).
 
 ## format_avro_schema_registry_url \{#format_avro_schema_registry_url\}
 
@@ -394,8 +418,11 @@ INSERT INTO tab SETTINGS check_conversion_from_numbers_to_enum = 1 VALUES (4); -
 
 <SettingsInfoBlock type="Bool" default_value="1" />
 
-Разрешает переход к произвольной позиции (seek) при чтении во входных форматах ORC/Parquet/Arrow.
-
+Разрешает переход к произвольной позиции (seek) или чтение диапазонов при чтении во входных форматах ORC, Parquet и Arrow.
+Если параметр включен и источник поддерживает это (например, локальный файл, S3, HTTP с поддержкой диапазонов и известным размером),
+ClickHouse может читать только нужные диапазоны байтов и использовать меньше памяти.
+Если параметр отключен или источник не поддерживает переход к произвольной позиции (например, размер файла неизвестен или поток не поддерживает seek),
+некоторые средства чтения могут переключиться на загрузку всего файла в память.
 По умолчанию включено.
 
 ## input_format_arrow_allow_missing_columns \{#input_format_arrow_allow_missing_columns\}
@@ -1645,6 +1672,12 @@ curl -sS --globoff -H 'Accept: application/json' --no-buffer \
 
 Кодек сжатия, используемый при выводе. Возможные значения: 'null', 'deflate', 'snappy', 'zstd'.
 
+## output_format_avro_confluent_subject \{#output_format_avro_confluent_subject\}
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.5"},{"label": ""},{"label": "Новая настройка для указания имени subject, под которым схема регистрируется в Confluent Schema Registry при выводе в формате AvroConfluent."}]}]} />
+
+Для формата вывода AvroConfluent: имя subject, под которым схема регистрируется в Confluent Schema Registry. Обязательно при выводе в формате AvroConfluent.
+
 ## output_format_avro_rows_in_file \{#output_format_avro_rows_in_file\}
 
 <SettingsInfoBlock type="UInt64" default_value="1" />
@@ -1726,6 +1759,19 @@ curl -sS --globoff -H 'Accept: application/json' --no-buffer \
 Выводить конечные нули при выводе значений типа Decimal. Например, 1.230000 вместо 1.23.
 
 По умолчанию отключено.
+
+## output_format_float_precision \{#output_format_float_precision\}
+
+<SettingsInfoBlock type="UInt64" default_value="0" />
+
+<VersionHistory rows={[{"id": "row-1","items": [{"label": "26.6"},{"label": "0"},{"label": "Новая настройка для управления количеством десятичных знаков при выводе чисел с плавающей запятой"}]}]} />
+
+Если значение не равно нулю, вывод чисел с плавающей запятой (`Float32`, `Float64`, `BFloat16`) форматируется не более чем с таким количеством знаков после десятичной точки (конечные нули удаляются).
+Если значение равно 0 (по умолчанию), используется кратчайшее представление, допускающее точное обратное преобразование.
+
+Значения, слишком большие для фиксированной записи, а также значения настолько малой величины, что округление до запрошенной точности привело бы к потере всех значащих цифр (мантисса стала бы `±0`), вместо этого выводятся в научной нотации. В этих случаях мантисса может содержать больше дробных знаков, чем запрошено.
+
+Допустимый диапазон: от 0 до 100.
 
 ## output_format_json_array_of_rows \{#output_format_json_array_of_rows\}
 

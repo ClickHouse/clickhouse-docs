@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции percent_rank'
+description: 'Документация по оконной функции percent_rank'
 sidebar_label: 'percent_rank'
 sidebar_position: 8
 slug: /sql-reference/window-functions/percent_rank
 title: 'percent_rank'
 doc_type: 'reference'
 ---
-
-# percent&#95;rank \{#percent&#95;rank\}
 
 Возвращает относительный ранг (т. е. перцентиль) строк в пределах раздела окна.
 
@@ -29,9 +27,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -51,15 +47,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        percent_rank() OVER (ORDER BY salary DESC) AS percent_rank
 FROM salaries;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 
    ┌─player──────────┬─salary─┬───────percent_rank─┐
 1. │ Gary Chen       │ 195000 │                  0 │

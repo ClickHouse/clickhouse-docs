@@ -3,12 +3,10 @@ sidebar_label: 'Parquet'
 sidebar_position: 3
 slug: /integrations/data-formats/parquet
 title: 'Работа с Parquet в ClickHouse'
-description: 'Страница о работе с Parquet в ClickHouse'
+description: 'Страница с описанием работы с Parquet в ClickHouse'
 doc_type: 'guide'
-keywords: ['parquet', 'колоночный формат', 'формат данных', 'сжатие', 'apache parquet']
+keywords: ['parquet', 'столбцовый формат', 'формат данных', 'сжатие', 'apache parquet']
 ---
-
-# Работа с Parquet в ClickHouse \{#working-with-parquet-in-clickhouse\}
 
 Parquet — это эффективный файловый формат для хранения данных в колоночном формате.
 ClickHouse поддерживает как чтение, так и запись файлов Parquet.
@@ -17,12 +15,12 @@ ClickHouse поддерживает как чтение, так и запись 
 Когда вы указываете путь к файлу в запросе, то, откуда ClickHouse попытается читать данные, зависит от варианта ClickHouse, который вы используете.
 
 Если вы используете [`clickhouse-local`](/operations/utilities/clickhouse-local.md), чтение будет выполняться из пути, относительно директории, из которой вы запустили clickhouse-local.
-Если вы используете ClickHouse Server или ClickHouse Cloud через `clickhouse client`, чтение будет выполняться из пути, относительно директории `/var/lib/clickhouse/user_files/` на сервере.
+Если вы используете сервер ClickHouse или ClickHouse Cloud через `clickhouse client`, чтение будет выполняться из пути, относительно директории `/var/lib/clickhouse/user_files/` на сервере.
 :::
 
 ## Импорт из Parquet \{#importing-from-parquet\}
 
-Перед загрузкой данных мы можем использовать функцию [file()](/sql-reference/functions/files.md/#file), чтобы изучить структуру [примерного файла формата Parquet](assets/data.parquet):
+Перед загрузкой данных мы можем использовать функцию [file()](/sql-reference/functions/files.md/#file), чтобы изучить структуру [примерного файла формата Parquet](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.parquet):
 
 ```sql
 DESCRIBE TABLE file('data.parquet', Parquet);
@@ -152,7 +150,7 @@ FORMAT Parquet
 
 ## Типы данных ClickHouse и Parquet \{#clickhouse-and-parquet-data-types\}
 
-Типы данных ClickHouse и Parquet в основном совпадают, но всё же [имеют некоторые отличия](/interfaces/formats/Parquet#data-types-matching-parquet). Например, ClickHouse экспортирует тип `DateTime` как значение типа `int64` в формате Parquet. Если затем импортировать его обратно в ClickHouse, мы увидим числа ([файл time.parquet](assets/time.parquet)):
+Типы данных ClickHouse и Parquet в основном совпадают, но всё же [имеют некоторые отличия](/interfaces/formats/Parquet#data-types-matching-parquet). Например, ClickHouse экспортирует тип `DateTime` как значение типа `int64` в формате Parquet. Если затем импортировать его обратно в ClickHouse, мы увидим числа ([файл time.parquet](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/time.parquet)):
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);
@@ -191,11 +189,11 @@ FROM file('time.parquet', Parquet);
 
 ClickHouse поддерживает множество форматов, как текстовых, так и бинарных, для самых разных сценариев и платформ. Подробнее о форматах и работе с ними см. в следующих статьях:
 
-- [Форматы CSV и TSV](csv-tsv.md)
-- [Avro, Arrow и ORC](arrow-avro-orc.md)
-- [Форматы JSON](/integrations/data-ingestion/data-formats/json/intro.md)
-- [Регулярные выражения и шаблоны](templates-regex.md)
-- [Нативные и бинарные форматы](binary.md)
-- [Форматы SQL](sql.md)
+* [Форматы CSV и TSV](csv-tsv.md)
+* [Avro, Arrow и ORC](arrow-avro-orc.md)
+* [Форматы JSON](/integrations/data-ingestion/data-formats/json/intro.md)
+* [Регулярные выражения и шаблоны](templates-regex.md)
+* [Нативные и бинарные форматы](binary.md)
+* [Форматы SQL](sql.md)
 
 Также ознакомьтесь с [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) — переносимым полнофункциональным инструментом для работы с локальными и удалёнными файлами без необходимости развёртывать сервер ClickHouse.

@@ -60,15 +60,11 @@ ClickHouse 不会自动从该表中删除数据。更多详情参见[简介](/op
 
 ## 示例 \{#example\}
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT * FROM system.query_views_log LIMIT 1 \G;
 ```
 
-结果：
-
-```text
+```text title="Response"
 Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal

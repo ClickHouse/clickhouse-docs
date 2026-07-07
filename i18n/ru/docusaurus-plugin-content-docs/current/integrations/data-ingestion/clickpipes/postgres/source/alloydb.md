@@ -16,8 +16,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 
-# Руководство по настройке источника данных AlloyDB Postgres \{#alloydb-postgres-source-setup-guide\}
-
 ## Поддерживаемые версии \{#supported-versions\}
 
 Чтобы передавать данные из экземпляра AlloyDB в ClickHouse Cloud с помощью ClickPipes, экземпляр должен быть настроен для **логической репликации**. Это поддерживается **начиная с AlloyDB версии 14**.

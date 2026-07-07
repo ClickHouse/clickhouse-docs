@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'aggregation', 'window', 'groupby', 'sum', 'mean
 doc_type: 'reference'
 ---
 
-# Агрегатные функции DataStore \{#datastore-aggregation-functions\}
-
-DataStore предоставляет широкие возможности агрегатных и оконных функций, используя мощные средства агрегирования SQL в ClickHouse.
+DataStore поддерживает широкий набор агрегатных и оконных функций, используя мощные возможности SQL-агрегации ClickHouse.
 
 ## Базовые агрегации \{#basic\}
 

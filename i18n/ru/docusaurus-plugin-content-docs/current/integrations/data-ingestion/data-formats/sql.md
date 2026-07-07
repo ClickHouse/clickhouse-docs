@@ -1,15 +1,13 @@
 ---
-sidebar_label: 'Дампы SQL'
+sidebar_label: 'SQL-дампы'
 slug: /integrations/data-formats/sql
-title: 'Вставка данных и создание дампов SQL в ClickHouse'
-description: 'Страница, описывающая, как передавать данные между другими базами данных и ClickHouse с помощью дампов SQL.'
+title: 'Вставка данных и создание SQL-дампов в ClickHouse'
+description: 'Страница, описывающая, как передавать данные между другими базами данных и ClickHouse с помощью SQL-дампов.'
 doc_type: 'guide'
-keywords: ['формат SQL', 'экспорт данных', 'импорт данных', 'резервное копирование', 'дампы SQL']
+keywords: ['формат SQL', 'экспорт данных', 'импорт данных', 'резервное копирование', 'SQL-дампы']
 ---
 
-# Вставка и дампирование SQL-данных в ClickHouse \{#inserting-and-dumping-sql-data-in-clickhouse\}
-
-ClickHouse можно легко интегрировать в OLTP‑инфраструктуры баз данных разными способами. Один из вариантов — передавать данные между другими базами данных и ClickHouse с помощью SQL‑дампов.
+ClickHouse можно легко интегрировать в инфраструктуру баз данных OLTP различными способами. Один из них — передача данных между другими базами данных и ClickHouse с помощью SQL-дампов.
 
 ## Создание SQL-дампов \{#creating-sql-dumps\}
 
@@ -28,7 +26,7 @@ FORMAT SQLInsert
 SET output_format_sql_insert_include_column_names = 0
 ```
 
-Теперь мы можем загрузить файл [dump.sql](assets/dump.sql) в другую OLTP-базу данных:
+Теперь мы можем загрузить файл [dump.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/dump.sql) в другую OLTP-базу данных:
 
 ```bash
 mysql some_db < dump.sql
@@ -74,7 +72,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-По умолчанию ClickHouse будет пропускать неизвестные столбцы (за это отвечает настройка [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields)) и обрабатывать данные для первой найденной в дампе таблицы (если в один файл выгружено несколько таблиц). Операторы DDL будут пропущены. Чтобы загрузить данные из дампа MySQL в таблицу (файл [mysql.sql](assets/mysql.sql)):
+По умолчанию ClickHouse будет пропускать неизвестные столбцы (за это отвечает настройка [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields)) и обрабатывать данные для первой найденной в дампе таблицы (если в один файл выгружено несколько таблиц). Операторы DDL будут пропущены. Чтобы загрузить данные из дампа MySQL в таблицу (файл [mysql.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/mysql.sql)):
 
 ```sql
 INSERT INTO some_data

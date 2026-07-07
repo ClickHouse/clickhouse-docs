@@ -1,14 +1,12 @@
 ---
-description: 'Целевая страница руководств по сценариям применения машинного обучения и GenAI'
+description: 'Целевая страница для руководств по сценариям использования машинного обучения и GenAI'
 pagination_prev: null
 pagination_next: null
 slug: /use-cases/AI/ask-ai
 title: 'Машинное обучение и GenAI'
-keywords: ['machine learning', 'genAI', 'AI']
+keywords: ['машинное обучение', 'genAI', 'AI']
 doc_type: 'landing-page'
 ---
-
-# Машинное обучение и GenAI \{#machine-learning-and-genai\}
 
 ClickHouse идеально подходит в качестве базы данных реального времени для задач машинного обучения.
 С ClickHouse как никогда просто использовать GenAI для работы с аналитическими данными.

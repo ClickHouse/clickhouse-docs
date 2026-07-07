@@ -1,13 +1,11 @@
 ---
-description: 'Документация для оконной функции rank'
+description: 'Документация по оконной функции rank'
 sidebar_label: 'rank'
 sidebar_position: 6
 slug: /sql-reference/window-functions/rank
 title: 'rank'
 doc_type: 'reference'
 ---
-
-# rank \{#rank\}
 
 Определяет ранг текущей строки внутри её раздела с разрывами. Другими словами, если значение некоторой строки равно значению предыдущей строки, то она получает тот же ранг, что и предыдущая.
 Ранг следующей строки затем равен рангу предыдущей строки плюс разрыв, равный количеству раз, когда был присвоен предыдущий ранг.
@@ -34,9 +32,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 Следующий пример основан на примере из обучающего видео [Ranking window functions in ClickHouse](https://youtu.be/Yku9mmBYm_4?si=XIMu1jpYucCQEoXA).
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -56,15 +52,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        rank() OVER (ORDER BY salary DESC) AS rank
 FROM salaries;
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─rank─┐
 1. │ Gary Chen       │ 195000 │    1 │
 2. │ Robert George   │ 195000 │    1 │

@@ -1792,6 +1792,21 @@ CurrentMetric_DistributedFilesToInsert:                          0
 
 Schema `transposed` хранит данные в формате, аналогичном `system.asynchronous_metric_log`, где метрики и события хранятся как строки. Эта schema полезна в средах с ограниченными ресурсами, поскольку снижает их потребление во время слияний.
 
+**Гистограммы**
+
+Каждая строка также содержит снимок каждой зарегистрированной метрики-гистограммы в Nested-столбце `histograms` с полями `metric`, `labels`, `histogram`, `count` и `sum`. Количества в бакетах накапливаются с момента запуска сервера. По умолчанию гистограммы, у которых общий `count` равен нулю, не выводятся, а бакеты с нулевым счётчиком внутри выводимой гистограммы опускаются из map `histogram`; установите `system_metric_log_show_zero_values_in_histograms = 1` (в профиле пользователя по умолчанию), чтобы сохранять все гистограммы и все бакеты.
+
+Пример запроса:
+
+```sql
+SELECT h.metric, h.labels, h.histogram, h.count, h.sum
+FROM system.metric_log
+ARRAY JOIN histograms AS h
+WHERE h.metric = 'keeper_response_time_ms' AND h.labels['operation_type'] = 'readonly'
+ORDER BY event_time DESC
+LIMIT 1;
+```
+
 ## См. также \{#see-also\}
 
 * [настройка metric&#95;log](../../operations/server-configuration-parameters/settings.md#metric_log) — Включение и отключение этой настройки.

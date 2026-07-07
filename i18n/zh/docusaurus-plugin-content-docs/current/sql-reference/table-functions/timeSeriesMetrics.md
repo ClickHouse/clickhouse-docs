@@ -1,13 +1,12 @@
 ---
-description: 'timeSeriesMetrics 返回用于表引擎为 TimeSeries 的表 `db_name.time_series_table` 的指标表。'
+description: 'timeSeriesMetrics 返回表引擎为 TimeSeries 的表 `db_name.time_series_table`
+  所使用的 metrics 表。'
 sidebar_label: 'timeSeriesMetrics'
 sidebar_position: 145
 slug: /sql-reference/table-functions/timeSeriesMetrics
 title: 'timeSeriesMetrics'
 doc_type: 'reference'
 ---
-
-# timeSeriesMetrics 表函数 \{#timeseriesmetrics-table-function\}
 
 `timeSeriesMetrics(db_name.time_series_table)` - 返回表引擎为 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 的表 `db_name.time_series_table` 所使用的 [metrics](../../engines/table-engines/integrations/time-series.md#metrics-table) 表：
 

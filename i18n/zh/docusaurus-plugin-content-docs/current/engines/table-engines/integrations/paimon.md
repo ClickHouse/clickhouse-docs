@@ -8,10 +8,8 @@ title: 'Paimon 表引擎'
 doc_type: 'reference'
 ---
 
-# Paimon 表引擎 \{#paimon-table-engine\}
-
-该引擎可对存储在 Amazon S3、Azure、HDFS 以及本地的现有 Apache [Paimon](https://paimon.apache.org/) 表提供只读访问。
-它支持快照读取、增量读取，以及该引擎提供的基本分区剪枝功能。
+该引擎为 Amazon S3、Azure、HDFS 和本地存储中的现有 Apache [Paimon](https://paimon.apache.org/) 表提供只读集成。
+它支持快照读取、增量读取，以及由该引擎提供的基本分区剪枝。
 
 ## 创建表 \{#create-table\}
 

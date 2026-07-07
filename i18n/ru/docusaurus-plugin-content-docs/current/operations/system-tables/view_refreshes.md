@@ -26,7 +26,7 @@ import SystemTableCloud from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 * `last_success_duration_ms` ([Nullable(UInt64)](../../sql-reference/data-types/)) — Длительность последнего обновления.
 * `last_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Время, когда завершилась последняя попытка обновления (если это известно) или началась (если это неизвестно либо она всё ещё выполняется). NULL, если с момента запуска сервера или создания таблицы попыток обновления не было.
 * `last_refresh_replica` ([String](../../sql-reference/data-types/)) — Если координация включена, имя реплики, которая выполнила текущую (если она ещё выполняется) или предыдущую (если она уже не выполняется) попытку обновления.
-* `next_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Время, на которое запланирован запуск следующего обновления, если status = Scheduled.
+* `next_refresh_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — Время, на которое запланирован запуск следующего обновления. NULL, если время следующего обновления в настоящий момент неизвестно, например при ожидании зависимостей (status `WaitingForDependencies` или `MissingDependencies`).
 * `exception` ([String](../../sql-reference/data-types/)) — Сообщение об ошибке из предыдущей попытки, если она завершилась неудачно.
 * `retry` ([UInt64](../../sql-reference/data-types/)) — Количество неудачных попыток на данный момент для текущего обновления. Недоступно, если status = `RunningOnAnotherReplica`.
 * `progress` ([Nullable(Float64)](../../sql-reference/data-types/)) — Прогресс текущего выполняющегося или последнего завершённого обновления на данной реплике, в диапазоне от 0 до 1. NULL, если status = `RunningOnAnotherReplica` или обновление не выполняется.
@@ -45,12 +45,11 @@ SELECT
     database,
     view,
     status,
-    last_refresh_result,
     last_refresh_time,
     next_refresh_time
 FROM system.view_refreshes
 
-┌─database─┬─view───────────────────────┬─status────┬─last_refresh_result─┬───last_refresh_time─┬───next_refresh_time─┐
-│ default  │ hello_documentation_reader │ Scheduled │ Finished            │ 2023-12-01 01:24:00 │ 2023-12-01 01:25:00 │
-└──────────┴────────────────────────────┴───────────┴─────────────────────┴─────────────────────┴─────────────────────┘
+┌─database─┬─view───────────────────────┬─status────┬───last_refresh_time─┬───next_refresh_time─┐
+│ default  │ hello_documentation_reader │ Scheduled │ 2023-12-01 01:24:00 │ 2023-12-01 01:25:00 │
+└──────────┴────────────────────────────┴───────────┴─────────────────────┴─────────────────────┘
 ```

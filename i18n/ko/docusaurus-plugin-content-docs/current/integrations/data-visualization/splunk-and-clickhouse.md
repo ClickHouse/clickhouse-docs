@@ -24,20 +24,17 @@ import splunk_9 from '@site/static/images/integrations/splunk/splunk-9.png';
 import splunk_10 from '@site/static/images/integrations/splunk/splunk-10.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Splunk을 ClickHouse에 연결하기 \{#connecting-splunk-to-clickhouse\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 :::tip
-ClickHouse 감사 로그를 Splunk에 저장하려는 경우 「["Storing ClickHouse Cloud Audit logs into Splunk"](/integrations/audit-splunk)」 가이드를 참조하십시오.
+ClickHouse 감사 로그를 Splunk에 저장하려고 하십니까? [&quot;Storing ClickHouse Cloud Audit logs into Splunk&quot;](/integrations/audit-splunk) 가이드를 참조하십시오.
 :::
 
-Splunk은 보안 및 관측성에 널리 사용되는 플랫폼입니다. 또한 강력한 검색 및 대시보드 엔진이기도 합니다. 다양한 사용 사례를 지원하는 수백 개의 Splunk 앱이 제공됩니다.
+Splunk는 보안 및 관측성 분야에서 널리 사용되는 기술입니다. 또한 강력한 검색 및 대시보드 엔진이기도 합니다. 다양한 사용 사례를 지원하는 수백 개의 Splunk 앱이 제공됩니다.
 
-특히 ClickHouse의 경우 [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686)을 활용하여, 고성능 ClickHouse JDBC 드라이버와의 간단한 통합을 통해 ClickHouse 테이블을 직접 쿼리합니다.
+특히 ClickHouse의 경우, 고성능 ClickHouse JDBC 드라이버와 간단하게 통합되어 ClickHouse의 테이블을 직접 쿼리할 수 있는 [Splunk DB Connect App](https://splunkbase.splunk.com/app/2686)을 활용합니다.
 
-이 통합의 이상적인 활용 시나리오는 NetFlow, Avro 또는 Protobuf 바이너리 데이터, DNS, VPC 플로우 로그, 그리고 팀이 Splunk에서 검색하고 대시보드를 생성할 수 있도록 공유할 수 있는 기타 OTel 로그처럼, 대용량 데이터 소스에 ClickHouse를 사용하는 경우입니다. 이 방식을 사용하면 데이터가 Splunk 인덱스 계층으로 수집되지 않고, [Metabase](https://www.metabase.com/) 또는 [Superset](https://superset.apache.org/)과 같은 다른 시각화 통합과 마찬가지로 ClickHouse에서 직접 쿼리됩니다.
+이 통합은 NetFlow, Avro 또는 Protobuf 바이너리 데이터, DNS, VPC 플로우 로그, 기타 OTel 로그와 같은 대규모 데이터 소스에 ClickHouse를 사용하고, 이를 Splunk에서 검색하거나 대시보드를 생성할 수 있도록 팀과 공유하려는 경우에 가장 적합합니다. 이 방식을 사용하면 데이터가 Splunk 인덱스 계층으로 수집되지 않으며, [Metabase](https://www.metabase.com/) 또는 [Superset](https://superset.apache.org/)과 같은 다른 시각화 통합과 유사하게 ClickHouse에서 직접 쿼리됩니다.
 
 ## 목표​ \{#goal\}
 

@@ -7,8 +7,6 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-# avgState \{#avgState\}
-
 ## 説明 \{#description\}
 
 [`State`](/sql-reference/aggregate-functions/combinators#-state) コンビネータは、

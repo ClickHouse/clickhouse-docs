@@ -40,6 +40,246 @@ FROM system.histogram_metrics
 FORMAT Prometheus
 ```
 
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会对 HTTP 连接池中每个存活套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会对 HTTP 连接池套接字的每个活动套接字观测一次其内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+异步抓取指标时，会对 HTTP 连接池中每个存活套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 观测一次。标签：`group` 为 `disk`、`storage`、`http` 之一；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值包括 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ；每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值为 `disk`、`storage`、`http` 之一；`direction` 的取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 。每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会对 HTTP 连接池中每个活跃套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 观测一次。标签：`group` 取值为 `disk`、`storage` 或 `http`；`direction` 取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+在每次抓取异步指标时，都会针对每个活跃套接字观测一次 HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 。标签：`group` 取值为 `disk`、`storage` 或 `http`；`direction` 取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ，每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会针对每个活跃套接字记录一次 HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 的取值之一是 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会对 HTTP 连接池中每个活动套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 的取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+在每次抓取异步指标时，都会对 HTTP 连接池中每个存活套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ，每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 的取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ；每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 的取值包括 `disk`、`storage`、`http`；`direction` 的取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，会对每个存活的套接字观测一次。标签：`group` 的取值包括 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会对每个存活套接字的 HTTP 连接池套接字内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值包括 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一是 `disk`、`storage`、`http`；`direction` 的取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会针对每个活动套接字记录一次 HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 。每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 为 `disk`、`storage` 或 `http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，在每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+在每次抓取异步指标时，都会针对 HTTP 连接池中每个活动套接字记录一次其内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 。标签：`group` 的取值为 `disk`、`storage`、`http` 之一；`direction` 的取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，在每次抓取异步指标时，会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字记录一次。标签：`group` 的取值之一是 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值为 `disk`、`storage`、`http` 之一；`direction` 的取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+异步抓取指标时，会对每个存活的套接字观测一次 HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会对 HTTP 连接池中每个活动套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) 观测一次。标签：`group` 取值为 `disk`、`storage` 或 `http`；`direction` 取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 。每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 取值为 `disk`、`storage` 或 `http`；`direction` 取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个存活的套接字统计一次。标签：`group` 的取值包括 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活跃套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会对 HTTP 连接池中每个活动套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 观测一次。标签：`group` 的值为 `disk`、`storage` 或 `http`；`direction` 的值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次异步抓取指标时，都会对 HTTP 连接池中每个活动套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 观测一次。标签：`group` 的取值为 `disk`、`storage`、`http` 之一；`direction` 的取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 的取值为 `disk`、`storage`、`http` 之一；`direction` 的取值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 。每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的值为 `disk`、`storage` 或 `http`；`direction` 的值为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+每次抓取异步指标时，都会针对每个活动套接字记录一次 HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 。标签：`group` 的取值为 `disk`、`storage` 或 `http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes \{#http_pool_tcp_buf_bytes\}
+
+异步指标每次抓取时，都会对 HTTP 连接池中每个存活套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) 观测一次。标签：`group` 的取值之一为 `disk`、`storage` 或 `http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值包括 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ；每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一是 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ；每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 可取 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (`sk_rmem_alloc / sk_wmem_alloc`) ，每次抓取异步指标时，都会对每个活动套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
+### http_pool_tcp_buf_bytes_sum \{#http_pool_tcp_buf_bytes_sum\}
+
+HTTP 连接池套接字的内核 TCP 缓冲区内存 (sk&#95;rmem&#95;alloc / sk&#95;wmem&#95;alloc) ，每次抓取异步指标时，都会对每个存活的套接字观测一次。标签：`group` 的取值之一为 `disk`、`storage`、`http`；`direction` 为 `rcv` 或 `snd`。
+
 ### keeper_batch_size_bytes \{#keeper_batch_size_bytes\}
 
 发送到 Raft 的批次大小 (以字节为单位) 。

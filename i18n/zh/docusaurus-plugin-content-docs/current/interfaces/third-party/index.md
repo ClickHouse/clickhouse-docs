@@ -1,13 +1,11 @@
 ---
-description: '可用于 ClickHouse 的第三方工具、库和集成概览'
+description: '可用于 ClickHouse 的第三方工具、库和集成的概览'
 sidebar_position: 24
 slug: /interfaces/third-party/
 toc_folder_title: '第三方'
 title: '第三方接口'
 doc_type: 'landing-page'
 ---
-
-# 第三方接口 \{#third-party-interfaces\}
 
 这里汇总了一些第三方工具的链接，这些工具为 ClickHouse 提供各种形式的接口，包括可视化界面、命令行界面或 API：
 

@@ -1,12 +1,10 @@
 ---
-description: '数学函数参考文档'
+description: '数学函数文档'
 sidebar_label: '数学'
 slug: /sql-reference/functions/math-functions
 title: '数学函数'
 doc_type: 'reference'
 ---
-
-# 数学函数 \{#mathematical-functions\}
 
 {/* 
   下面标签内部的内容会在文档框架构建时被
@@ -716,6 +714,170 @@ SELECT intExp2(3);
 
 ```response title=Response
 8
+```
+
+## isPrime \{#isPrime\}
+
+引入于：v26.5.0
+
+如果 argument 是质数，则返回 `1`，否则返回 `0`。
+
+对于较小的值，该函数使用精确查找位图；对于较大的值，则使用确定性的 [Miller-Rabin 素性测试](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test)
+。对于所有支持的输入类型，结果都是精确的。
+
+对于更宽的无符号整数类型 (`UInt128`、`UInt256`) ，请改用 [`isProbablePrime`](/sql-reference/functions/math-functions#isProbablePrime)。
+
+**语法**
+
+```sql
+isPrime(n)
+```
+
+**参数**
+
+* `n` — 用于测试是否为质数的无符号整数。[`UInt8`](/sql-reference/data-types/int-uint) 或 [`UInt16`](/sql-reference/data-types/int-uint) 或 [`UInt32`](/sql-reference/data-types/int-uint) 或 [`UInt64`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+如果 `n` 是质数，则返回 `1`；否则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**质数**
+
+```sql title=Query
+SELECT isPrime(17)
+```
+
+```response title=Response
+1
+```
+
+**合数**
+
+```sql title=Query
+SELECT isPrime(18)
+```
+
+```response title=Response
+0
+```
+
+**较大的 `UInt64` 质数**
+
+```sql title=Query
+SELECT isPrime(18446744073709551557)
+```
+
+```response title=Response
+1
+```
+
+**`UInt64` 的最大值**
+
+```sql title=Query
+SELECT isPrime(18446744073709551615)
+```
+
+```response title=Response
+0
+```
+
+## isProbablePrime \{#isProbablePrime\}
+
+引入版本：v26.5.0
+
+如果参数很可能是质数，则返回 `1`；如果确定是合数，则返回 `0`。
+
+对于 `UInt8`、`UInt16`、`UInt32` 和 `UInt64`，结果是精确的，并且与
+[`isPrime`](/sql-reference/functions/math-functions#isPrime) 一致。`rounds` 参数会被忽略。
+
+对于 `UInt128` 和 `UInt256`，返回值为 `1` 时仅表示概率上为质数。可选的 `rounds` 参数用于控制
+执行多少轮 [Miller-Rabin 素性测试](https://en.wikipedia.org/wiki/Miller-Rabin_primality_test)：
+轮数越多，出现假阳性的概率越低，但运行时间也会增加。在见证值均匀随机的情况下，对于固定的合数，
+假阳性率的上界为 `4^(-rounds)`；默认值 `25`
+可将这一上界控制在 `10^-15` 以下，而最大值 `256` 可将其控制在 `10^-154` 以下。
+
+该函数是确定性的：见证值以 `n` 为种子生成，因此相同的 `(n, rounds)` 组合始终会产生
+相同的结果。`4^(-rounds)` 这一上界表示在见证值均匀随机时针对单个输入的概率；
+而在我们的确定性种子机制下，它描述的是跨输入的一个比例——某个能够骗过其见证序列的
+合数将会稳定地返回 `1`。
+
+**语法**
+
+```sql
+isProbablePrime(n[, rounds])
+```
+
+**参数**
+
+* `n` — 要测试其是否为质数的无符号整数。[`UInt8`](/sql-reference/data-types/int-uint) 或 [`UInt16`](/sql-reference/data-types/int-uint) 或 [`UInt32`](/sql-reference/data-types/int-uint) 或 [`UInt64`](/sql-reference/data-types/int-uint) 或 [`UInt128`](/sql-reference/data-types/int-uint) 或 [`UInt256`](/sql-reference/data-types/int-uint)
+* `rounds` — 可选的位于 `[1, 256]` 范围内的正整数常量。用于 `UInt128`/`UInt256` 的 Miller-Rabin 素性测试轮数 (对于位宽更小的类型会被忽略) 。默认值为 `25`。[`UInt8`](/sql-reference/data-types/int-uint) 或 [`UInt16`](/sql-reference/data-types/int-uint) 或 [`UInt32`](/sql-reference/data-types/int-uint) 或 [`UInt64`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+如果 `n` 可能为质数，则返回 `1`；如果 `n` 确定为合数，则返回 `0`。[`UInt8`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**小质数**
+
+```sql title=Query
+SELECT isProbablePrime(17)
+```
+
+```response title=Response
+1
+```
+
+**较小的合数**
+
+```sql title=Query
+SELECT isProbablePrime(18)
+```
+
+```response title=Response
+0
+```
+
+**最大的 `UInt64` 质数 (精确结果)&#x20;**
+
+```sql title=Query
+SELECT isProbablePrime(18446744073709551557)
+```
+
+```response title=Response
+1
+```
+
+**梅森质数 `M_127` (`UInt128`)&#x20;**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt128('170141183460469231731687303715884105727'))
+```
+
+```response title=Response
+1
+```
+
+**Curve25519 的基域质数 `2^255 - 19` (`UInt256`)**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt256('57896044618658097711785492504343953926634992332820282019728792003956564819949'))
+```
+
+```response title=Response
+1
+```
+
+**更快但置信度较低的检查：5 轮**
+
+```sql title=Query
+SELECT isProbablePrime(toUInt256('57896044618658097711785492504343953926634992332820282019728792003956564819949'), 5)
+```
+
+```response title=Response
+1
 ```
 
 ## lgamma \{#lgamma\}

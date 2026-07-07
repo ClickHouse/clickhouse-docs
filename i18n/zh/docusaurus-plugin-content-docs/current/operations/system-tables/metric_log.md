@@ -1792,6 +1792,21 @@ CurrentMetric_DistributedFilesToInsert:                          0
 
 `transposed` schema 以类似 `system.asynchronous_metric_log` 的格式存储数据，其中指标和事件按行存储。此 schema 适用于资源受限的部署，因为它可以降低合并期间的资源消耗。
 
+**直方图**
+
+每一行还会在 `histograms` Nested 列中包含所有已注册直方图指标的快照，其中包含字段 `metric`、`labels`、`histogram`、`count` 和 `sum`。bucket 计数自服务器启动以来会持续累积。默认情况下，总 `count` 为零的直方图不会输出，而已输出直方图中计数器为零的 bucket 也会从 `histogram` map 中省略；将 `system_metric_log_show_zero_values_in_histograms = 1` (在默认用户配置文件中) 即可保留所有直方图及其所有 bucket。
+
+示例查询：
+
+```sql
+SELECT h.metric, h.labels, h.histogram, h.count, h.sum
+FROM system.metric_log
+ARRAY JOIN histograms AS h
+WHERE h.metric = 'keeper_response_time_ms' AND h.labels['operation_type'] = 'readonly'
+ORDER BY event_time DESC
+LIMIT 1;
+```
+
 ## 另请参阅 \{#see-also\}
 
 * [metric&#95;log 设置](../../operations/server-configuration-parameters/settings.md#metric_log) — 启用或禁用该设置。

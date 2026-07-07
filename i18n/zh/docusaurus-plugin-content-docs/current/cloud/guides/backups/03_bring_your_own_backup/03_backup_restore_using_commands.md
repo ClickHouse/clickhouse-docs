@@ -11,12 +11,9 @@ keywords: ['backups', 'disaster recovery', 'data protection', 'restore', 'cloud 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# 使用命令备份或恢复备份 \{#commands-experience\}
-
-您可以使用 `BACKUP` 和 `RESTORE` 命令将备份导出到各自的存储桶中，
-此外也可以通过[用户界面进行备份或恢复](/cloud/manage/backups/backup-restore-via-ui)。
-本指南提供了针对三大云服务提供商（CSP）的相关命令。
+除了通过[用户界面](/cloud/manage/backups/backup-restore-via-ui)执行备份或恢复外，
+您还可以使用 `BACKUP` 和 `RESTORE` 命令将备份导出到相应的存储桶中。
+本指南提供了适用于三个 CSP 的命令。
 
 ## 要求 \{#requirements\}
 

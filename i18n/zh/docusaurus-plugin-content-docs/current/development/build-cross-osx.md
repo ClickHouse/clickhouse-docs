@@ -7,10 +7,8 @@ title: '在 Linux 上为 macOS 构建'
 doc_type: 'guide'
 ---
 
-# 如何在 Linux 上为 macOS 构建 ClickHouse \{#how-to-build-clickhouse-on-linux-for-macos\}
-
-本指南适用于：当你有一台 Linux 机器，并希望使用它来构建可在 OS X 上运行的 `clickhouse` 二进制可执行文件的情况。
-主要用例是运行在 Linux 机器上的持续集成（CI）检查。
+本指南适用于：当你有一台 Linux 机器，并希望使用它来构建可在 OS X 上运行的 `clickhouse` 二进制文件的情况。
+主要用例是运行在 Linux 机器上的持续集成 (CI) 检查。
 如果你希望直接在 macOS 上构建 ClickHouse，请参阅[原生构建说明](../development/build-osx.md)。
 
 针对 macOS 的交叉构建基于[通用构建说明](../development/build.md)，请先按照该文档操作。
@@ -48,7 +46,6 @@ make install
 cd ClickHouse/cmake/toolchain/darwin-x86_64
 curl -L 'https://github.com/phracker/MacOSX-SDKs/releases/download/11.3/MacOSX11.0.sdk.tar.xz' | tar xJ --strip-components=1
 ```
-
 
 ## 构建 ClickHouse \{#build-clickhouse\}
 

@@ -1,13 +1,11 @@
 ---
-description: 'first_value 윈도우 함수 문서'
+description: 'first_value 윈도우 함수에 대한 문서'
 sidebar_label: 'first_value'
 sidebar_position: 3
 slug: /sql-reference/window-functions/first_value
 title: 'first_value'
 doc_type: 'reference'
 ---
-
-# first_value \{#first_value\}
 
 정렬된 프레임 내에서 평가되는 첫 번째 값을 반환합니다. 기본적으로 NULL 인수는 건너뛰지만, `RESPECT NULLS` 수정자를 사용하면 이 동작을 변경할 수 있습니다.
 
@@ -40,9 +38,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column])
 
 이 예제에서는 가상의 프리미어 리그 축구 선수 연봉 데이터셋에서 가장 높은 연봉을 받는 선수를 찾기 위해 `first_value` 함수를 사용합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -63,15 +59,13 @@ INSERT INTO salaries FORMAT VALUES
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary, 
        first_value(player) OVER (ORDER BY salary DESC) AS highest_paid_player
 FROM salaries;
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─highest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Gary Chen           │
 2. │ Robert George   │ 195000 │ Gary Chen           │

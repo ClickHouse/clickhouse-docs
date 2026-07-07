@@ -114,18 +114,16 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 設定:
 
 * `oneline` – クエリを1行で出力します。デフォルト: `0`。
-* `run_query_tree_passes` – クエリツリーをダンプする前にクエリツリーのパス処理を実行します。デフォルト: `0`。
-* `query_tree_passes` – `run_query_tree_passes` が有効な場合に、実行するパス処理の回数を指定します。`query_tree_passes` を指定しない場合は、すべてのパス処理を実行します。
+* `run_query_tree_passes` – クエリツリーをダンプする前にクエリツリーパスを実行します。デフォルト: `0`。
+* `query_tree_passes` – `run_query_tree_passes` が有効な場合に、実行するクエリツリーパスの回数を指定します。`query_tree_passes` を指定しない場合は、すべてのクエリツリーパスを実行します。
 
 例:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Output:
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -133,13 +131,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 `run_query_tree_passes` を有効にした場合：
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-出力:
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -610,6 +606,14 @@ Join (JOIN FillRightFirst)
 * `header` — 各出力ポートのヘッダーを出力します。デフォルト: 0。
 * `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) グラフ記述言語で記述されたグラフを出力します。デフォルト: 0。
 * `compact` — `graph` 設定が有効な場合、グラフをコンパクトモードで出力します。デフォルト: 1。
+* `compact_repeated_processor_chains` — テキスト出力では、隣接する繰り返しのプロセッサチェーンを、チェーンの 1 つのコピーと繰り返し回数を表示することでコンパクト化します。これにより、たとえば join で同じチェーンが何度も現れる場合に、並列パイプラインを読みやすくできます。これはグラフ出力には影響しません。デフォルト: 0。
+
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
 
 `compact=0` かつ `graph=1` の場合、プロセッサ名には一意のプロセッサ識別子を含む追加のサフィックスが付与されます。
 
@@ -635,7 +639,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 
 クエリを実行する際に、テーブルから読み取られる推定行数、マーク数、およびパーツ数を表示します。[MergeTree](/engines/table-engines/mergetree-family/mergetree) ファミリーのテーブルで利用できます。
@@ -644,21 +647,17 @@ ExpressionTransform
 
 テーブルの作成:
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-クエリ：
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
@@ -673,21 +672,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 次のようなリモートの MySQL テーブルがあるとします：
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

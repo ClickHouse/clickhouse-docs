@@ -1,7 +1,7 @@
 ---
-title: 'ファイルのアップロード'
+title: 'Cloud にファイルをアップロードする'
 slug: /cloud/migrate/upload-a-csv-file
-description: 'Cloud へファイルをアップロードする方法'
+description: 'Cloud にファイルをアップロードする方法'
 doc_type: 'guide'
 ---
 
@@ -17,14 +17,11 @@ import csv_08 from '@site/static/images/cloud/migrate/csv_08.png';
 import csv_09 from '@site/static/images/cloud/migrate/csv_09.png';
 import csv_10 from '@site/static/images/cloud/migrate/csv_10.png';
 
-
-# Cloud にファイルをアップロードする \{#upload-files-to-cloud\}
-
 ClickHouse Cloud はファイルのインポートを簡単に行う方法を提供しており、
 次の形式をサポートしています:
 
 | Format                          |
-|---------------------------------|
+| ------------------------------- |
 | `CSV`                           |
 | `CSVWithNamesAndTypes`          |
 | `CSVWithNames`                  |
@@ -34,82 +31,85 @@ ClickHouse Cloud はファイルのインポートを簡単に行う方法を提
 | `TabSeparatedWithNamesAndTypes` |
 
 <VerticalStepper headerLevel="h2">
+  ## ファイルをアップロードする \{#upload-file\}
 
-## ファイルをアップロードする \{#upload-file\}
+  Cloud のホーム画面から、以下のように対象のサービスを選択します:
 
-Cloud のホーム画面から、以下のように対象のサービスを選択します:
+  <Image img={csv_01} alt="upload_file_02" />
 
-<Image img={csv_01} alt="upload_file_02" />
+  サービスがアイドル状態の場合は、起動する必要があります。
 
-サービスがアイドル状態の場合は、起動する必要があります。
+  左側のタブから、以下のように `Data sources` を選択します:
 
-左側のタブから、以下のように `Data sources` を選択します:
+  <Image img={csv_02} alt="upload_file_03" />
 
-<Image img={csv_02} alt="upload_file_03" />
+  次に、データソースページ右側の `Upload a file` を選択します:
 
-次に、データソースページ右側の `Upload a file` を選択します:
+  <Image img={csv_03} alt="upload_file_04" />
 
-<Image img={csv_03} alt="upload_file_04" />
+  ファイルダイアログがポップアップし、Cloud サービス上のテーブルに
+  データを挿入するために使用するファイルを選択できます。
 
-ファイルダイアログがポップアップし、Cloud サービス上のテーブルに
-データを挿入するために使用するファイルを選択できます。
+  <Image img={csv_04} alt="upload_file_05" />
 
-<Image img={csv_04} alt="upload_file_05" />
+  ## テーブルを構成する \{#configure-table\}
 
-## テーブルを構成する \{#configure-table\}
+  ファイルのアップロードが完了すると、データを挿入したいテーブルの設定が
+  できるようになります。先頭 3 行を使ったテーブルのプレビューが表示されます。
 
-ファイルのアップロードが完了すると、データを挿入したいテーブルの設定が
-できるようになります。先頭 3 行を使ったテーブルのプレビューが表示されます。
+  <Image img={csv_08} alt="upload_file_08" />
 
-<Image img={csv_08} alt="upload_file_08" />
+  ここで、データの格納先テーブルを選択できます。選択肢は次のとおりです:
 
-ここで、データの格納先テーブルを選択できます。選択肢は次のとおりです:
+  * 新しいテーブル
+  * 既存のテーブル
 
-- 新しいテーブル
-- 既存のテーブル
+  <br />
 
-<br/>
-どのデータベースにデータを取り込むか、さらに新しいテーブルの場合は
-作成されるテーブル名を指定できます。また、ソートキーも選択できます:
+  どのデータベースにデータを取り込むか、さらに新しいテーブルの場合は
+  作成されるテーブル名を指定できます。また、ソートキーも選択できます:
 
-<Image img={csv_05} alt="upload_file_05" />
+  <Image img={csv_05} alt="upload_file_05" />
 
-ファイルから読み取られたカラムは `Source field` として表示され、各フィールドごとに
-次の項目を変更できます:
-- 推論された型
-- デフォルト値
-- カラムを [Nullable](/sql-reference/data-types/nullable) にするかどうか
+  ファイルから読み取られたカラムは `Source field` として表示され、各フィールドごとに
+  次の項目を変更できます:
 
-<Image img={csv_06} alt="upload_file_06" />
+  * 推論された型
+  * デフォルト値
+  * カラムを [Nullable](/sql-reference/data-types/nullable) にするかどうか
 
-:::note フィールドの除外
-インポートに含めたくないフィールドは削除することもできます。
-:::
+  <Image img={csv_06} alt="upload_file_06" />
 
-使用したいテーブルエンジンの種類を指定できます:
+  :::note フィールドの除外
+  インポートに含めたくないフィールドは削除することもできます。
+  :::
 
-- `MergeTree`
-- `ReplacingMergeTree`
-- `SummingMergeTree`
-- `Null`
-<br/>
-パーティションキー式とプライマリキー式を指定できます。
+  使用したいテーブルエンジンの種類を指定できます:
 
-<Image img={csv_07} alt="upload_file_07" />
+  * `MergeTree`
+  * `ReplacingMergeTree`
+  * `SummingMergeTree`
+  * `Null`
 
-`Import to ClickHouse`（上記）をクリックしてデータをインポートします。データインポートは、
-`Status` カラムに `queued` ステータスバッジが表示されるように、キューに登録されます。
-また、`Open as query`（上記）をクリックして、SQL コンソールで INSERT クエリを
-開くこともできます。このクエリは、`URL` テーブル関数を使用して、アップロードされた
-ファイルを S3 バケットから挿入します。
+  <br />
 
-<Image img={csv_09} alt="upload_file_09" />
+  パーティションキー式とプライマリ
+  キー式を指定できます。
 
-ジョブが失敗した場合は、`Data upload history` タブの `Status` カラムに `failed`
-ステータスバッジが表示されます。`View Details` をクリックすると、アップロードが失敗した
-理由の詳細を確認できます。失敗した INSERT のエラーメッセージに基づいて、テーブル設定を
-変更するか、データをクレンジングする必要がある場合があります。
+  <Image img={csv_07} alt="upload_file_07" />
 
-<Image img={csv_10} alt="upload_file_11" />
+  `Import to ClickHouse` (上記) をクリックしてデータをインポートします。データインポートは、
+  `Status` カラムに `queued` ステータスバッジが表示されるように、キューに登録されます。
+  また、`Open as query` (上記) をクリックして、SQL コンソールで INSERT クエリを
+  開くこともできます。このクエリは、`URL` テーブル関数を使用して、アップロードされた
+  ファイルを S3 バケットから挿入します。
 
+  <Image img={csv_09} alt="upload_file_09" />
+
+  ジョブが失敗した場合は、`Data upload history` タブの `Status` カラムに `failed`
+  ステータスバッジが表示されます。`View Details` をクリックすると、アップロードが失敗した
+  理由の詳細を確認できます。失敗した INSERT のエラーメッセージに基づいて、テーブル設定を
+  変更するか、データをクレンジングする必要がある場合があります。
+
+  <Image img={csv_10} alt="upload_file_11" />
 </VerticalStepper>

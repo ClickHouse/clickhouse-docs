@@ -1,13 +1,11 @@
 ---
-description: '用于从/向远程 HTTP/HTTPS 服务器读写数据。该引擎类似于 File 引擎。'
+description: '对远程 HTTP/HTTPS 服务器进行数据查询和写入。该引擎类似于 File 引擎。'
 sidebar_label: 'URL'
 sidebar_position: 80
 slug: /engines/table-engines/special/url
 title: 'URL 表引擎'
 doc_type: 'reference'
 ---
-
-# URL 表引擎 \{#url-table-engine\}
 
 对远程 HTTP/HTTPS 服务器进行数据查询和写入。该引擎类似于 [File](../../../engines/table-engines/special/file.md) 引擎。
 

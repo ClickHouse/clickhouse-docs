@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'обзор API', 'облачный API', 'REST API', 'программный доступ']
 ---
 
-# API ClickHouse Cloud \{#clickhouse-cloud-api\}
-
 ## Обзор \{#overview\}
 
 API ClickHouse Cloud — это REST API, предназначенный для разработчиков и упрощающий управление 

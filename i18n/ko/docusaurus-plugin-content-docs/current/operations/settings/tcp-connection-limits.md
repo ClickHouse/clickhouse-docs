@@ -6,8 +6,6 @@ title: 'TCP 연결 제한'
 doc_type: 'reference'
 ---
 
-# TCP 연결 제한 \{#tcp-connection-limits\}
-
 ## 개요 \{#overview\}
 
 ClickHouse TCP 연결(예: [command-line client](https://clickhouse.com/docs/interfaces/client)를 통한 연결)은

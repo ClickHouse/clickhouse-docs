@@ -1,16 +1,14 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/llamaindex
-sidebar_label: 'LlamaIndex 연동'
-title: 'MCP 서버를 사용하여 LlamaIndex AI 에이전트를 구축하는 방법'
+sidebar_label: 'LlamaIndex 통합'
+title: 'ClickHouse MCP 서버를 사용하여 LlamaIndex AI 에이전트를 구축하는 방법.'
 pagination_prev: null
 pagination_next: null
-description: 'MCP 서버와 상호작용할 수 있는 LlamaIndex AI 에이전트를 구축하는 방법을 설명합니다.'
+description: 'ClickHouse MCP 서버와 상호작용할 수 있는 LlamaIndex AI 에이전트를 구축하는 방법을 알아보십시오.'
 keywords: ['ClickHouse', 'MCP', 'LlamaIndex']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# ClickHouse MCP 서버를 사용하여 LlamaIndex AI 에이전트를 구축하는 방법 \{#how-to-build-a-llamaindex-ai-agent-using-clickhouse-mcp-server\}
 
 이 가이드에서는 [ClickHouse의 MCP 서버](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여
 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)와 상호작용할 수 있는 [LlamaIndex](https://docs.llamaindex.ai) AI 에이전트를 구축하는 방법을 안내합니다.

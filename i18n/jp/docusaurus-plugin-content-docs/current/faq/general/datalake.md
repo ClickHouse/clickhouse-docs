@@ -3,12 +3,10 @@ title: 'ClickHouse はデータレイクをサポートしていますか？'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/datalake
-description: 'ClickHouse は Iceberg、Delta Lake、Apache Hudi、Apache Paimon、Hive 〜を含むデータレイクをサポートしています'
+description: 'ClickHouse は Iceberg、Delta Lake、Apache Hudi、Apache Paimon、Hive を含むデータレイクをサポートしています'
 doc_type: 'reference'
-keywords: ['データレイク', 'レイクハウス']
+keywords: ['data lake', 'lakehouse']
 ---
-
-# ClickHouse はデータレイクをサポートしていますか？ \{#does-clickhouse-support-data-lakes\}
 
 ClickHouse は Iceberg、Delta Lake、Apache Hudi、Apache Paimon、Hive を含むデータレイクをサポートしています。
 

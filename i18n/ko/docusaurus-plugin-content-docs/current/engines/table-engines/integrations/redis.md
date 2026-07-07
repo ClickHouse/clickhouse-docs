@@ -7,13 +7,7 @@ title: 'Redis 테이블 엔진'
 doc_type: 'guide'
 ---
 
-
-
-# Redis table engine \{#redis-table-engine\}
-
-이 엔진을 사용하면 ClickHouse를 [Redis](https://redis.io/)와 통합할 수 있습니다. Redis는 키-값(kv) 모델을 사용하므로, `where k=xx` 또는 `where k in (xx, xx)`와 같이 포인트 조회 방식으로만 쿼리를 실행할 것을 강력히 권장합니다.
-
-
+이 엔진을 사용하면 ClickHouse를 [Redis](https://redis.io/)와 통합할 수 있습니다. Redis는 키-값(kv) 모델을 사용하므로, `where k=xx` 또는 `where k in (xx, xx)`와 같은 포인트 조회 방식으로만 쿼리할 것을 강력히 권장합니다.
 
 ## 테이블 생성 \{#creating-a-table\}
 
@@ -46,12 +40,11 @@ PRIMARY KEY(primary_key_name);
 `key equals` 또는 `in filtering` 조건이 있는 쿼리는 Redis에서 여러 키 조회로 최적화됩니다. 필터링 키 없이 쿼리를 실행하면 전체 테이블 스캔이 발생하며, 이는 부하가 큰 작업입니다.
 :::
 
-
 ## 사용 예시 \{#usage-example\}
 
 단순 인수를 사용하여 `Redis` 엔진으로 ClickHouse에 테이블을 생성합니다:
 
-```sql
+```sql title="Query"
 CREATE TABLE redis_table
 (
     `key` String,
@@ -76,7 +69,7 @@ ENGINE = Redis('redis1:6379') PRIMARY KEY(key);
 </named_collections>
 ```
 
-```sql
+```sql title="Query"
 CREATE TABLE redis_table
 (
     `key` String,
@@ -89,37 +82,35 @@ ENGINE = Redis(redis_creds) PRIMARY KEY(key);
 
 INSERT:
 
-```sql
+```sql title="Query"
 INSERT INTO redis_table VALUES('1', 1, '1', 1.0), ('2', 2, '2', 2.0);
 ```
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT COUNT(*) FROM redis_table;
 ```
 
-```text
+```text title="Response"
 ┌─count()─┐
 │       2 │
 └─────────┘
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM redis_table WHERE key='1';
 ```
 
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v2─┬─v3─┐
 │ 1   │  1 │ 1  │  1 │
 └─────┴────┴────┴────┘
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM redis_table WHERE v1=2;
 ```
 
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v2─┬─v3─┐
 │ 2   │  2 │ 2  │  2 │
 └─────┴────┴────┴────┘
@@ -129,13 +120,13 @@ SELECT * FROM redis_table WHERE v1=2;
 
 기본 키는 변경할 수 없습니다.
 
-```sql
+```sql title="Query"
 ALTER TABLE redis_table UPDATE v1=2 WHERE key='1';
 ```
 
 삭제 방법:
 
-```sql
+```sql title="Query"
 ALTER TABLE redis_table DELETE WHERE key='1';
 ```
 
@@ -143,7 +134,7 @@ Truncate:
 
 Redis DB를 비동기적으로 플러시합니다. 또한 `Truncate`는 동기(SYNC) 모드도 지원합니다.
 
-```sql
+```sql title="Query"
 TRUNCATE TABLE redis_table SYNC;
 ```
 
@@ -151,13 +142,13 @@ Join:
 
 다른 테이블과 조인을 수행합니다.
 
-```sql
+```sql title="Query"
 SELECT * FROM redis_table JOIN merge_tree_table ON merge_tree_table.key=redis_table.key;
 ```
-
 
 ## 제한 사항 \{#limitations\}
 
 Redis 엔진은 `where k > xx`와 같은 스캔 쿼리도 지원하지만, 다음과 같은 제한 사항이 있습니다:
+
 1. 리해싱이 진행되는 매우 드문 경우에는 스캔 쿼리에서 중복된 키가 조회될 수 있습니다. 자세한 내용은 [Redis Scan](https://github.com/redis/redis/blob/e4d183afd33e0b2e6e8d1c79a832f678a04a7886/src/dict.c#L1186-L1269)을 참조하십시오.
 2. 스캔이 수행되는 동안 키가 생성되거나 삭제될 수 있으므로, 결과 데이터셋은 특정 시점을 나타내는 유효한 스냅샷이라고 볼 수 없습니다.

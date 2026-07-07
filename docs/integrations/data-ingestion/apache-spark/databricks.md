@@ -13,8 +13,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Integrating ClickHouse with Databricks
-
 <ClickHouseSupportedBadge/>
 
 The ClickHouse Spark connector works seamlessly with Databricks. This guide covers platform-specific setup, installation, and usage patterns for Databricks.

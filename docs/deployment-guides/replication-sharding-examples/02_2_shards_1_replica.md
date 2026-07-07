@@ -678,7 +678,7 @@ both of the rows which were inserted on the two hosts, unlike in our previous ex
 SELECT * FROM test.test_table_dist;
 ```
 
-```sql
+```response
    ┌─id─┬─name───────────────┐
 1. │  1 │ Alexey Milovidov   │
 2. │  1 │ Clicky McClickface │

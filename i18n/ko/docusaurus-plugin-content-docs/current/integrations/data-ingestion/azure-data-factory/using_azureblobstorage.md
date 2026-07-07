@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'ClickHouse azureBlobStorage 테이블 함수 사용'
+sidebar_label: 'ClickHouse의 azureBlobStorage 테이블 함수 사용'
 slug: /integrations/azure-data-factory/table-function
-description: 'ClickHouse azureBlobStorage 테이블 함수 사용'
+description: 'ClickHouse의 azureBlobStorage 테이블 함수 사용'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
-title: 'Azure 데이터를 ClickHouse로 가져오는 ClickHouse azureBlobStorage 테이블 함수 사용'
+title: 'ClickHouse의 azureBlobStorage 테이블 함수 사용'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -14,12 +14,9 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-
-# ClickHouse의 azureBlobStorage 테이블 함수 사용 \{#using-azureBlobStorage-function\}
-
 이 방법은 Azure Blob Storage 또는 Azure Data Lake Storage에서 ClickHouse로 데이터를 복사하는 가장 효율적이고 직관적인 방법 중 하나입니다. 이 테이블 함수를 사용하면 ClickHouse가 Azure 스토리지에 직접 연결하여 필요할 때 데이터를 읽도록 설정할 수 있습니다.
 
-이 함수는 테이블과 유사한 인터페이스를 제공하여 소스에서 직접 데이터를 선택하고, 삽입하고, 필터링할 수 있습니다. 이 함수는 고도로 최적화되어 있으며 `CSV`, `JSON`, `Parquet`, `Arrow`, `TSV`, `ORC`, `Avro` 등을 포함한 널리 사용되는 많은 파일 형식을 지원합니다. 전체 목록은 ["Data formats"](/interfaces/formats)을(를) 참조하십시오.
+이 함수는 테이블과 유사한 인터페이스를 제공하여 소스에서 직접 데이터를 선택하고, 삽입하고, 필터링할 수 있습니다. 이 함수는 고도로 최적화되어 있으며 `CSV`, `JSON`, `Parquet`, `Arrow`, `TSV`, `ORC`, `Avro` 등을 포함한 널리 사용되는 많은 파일 형식을 지원합니다. 전체 목록은 [&quot;Data formats&quot;](/interfaces/formats)을(를) 참조하십시오.
 
 이 섹션에서는 Azure Blob Storage에서 ClickHouse로 데이터를 전송하기 위한 간단한 시작 가이드를 살펴보고, 이 함수를 효과적으로 사용하기 위한 중요한 고려 사항을 설명합니다. 자세한 내용과 고급 옵션은 공식 문서를 참조하십시오:
 [`azureBlobStorage` Table Function documentation page](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)

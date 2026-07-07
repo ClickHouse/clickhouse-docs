@@ -4,10 +4,8 @@ slug: /cloud/security/audit-logging/database-audit-log
 title: '데이터베이스 감사 로그'
 description: '이 페이지에서는 데이터베이스 감사 로그를 검토하는 방법을 설명합니다'
 doc_type: 'guide'
-keywords: ['감사 로깅', '데이터베이스 로그', '규정 준수', '보안', '모니터링']
+keywords: ['감사 로깅', '데이터베이스 로그', '컴플라이언스', '보안', '모니터링']
 ---
-
-# 데이터베이스 감사 로그 \{#database-audit-log\}
 
 ClickHouse는 기본적으로 데이터베이스 감사 로그를 제공합니다. 이 페이지는 보안 관련 로그에 초점을 맞춥니다. 시스템에서 기록하는 데이터에 대한 자세한 내용은 [system tables](/operations/system-tables/overview) 시스템 테이블(system tables) 문서를 참고하십시오.
 

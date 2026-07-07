@@ -71,6 +71,8 @@ SELECT alphaTokens('abca1abc');
 arrayStringConcat(arr[, separator])
 ```
 
+**별칭**: `array_to_string`
+
 **인수**
 
 * `arr` — 연결할 배열입니다. [`Array(T)`](/sql-reference/data-types/array)

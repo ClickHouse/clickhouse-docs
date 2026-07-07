@@ -109,7 +109,9 @@ SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 LIMIT 1
+```
 
+```response
 ┌─explain──────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                        │
 │   Limit (preliminary LIMIT (without OFFSET))                     │
@@ -146,7 +148,6 @@ LIMIT 1
 ```sql
 SELECT toDate(CreationDate) AS day, avg(ViewCount) AS view_count FROM stackoverflow.posts WHERE day > '2009-01-01'  GROUP BY day
 ```
-
 
 Поэтому это является логичным выбором для индекса пропуска данных. Учитывая числовой тип, имеет смысл использовать индекс `minmax`. Мы добавляем индекс с помощью следующих команд `ALTER TABLE`: сначала создаём его, затем «материализуем».
 
@@ -201,7 +202,9 @@ ORDER BY (PostTypeId, toDate(CreationDate))
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─count()─┐
 │     5   │
 └─────────┘
@@ -211,13 +214,14 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 
 Запрос `EXPLAIN indexes = 1` подтверждает, что используется индекс.
 
-
 ```sql
 EXPLAIN indexes = 1
 SELECT count()
 FROM stackoverflow.posts
 WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
+```
 
+```response
 ┌─explain────────────────────────────────────────────────────────────┐
 │ Expression ((Project names + Projection))                          │
 │   Aggregating                                                      │
@@ -253,10 +257,9 @@ WHERE (CreationDate > '2009-01-01') AND (ViewCount > 10000000)
 29 rows in set. Elapsed: 0.211 sec.
 ```
 
-Также показана анимация того, как индекс пропуска minmax отсекает все блоки строк, которые заведомо не могут содержать совпадения для предиката `ViewCount` &gt; 10,000,000 в нашем примере запроса:
+Также показана анимация того, как индекс пропуска данных minmax отсекает все блоки строк, которые заведомо не могут содержать совпадения для предиката `ViewCount` &gt; 10,000,000 в нашем примере запроса:
 
-<Image img={using_skipping_indices} size="lg" alt="Использование индексов пропуска" />
-
+<Image img={using_skipping_indices} size="lg" alt="Использование индексов пропуска данных" />
 
 ## Связанные материалы \{#related-docs\}
 

@@ -1,13 +1,11 @@
 ---
-description: 'サブ秒精度のタイムスタンプを格納する ClickHouse の DateTime64 データ型に関するドキュメント'
+description: 'サブ秒精度のタイムスタンプを保存する ClickHouse の DateTime64 データ型のドキュメント'
 sidebar_label: 'DateTime64'
 sidebar_position: 18
 slug: /sql-reference/data-types/datetime64
 title: 'DateTime64'
 doc_type: 'reference'
 ---
-
-# DateTime64 \{#datetime64\}
 
 カレンダー日付と一日の時刻で表現できる時点を、サブ秒精度を指定して保存できるデータ型です。
 

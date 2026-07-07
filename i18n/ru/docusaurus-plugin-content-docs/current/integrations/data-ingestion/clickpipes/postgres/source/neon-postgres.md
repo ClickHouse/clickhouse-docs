@@ -16,11 +16,8 @@ import neon_ip_allow from '@site/static/images/integrations/data-ingestion/click
 import neon_conn_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-conn-details.png'
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника Neon Postgres \{#neon-postgres-source-setup-guide\}
-
-Это руководство по настройке Neon Postgres, который вы можете использовать в качестве источника репликации в ClickPipes.
-Для выполнения этой настройки убедитесь, что вы вошли в свою [консоль Neon](https://console.neon.tech/app/projects).
+Это руководство по настройке Neon Postgres, который можно использовать для репликации в ClickPipes.
+Перед началом настройки убедитесь, что вы вошли в [консоль Neon](https://console.neon.tech/app/projects).
 
 ## Создание пользователя с необходимыми правами \{#creating-a-user-with-permissions\}
 

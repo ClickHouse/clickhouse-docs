@@ -8,7 +8,6 @@ doc_type: 'guide'
 keywords: ['parquet', 'columnar format', 'data format', 'compression', 'apache parquet']
 ---
 
-# Working with Parquet in ClickHouse
 
 Parquet is an efficient file format to store data in a column-oriented way.
 ClickHouse provides support for both reading and writing Parquet files.
@@ -22,7 +21,7 @@ If you're using ClickHouse Server or ClickHouse Cloud via `clickhouse client`, i
 
 ## Importing from Parquet {#importing-from-parquet}
 
-Before loading data, we can use [file()](/sql-reference/functions/files.md/#file) function to explore an [example parquet file](assets/data.parquet) structure:
+Before loading data, we can use [file()](/sql-reference/functions/files.md/#file) function to explore an [example parquet file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.parquet) structure:
 
 ```sql
 DESCRIBE TABLE file('data.parquet', Parquet);
@@ -148,7 +147,7 @@ FORMAT Parquet
 This will create the `export.parquet` file in a working directory.
 
 ## ClickHouse and Parquet data types {#clickhouse-and-parquet-data-types}
-ClickHouse and Parquet data types are mostly identical but still [differ a bit](/interfaces/formats/Parquet#data-types-matching-parquet). For example, ClickHouse will export `DateTime` type as a Parquets' `int64`. If we then import that back to ClickHouse, we're going to see numbers ([time.parquet file](assets/time.parquet)):
+ClickHouse and Parquet data types are mostly identical but still [differ a bit](/interfaces/formats/Parquet#data-types-matching-parquet). For example, ClickHouse will export `DateTime` type as a Parquets' `int64`. If we then import that back to ClickHouse, we're going to see numbers ([time.parquet file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/time.parquet)):
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);

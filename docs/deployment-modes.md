@@ -67,8 +67,8 @@ For local development, `clickhousectl` helps to install ClickHouse versions and 
 # Install the CLI
 curl https://clickhouse.com/cli | sh
 
-# Install and start ClickHouse locally
-clickhousectl local install stable
+# Install the latest ClickHouse, set it as your default, and symlink the clickhouse binary onto your PATH
+clickhousectl local use latest
 clickhousectl local server start
 clickhousectl local client
 ```

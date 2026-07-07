@@ -1,13 +1,11 @@
 ---
-description: 'MOVE access entity SQL 문에 대한 설명서'
+description: 'MOVE access entity 구문에 대한 문서'
 sidebar_label: 'MOVE'
 sidebar_position: 54
 slug: /sql-reference/statements/move
-title: 'MOVE access entity SQL 문'
+title: 'MOVE access entity 구문'
 doc_type: 'reference'
 ---
-
-# MOVE access entity 구문 \{#move-access-entity-statement\}
 
 이 구문은 access entity를 한 access storage에서 다른 access storage로 이동합니다.
 

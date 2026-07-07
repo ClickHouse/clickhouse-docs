@@ -10,7 +10,6 @@ keywords: ['MySQL', 'логи', 'OTel', 'ClickStack', 'мониторинг ба
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import search_view from '@site/static/images/clickstack/mysql/search-view.png';
 import log_view from '@site/static/images/clickstack/mysql/log-view.png';
@@ -18,10 +17,8 @@ import finish_import from '@site/static/images/clickstack/mysql/finish-import.pn
 import example_dashboard from '@site/static/images/clickstack/mysql/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг логов MySQL с ClickStack \{#mysql-logs-clickstack\}
-
-:::note[TL;DR]
-Собирайте и визуализируйте логи ошибок MySQL и логи медленных запросов в ClickStack с помощью OTel-приёмника `filelog`. Включает демо-датасет и готовую панель мониторинга.
+:::note[Кратко]
+Собирайте и визуализируйте логи ошибок MySQL и медленных запросов в ClickStack с помощью OTel-приемника `filelog`. Включает демонстрационный датасет и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим MySQL \{#existing-mysql\}
@@ -345,7 +342,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/mysql-logs-dashboard.json')} download="mysql-logs-dashboard.json" eventName="docs.mysql_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/mysql-logs-dashboard.json'} download="mysql-logs-dashboard.json" eventName="docs.mysql_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
 
 #### Импортируйте преднастроенный дашборд \{#import-dashboard\}
 

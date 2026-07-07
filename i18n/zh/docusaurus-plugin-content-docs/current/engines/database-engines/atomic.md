@@ -1,5 +1,6 @@
 ---
-description: '`Atomic` 引擎支持非阻塞的 `DROP TABLE` 和 `RENAME TABLE` 查询，以及原子性的 `EXCHANGE TABLES` 查询。默认数据库引擎为 `Atomic`。'
+description: '`Atomic` 引擎支持非阻塞的 `DROP TABLE` 和 `RENAME TABLE`
+  查询，以及原子性的 `EXCHANGE TABLES` 查询。默认使用 `Atomic` 数据库引擎。'
 sidebar_label: 'Atomic'
 sidebar_position: 10
 slug: /engines/database-engines/atomic
@@ -7,9 +8,7 @@ title: 'Atomic'
 doc_type: 'reference'
 ---
 
-# Atomic  \{#atomic\}
-
-`Atomic` 引擎支持非阻塞的 [`DROP TABLE`](#drop-detach-table) 和 [`RENAME TABLE`](#rename-table) 查询，以及原子性的 [`EXCHANGE TABLES`](#exchange-tables) 查询。在开源 ClickHouse 中，默认使用 `Atomic` 数据库引擎。 
+`Atomic` 引擎支持非阻塞的 [`DROP TABLE`](#drop-detach-table) 和 [`RENAME TABLE`](#rename-table) 查询，以及原子性的 [`EXCHANGE TABLES`](#exchange-tables) 查询。在开源 ClickHouse 中，默认使用 `Atomic` 数据库引擎。
 
 :::note
 在 ClickHouse Cloud 中，默认使用 [`Shared` 数据库引擎](/cloud/reference/shared-catalog#shared-database-engine)，它同样支持上述操作。
@@ -62,7 +61,7 @@ CREATE TABLE name UUID '28f1c61c-2970-457a-bffe-454156ddcfef' (n UInt64) ENGINE 
 RENAME TABLE new_table TO tmp, old_table TO new_table, tmp TO old_table;
 ```
 
-你可以使用一个原子类型：
+您可以使用原子操作：
 
 ```sql title="Atomic"
 EXCHANGE TABLES new_table AND old_table;
@@ -85,4 +84,4 @@ CREATE TABLE db (n UInt64) ENGINE = Atomic SETTINGS disk=disk(type='local', path
 
 ## 另请参阅 \{#see-also\}
 
-- [system.databases](../../operations/system-tables/databases.md) 系统表
+* [system.databases](../../operations/system-tables/databases.md) 系统表

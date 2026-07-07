@@ -46,7 +46,7 @@ Ensure your VPC has working DNS resolution and doesn't block, interfere with, or
 
 ### Configure your AWS account {#configure-aws-account}
 
-The initial BYOC setup creates a privileged IAM role (`ClickHouseManagementRole`) that enables BYOC controllers from ClickHouse Cloud to manage your infrastructure. This can be performed using either a [CloudFormation template](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml) or a [Terraform module](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz).
+The initial BYOC setup creates a privileged IAM role (`ClickHouseManagementRole`) that enables BYOC controllers from ClickHouse Cloud to manage your infrastructure. This can be performed using either a [CloudFormation template](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml) or a Terraform module (see below).
 
 When deploying for a `BYO-VPC` setup, set the `IncludeVPCWritePermissions` parameter to `false` to ensure ClickHouse Cloud doesn't receive permissions to modify your customer-managed VPC.
 
@@ -54,27 +54,33 @@ When deploying for a `BYO-VPC` setup, set the `IncludeVPCWritePermissions` param
 Storage buckets, Kubernetes cluster, and compute resources required for running ClickHouse aren't included in this initial setup. They will be provisioned in a later step. While you control your VPC, ClickHouse Cloud still requires IAM permissions to create and manage the Kubernetes cluster, IAM roles for service accounts, S3 buckets, and other essential resources in your AWS account.
 :::
 
-#### Alternative Terraform module {#terraform-module-aws}
+#### Terraform module {#terraform-module-aws}
 
-If you prefer to use Terraform instead of CloudFormation, use the following module:
+If you prefer to use Terraform instead of CloudFormation, use the [terraform-byoc-onboarding](https://github.com/ClickHouse/terraform-byoc-onboarding) module:
 
 ```hcl
 module "clickhouse_onboarding" {
-  source                     = "https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz"
-  byoc_env                   = "production"
+  source                        = "github.com/ClickHouse/terraform-byoc-onboarding.git//modules/aws?ref=<version>"
+  external_id                   = "<external-id-provided-by-clickhouse>"
   include_vpc_write_permissions = false
 }
 ```
 
+Replace `<version>` with the latest tag from the module's [releases page](https://github.com/ClickHouse/terraform-byoc-onboarding/releases) — always use the latest release.
+
+:::note
+The module was previously distributed as a tarball at `https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/tf/byoc.tar.gz`. That URL remains available but is deprecated — use the GitHub module above.
+:::
+
 ### Set up BYOC infrastructure {#set-up-byoc-infrastructure}
 
-In the ClickHouse Cloud console, navigate to the [BYOC setup page](https://console.clickhouse.cloud/byocOnboarding) and configure the following:
+In the ClickHouse Cloud console, configure the following when setting up new infrastructure:
 
-1. Under **VPC Configuration**, select **Use existing VPC**.
+1. Under **VPC configuration**, select **Use existing VPC**.
 2. Enter your **VPC ID** (e.g., `vpc-0bb751a5b888ad123`).
 3. Enter the **Private subnet IDs** for the 3 subnets you configured earlier.
 4. Optionally, enter **Public subnet IDs** if your setup requires public-facing load balancers.
-5. Click **Setup Infrastructure** to begin provisioning.
+5. Click **Set up Infrastructure** to begin provisioning.
 
 <Image img={byoc_aws_existing_vpc_ui} size="lg" alt="ClickHouse Cloud BYOC setup UI with Use existing VPC selected" />
 
@@ -92,9 +98,11 @@ For organizations with advanced security requirements or strict compliance polic
 Customer-managed IAM roles are in private preview. If you require this capability, contact ClickHouse Support to discuss your specific requirements and timeline.
 
 When available, this feature will allow you to:
-* Provide pre-configured IAM roles for ClickHouse Cloud to use
-* Remove write permissions to IAM related permissions for `ClickHouseManagementRole` used for cross-account access
-* Maintain full control over role permissions and trust relationships
+
+- Provide pre-configured IAM roles for ClickHouse Cloud to use
+- Remove write permissions to IAM related permissions for `ClickHouseManagementRole` used for cross-account access
+- Maintain full control over role permissions and trust relationships
+
 :::
 
 For information about the IAM roles that ClickHouse Cloud creates by default, see the [BYOC Privilege Reference](/cloud/reference/byoc/reference/privilege).

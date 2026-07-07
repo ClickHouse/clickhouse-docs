@@ -2,7 +2,7 @@
 sidebar_label: 'バックアップの確認と復元'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: '概要'
+title: 'バックアップの確認と復元'
 keywords: ['バックアップ', 'クラウドバックアップ', '復元']
 description: 'ClickHouse Cloud におけるバックアップの概要です'
 doc_type: 'guide'
@@ -17,14 +17,11 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
-
-# バックアップの確認と復元 \{#review-and-restore-backups\}
-
-このガイドでは、ClickHouse Cloud におけるバックアップの動作、サービスのバックアップ構成に利用できるオプション、およびバックアップからの復元方法について説明します。
+このガイドでは、ClickHouse Cloud におけるバックアップの仕組み、サービスのバックアップを設定するために利用できるオプション、およびバックアップから復元する方法について説明します。
 
 **前提条件**
 
-- 「[ClickHouse Cloud におけるバックアップの仕組み](/cloud/features/backups#how-backups-work-in-clickhouse-cloud)」（機能概要ページ）を読んでいること
+* [&quot;ClickHouse Cloud におけるバックアップの仕組み&quot;](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) を読了していること (機能概要ページ)
 
 ## バックアップステータス一覧 \{#backup-status-list\}
 
@@ -36,16 +33,16 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 デフォルトポリシーでは、ClickHouse Cloud は 24 時間の保持期間で毎日 1 回のバックアップを必須とします。より多くのデータを保持するスケジュールを選択したり、より頻繁にバックアップを実行するようにすると、バックアップ用ストレージの料金が追加で発生する可能性があります。
 
-バックアップコストを把握するには、使用状況画面からサービスごとのバックアップコストを表示できます（下図参照）。カスタマイズしたスケジュールで数日間バックアップを実行すれば、コストの目安が分かるようになり、その値からバックアップの月額コストを概算できます。
+バックアップコストを把握するには、使用状況画面からサービスごとのバックアップコストを表示できます (下図参照) 。カスタマイズしたスケジュールで数日間バックアップを実行すれば、コストの目安が分かるようになり、その値からバックアップの月額コストを概算できます。
 
-<Image img={backup_usage} size="md" alt="ClickHouse Cloud におけるバックアップ使用量チャート" border/>
+<Image img={backup_usage} size="md" alt="ClickHouse Cloud におけるバックアップ使用量チャート" border />
 
-バックアップの総コストを見積もるには、スケジュールを設定する必要があります。また、スケジュールを設定する前に月額コストの見積もりを取得できるよう、[pricing calculator](https://clickhouse.com/pricing) の更新にも取り組んでいます。コストを見積もるには、次の入力項目を指定する必要があります。
+バックアップの総コストを見積もるには、スケジュールを設定する必要があります。スケジュールを設定する前に、次の入力項目を指定することで、[pricing calculator](https://clickhouse.com/pricing) を使用して月額コストの見積もりを取得できます。
 
-- フルバックアップおよび増分バックアップのサイズ
-- 希望する実行頻度
-- 希望する保持期間
-- Cloud プロバイダーおよびリージョン
+* フルバックアップおよび増分バックアップのサイズ
+* 希望するバックアップ頻度
+* 希望するバックアップ保持期間
+* Cloud プロバイダーおよびリージョン
 
 :::note
 サービス内のデータサイズが時間とともに増加するにつれて、バックアップの推定コストも変化することに注意してください。

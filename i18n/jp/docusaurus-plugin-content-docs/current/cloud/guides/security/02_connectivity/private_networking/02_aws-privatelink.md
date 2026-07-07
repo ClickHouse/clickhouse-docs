@@ -1,6 +1,6 @@
 ---
 title: 'AWS PrivateLink'
-description: 'このガイドでは、AWS PrivateLink を使用して ClickHouse Cloud に接続する方法について説明します。'
+description: 'このドキュメントでは、AWS PrivateLink を使用して ClickHouse Cloud に接続する方法を説明します。'
 slug: /manage/security/aws-privatelink
 keywords: ['PrivateLink']
 doc_type: 'guide'
@@ -17,9 +17,6 @@ import aws_private_link_modify_dnsname from '@site/static/images/cloud/security/
 import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-remove-private-endpoint.png';
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
-
-
-# AWS PrivateLink \{#aws-privatelink\}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink" />
 

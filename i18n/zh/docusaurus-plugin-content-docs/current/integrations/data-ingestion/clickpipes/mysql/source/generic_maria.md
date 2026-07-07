@@ -1,6 +1,6 @@
 ---
 sidebar_label: '通用 MariaDB'
-description: '将任意 MariaDB 实例配置为 ClickPipes 源'
+description: '将任意 MariaDB 实例配置为 ClickPipes 数据源'
 slug: /integrations/clickpipes/mysql/source/generic_maria
 title: '通用 MariaDB 数据源设置指南'
 doc_type: 'guide'
@@ -10,11 +10,9 @@ integration:
    - category: 'clickpipes'
 ---
 
-# 通用 MariaDB 数据源设置指南 \{#generic-mariadb-source-setup-guide\}
-
 :::info
 
-如果您使用的是侧边栏中列出的任一受支持服务提供商，请参考该服务提供商的专用指南。
+如果您使用的是受支持的提供商之一 (见侧边栏) ，请参阅该提供商对应的专门指南。
 
 :::
 

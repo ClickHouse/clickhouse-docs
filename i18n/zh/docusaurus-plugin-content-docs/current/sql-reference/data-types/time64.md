@@ -1,5 +1,6 @@
 ---
-description: 'ClickHouse 中 Time64 数据类型的文档，用于以亚秒级精度存储时间'
+description: 'ClickHouse 中 Time64 数据类型的文档，该类型以亚秒精度存储
+  时刻范围'
 slug: /sql-reference/data-types/time64
 sidebar_position: 17
 sidebar_label: 'Time64'
@@ -7,9 +8,7 @@ title: 'Time64'
 doc_type: 'reference'
 ---
 
-# Time64 \{#time64\}
-
-数据类型 `Time64` 表示带有小数秒的一天中的时刻 (time-of-day) 。
+数据类型 `Time64` 表示带有小数秒的一天中的时刻 (时刻) 。
 它不包含任何日历日期组件 (日、月、年) 。
 参数 `precision` 定义小数位数，因此也就定义了最小时间粒度 (tick size) 。
 

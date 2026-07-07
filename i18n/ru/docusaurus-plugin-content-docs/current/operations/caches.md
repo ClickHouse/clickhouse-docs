@@ -4,11 +4,9 @@ sidebar_label: 'Кэши'
 sidebar_position: 65
 slug: /operations/caches
 title: 'Типы кэша'
-keywords: ['cache']
+keywords: ['кэш']
 doc_type: 'reference'
 ---
-
-# Типы кэша \{#cache-types\}
 
 При выполнении запросов ClickHouse использует различные кэши, чтобы ускорить выполнение запросов
 и сократить необходимость чтения с диска или записи на диск.

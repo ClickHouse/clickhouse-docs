@@ -8,7 +8,6 @@ doc_type: 'guide'
 keywords: ['snapshot', 'backup', 'restore', 'SharedMergeTree', 'SharedSet', 'SharedJoin', 'lightweight backup', 'cloud backup', 'S3', 'Azure Blob Storage', 'snapshot_locks', 'snapshot_parts', 'experimental_lightweight_snapshot']
 ---
 
-# Snapshot backup and restore {#snapshot-backup-and-restore}
 
 Snapshot backup is a lightweight backup mode for cloud-native table engines. Instead of copying data, it writes per-part lock nodes into ClickHouse Keeper. These locks prevent the server from deleting the referenced object storage parts for as long as the snapshot is retained. The backup then records the object storage references rather than physically copying any data, making snapshot creation fast regardless of table size.
 

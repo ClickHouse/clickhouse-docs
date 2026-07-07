@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/sample-data
-title: 'サンプルのログ、トレース、メトリクス'
+title: 'ClickStack - サンプルのログ、トレース、メトリクス'
 sidebar_position: 0
 pagination_prev: null
 pagination_next: null
@@ -35,29 +35,26 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# ClickStack - サンプルのログ、トレース、メトリクス \{#clickstack-sample-dataset\}
-
-このガイドでは、サンプルデータセットを使用して、ClickStack Open Source と Managed ClickStack の両方を対象とした手順を説明します。
+このガイドでは、サンプルデータセットを使用して ClickStack Open Source と Managed ClickStack の両方を紹介します。
 
 <Tabs groupId="sample-logs">
   <TabItem value="managed-clickstack" label="マネージド版 ClickStack" default>
     <VerticalStepper headerLevel="h3">
       このガイドは、[マネージドClickStackの入門ガイド](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud)を完了し、[接続認証情報を記録](/use-cases/observability/clickstack/getting-started/managed#next-steps)していることを前提としています。
 
-      ### サービスを選択してください
+      ### サービスを選択してください \{#select-your-service-managed\}
 
       メインのClickHouse Cloudランディングページから、Managed ClickStackを使用するサービスを選択します。
 
       <Image img={select_service} alt="サービスを選択" size="lg" />
 
-      ### ClickStack UI（HyperDX）に移動する
+      ### ClickStack UI (HyperDX) に移動する \{#navigate-to-the-hyperdx-ui-managed\}
 
       左側のメニューから`ClickStack`を選択し、ClickStack UIに移動します。自動的に認証が行われます。
 
       <Image img={hyperdx} alt="ClickStack UI" size="lg" />
 
-      ### サンプルデータのダウンロード
+      ### サンプルデータのダウンロード \{#download-sample-data-managed\}
 
       UIにサンプルデータを投入するには、次のファイルをダウンロードしてください:
 
@@ -72,7 +69,7 @@ import TabItem from '@theme/TabItem';
 
       このファイルには、当社の公開[OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo)からのログ、メトリクス、トレースのサンプルが含まれています。これはマイクロサービスで構成されたシンプルなeコマースストアです。このファイルを任意のディレクトリにコピーしてください。
 
-      ### サンプルデータのロード
+      ### サンプルデータのロード \{#load-sample-data-managed\}
 
       このデータをロードするには、デプロイ済みのOpenTelemetry(OTel)コレクターのHTTPエンドポイントに送信するだけです。
 
@@ -99,7 +96,7 @@ import TabItem from '@theme/TabItem';
 
       データの読み込みには数分かかります。次の手順に進む前に、読み込みが完了するまで待機してください。
 
-      ### セッションを確認する
+      ### セッションを確認する \{#explore-sessions-managed\}
 
       ユーザーが商品の支払い時に問題を経験しているという報告があるとします。HyperDXのセッションリプレイ機能を使用して、そのユーザー体験を確認できます。
 
@@ -127,7 +124,7 @@ import TabItem from '@theme/TabItem';
 
       この`500`エラーを選択します。`Overview`も`カラム値`も、エラーが予期しないものであり`Internal Error`を引き起こしているという事実以外、問題の原因を示していません。
 
-      ### トレースを探索する
+      ### トレースを探索する \{#explore-traces-managed\}
 
       `Trace`タブに移動して、完全な分散トレースを確認します。
 
@@ -147,7 +144,7 @@ import TabItem from '@theme/TabItem';
 
       決済サービス内のキャッシュが満杯になり、決済処理の完了を妨げていることが確認されました。
 
-      ### ログを確認する
+      ### ログを確認する \{#explore-logs-managed\}
 
       詳細については、`Search`に戻ります:
 
@@ -157,7 +154,7 @@ import TabItem from '@theme/TabItem';
 
       この問題は最近発生したものですが、影響を受けた決済の件数が多いことが確認できます。さらに、Visa決済に関連するキャッシュが問題の原因となっているようです。
 
-      ### チャートのメトリクス
+      ### チャートのメトリクス \{#chart-metrics-managed\}
 
       コードに明らかにエラーが混入していますが、メトリクスを使用してキャッシュサイズを確認できます。`Chart Explorer`ビューに移動します。
 
@@ -171,19 +168,19 @@ import TabItem from '@theme/TabItem';
     以下の例では、[オールインワンイメージの手順](/use-cases/observability/clickstack/getting-started/oss)を使用してオープンソース版ClickStackを起動し、[ローカルClickHouseインスタンス](/use-cases/observability/clickstack/getting-started/oss#complete-connection-credentials)に接続済みであることを前提としています。
 
     <VerticalStepper headerLevel="h3">
-      ### ClickStack UI（HyperDX）に移動する
+      ### ClickStack UI (HyperDX) に移動する \{#navigate-to-the-hyperdx-ui\}
 
       [http://localhost:8080](http://localhost:8080) にアクセスして ClickStack UI を開いてください。
 
       <Image img={hyperdx} alt="ClickStack UI" size="lg" />
 
-      ### インジェスト API key をコピー
+      ### インジェスト API key をコピー \{#copy-ingestion-api-key\}
 
       [`Team Settings`](http://localhost:8080/team)に移動し、`API Keys`セクションから`Ingestion API Key`をコピーします。このAPI keyにより、OpenTelemetryコレクター経由のデータインジェストが安全に保護されます。
 
       <Image img={copy_api_key} alt="API キーをコピー" size="lg" />
 
-      ### サンプルデータのダウンロード
+      ### サンプルデータのダウンロード \{#download-sample-data\}
 
       UIにサンプルデータを投入するには、次のファイルをダウンロードしてください:
 
@@ -198,7 +195,7 @@ import TabItem from '@theme/TabItem';
 
       このファイルには、当社の公開[OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo)からのログ、メトリクス、トレースのサンプルが含まれています。これはマイクロサービスで構成されたシンプルなeコマースストアです。このファイルを任意のディレクトリにコピーしてください。
 
-      ### サンプルデータのロード
+      ### サンプルデータのロード \{#load-sample-data\}
 
       このデータをロードするには、デプロイ済みのOpenTelemetry(OTel)コレクターのHTTPエンドポイントに送信するだけです。
 
@@ -232,7 +229,7 @@ import TabItem from '@theme/TabItem';
 
       データの読み込みには数分かかります。次の手順に進む前に、読み込みが完了するまで待機してください。
 
-      ### セッションを確認する
+      ### セッションを確認する \{#explore-sessions\}
 
       ユーザーが商品の支払い時に問題を経験しているという報告があるとします。HyperDXのセッションリプレイ機能を使用して、そのユーザー体験を確認できます。
 
@@ -260,7 +257,7 @@ import TabItem from '@theme/TabItem';
 
       この`500`エラーを選択します。`Overview`も`カラム値`も、エラーが予期しないものであり`Internal Error`を引き起こしているという事実以外、問題の原因を示していません。
 
-      ### トレースを探索する
+      ### トレースを探索する \{#explore-traces\}
 
       `Trace`タブに移動して、完全な分散トレースを確認します。
 
@@ -280,7 +277,7 @@ import TabItem from '@theme/TabItem';
 
       決済サービス内のキャッシュが満杯になり、決済処理の完了を妨げていることが確認されました。
 
-      ### ログを確認する
+      ### ログを確認する \{#explore-logs\}
 
       詳細については、[`Search` ビュー](http://localhost:8080/search)に戻ります:
 
@@ -290,7 +287,7 @@ import TabItem from '@theme/TabItem';
 
       この問題は最近発生したものですが、影響を受けた決済の件数が多いことが確認できます。さらに、Visa決済に関連するキャッシュが問題の原因となっているようです。
 
-      ### チャートのメトリクス
+      ### チャートのメトリクス \{#chart-metrics\}
 
       コードに明らかにエラーが混入していますが、メトリクスを使用してキャッシュサイズを確認できます。`Chart Explorer`ビューに移動します。
 

@@ -114,7 +114,7 @@ OPTIMIZE TABLE table DEDUPLICATE BY COLUMNS('column-matched-by-regex') EXCEPT (c
 
 Рассмотрим следующую таблицу:
 
-```sql
+```sql title="Query"
 CREATE TABLE example (
     primary_key Int32,
     secondary_key Int32,
@@ -128,18 +128,16 @@ PARTITION BY partition_key
 ORDER BY (primary_key, secondary_key);
 ```
 
-```sql
+```sql title="Query"
 INSERT INTO example (primary_key, secondary_key, value, partition_key)
 VALUES (0, 0, 0, 0), (0, 0, 0, 0), (1, 1, 2, 2), (1, 1, 2, 3), (1, 1, 3, 3);
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           0 │             0 │     0 │             0 │
@@ -160,17 +158,15 @@ SELECT * FROM example;
 
 Когда столбцы для дедупликации не указаны, учитываются все столбцы. Строка удаляется только в том случае, если все значения во всех столбцах равны соответствующим значениям в предыдущей строке:
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -187,17 +183,15 @@ SELECT * FROM example;
 
 Когда столбцы задаются неявно, дедупликация таблицы выполняется по всем столбцам, которые не являются `ALIAS` или `MATERIALIZED`. Для таблицы выше это столбцы `primary_key`, `secondary_key`, `value` и `partition_key`:
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY *;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -214,17 +208,15 @@ SELECT * FROM example;
 
 Выполняет дедупликацию по всем столбцам, которые не являются `ALIAS` или `MATERIALIZED`, при этом явно исключается столбец `value`, то есть используется набор столбцов `primary_key`, `secondary_key` и `partition_key`.
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY * EXCEPT value;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -240,17 +232,15 @@ SELECT * FROM example;
 
 Выполните явную дедупликацию по столбцам `primary_key`, `secondary_key` и `partition_key`:
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY primary_key, secondary_key, partition_key;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -264,19 +254,17 @@ SELECT * FROM example;
 
 #### `DEDUPLICATE BY COLUMNS(<regex>)` \{#deduplicate-by-columnsregex\}
 
-Удаляет дубликаты по всем столбцам, соответствующим регулярному выражению: столбцам `primary_key`, `secondary_key` и `partition_key`:
+Выполняет дедупликацию по всем столбцам, соответствующим регулярному выражению: столбцам `primary_key`, `secondary_key` и `partition_key`:
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY COLUMNS('.*_key');
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           0 │             0 │     0 │             0 │
 └─────────────┴───────────────┴───────┴───────────────┘

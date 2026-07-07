@@ -25,7 +25,7 @@ doc_type: 'reference'
 stddevSamp(x)
 ```
 
-**别名**: `STDDEV_SAMP`
+**别名**: `STDDEV_SAMP`, `STDDEV`
 
 **参数**
 

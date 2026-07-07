@@ -7,7 +7,6 @@ sidebar_label: 'argMinIf'
 doc_type: 'reference'
 ---
 
-# argMinIf {#argminif}
 
 ## Description {#description}
 

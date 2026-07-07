@@ -1,14 +1,12 @@
 ---
 slug: /faq/operations/
 sidebar_position: 3
-sidebar_label: 'Вопросы об эксплуатации серверов и кластеров ClickHouse'
-title: 'Вопросы об эксплуатации серверов и кластеров ClickHouse'
-description: 'Целевая страница для вопросов об эксплуатации серверов и кластеров ClickHouse'
+sidebar_label: 'Вопросы по эксплуатации серверов и кластеров ClickHouse'
+title: 'Вопросы по эксплуатации серверов и кластеров ClickHouse'
+description: 'Обзорная страница с вопросами по эксплуатации серверов и кластеров ClickHouse'
 doc_type: 'landing-page'
-keywords: ['эксплуатация', 'администрирование', 'развертывание', 'управление кластерами', 'частые вопросы']
+keywords: ['эксплуатация', 'администрирование', 'развертывание', 'управление кластером', 'faq']
 ---
-
-# Вопросы по эксплуатации серверов и кластеров ClickHouse \{#question-about-operating-clickhouse-servers-and-clusters\}
 
 * [Какую версию ClickHouse использовать в продакшене?](/faq/operations/production.md)
 * [Можно ли развернуть ClickHouse с раздельными хранилищем и вычислительными ресурсами?](/faq/operations/separate_storage.md)

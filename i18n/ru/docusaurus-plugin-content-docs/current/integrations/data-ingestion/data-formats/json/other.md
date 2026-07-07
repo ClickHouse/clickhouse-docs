@@ -1,17 +1,15 @@
 ---
-title: 'Другие подходы к работе с JSON'
+title: 'Другие подходы к JSON'
 slug: /integrations/data-formats/json/other-approaches
 description: 'Другие подходы к моделированию JSON'
-keywords: ['json', 'formats']
+keywords: ['json', 'форматы']
 doc_type: 'reference'
 ---
-
-# Другие подходы к моделированию JSON \{#other-approaches-to-modeling-json\}
 
 **Ниже приведены альтернативные подходы к моделированию JSON в ClickHouse. Они приведены для полноты и использовались до появления типа JSON, поэтому, как правило, не рекомендуются и не применяются в большинстве сценариев.**
 
 :::note Применяйте подход на уровне объектов
-К разным объектам в одной и той же схеме можно применять разные техники. Например, для одних объектов лучше всего подойдет тип `String`, а для других — тип `Map`. Обратите внимание, что после выбора типа `String` больше не требуется принимать какие-либо решения о схеме. Напротив, в ключ `Map` можно вложить подчиненные объекты, включая `String`, представляющую JSON, как показано ниже:
+К разным объектам в одной и той же схеме можно применять разные техники. Например, для одних объектов лучше всего подойдет тип `String`, а для других — тип `Map`. Обратите внимание, что после выбора типа `String` больше не требуется принимать какие-либо решения о схеме. Напротив, в ключ `Map` можно вложить вложенные объекты, включая `String`, представляющую JSON, как показано ниже:
 :::
 
 ## Использование типа String \{#using-string\}
@@ -41,7 +39,9 @@ ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 Ok.
 1 row in set. Elapsed: 0.002 sec.
 ```
@@ -51,7 +51,9 @@ Ok.
 ```sql
 SELECT tags
 FROM people
+```
 
+```response
 ┌─tags───────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}} │
 └────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
@@ -63,7 +65,9 @@ FROM people
 
 ```sql
 SELECT JSONExtractString(tags, 'holidays') AS holidays FROM people
+```
 
+```response
 ┌─holidays──────────────────────────────────────┐
 │ [{"year":2024,"location":"Azores, Portugal"}] │
 └───────────────────────────────────────────────┘
@@ -87,10 +91,11 @@ ENGINE = MergeTree ORDER BY ()
 ```sql
 INSERT INTO arxiv SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/arxiv/arxiv.json.gz', 'JSONAsString')
-
-0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
 ```
 
+```response
+0 rows in set. Elapsed: 25.186 sec. Processed 2.52 million rows, 1.38 GB (99.89 thousand rows/s., 54.79 MB/s.)
+```
 
 Предположим, мы хотим посчитать количество статей, выпущенных по годам. Сравним следующий запрос, использующий только строковое поле, с [структурированной версией](/integrations/data-formats/json/inference#creating-tables) схемы:
 
@@ -103,7 +108,9 @@ FROM arxiv_v2
 GROUP BY published_year
 ORDER BY c ASC
 LIMIT 10
+```
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -118,7 +125,9 @@ LIMIT 10
 └────────────────┴───────┘
 
 10 rows in set. Elapsed: 0.264 sec. Processed 2.31 million rows, 153.57 MB (8.75 million rows/s., 582.58 MB/s.)
+```
 
+```sql
 -- using unstructured String
 
 SELECT
@@ -128,7 +137,9 @@ FROM arxiv
 GROUP BY published_year
 ORDER BY published_year ASC
 LIMIT 10
+```
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -151,7 +162,6 @@ Peak memory usage: 205.98 MiB.
 Строковые функции заметно медленнее (&gt; 10x), чем явные преобразования типов с использованием индексов. Приведённым выше запросам всегда требуется полное сканирование таблицы и обработка каждой строки. Хотя такие запросы всё ещё будут быстрыми на небольших наборах данных, как в этом примере, по мере роста объёма данных производительность будет ухудшаться.
 
 Гибкость такого подхода имеет очевидную цену в виде потерь производительности и усложнения синтаксиса, поэтому его следует использовать только для высокодинамичных объектов в схеме.
-
 
 ### Простые JSON-функции \{#simple-json-functions\}
 
@@ -185,7 +195,9 @@ FROM arxiv
 GROUP BY published_year
 ORDER BY published_year ASC
 LIMIT 10
+````
 
+```response
 ┌─published_year─┬─────c─┐
 │           1986 │     1 │
 │           1988 │     1 │
@@ -201,10 +213,9 @@ LIMIT 10
 
 10 rows in set. Elapsed: 0.964 sec. Processed 2.48 million rows, 4.21 GB (2.58 million rows/s., 4.36 GB/s.)
 Peak memory usage: 211.49 MiB.
-````
+```
 
 В приведённом выше запросе используется `simpleJSONExtractString` для извлечения ключа `created`, используя тот факт, что для даты публикации нам нужно только первое значение. В этом случае ограничения функций `simpleJSON*` приемлемы ради выигрыша в производительности.
-
 
 ## Использование типа Map {#using-map}
 
@@ -249,7 +260,9 @@ ORDER BY username
 ```sql
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","address":[{"street":"Victor Plains","suite":"Suite 879","city":"Wisokyburgh","zipcode":"90566-7771","geo":{"lat":-43.9509,"lng":-34.4618}}],"phone_numbers":["010-692-6593","020-192-3333"],"website":"clickhouse.com","company":{"name":"ClickHouse","catchPhrase":"The real-time data warehouse for analytics","labels":{"type":"database systems","founded":"2021"}},"dob":"2007-03-31","tags":{"hobby":"Databases","holidays":[{"year":2024,"location":"Azores, Portugal"}],"car":{"model":"Tesla","year":2023}}}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
@@ -259,15 +272,21 @@ Ok.
 
 ```sql
 SELECT company.labels FROM people
+```
 
+```response
 ┌─company.labels───────────────────────────────┐
 │ {'type':'database systems','founded':'2021'} │
 └──────────────────────────────────────────────┘
 
 1 row in set. Elapsed: 0.001 sec.
+```
 
+```sql
 SELECT company.labels['type'] AS type FROM people
+```
 
+```response
 ┌─type─────────────┐
 │ database systems │
 └──────────────────┘
@@ -276,7 +295,6 @@ SELECT company.labels['type'] AS type FROM people
 ```
 
 Полный набор функций `Map`, доступных для выполнения запросов, описан [здесь](/sql-reference/functions/tuple-map-functions.md). Если ваши данные не являются однородными по типу, существуют функции для выполнения [необходимого приведения типов](/sql-reference/functions/type-conversion-functions).
-
 
 #### Объектные значения
 
@@ -319,17 +337,23 @@ ORDER BY username
 
 INSERT INTO people FORMAT JSONEachRow
 {"id":1,"name":"Clicky McCliickHouse","username":"Clicky","email":"clicky@clickhouse.com","tags":{"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"},"car":{"name":"Tesla","time":"2024-07-11 15:18:23"}}}
+```
 
+```response
 Ok.
 
 1 row in set. Elapsed: 0.002 sec.
+```
 
+```sql
 SELECT tags['hobby'] AS hobby
 FROM people
 FORMAT JSONEachRow
 
 {"hobby":{"name":"Diving","time":"2024-07-11 14:18:01"}}
+```
 
+```response
 1 row in set. Elapsed: 0.001 sec.
 ```
 
@@ -355,7 +379,6 @@ FORMAT JSONEachRow
   ]
 }
 ```
-
 
 ## Использование типа Nested
 
@@ -397,7 +420,7 @@ CREATE table http
 
 Параметр `flatten_nested` управляет поведением типа данных `Nested`.
 
-#### flatten&#95;nested=1
+#### flatten_nested=1
 
 Значение `1` (по умолчанию) не поддерживает произвольную глубину вложенности. При таком значении проще всего рассматривать вложенную структуру данных как несколько столбцов [Array](/sql-reference/data-types/array) одинаковой длины. Поля `method`, `path` и `version` фактически являются отдельными столбцами `Array(Type)` с одним критическим ограничением: **длина полей `method`, `path` и `version` должна быть одинаковой.** Если мы воспользуемся `SHOW CREATE TABLE`, это иллюстрируется следующим образом:
 
@@ -461,7 +484,9 @@ FORMAT JSONEachRow
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+```
 
+```response
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
@@ -470,8 +495,7 @@ SELECT clientip, status, size, `request.method` FROM http WHERE has(request.meth
 
 Обратите внимание, что использование `Array` для подстолбцов означает, что потенциально может быть задействован полный набор [функций для массивов](/sql-reference/functions/array-functions), включая предложение [`ARRAY JOIN`](/sql-reference/statements/select/array-join) — это полезно, если ваши столбцы содержат несколько значений.
 
-
-#### flatten&#95;nested=0
+#### flatten_nested=0
 
 Это позволяет использовать произвольный уровень вложенности и означает, что вложенные столбцы остаются одним массивом `Tuple` — по сути, они становятся тем же самым, что и `Array(Tuple)`.
 
@@ -536,13 +560,14 @@ FORMAT JSONEachRow
 
 ```sql
 SELECT clientip, status, size, `request.method` FROM http WHERE has(request.method, 'GET');
+```
 
+```response
 ┌─clientip────┬─status─┬─size─┬─request.method─┐
 │ 45.212.12.0 │    200 │ 3305 │ ['GET']        │
 └─────────────┴────────┴──────┴────────────────┘
 1 row in set. Elapsed: 0.002 sec.
 ```
-
 
 ### Пример
 
@@ -565,7 +590,9 @@ FORMAT PrettyJSONEachRow
     "status": "200",
     "size": "24736"
 }
+```
 
+```response
 1 row in set. Elapsed: 0.312 sec.
 ```
 
@@ -589,7 +616,9 @@ WHERE status >= 400
   AND toDateTime(timestamp) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
 GROUP BY method, status
 ORDER BY c DESC LIMIT 5;
+```
 
+```response
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │
 │    404 │ HEAD   │   276 │
@@ -600,7 +629,6 @@ ORDER BY c DESC LIMIT 5;
 
 5 rows in set. Elapsed: 0.007 sec.
 ```
-
 
 ### Использование парных массивов
 
@@ -625,7 +653,9 @@ SELECT
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 keys:   ['@timestamp','clientip','request','status','size']
@@ -642,7 +672,9 @@ SELECT
     arrayMap(x -> (x.1), JSONExtractKeysAndValues(json, 'String')) AS keys,
     arrayMap(x -> (x.2), JSONExtractKeysAndValues(json, 'String')) AS values
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/http/documents-01.ndjson.gz', 'JSONAsString')
+```
 
+```response
 0 rows in set. Elapsed: 12.121 sec. Processed 10.00 million rows, 107.30 MB (825.01 thousand rows/s., 8.85 MB/s.)
 ```
 
@@ -656,7 +688,9 @@ FROM http_with_arrays
 WHERE status >= 400
   AND toDateTime(values[indexOf(keys, '@timestamp')]) BETWEEN '1998-01-01 00:00:00' AND '1998-06-01 00:00:00'
 GROUP BY method, status ORDER BY c DESC LIMIT 5;
+```
 
+```response
 ┌─status─┬─method─┬─────c─┐
 │    404 │ GET    │ 11267 │
 │    404 │ HEAD   │   276 │

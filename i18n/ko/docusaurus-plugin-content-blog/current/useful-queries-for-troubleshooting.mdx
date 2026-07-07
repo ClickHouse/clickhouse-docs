@@ -10,9 +10,10 @@ keywords: ['유용한 쿼리']
 
 {/* 생략 */}
 
+
 ## 문제 해결에 유용한 쿼리 \{#useful-queries-for-troubleshooting\}
 
-순서는 상관없지만, ClickHouse 문제를 해결하고 어떤 일이 발생하고 있는지 파악하는 데 유용한 몇 가지 쿼리를 소개합니다.
+순서는 상관없지만, ClickHouse 문제를 해결하고 어떤 일이 발생하고 있는지 파악하는 데 유용한 몇 가지 쿼리를 소개합니다. 
 
 또한 [ClickHouse 모니터링을 위한 필수 쿼리](https://clickhouse.com/blog/monitoring-troubleshooting-select-queries-clickhouse)를 정리한 훌륭한 블로그도 있습니다.
 
@@ -25,6 +26,7 @@ SELECT
 FROM system.settings
 WHERE changed
 ```
+
 
 ## 모든 테이블의 크기 확인하기 \{#get-the-size-of-all-your-tables\}
 
@@ -47,6 +49,7 @@ GROUP BY table
 │ hackernews      │ 6.23 GiB  │
 └─────────────────┴───────────┘
 ```
+
 
 ## 테이블의 행 수와 일간 평균 크기 \{#row-count-and-average-day-size-of-your-table\}
 
@@ -73,6 +76,7 @@ FROM
     ORDER BY rows DESC
 )
 ```
+
 
 ## 컬럼별 압축 비율 및 메모리 내 기본 인덱스 크기 \{#compression-columns-percentage-as-well-as-the-size-of-primary-index-in-memory\}
 
@@ -115,6 +119,7 @@ RIGHT JOIN
 ORDER BY parts.bytes_size DESC
 ```
 
+
 ## 지난 10분 동안 클라이언트가 보낸 쿼리 수 \{#number-of-queries-sent-by-client-in-the-last-10-minutes\}
 
 `toIntervalMinute(10)` 함수의 시간 간격은 필요에 따라 늘리거나 줄일 수 있습니다.
@@ -136,6 +141,7 @@ ORDER BY
     count() ASC
 ```
 
+
 ## 각 파티션의 파트 수 \{#number-of-parts-in-each-partition\}
 
 ```sql
@@ -150,6 +156,7 @@ GROUP BY
     table,
     partition_id
 ```
+
 
 ## 오래 실행되는 쿼리 찾기 \{#finding-long-running-queries\}
 
@@ -188,6 +195,7 @@ WHERE
     query_id = '0bb6e88b-9b9a-4ffc-b612-5746c859e360';
 ```
 
+
 ## 가장 최근 오류 확인 \{#view-the-most-recent-errors\}
 
 ```
@@ -207,6 +215,7 @@ ORDER BY last_error_time DESC
 └───────────────────────┴──────┴───────┴─────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴──────────────────┴────────┘
 ```
 
+
 ## CPU와 메모리 사용량이 가장 높은 상위 10개 쿼리 \{#top-10-queries-that-are-using-the-most-cpu-and-memory\}
 
 ```sql
@@ -223,6 +232,10 @@ ORDER BY memory_usage DESC
 LIMIT 10
 ```
 
+:::note
+단일 쿼리는 서로 다른 `query_id` 값을 가진 여러 행으로 기록될 수 있습니다. 분산 보조 쿼리와 내부 뷰 단계에는 `is_initial_query = 0`이 설정됩니다. 제출된 형태 그대로 쿼리를 보려면 `is_initial_query = 1`(또는 `query_id = initial_query_id`)로 필터링하십시오. 또한 ClickHouse가 할당하는 내부 `query_id` 값에는 `queryView...`와 같은 레이블이 포함될 수 있다는 점에 유의하십시오. 자세한 내용은 [`query_log` 참고](/operations/system-tables/query_log)를 참조하십시오.
+:::
+
 ## PROJECTION이 사용 중인 디스크 공간은 얼마나 되나요 \{#how-much-disk-space-are-my-projection-using\}
 
 ```sql
@@ -234,6 +247,7 @@ SELECT
     bytes_on_disk / parent_bytes_on_disk AS ratio
 FROM system.projection_parts
 ```
+
 
 ## 전체 데이터베이스에서 system.parts 및 마크 기준 디스크 사용량, 파트 수, 행 수 확인하기 \{#show-disk-storage-number-of-parts-number-of-rows-in-systemparts-and-marks-across-databases\}
 
@@ -255,6 +269,7 @@ GROUP BY
 ORDER BY database ASC
 ```
 
+
 ## 최근에 기록된 신규 파트의 세부 정보 나열 \{#list-details-of-recently-written-new-parts\}
 
 이 세부 정보에는 생성 시점, 크기, 행 수 등 다양한 정보가 포함됩니다.
@@ -269,4 +284,267 @@ FROM clusterAllReplicas(default, system.parts)
 WHERE (database = 'default') AND active AND (level = 0)
 ORDER BY modification_time DESC
 LIMIT 100
+```
+
+
+## 클러스터 전체 모니터링 쿼리 \{#cluster-wide-monitoring-queries\}
+
+다음 쿼리는 ClickHouse 클러스터를 모니터링하는 데 유용합니다. `clusterAllReplicas()`를 사용해 모든 노드의 데이터를 집계합니다.
+
+:::note
+이 쿼리는 클러스터 이름이 `default`라고 가정합니다. 클러스터 이름이 다르면 `'default'`와 `default`를 실제 클러스터 이름으로 바꾸십시오.
+:::
+
+### 분당 및 초당 새로 생성된 파트의 평균(지난 1시간) \{#avg-new-parts-per-minute-and-second\}
+
+```sql
+WITH
+    PER_MINUTE AS
+    (
+    SELECT
+        toStartOfInterval(modification_time, toIntervalMinute(1)) AS t,
+        count() AS new_part_count
+    FROM
+        clusterAllReplicas(default, merge(system, '^parts'))
+    WHERE
+        (database = 'default') AND
+        (table = 'your_table') AND
+        (active = true) AND
+        (level = 0) AND
+        (modification_time >= (now() - toIntervalHour(1)))
+    GROUP BY
+        t
+    ORDER BY
+        t ASC
+    SETTINGS skip_unavailable_shards = 1
+    )
+SELECT
+    AVG(new_part_count) AS new_parts_per_minute,
+    new_parts_per_minute / 60 AS new_parts_per_second
+FROM
+    PER_MINUTE
+```
+
+모니터링할 실제 테이블 이름으로 `'your_table'`을 바꾸십시오.
+
+### CPU 및 메모리 집약적 쿼리(클러스터 전체) \{#cpu-and-memory-intensive-queries-cluster-wide\}
+
+```sql
+SELECT
+    type,
+    event_time,
+    initial_query_id,
+    formatReadableSize(memory_usage) AS memory,
+    `ProfileEvents.Values`[indexOf(`ProfileEvents.Names`, 'UserTimeMicroseconds')] AS userCPU,
+    `ProfileEvents.Values`[indexOf(`ProfileEvents.Names`, 'SystemTimeMicroseconds')] AS systemCPU,
+    normalizedQueryHash(query) AS normalized_query_hash
+FROM clusterAllReplicas(default, merge(system, '^query_log'))
+ORDER BY memory_usage DESC
+LIMIT 10
+```
+
+### 완료 예상 시간이 포함된 진행 중인 머지 \{#merges-in-progress-with-eta\}
+
+이 쿼리는 클러스터에서 현재 실행 중인 머지와 완료까지의 예상 시간을 보여줍니다:
+
+```sql
+SELECT
+    hostName(),
+    database,
+    table,
+    round(elapsed, 0) AS elapsed_seconds,
+    round(progress, 4) AS progress_ratio,
+    formatReadableTimeDelta((elapsed / progress) - elapsed) AS estimated_time_remaining,
+    num_parts,
+    result_part_name
+FROM clusterAllReplicas(default, merge(system, '^merges'))
+ORDER BY (elapsed / progress) - elapsed ASC
+```
+
+### 정규화된 해시별 가장 많이 사용되는 쿼리 \{#most-common-queries-by-normalized-hash\}
+
+가장 자주 실행되는 쿼리를 찾습니다(최적화가 필요한 쿼리를 식별하는 데 유용합니다):
+
+```sql
+SELECT
+    normalizedQueryHash(query) AS query_hash,
+    count() AS execution_count,
+    any(query) AS example_query
+FROM clusterAllReplicas(default, merge(system, '^query_log'))
+WHERE event_date >= today() - 1
+GROUP BY normalizedQueryHash(query)
+ORDER BY execution_count DESC
+LIMIT 20
+```
+
+### 이벤트 유형 및 날짜별 오류 수 \{#error-counts-by-event-type-and-date\}
+
+클러스터 전반에서 발생한 파트 생성 오류를 분석합니다:
+
+```sql
+SELECT
+    event_date,
+    event_type,
+    table,
+    error,
+    COUNT() AS error_count
+FROM clusterAllReplicas(default, merge(system, '^part_log'))
+WHERE database = 'default'
+GROUP BY
+    event_date,
+    event_type,
+    error,
+    table
+ORDER BY
+    event_date DESC,
+    error_count DESC
+```
+
+### 노드별 테이블 수 \{#number-of-tables-by-node\}
+
+클러스터 노드 전반의 테이블 분포를 확인합니다:
+
+```sql
+SELECT
+    hostName() AS host,
+    count() AS table_count
+FROM clusterAllReplicas('default', merge(system, '^tables'))
+WHERE database = 'default'
+GROUP BY hostName()
+ORDER BY table_count DESC
+```
+
+### async insert 작업 확인 \{#check-for-async-insert-operations\}
+
+async insert 동작을 모니터링합니다:
+
+```sql
+SELECT
+    event_date,
+    count() AS total_count,
+    sum(if(query LIKE '%async%', 1, 0)) AS async_count,
+    sum(if(query LIKE '%INSERT%', 1, 0)) AS insert_count
+FROM clusterAllReplicas(default, merge(system, '^query_log'))
+WHERE event_date >= today() - 7
+GROUP BY event_date
+ORDER BY event_date DESC
+```
+
+## 파트 및 머지 분석 \{#parts-and-merges-analysis\}
+
+### 테이블별 현재 활성 파트 수 \{#currently-active-parts-by-table\}
+
+클러스터 전체에서 테이블별 활성 파트 수를 확인할 수 있습니다:
+
+```sql
+SELECT
+    database,
+    table,
+    count() AS part_count,
+    formatReadableSize(sum(bytes_on_disk)) AS total_size
+FROM clusterAllReplicas(default, system.parts)
+WHERE active = 1 AND database = 'default'
+GROUP BY database, table
+ORDER BY part_count DESC
+```
+
+### 파트가 과도하게 많은 파티션 \{#partitions-with-too-many-parts\}
+
+파트 수가 너무 많아 쿼리 성능에 영향을 줄 수 있는 파티션을 찾습니다:
+
+```sql
+SELECT
+    database,
+    table,
+    partition,
+    count() AS part_count,
+    formatReadableSize(sum(bytes_on_disk)) AS total_size
+FROM clusterAllReplicas(default, system.parts)
+WHERE active = 1
+GROUP BY database, table, partition
+HAVING part_count > 100
+ORDER BY part_count DESC
+```
+
+### 분리된 파트 \{#detached-parts\}
+
+조사가 필요할 수 있는 분리된 파트가 있는지 확인하세요:
+
+```sql
+SELECT
+    database,
+    table,
+    partition_id,
+    name,
+    reason,
+    count()
+FROM clusterAllReplicas(default, system.detached_parts)
+GROUP BY database, table, partition_id, name, reason
+ORDER BY database, table
+```
+
+## 시스템 정보 쿼리 \{#system-information-queries\}
+
+### 노드별 클러스터 전체 메모리 사용량 \{#cluster-wide-memory-usage-by-node\}
+
+노드 전반의 메모리 사용량을 모니터링합니다:
+
+```sql
+SELECT
+    hostName() AS host,
+    formatReadableSize(max(memory_usage)) AS peak_memory,
+    formatReadableSize(avg(memory_usage)) AS avg_memory,
+    formatReadableSize(min(memory_usage)) AS min_memory
+FROM clusterAllReplicas(default, merge(system, '^query_log'))
+WHERE event_date >= today() - 1
+GROUP BY hostName()
+ORDER BY peak_memory DESC
+```
+
+### 클러스터에서 쿼리 실행하기 \{#running-queries-on-the-cluster\}
+
+현재 실행 중인 쿼리를 확인하십시오:
+
+```sql
+SELECT
+    hostName() AS host,
+    initial_user,
+    query_id,
+    elapsed,
+    read_rows,
+    formatReadableSize(memory_usage) AS memory_usage,
+    normalizedQueryHash(query) AS query_hash
+FROM clusterAllReplicas(default, system.processes)
+ORDER BY elapsed DESC
+```
+
+### 기본값에서 변경된 설정 \{#modified-settings-from-defaults\}
+
+기본값에서 변경된 설정을 확인하십시오:
+
+```sql
+SELECT
+    hostName() AS host,
+    name,
+    value
+FROM clusterAllReplicas(default, system.settings)
+WHERE changed = 1
+ORDER BY hostName(), name
+```
+
+### 복제 큐 상태 \{#replication-queue-status\}
+
+복제된 테이블에서는 복제 큐를 확인하십시오:
+
+```sql
+SELECT
+    hostName() AS host,
+    database,
+    table,
+    count() AS queue_size,
+    sum(if(is_currently_executing = 1, 1, 0)) AS executing_count
+FROM clusterAllReplicas(default, system.replication_queue)
+GROUP BY hostName(), database, table
+HAVING queue_size > 0
+ORDER BY queue_size DESC
 ```

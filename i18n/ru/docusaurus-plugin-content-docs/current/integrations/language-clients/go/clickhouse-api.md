@@ -8,12 +8,10 @@ title: 'ClickHouse API'
 doc_type: 'справочник'
 ---
 
-# ClickHouse API \{#clickhouse-api\}
+Все примеры кода для API ClickHouse доступны [здесь](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/clickhouse_api).
 
-Все примеры кода для ClickHouse API можно найти [здесь](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/clickhouse_api).
-
-Сведения о настройке подключения см. в разделе [Настройка](/integrations/language-clients/go/configuration).
-Сведения о поддерживаемых типах данных и сопоставлениях типов Go см. в разделе [Типы данных](/integrations/language-clients/go/data-types).
+Параметры соединения см. в разделе [Конфигурация](/integrations/language-clients/go/configuration).
+Поддерживаемые типы данных и соответствия типов Go см. в разделе [Типы данных](/integrations/language-clients/go/data-types).
 
 ## Подключение \{#connecting\}
 

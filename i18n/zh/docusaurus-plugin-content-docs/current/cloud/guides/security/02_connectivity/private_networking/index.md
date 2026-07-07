@@ -2,12 +2,10 @@
 slug: /cloud/security/connectivity/private-networking
 title: '私有网络'
 hide_title: true
-description: 'ClickHouse Cloud 私有网络部分的目录页'
+description: 'ClickHouse Cloud 私有网络部分的目录页面'
 doc_type: 'landing-page'
-keywords: ['私有网络', '网络安全', 'VPC', '网络连接', '云功能']
+keywords: ['私有网络', '网络安全', 'vpc', '连接性', '云功能']
 ---
-
-# 私有网络 \{#private-networking\}
 
 ClickHouse Cloud 支持将您的服务连接到云端虚拟网络。请根据您的云服务提供商，参考以下指南完成配置：
 

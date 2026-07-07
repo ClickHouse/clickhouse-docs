@@ -1,5 +1,5 @@
 ---
-description: 'ALTER に関するドキュメント'
+description: 'ALTER のドキュメント'
 sidebar_label: 'ALTER'
 sidebar_position: 35
 slug: /sql-reference/statements/alter/
@@ -7,12 +7,10 @@ title: 'ALTER'
 doc_type: 'reference'
 ---
 
-# ALTER \{#alter\}
-
 ほとんどの `ALTER TABLE` クエリは、テーブルの設定またはデータを変更します。
 
-| Modifier                                                                            |
-|-------------------------------------------------------------------------------------|
+| Modifier                                                                    |
+| --------------------------------------------------------------------------- |
 | [COLUMN](/sql-reference/statements/alter/column.md)                         |
 | [PARTITION](/sql-reference/statements/alter/partition.md)                   |
 | [DELETE](/sql-reference/statements/alter/delete.md)                         |
@@ -26,29 +24,29 @@ doc_type: 'reference'
 | [APPLY PATCHES](/sql-reference/statements/alter/apply-patches.md)           |
 
 :::note
-ほとんどの `ALTER TABLE` クエリは、[\*MergeTree](/engines/table-engines/mergetree-family/index.md)、[Merge](/engines/table-engines/special/merge.md)、および [Distributed](/engines/table-engines/special/distributed.md) テーブルに対してのみサポートされています。
+ほとんどの `ALTER TABLE` クエリは、[*MergeTree](/engines/table-engines/mergetree-family/index.md)、[Merge](/engines/table-engines/special/merge.md)、および [Distributed](/engines/table-engines/special/distributed.md) テーブルに対してのみサポートされています。
 :::
 
 次の `ALTER` ステートメントはビューを操作します。
 
-| Statement                                                                           | Description                                                                          |
-|-------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| [ALTER TABLE ... MODIFY QUERY](/sql-reference/statements/alter/view.md)     | [マテリアライズドビュー](/sql-reference/statements/create/view) の構造を変更します。                                       |
+| Statement                                                               | Description                                                     |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------- |
+| [ALTER TABLE ... MODIFY QUERY](/sql-reference/statements/alter/view.md) | [マテリアライズドビュー](/sql-reference/statements/create/view) の構造を変更します。 |
 
 次の `ALTER` ステートメントは、ロールベースのアクセス制御に関連するエンティティを変更します。
 
-| Statement                                                                       |
-|---------------------------------------------------------------------------------|
+| Statement                                                               |
+| ----------------------------------------------------------------------- |
 | [USER](/sql-reference/statements/alter/user.md)                         |
 | [ROLE](/sql-reference/statements/alter/role.md)                         |
 | [QUOTA](/sql-reference/statements/alter/quota.md)                       |
 | [ROW POLICY](/sql-reference/statements/alter/row-policy.md)             |
 | [SETTINGS PROFILE](/sql-reference/statements/alter/settings-profile.md) |
 
-| Statement                                                                             | Description                                                                               |
-|---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | コメントがあらかじめ設定されていたかどうかに関係なく、テーブルのコメントを追加、変更、または削除します。 |
-| [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | [Named Collections](/operations/named-collections.md) を変更します。                   |
+| Statement                                                                     | Description                                                   |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | コメントがあらかじめ設定されていたかどうかに関係なく、テーブルのコメントを追加、変更、または削除します。          |
+| [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | [Named Collections](/operations/named-collections.md) を変更します。 |
 
 ## ミューテーション \{#mutations\}
 

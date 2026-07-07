@@ -7,9 +7,7 @@ title: 'Hudi 表引擎'
 doc_type: 'reference'
 ---
 
-# Hudi 表引擎 \{#hudi-table-engine\}
-
-该引擎为 Amazon S3 中现有的 Apache [Hudi](https://hudi.apache.org/) 表提供只读集成。
+该引擎支持以只读方式集成 Amazon S3 中现有的 Apache [Hudi](https://hudi.apache.org/) 表。
 
 ## 创建表 \{#create-table\}
 

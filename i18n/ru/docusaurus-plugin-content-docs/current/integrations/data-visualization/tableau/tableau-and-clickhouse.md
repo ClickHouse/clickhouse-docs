@@ -29,19 +29,16 @@ import tableau_workbook6 from '@site/static/images/integrations/data-visualizati
 import tableau_workbook7 from '@site/static/images/integrations/data-visualization/tableau_workbook7.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Подключение Tableau к ClickHouse \{#connecting-tableau-to-clickhouse\}
-
-<ClickHouseSupportedBadge/>
-
-ClickHouse предоставляет официальный коннектор Tableau, доступный на
+ClickHouse предлагает официальный коннектор Tableau, представленный в
 [Tableau Exchange](https://exchange.tableau.com/products/1064).
-Этот коннектор основан на современном [JDBC‑драйвере](/integrations/language-clients/java/jdbc) ClickHouse.
+Коннектор основан на продвинутом [JDBC-драйвере](/integrations/language-clients/java/jdbc) ClickHouse.
 
-С помощью этого коннектора Tableau может использовать базы данных и таблицы ClickHouse в качестве источников данных. Чтобы использовать эту возможность,
-выполните шаги, описанные в следующем руководстве по настройке.
+С помощью этого коннектора Tableau может использовать базы данных и таблицы ClickHouse в качестве источников данных. Чтобы включить эту возможность,
+следуйте приведенному ниже руководству по настройке.
 
-<TOCInline toc={toc}/>
+<TOCInline toc={toc} />
 
 ## Предварительная настройка перед использованием \{#setup-required-prior-usage\}
 

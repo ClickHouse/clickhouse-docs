@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['ClickHouse Cloud', 'SAML', 'SSO', 'single sign-on', 'IdP']
 ---
 
-# SAML SSO removal
 
 Customers may need to remove a SAML integration from an organization for reasons such as changing an identity provider. SAML users are separate identities from other user types. Follow the instructions below to switch to another authentication method.
 

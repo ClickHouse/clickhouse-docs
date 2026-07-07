@@ -1,7 +1,7 @@
 ---
-title: 'Обзор соответствия требованиям'
+title: 'Отчеты по безопасности и соответствию требованиям'
 slug: /cloud/security/compliance-overview
-description: 'Обзор сертификатов в области безопасности и соответствия требованиям ClickHouse Cloud, включая SOC 2, ISO 27001, U.S. DPF и HIPAA'
+description: 'Обзор сертификатов в области безопасности и соответствия требованиям ClickHouse Cloud, включая SOC 2, ISO 27001, Рамочное соглашение США по защите данных и HIPAA'
 doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF', 'PCI']
 ---
@@ -9,10 +9,7 @@ keywords: ['ClickHouse Cloud', 'SOC 2 Type II', 'ISO 27001', 'HIPAA', 'U.S. DPF'
 import BetaBadge from '@theme/badges/BetaBadge';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge';
 
-
-# Отчеты по безопасности и соответствию требованиям \{#security-and-compliance-reports\}
-
-ClickHouse оценивает потребности наших клиентов в области безопасности и соответствия требованиям и постоянно расширяет программу по мере появления запросов на дополнительные отчеты. Для получения дополнительной информации или загрузки отчетов посетите наш [Центр доверия](https://trust.clickhouse.com).
+ClickHouse оценивает потребности наших клиентов в области безопасности и соответствия требованиям и постоянно расширяет программу по мере поступления запросов на дополнительные отчеты. Чтобы получить дополнительную информацию или скачать отчеты, посетите наш [Trust Center](https://trust.clickhouse.com).
 
 ## SOC 2 Type II (с 2022 года) \{#soc-2-type-ii-since-2022\}
 

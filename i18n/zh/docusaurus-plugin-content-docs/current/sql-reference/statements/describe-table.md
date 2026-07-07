@@ -1,5 +1,5 @@
 ---
-description: 'DESCRIBE TABLE 语句文档'
+description: 'Describe Table 文档'
 sidebar_label: 'DESCRIBE TABLE'
 sidebar_position: 42
 slug: /sql-reference/statements/describe-table
@@ -7,7 +7,7 @@ title: 'DESCRIBE TABLE'
 doc_type: 'reference'
 ---
 
-返回表的列信息。
+返回表列信息。
 
 **语法**
 
@@ -15,26 +15,24 @@ doc_type: 'reference'
 DESC|DESCRIBE TABLE [db.]table [INTO OUTFILE filename] [FORMAT format]
 ```
 
-`DESCRIBE` 语句针对表的每一列返回一行，行中包含以下 [String](../../sql-reference/data-types/string.md) 类型的值：
+`DESCRIBE` 语句会为表中的每个列返回一行，包含以下 [String](../../sql-reference/data-types/string.md) 类型的值：
 
 * `name` — 列名。
 * `type` — 列类型。
-* `default_type` — 列中使用的 [默认表达式](/sql-reference/statements/create/table) 子句：`DEFAULT`、`MATERIALIZED` 或 `ALIAS`。如果没有默认表达式，则返回空字符串。
-* `default_expression` — 在 `DEFAULT` 子句之后指定的表达式。
+* `default_type` — 列[默认表达式](/sql-reference/statements/create/table)中使用的子句：`DEFAULT`、`MATERIALIZED` 或 `ALIAS`。如果没有默认表达式，则返回空字符串。
+* `default_expression` — 在 `DEFAULT` 子句后指定的表达式。
 * `comment` — [列注释](/sql-reference/statements/alter/column#comment-column)。
 * `codec_expression` — 应用于该列的 [codec](/sql-reference/statements/create/table#column_compression_codec)。
-* `ttl_expression` — [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 表达式。
-* `is_subcolumn` — 对于内部子列，该标志值为 `1`。仅当通过 [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 设置启用子列描述时，才会包含在结果中。
+* `ttl_expression` — [生存时间 (TTL)](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 表达式。
+* `is_subcolumn` — 对于内部子列，该标志的值为 `1`。只有通过 [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 设置启用子列描述时，结果中才会包含此项。
 
-[Nested](../../sql-reference/data-types/nested-data-structures/index.md) 数据结构中的所有列都会单独列出。每个列名都带有父列名和一个点作为前缀。
+[Nested](../../sql-reference/data-types/nested-data-structures/index.md) 数据结构中的所有列都会单独描述。每个列名都以父列名和一个点号作为前缀。
 
-要显示其他数据类型的内部子列，请使用 [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 设置。
+如需显示其他数据类型的内部子列，请使用 [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 设置。
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 CREATE TABLE describe_example (
     id UInt64, text String DEFAULT 'unknown' CODEC(ZSTD),
     user Tuple (name String, age UInt8)
@@ -44,9 +42,7 @@ DESCRIBE TABLE describe_example;
 DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ id   │ UInt64                        │              │                    │         │                  │                │
 │ text │ String                        │ DEFAULT      │ 'unknown'          │         │ ZSTD(1)          │                │
@@ -54,9 +50,9 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-第二个查询还会额外显示子列：
+第二个查询还会显示子列：
 
-```text
+```text title="Response"
 ┌─name──────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┬─is_subcolumn─┐
 │ id        │ UInt64                        │              │                    │         │                  │                │            0 │
 │ text      │ String                        │ DEFAULT      │ 'unknown'          │         │ ZSTD(1)          │                │            0 │
@@ -66,7 +62,7 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └───────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┴──────────────┘
 ```
 
-`DESCRIBE` 语句也可以用于子查询或标量表达式：
+DESCRIBE 语句也可用于子查询或标量表达式：
 
 ```SQL
 DESCRIBE SELECT 1 FORMAT TSV;
@@ -78,14 +74,12 @@ DESCRIBE SELECT 1 FORMAT TSV;
 DESCRIBE (SELECT 1) FORMAT TSV;
 ```
 
-结果：
-
-```text
+```text title="Response"
 1       UInt8
 ```
 
-这种用法会返回指定查询或子查询结果列的元数据。在执行之前，它有助于理解复杂查询的结构。
+此用法返回指定查询或子查询结果列的元数据，有助于在执行前了解复杂查询的结构。
 
-**另请参阅**
+**另请参见**
 
-* [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 设置
+* [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 设置。

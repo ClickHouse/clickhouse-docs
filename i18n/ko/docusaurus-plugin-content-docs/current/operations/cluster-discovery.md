@@ -6,15 +6,13 @@ title: '클러스터 디스커버리'
 doc_type: 'guide'
 ---
 
-# 클러스터 디스커버리 \{#cluster-discovery\}
-
 ## 개요 \{#overview\}
 
-ClickHouse의 Cluster Discovery 기능은 노드를 설정 파일에서 명시적으로 정의할 필요 없이, 각 노드가 자동으로 서로를 발견하고 자체적으로 등록하도록 하여 클러스터 구성을 단순화합니다. 이는 각 노드를 수동으로 정의하는 작업이 번거로워지는 경우에 특히 유용합니다.
+ClickHouse의 클러스터 디스커버리 기능은 노드를 설정 파일에서 명시적으로 정의할 필요 없이, 각 노드가 자동으로 서로를 발견하고 자체적으로 등록하도록 하여 클러스터 구성을 단순화합니다. 이는 각 노드를 수동으로 정의하는 작업이 번거로워지는 경우에 특히 유용합니다.
 
 :::note
 
-Cluster Discovery는 실험적 기능이며, 향후 버전에서 변경되거나 제거될 수 있습니다.
+클러스터 디스커버리는 실험적 기능이며, 향후 버전에서 변경되거나 제거될 수 있습니다.
 이 기능을 활성화하려면 설정 파일에 `allow_experimental_cluster_discovery` 설정을 포함하십시오:
 
 ```xml
@@ -215,15 +213,12 @@ INSERT INTO event_table ...
 
 ```sql
 SELECT hostname(), database, table FROM clusterAllReplicas(default, system.tables) WHERE table = 'event_table' FORMAT PrettyCompactMonoBlock
-```
 
 ┌─hostname()───┬─database─┬─table───────┐
-│ a6a68731c21b │ default  │ event&#95;table │
-│ 92d3c04025e8 │ default  │ event&#95;table │
-│ 8e62b9cb17a1 │ default  │ event&#95;table │
+│ a6a68731c21b │ default  │ event_table │
+│ 92d3c04025e8 │ default  │ event_table │
+│ 8e62b9cb17a1 │ default  │ event_table │
 └──────────────┴──────────┴─────────────┘
-
 ```
 
 If you need to have tables replicated on all the nodes, you may use the [Replicated](../engines/database-engines/replicated.md) database engine in alternative to cluster discovery.
-```

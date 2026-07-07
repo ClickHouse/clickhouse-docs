@@ -21,14 +21,19 @@ exceptions:
   - ALTER DELETE
   - DROP PARTITION
   - TRUNCATE
+  - "`OPTIMIZE FINAL`"
   - Arrow
   - AWS
   - Apache
+  - Airflow
+  - Apache Airflow
   - AggregatingMergeTree
   - Amazon
   - Amazon Web Services
   - "AI Notebooks"
   - "ClickHouse Assistant"
+  - "ClickHouse Agents"
+  - "Agent Builder"
   - Azure
   - Azure Blob Storage
   - Azure Data Factory
@@ -58,6 +63,7 @@ exceptions:
   - DBT
   - DDL
   - DNS
+  - Debian
   - Docker
   - Docker Compose
   - DigitalOcean Spaces
@@ -88,6 +94,7 @@ exceptions:
   - JSON
   - JSON format settings
   - JSON settings
+  - Join Order Benchmark
   - Kafka
   - Kafka Connect
   - KMS
@@ -105,6 +112,7 @@ exceptions:
   - NPM
   - NodeJS
   - NodeJs
+  - Odigos
   - OLAP
   - OLTP
   - ORC
@@ -142,6 +150,7 @@ exceptions:
   - SDK
   - TCP
   - TDE
+  - TPC-H
   - TTL
   - TiDB
   - Time To Live
@@ -152,6 +161,8 @@ exceptions:
   - UI
   - URLs
   - UAE
+  - Ubuntu
+  - Unix
   - User Defined Functions
   - VLDB
   - VS
@@ -160,6 +171,7 @@ exceptions:
   - Visual
   - Windows
   - Yandex.Metrica
+  - Yum
   - ZSTD
   - MergeTree
   - MySQL
@@ -208,6 +220,7 @@ exceptions:
   - Avg state
   - Count resample
   - PREWHERE
+  - "PREPARE, EXECUTE, DEALLOCATE"
   - Splunk
   - Retool
   - Airbyte
@@ -216,6 +229,7 @@ exceptions:
   - RowBinary
   - MessagePack
   - Protocol Buffers
+  - Protobuf
   - Cap'n Proto
   - TabSeparated
   - TabSeparatedRaw
@@ -314,6 +328,7 @@ exceptions:
   - Backward Incompatible Changes
   - Backward Incompatible Change
   - Build Improvements
+  - "Build/Testing/Packaging Improvement"
   - Main Changes
   - New Feature
   - Experimental Feature
@@ -555,6 +570,7 @@ exceptions:
   - Neon
   - NiFi
   - NixOS
+  - Notion
   - Ollama
   - OneLake
   - OpenAI
@@ -577,9 +593,11 @@ exceptions:
   - Synapse
   - Systemd
   - "TABLUM.IO"
+  - Tigris
   - TimescaleDB
   - Upsonic
   - WebUI
+  - Rocket.BI
   # Acronyms
   - AI
   - BI
@@ -634,4 +652,6 @@ exceptions:
   - I/O
   - JOIN
   - RESTORE
+  - Supabase
   - ClickHouse Connect
+  - re2

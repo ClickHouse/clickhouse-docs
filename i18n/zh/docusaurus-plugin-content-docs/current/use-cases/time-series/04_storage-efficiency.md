@@ -1,17 +1,15 @@
 ---
-title: '存储效率 - 时间序列'
+title: '存储效率 - 时序'
 sidebar_label: '存储效率'
-description: '提升时间序列数据的存储效率'
+description: '提升时序数据的存储效率'
 slug: /use-cases/time-series/storage-efficiency
 keywords: ['time-series', 'storage efficiency', 'compression', 'data retention', 'TTL', 'storage optimization', 'disk usage']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 时序存储效率 \{#time-series-storage-efficiency\}
-
-在前面学习了如何查询我们的 Wikipedia 统计数据集之后，接下来重点优化它在 ClickHouse 中的存储效率。
-本节将演示一些实用技巧，在保持查询性能的同时减少存储需求。
+在了解如何查询我们的 Wikipedia 统计数据集之后，让我们将重点转向在 ClickHouse 中优化其存储效率。
+本节将演示在保持查询性能的同时减少存储需求的实用技术。
 
 ## 类型优化 \{#time-series-type-optimization\}
 
@@ -60,7 +58,6 @@ MODIFY COLUMN `hits` UInt32;
 ```
 
 这将使该列在内存中的大小至少减少一半。请注意，由于压缩的原因，磁盘上的大小将保持不变。但要注意，不要选择过小的数据类型！
-
 
 ## 专用编解码器 \{#time-series-specialized-codecs\}
 

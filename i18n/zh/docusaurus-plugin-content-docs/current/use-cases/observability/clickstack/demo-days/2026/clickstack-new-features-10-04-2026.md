@@ -7,6 +7,7 @@ pagination_next: null
 description: "ClickStack 演示日 - 2026-04-10"
 doc_type: "guide"
 keywords: ["ClickStack", "演示日"]
+sidebar_position: -20260410
 ---
 
 ## 可固定的数据源筛选器 \{#pinnable-datasource-filters\}

@@ -1,14 +1,12 @@
 ---
-sidebar_label: 'API database/sql'
+sidebar_label: 'API `database/sql`'
 sidebar_position: 4
-keywords: ['clickhouse', 'go', 'golang', 'база данных', 'sql', 'стандартный']
+keywords: ['clickhouse', 'go', 'golang', 'database', 'sql', 'standard']
 description: 'Использование стандартного интерфейса database/sql с clickhouse-go.'
 slug: /integrations/language-clients/go/database-sql-api
-title: 'API database/sql'
-doc_type: 'справочник'
+title: 'API `database/sql`'
+doc_type: 'reference'
 ---
-
-# API `database/sql` \{#database-sql-api\}
 
 Полные примеры кода для стандартного API можно найти [здесь](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std).
 

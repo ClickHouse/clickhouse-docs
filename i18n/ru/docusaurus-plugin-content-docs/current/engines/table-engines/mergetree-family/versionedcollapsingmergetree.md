@@ -1,6 +1,6 @@
 ---
-description: 'Обеспечивает быструю запись состояний объектов, которые постоянно изменяются,
-  и фоновое удаление старых состояний объектов.'
+description: 'Позволяет быстро записывать состояния объектов, которые постоянно изменяются,
+  и удалять старые состояния объектов в фоновом режиме.'
 sidebar_label: 'VersionedCollapsingMergeTree'
 sidebar_position: 80
 slug: /engines/table-engines/mergetree-family/versionedcollapsingmergetree
@@ -8,16 +8,14 @@ title: 'Движок таблицы VersionedCollapsingMergeTree'
 doc_type: 'reference'
 ---
 
-# Движок таблицы VersionedCollapsingMergeTree \{#versionedcollapsingmergetree-table-engine\}
-
 Этот движок:
 
-- Обеспечивает быструю запись состояний объектов, которые постоянно изменяются.
-- Удаляет старые состояния объектов в фоновом режиме, что значительно сокращает объём занимаемого места.
+* Обеспечивает быструю запись состояний объектов, которые постоянно изменяются.
+* Удаляет старые состояния объектов в фоновом режиме, что значительно сокращает объём занимаемого места.
 
 См. раздел [Collapsing](#table_engines_versionedcollapsingmergetree) для получения дополнительной информации.
 
-Движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) и добавляет к алгоритму слияния кусков данных логику схлопывания строк. `VersionedCollapsingMergeTree` служит той же цели, что и [CollapsingMergeTree](../../../engines/table-engines/mergetree-family/collapsingmergetree.md), но использует другой алгоритм схлопывания, который позволяет вставлять данные в произвольном порядке несколькими потоками. В частности, столбец `Version` помогает корректно схлопывать строки, даже если они вставляются в неверном порядке. В отличие от этого, `CollapsingMergeTree` допускает только строго последовательную вставку.
+Движок наследуется от [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree) и добавляет к алгоритму слияния частей данных логику схлопывания строк. `VersionedCollapsingMergeTree` служит той же цели, что и [CollapsingMergeTree](../../../engines/table-engines/mergetree-family/collapsingmergetree.md), но использует другой алгоритм схлопывания, который позволяет вставлять данные в произвольном порядке несколькими потоками. В частности, столбец `Version` помогает корректно схлопывать строки, даже если они вставляются в неверном порядке. В отличие от этого, `CollapsingMergeTree` допускает только строго последовательную вставку.
 
 ## Создание таблицы \{#creating-a-table\}
 
@@ -44,7 +42,7 @@ VersionedCollapsingMergeTree(sign, version)
 
 | Параметр  | Описание                                                                  | Тип                                                                                                                                                                                                                                                                                            |
 | --------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sign`    | Имя столбца с типом записи: `1` — запись «state», `-1` — запись «cancel». | [`Int8`](/sql-reference/data-types/int-uint)                                                                                                                                                                                                                                                   |
+| `sign`    | Имя столбца с типом строки: `1` — строка «state», `-1` — строка «cancel». | [`Int8`](/sql-reference/data-types/int-uint)                                                                                                                                                                                                                                                   |
 | `version` | Имя столбца с версией состояния объекта.                                  | [`Int*`](/sql-reference/data-types/int-uint), [`UInt*`](/sql-reference/data-types/int-uint), [`Date`](/sql-reference/data-types/date), [`Date32`](/sql-reference/data-types/date32), [`DateTime`](/sql-reference/data-types/datetime) или [`DateTime64`](/sql-reference/data-types/datetime64) |
 
 ### Клаузы запроса \{#query-clauses\}
@@ -59,17 +57,17 @@ VersionedCollapsingMergeTree(sign, version)
   :::
 
   ```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
     name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
     name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
     ...
-) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
-```
+  ) ENGINE [=] VersionedCollapsingMergeTree(date-column [, samp#table_engines_versionedcollapsingmergetreeling_expression], (primary, key), index_granularity, sign, version)
+  ```
 
   Все параметры, кроме `sign` и `version`, имеют то же значение, что и в `MergeTree`.
 
-  * `sign` — имя столбца с типом записи: `1` — запись «state», `-1` — запись «cancel».
+  * `sign` — имя столбца с типом строки: `1` — строка «state», `-1` — строка «cancel».
 
     Тип данных столбца — `Int8`.
 
@@ -134,13 +132,13 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 
 ## Выборка данных \{#selecting-data\}
 
-ClickHouse не гарантирует, что все строки с одинаковым первичным ключом окажутся в одной и той же результирующей части данных или даже на одном и том же физическом сервере. Это верно как при записи данных, так и при последующем объединении частей данных. Кроме того, ClickHouse обрабатывает запросы `SELECT` в несколько потоков и не может предсказать порядок строк в результате. Это означает, что агрегирование обязательно, если необходимо получить полностью «схлопнутые» данные из таблицы `VersionedCollapsingMergeTree`.
+ClickHouse не гарантирует, что все строки с одинаковым первичным ключом окажутся в одной и той же результирующей части данных или даже на одном и том же физическом сервере. Это верно как при записи данных, так и при последующем слиянии частей данных. Кроме того, ClickHouse обрабатывает запросы `SELECT` в несколько потоков и не может предсказать порядок строк в результате. Это означает, что агрегирование обязательно, если необходимо получить полностью «схлопнутые» данные из таблицы `VersionedCollapsingMergeTree`.
 
 Чтобы завершить схлопывание, сформируйте запрос с оператором `GROUP BY` и агрегатными функциями, которые учитывают знак. Например, для вычисления количества используйте `sum(Sign)` вместо `count()`. Для вычисления суммы некоторой величины используйте `sum(Sign * x)` вместо `sum(x)` и добавьте `HAVING sum(Sign) > 0`.
 
 Такие агрегаты, как `count`, `sum` и `avg`, можно вычислять таким образом. Агрегат `uniq` можно вычислить, если объект имеет хотя бы одно несхлопнутое состояние. Агрегаты `min` и `max` вычислить нельзя, потому что `VersionedCollapsingMergeTree` не сохраняет историю значений схлопнутых состояний.
 
-Если нужно извлечь данные со «схлопыванием», но без агрегирования (например, чтобы проверить, существуют ли строки, последние значения которых удовлетворяют определённым условиям), можно использовать модификатор `FINAL` в секции `FROM`. Такой подход неэффективен и не должен применяться для больших таблиц.
+Если нужно извлечь данные со «схлопыванием», но без агрегирования (например, чтобы проверить, существуют ли строки, последние значения которых удовлетворяют определённым условиям), можно использовать модификатор `FINAL` в предложении `FROM`. Такой подход неэффективен и не должен применяться для больших таблиц.
 
 ## Пример использования \{#example-of-use\}
 

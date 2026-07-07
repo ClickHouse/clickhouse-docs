@@ -68,12 +68,11 @@ ClickHouse CLI(`clickhousectl`)는 로컬 ClickHouse 개발 및 ClickHouse Cloud
 # Install the CLI
 curl https://clickhouse.com/cli | sh
 
-# Install and start ClickHouse locally
-clickhousectl local install stable
+# Install the latest stable ClickHouse, set it as your default, and symlink the clickhouse binary onto your PATH
+clickhousectl local use stable
 clickhousectl local server start
 clickhousectl local client
 ```
-
 
 ## clickhouse-local \{#clickhouse-local\}
 

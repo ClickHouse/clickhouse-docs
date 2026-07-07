@@ -1,5 +1,6 @@
 ---
-description: 'Движок таблицы MongoDB — это движок только для чтения, который позволяет считывать данные из удалённой коллекции.'
+description: 'Движок таблицы MongoDB — это движок таблицы только для чтения, который позволяет читать данные из
+  удалённой коллекции.'
 sidebar_label: 'MongoDB'
 sidebar_position: 135
 slug: /engines/table-engines/integrations/mongodb
@@ -7,9 +8,7 @@ title: 'Движок таблицы MongoDB'
 doc_type: 'reference'
 ---
 
-# Табличный движок MongoDB \{#mongodb-table-engine\}
-
-Табличный движок MongoDB — это движок только для чтения, который позволяет читать данные из удалённой коллекции [MongoDB](https://www.mongodb.com/).
+Движок таблицы MongoDB — это движок таблицы только для чтения, который позволяет читать данные из удалённой коллекции [MongoDB](https://www.mongodb.com/).
 
 Поддерживаются только серверы MongoDB версии 3.6 и выше.
 [Seed list (`mongodb+srv`)](https://www.mongodb.com/docs/manual/reference/glossary/#std-term-seed-list) пока не поддерживается.
@@ -39,7 +38,7 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name
 
 :::tip
 Если вы используете облачный сервис MongoDB Atlas, URL подключения можно получить в разделе «Atlas SQL».
-Seed-список(`mongodb**+srv**`) пока не поддерживается, но поддержка будет добавлена в будущих релизах.
+Seed list(`mongodb**+srv**`) пока не поддерживается, но поддержка будет добавлена в будущих релизах.
 :::
 
 Либо вы можете передать URI:
@@ -75,7 +74,7 @@ ENGINE = MongoDB(uri, collection[, oid_columns]);
 
 ### OID \{#oid\}
 
-Если вы хотите, чтобы `String` обрабатывался как `oid` в условии WHERE, просто укажите имя столбца в последнем аргументе движка таблицы.
+Если вы хотите, чтобы `String` обрабатывался как `oid` в предложении WHERE, просто укажите имя столбца в последнем аргументе движка таблицы.
 Это может понадобиться при выборке записи по столбцу `_id`, который по умолчанию имеет тип `oid` в MongoDB.
 Если поле `_id` в таблице имеет другой тип, например `uuid`, необходимо указать пустой `oid_columns`, иначе по умолчанию используется значение `_id` для этого параметра.
 
@@ -134,7 +133,7 @@ SELECT count() FROM sample_oid WHERE another_oid_column = '67bf6cc40000000000ea4
 В этом случае ClickHouse пытается преобразовать запрос на основе принципа «best effort», но это может привести к полному сканированию таблицы и обработке на стороне ClickHouse.
 
 :::note
-Всегда лучше явно указывать тип литерала, потому что Mongo требует строго типизированных фильтров.\
+Всегда лучше явно указывать тип литерала, потому что Mongo требует строго типизированных фильтров.
 Например, вы хотите отфильтровать по `Date`:
 
 ```sql
@@ -155,9 +154,9 @@ SELECT * FROM mongo_table WHERE date = '2024-01-01'::Date OR date = toDate('2024
 
 Предположим, что в MongoDB загружен набор данных [sample&#95;mflix](https://www.mongodb.com/docs/atlas/sample-data/sample-mflix).
 
-Создайте таблицу в ClickHouse, которая позволит читать данные из коллекции в MongoDB:
+Создайте таблицу в ClickHouse, которая позволит читать данные из коллекции MongoDB:
 
-```sql
+```sql title="Query"
 CREATE TABLE sample_mflix_table
 (
     _id String,
@@ -172,19 +171,17 @@ CREATE TABLE sample_mflix_table
 ) ENGINE = MongoDB('mongodb://<USERNAME>:<PASSWORD>@atlas-sql-6634be87cefd3876070caf96-98lxs.a.query.mongodb.net/sample_mflix?ssl=true&authSource=admin', 'movies');
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT count() FROM sample_mflix_table
 ```
 
-```text
+```text title="Response"
    ┌─count()─┐
 1. │   21349 │
    └─────────┘
 ```
 
-```sql
+```sql title="Query"
 -- JSONExtractString cannot be pushed down to MongoDB
 SET mongodb_throw_on_unsupported_query = 0;
 
@@ -196,7 +193,7 @@ ORDER BY year
 FORMAT Vertical;
 ```
 
-```text
+```text title="Response"
 Row 1:
 ──────
 title:     Back to the Future
@@ -214,7 +211,7 @@ directors: ['Robert Zemeckis']
 released:  1989-11-22
 ```
 
-```sql
+```sql title="Query"
 -- Find top 3 movies based on Cormac McCarthy's books
 SELECT title, toFloat32(JSONExtractString(imdb, 'rating')) AS rating
 FROM sample_mflix_table
@@ -223,7 +220,7 @@ ORDER BY rating DESC
 LIMIT 3;
 ```
 
-```text
+```text title="Response"
    ┌─title──────────────────┬─rating─┐
 1. │ No Country for Old Men │    8.1 │
 2. │ The Sunset Limited     │    7.4 │
@@ -232,6 +229,7 @@ LIMIT 3;
 ```
 
 ## Диагностика и устранение неполадок \{#troubleshooting\}
+
 Сгенерированный запрос MongoDB можно увидеть в журналах с уровнем DEBUG.
 
 Подробности реализации приведены в документации [mongocxx](https://github.com/mongodb/mongo-cxx-driver) и [mongoc](https://github.com/mongodb/mongo-c-driver).

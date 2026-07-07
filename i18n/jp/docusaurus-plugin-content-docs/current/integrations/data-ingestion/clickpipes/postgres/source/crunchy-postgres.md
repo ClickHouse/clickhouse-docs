@@ -14,9 +14,7 @@ import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
-# Crunchy Bridge Postgres ソースセットアップガイド \{#crunchy-bridge-postgres-source-setup-guide\}
-
-ClickPipes は Postgres バージョン 12 以降に対応しています。
+ClickPipes は Postgres 12 以降をサポートしています。
 
 ## ロジカルレプリケーションを有効にする \{#enable-logical-replication\}
 

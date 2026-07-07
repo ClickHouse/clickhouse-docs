@@ -1,19 +1,17 @@
 ---
-sidebar_label: 'ClickHouse Cloud 服务层级'
+sidebar_label: 'ClickHouse Cloud 层级'
 slug: /cloud/manage/cloud-tiers
-title: 'ClickHouse Cloud 服务层级'
-description: 'ClickHouse Cloud 中可用的云服务层级'
-keywords: ['云服务层级', '服务方案', '云定价层级', '云服务级别']
+title: 'ClickHouse Cloud 层级'
+description: 'ClickHouse Cloud 中可用的云层级'
+keywords: ['云层级', '服务方案', '云定价层级', '云服务级别']
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud 服务层级 \{#clickhouse-cloud-tiers\}
+ClickHouse Cloud 提供多个层级。
+层级在组织层面进行分配。因此，组织内的所有服务都属于同一层级。
+本页面将介绍哪些层级适合您的具体使用场景。
 
-ClickHouse Cloud 提供多个不同的服务层级。
-服务层级可以分配给组织内的任意层级，因此，一个组织内的所有服务都属于同一服务层级。
-本页将讨论针对您的特定使用场景，哪些服务层级最为合适。
-
-**云服务层级概览：**
+**云层级总结：**
 
 <table>
   <thead>

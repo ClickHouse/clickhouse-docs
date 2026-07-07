@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'logging', 'debug', 'log', 'level']
 doc_type: 'reference'
 ---
 
-# Логирование в DataStore \{#datastore-logging\}
-
-DataStore использует стандартный модуль логирования языка Python. В этом руководстве описано, как настроить логирование для отладки.
+DataStore использует стандартный модуль логирования Python. В этом руководстве показано, как настроить логирование для отладки.
 
 ## Быстрый старт \{#quick-start\}
 
@@ -67,33 +65,27 @@ config.enable_debug()  # Sets DEBUG level + verbose format
 
 ### Простой формат (по умолчанию) \{#simple\}
 
-```python
+```python title="Query"
 config.set_log_format("simple")
 ```
 
-Вывод:
-
-```text
+```text title="Response"
 DEBUG - Executing SQL query
 DEBUG - Cache miss for key abc123
 ```
 
-
 ### Подробный формат \{#verbose\}
 
-```python
+```python title="Query"
 config.set_log_format("verbose")
 ```
 
-Результат:
-
-```text
+```text title="Response"
 2024-01-15 10:30:45.123 DEBUG datastore.core - Executing SQL query
 2024-01-15 10:30:45.456 DEBUG datastore.cache - Cache miss for key abc123
 ```
 
 ***
-
 
 ## Что записывается в журнал \{#what-logged\}
 

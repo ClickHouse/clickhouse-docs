@@ -1,17 +1,14 @@
 ---
 slug: /cloud/data-resiliency
-sidebar_label: 'Устойчивость данных'
-title: 'Аварийное восстановление'
-description: 'В этом руководстве представлен обзор механизмов аварийного восстановления.'
+sidebar_label: 'Отказоустойчивость данных'
+title: 'Отказоустойчивость данных'
+description: 'В этом руководстве представлен обзор аварийного восстановления.'
 doc_type: 'reference'
-keywords: ['ClickHouse Cloud', 'устойчивость данных', 'аварийное восстановление']
+keywords: ['ClickHouse Cloud', 'отказоустойчивость данных', 'аварийное восстановление']
 ---
 
 import Image from '@theme/IdealImage';
 import restore_backup from '@site/static/images/cloud/guides/restore_backup.png';
-
-
-# Отказоустойчивость данных \{#clickhouse-cloud-data-resiliency\}
 
 На этой странице приведены рекомендации по аварийному восстановлению для ClickHouse Cloud, а также руководство для клиентов по восстановлению после сбоев.
 В настоящее время ClickHouse Cloud не поддерживает автоматическое переключение при сбое или автоматическую синхронизацию между несколькими географическими регионами.

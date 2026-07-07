@@ -1,13 +1,13 @@
 ---
 slug: /cloud/managed-postgres/migrations/peerdb
 sidebar_label: 'PeerDB'
-title: '使用 PeerDB 迁移 PostgreSQL 数据'
+title: '使用 PeerDB 迁移到 Managed Postgres'
 description: '了解如何使用 PeerDB 将 PostgreSQL 数据迁移到 ClickHouse Managed Postgres'
 keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres', 'peerdb']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import sourcePeer from '@site/static/images/managed-postgres/peerdb/source-peer.png';
 import targetPeer from '@site/static/images/managed-postgres/peerdb/target-peer.png';
@@ -18,12 +18,9 @@ import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-loa
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
+本指南提供了有关如何使用 PeerDB 将您的 PostgreSQL 数据库迁移到 ClickHouse Managed Postgres 的分步说明。
 
-# 使用 PeerDB 迁移到托管 Postgres \{#peerdb-migration\}
-
-本指南提供分步说明，介绍如何使用 PeerDB 将您的 PostgreSQL 数据库迁移到 ClickHouse 托管 Postgres。
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-peerdb" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-peerdb-beta" />
 
 ## 前置条件 \{#migration-peerdb-prerequisites\}
 

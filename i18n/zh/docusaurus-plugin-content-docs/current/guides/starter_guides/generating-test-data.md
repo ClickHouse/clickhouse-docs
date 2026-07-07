@@ -2,13 +2,11 @@
 sidebar_label: '生成随机测试数据'
 title: '在 ClickHouse 中生成随机测试数据'
 slug: /guides/generating-test-data
-description: '了解 ClickHouse 中随机测试数据的生成方法'
+description: '了解如何在 ClickHouse 中生成随机测试数据'
 show_related_blogs: true
 doc_type: 'guide'
 keywords: ['随机数据', '测试数据']
 ---
-
-# 在 ClickHouse 中生成随机测试数据 \{#generating-random-test-data-in-clickhouse\}
 
 在测试新用例或对实现进行基准测试时，生成随机数据非常有用。
 ClickHouse 提供了[用于生成随机数据的丰富函数](/sql-reference/functions/random-functions)，在很多情况下可以避免依赖外部数据生成器。

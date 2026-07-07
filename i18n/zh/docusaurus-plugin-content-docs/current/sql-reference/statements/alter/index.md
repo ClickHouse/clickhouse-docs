@@ -1,5 +1,5 @@
 ---
-description: 'ALTER 语句文档'
+description: 'ALTER 文档'
 sidebar_label: 'ALTER'
 sidebar_position: 35
 slug: /sql-reference/statements/alter/
@@ -7,12 +7,10 @@ title: 'ALTER'
 doc_type: 'reference'
 ---
 
-# ALTER \{#alter\}
-
 大多数 `ALTER TABLE` 查询用于修改表设置或数据：
 
-| 修饰符                                                                            |
-|-------------------------------------------------------------------------------------|
+| 修饰符                                                                         |
+| --------------------------------------------------------------------------- |
 | [COLUMN](/sql-reference/statements/alter/column.md)                         |
 | [PARTITION](/sql-reference/statements/alter/partition.md)                   |
 | [DELETE](/sql-reference/statements/alter/delete.md)                         |
@@ -26,29 +24,29 @@ doc_type: 'reference'
 | [APPLY PATCHES](/sql-reference/statements/alter/apply-patches.md)           |
 
 :::note
-大多数 `ALTER TABLE` 查询仅支持 [\*MergeTree](/engines/table-engines/mergetree-family/index.md)、[Merge](/engines/table-engines/special/merge.md) 和 [Distributed](/engines/table-engines/special/distributed.md) 表。
+大多数 `ALTER TABLE` 查询仅支持 [*MergeTree](/engines/table-engines/mergetree-family/index.md)、[Merge](/engines/table-engines/special/merge.md) 和 [Distributed](/engines/table-engines/special/distributed.md) 表。
 :::
 
 这些 `ALTER` 语句用于操作视图：
 
-| 语句                                                                           | 描述                                                                          |
-|-------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| [ALTER TABLE ... MODIFY QUERY](/sql-reference/statements/alter/view.md)     | 修改 [物化视图](/sql-reference/statements/create/view) 的结构。                                       |
+| 语句                                                                      | 描述                                                    |
+| ----------------------------------------------------------------------- | ----------------------------------------------------- |
+| [ALTER TABLE ... MODIFY QUERY](/sql-reference/statements/alter/view.md) | 修改 [物化视图](/sql-reference/statements/create/view) 的结构。 |
 
 这些 `ALTER` 语句用于修改与基于角色的访问控制相关的实体：
 
-| 语句                                                                       |
-|---------------------------------------------------------------------------------|
+| 语句                                                                      |
+| ----------------------------------------------------------------------- |
 | [USER](/sql-reference/statements/alter/user.md)                         |
 | [ROLE](/sql-reference/statements/alter/role.md)                         |
 | [QUOTA](/sql-reference/statements/alter/quota.md)                       |
 | [ROW POLICY](/sql-reference/statements/alter/row-policy.md)             |
 | [SETTINGS PROFILE](/sql-reference/statements/alter/settings-profile.md) |
 
-| 语句                                                                             | 描述                                                                               |
-|---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | 无论之前是否设置过注释，都可以向表添加、修改或删除注释。 |
-| [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | 修改[命名集合](/operations/named-collections.md)。                   |
+| 语句                                                                            | 描述                                          |
+| ----------------------------------------------------------------------------- | ------------------------------------------- |
+| [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | 无论之前是否设置过注释，都可以向表添加、修改或删除注释。                |
+| [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | 修改[命名集合](/operations/named-collections.md)。 |
 
 ## 变更 \{#mutations\}
 

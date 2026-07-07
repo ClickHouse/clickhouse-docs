@@ -11,8 +11,6 @@ import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
 
-# HTTP 인터페이스 \{#http-interface\}
-
 ## 전제 조건 \{#prerequisites\}
 
 이 문서의 예제를 따라 하려면 다음이 필요합니다.

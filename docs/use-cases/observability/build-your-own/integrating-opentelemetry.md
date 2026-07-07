@@ -1,5 +1,5 @@
 ---
-title: 'Integrating OpenTelemetry'
+title: 'Integrating OpenTelemetry for data collection'
 description: 'Integrating OpenTelemetry and ClickHouse for observability'
 slug: /observability/integrating-opentelemetry
 keywords: ['Observability', 'OpenTelemetry']
@@ -15,8 +15,6 @@ import observability_7 from '@site/static/images/use-cases/observability/observa
 import observability_8 from '@site/static/images/use-cases/observability/observability-8.png';
 import observability_9 from '@site/static/images/use-cases/observability/observability-9.png';
 import Image from '@theme/IdealImage';
-
-# Integrating OpenTelemetry for data collection
 
 Any Observability solution requires a means of collecting and exporting logs and traces. For this purpose, ClickHouse recommends [the OpenTelemetry (OTel) project](https://opentelemetry.io/).
 
@@ -428,7 +426,9 @@ SELECT *
 FROM otel_logs
 LIMIT 1
 FORMAT Vertical
+```
 
+```response
 Row 1:
 ──────
 Timestamp:              2019-01-22 06:46:14.000000000
@@ -484,6 +484,13 @@ Links.Attributes:   []
 ```
 
 ## Out of the box schema {#out-of-the-box-schema}
+
+:::tip ClickStack ships an optimized default schema
+**ClickStack provides out-of-the-box schemas for logs, traces, and metrics** that incorporate the latest ClickHouse features (text indexes for full-text and map-key search, materialized columns and ALIAS arrays for direct-read filtering, block-number row lookups) and have been benchmarked to deliver strong out-of-the-box performance for logging and trace workloads. Use them as a reference point for your own design.
+
+- Canonical DDL: [Tables and schemas used by ClickStack](/use-cases/observability/clickstack/ingesting-data/schemas).
+- Optimization recipes: [ClickStack performance tuning](/use-cases/observability/clickstack/performance_tuning). Many of the recommendations on that page (materialized columns, skip indexes, primary key choice, projections, materialized views) apply directly to a build-your-own setup.
+:::
 
 By default, the ClickHouse exporter creates a target log table for both logs and traces. This can be disabled via the setting `create_schema`. Furthermore, the names for both the logs and traces table can be modified from their defaults of `otel_logs` and `otel_traces` via the settings noted above.
 

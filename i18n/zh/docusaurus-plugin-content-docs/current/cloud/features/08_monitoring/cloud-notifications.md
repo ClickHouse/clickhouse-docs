@@ -1,8 +1,8 @@
 ---
 title: '通知'
 slug: /cloud/notifications
-description: '有关您的 ClickHouse Cloud 服务的通知'
-keywords: ['云', '通知', '警报', '服务通知', '账单通知']
+description: 'ClickHouse Cloud 服务通知'
+keywords: ['cloud', 'notifications', 'alerts', 'service notifications', 'billing notifications']
 sidebar_label: '通知'
 sidebar_position: 3
 doc_type: 'guide'
@@ -13,9 +13,6 @@ import notifications_1 from '@site/static/images/cloud/manage/notifications-1.pn
 import notifications_2 from '@site/static/images/cloud/manage/notifications-2.png';
 import notifications_3 from '@site/static/images/cloud/manage/notifications-3.png';
 import notifications_4 from '@site/static/images/cloud/manage/notifications-4.png';
-
-
-# 通知 \{#notifications\}
 
 ClickHouse Cloud 会发送与你的服务或组织相关的关键事件通知。为便于理解通知的发送方式及其配置方式，需要了解以下几个概念：
 

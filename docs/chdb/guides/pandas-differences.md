@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'pandas', 'differences', 'behavior']
 doc_type: 'guide'
 ---
 
-# Key Differences from pandas
 
 While DataStore is highly compatible with pandas, there are important differences to understand.
 

@@ -7,15 +7,14 @@ keywords: ['Postgres スケーリング', '垂直スケーリング', 'VM タイ
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import instanceTypes from '@site/static/images/managed-postgres/instance-types.png';
 import scalingSettings from '@site/static/images/managed-postgres/scaling-settings.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="scaling" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.scaling-beta" />
 
 Managed Postgres は、ワークロード要件に合わせて柔軟なスケーリングオプションを提供します。50 以上の NVMe 搭載インスタンスタイプから選択でき、CPU、メモリ、ストレージをそれぞれ独立してスケールすることで、特定のユースケースに合わせてパフォーマンスとコストを最適化できます。
-
 
 ## インスタンスタイプと柔軟性 \{#instance-types\}
 
@@ -31,11 +30,15 @@ Managed Postgres では、さまざまなワークロード特性に最適化さ
 
 ワークロードによって適したリソース構成は異なります。
 
-| ワークロードの種類                               | CPU    | メモリ | ストレージ | 推奨インスタンス                                   |
-|--------------------------------------------------|--------|--------|------------|----------------------------------------------------|
-| **コンピュート最適化**                           | 高     | 中     | 中         | コンピュート最適化（高い vCPU 数）                 |
-| **メモリ最適化**（大きなワーキングセット）       | 中     | 高     | 中         | メモリ最適化（高いメモリ対CPU比）                  |
-| **ストレージ最適化**（大規模データセット・大量 I/O） | 中     | 中     | 高         | ストレージ最適化（高い NVMe 容量）                 |
+| ワークロードの種類                        | CPU | メモリ | ストレージ | 推奨インスタンス               |
+| -------------------------------- | --- | --- | ----- | ---------------------- |
+| **コンピュート最適化**                    | 高   | 中   | 中     | コンピュート最適化 (高い vCPU 数)  |
+| **メモリ最適化** (大きなワーキングセット)         | 中   | 高   | 中     | メモリ最適化 (高いメモリ対CPU比)    |
+| **ストレージ最適化** (大規模データセット・大量 I/O)  | 中   | 中   | 高     | ストレージ最適化 (高い NVMe 容量)  |
+
+:::tip
+安全上の理由から、現在使用しているストレージ容量に近いストレージ容量のインスタンスタイプには切り替えられない場合があります。問題を避けるため、現在の使用容量に対して十分な余裕のあるインスタンスタイプを常に選択してください。
+:::
 
 ## スケーリングの仕組み \{#how-scaling-works\}
 
@@ -130,11 +133,9 @@ Managed Postgres インスタンスをスケールするには、次の手順を
 
 これにより、Postgres インスタンスのリソースとは独立してレプリケーションのスループットを最適化できます。
 
-## オートスケーリング（ロードマップ） \{#autoscaling\}
+## オートスケーリング \{#autoscaling\}
 
-:::note[近日公開予定]
-Managed Postgres では、自動ストレージスケーリングへの対応をロードマップに含めています。この機能により、データベースが成長するのに応じてインスタンスのサイズが自動的に拡張されるため、手動での対応が不要になります。
-:::
+ディスク使用率が90%に達すると、インスタンスタイプはより大きなものに自動的に変更されます。
 
 ## 追加のリソース \{#resources\}
 

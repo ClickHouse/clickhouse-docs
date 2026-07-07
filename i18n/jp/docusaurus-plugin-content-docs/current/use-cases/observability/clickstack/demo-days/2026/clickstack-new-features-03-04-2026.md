@@ -7,6 +7,7 @@ pagination_next: null
 description: 'ClickStack デモデー - 2026-04-03'
 doc_type: 'guide'
 keywords: ['ClickStack', 'デモデー']
+sidebar_position: -20260403
 ---
 
 ## 新しいダッシュボードと保存済み検索の一覧ページ \{#new-dashboard-and-saved-search-listing-pages\}

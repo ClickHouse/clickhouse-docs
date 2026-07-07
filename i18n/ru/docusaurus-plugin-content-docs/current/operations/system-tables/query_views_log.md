@@ -60,15 +60,11 @@ ClickHouse не удаляет данные из таблицы автомати
 
 ## Пример \{#example\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM system.query_views_log LIMIT 1 \G;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 hostname:                clickhouse.eu-central1.internal

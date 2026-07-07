@@ -9,7 +9,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Importing from various data formats to ClickHouse
 
 In this section of the docs, you can find examples for loading from various file types.
 

@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Azure Flexible Server для Postgres'
-description: 'Настройка Azure Flexible Server для Postgres в качестве источника для ClickPipes'
+sidebar_label: 'Azure Flexible Server for Postgres'
+description: 'Настройка Azure Flexible Server for Postgres в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
-title: 'Руководство по настройке источника Azure Flexible Server для Postgres'
+title: 'Руководство по настройке источника Azure Flexible Server for Postgres'
 keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
 doc_type: 'guide'
 integration:
@@ -16,10 +16,7 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника Azure Flexible Server для Postgres \{#azure-flexible-server-for-postgres-source-setup-guide\}
-
-ClickPipes поддерживает Postgres версии 12 и выше.
+ClickPipes поддерживает Postgres версии 12 и более поздних.
 
 ## Включение логической репликации \{#enable-logical-replication\}
 

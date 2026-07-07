@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/pydantic-ai
 sidebar_label: 'Интеграция PydanticAI'
-title: 'Как создать агента PydanticAI с помощью MCP-сервера ClickHouse.'
+title: 'Как создать агента PydanticAI с использованием MCP-сервера ClickHouse.'
 pagination_prev: null
 pagination_next: null
 description: 'Узнайте, как создать агента PydanticAI, который может взаимодействовать с MCP-сервером ClickHouse.'
@@ -9,8 +9,6 @@ keywords: ['ClickHouse', 'MCP', 'PydanticAI']
 show_related_blogs: true
 doc_type: 'guide'
 ---
-
-# Как создать агента PydanticAI с использованием MCP-сервера ClickHouse \{#how-to-build-a-pydanticai-agent-using-clickhouse-mcp-server\}
 
 В этом руководстве вы узнаете, как создать агента [PydanticAI](https://ai.pydantic.dev/mcp/client/#__tabbed_1_1),
 который может взаимодействовать с [SQL‑песочницей ClickHouse](https://sql.clickhouse.com/), используя [MCP-сервер ClickHouse](https://github.com/ClickHouse/mcp-clickhouse).

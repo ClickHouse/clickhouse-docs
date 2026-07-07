@@ -1,8 +1,8 @@
 ---
 sidebar_label: 'remoteSecure の使用'
 slug: /cloud/migration/clickhouse-to-cloud
-title: 'セルフマネージド版 ClickHouse と ClickHouse Cloud 間の移行'
-description: 'セルフマネージド版 ClickHouse と ClickHouse Cloud 間の移行方法を説明するページ'
+title: 'remoteSecure を使用したセルフマネージド ClickHouse と ClickHouse Cloud 間の移行'
+description: 'セルフマネージド ClickHouse と ClickHouse Cloud 間の移行方法を説明するページ'
 doc_type: 'guide'
 keywords: ['移行', 'ClickHouse Cloud', 'OSS', 'セルフマネージドから Cloud への移行']
 ---
@@ -17,13 +17,10 @@ import self_managed_05 from '@site/static/images/integrations/migration/self-man
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 import CompatibilityNote from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/compatibility.mdx'
 
+<Image img={self_managed_01} size="lg" alt="セルフマネージド ClickHouse の移行" />
 
-# remoteSecure を使用したセルフマネージド ClickHouse と ClickHouse Cloud 間の移行 \{#migrating-between-self-managed-clickhouse-and-clickhouse-cloud-using-remotesecure\}
-
-<Image img={self_managed_01} size='lg' alt='セルフマネージド ClickHouse の移行'/>
-
-このガイドでは、セルフマネージドの ClickHouse サーバーから ClickHouse Cloud へ移行する方法と、ClickHouse Cloud サービス間で移行する方法を説明します。
-[`remoteSecure`](/sql-reference/table-functions/remote) 関数は、リモートの ClickHouse サーバーへのアクセスを可能にするために、`SELECT` および `INSERT` クエリ内で使用される関数です。これにより、`SELECT` を埋め込んだ `INSERT INTO` クエリを記述するのと同じ要領でテーブルを移行できます。
+このガイドでは、セルフマネージド ClickHouse サーバーから ClickHouse Cloud へ移行する方法と、ClickHouse Cloud サービス間で移行する方法を説明します。
+[`remoteSecure`](/sql-reference/table-functions/remote) 関数は、リモートの ClickHouse サーバーにアクセスするために `SELECT` および `INSERT` クエリで使用します。これにより、テーブルの移行は、`SELECT` を埋め込んだ `INSERT INTO` クエリを記述するだけで簡単に行えます。
 
 ## セルフマネージド ClickHouse から ClickHouse Cloud への移行 \{#migrating-from-self-managed-clickhouse-to-clickhouse-cloud\}
 

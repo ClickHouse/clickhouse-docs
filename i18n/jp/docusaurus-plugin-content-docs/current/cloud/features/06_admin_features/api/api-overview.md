@@ -8,8 +8,6 @@ doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'API 概要', 'クラウド API', 'REST API', 'プログラムによるアクセス']
 ---
 
-# ClickHouse Cloud API \{#clickhouse-cloud-api\}
-
 ## 概要 \{#overview\}
 
 ClickHouse Cloud API は、開発者が ClickHouse Cloud 上の組織やサービスを簡単に管理できるように設計された REST API です。Cloud API を使用すると、サービスの作成および管理、API キーのプロビジョニング、組織メンバーの追加や削除などを行うことができます。

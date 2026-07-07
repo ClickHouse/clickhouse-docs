@@ -18,8 +18,8 @@ This page answers frequently asked questions about ClickStack capabilities, incl
 
 ClickStack supports two types of alerts:
 
-- [Search alerts](/use-cases/observability/clickstack/alerts#search-alerts) — trigger notifications when the count of matching log or trace results within a time window exceeds or falls below a threshold.
-- [Dashboard chart alerts](/use-cases/observability/clickstack/alerts#dashboard-alerts) — trigger notifications when a metric plotted on a dashboard tile crosses a defined threshold.
+- [Search alerts](/use-cases/observability/clickstack/alerts#search-alerts): trigger notifications when the count of matching log or trace results within a time window exceeds or falls below a threshold.
+- [Dashboard chart alerts](/use-cases/observability/clickstack/alerts#dashboard-alerts): trigger notifications when a metric plotted on a dashboard tile crosses a defined threshold.
 
 Both alert types use static threshold conditions. For full details, see [Alerts](/use-cases/observability/clickstack/alerts).
 
@@ -65,12 +65,11 @@ For details on creating dashboards and applying filters, see [Dashboards](/use-c
 
 ClickStack supports the following drill-down workflows:
 
-- [Dashboard-level filtering](/use-cases/observability/clickstack/dashboards#filter-dashboards) — Lucene or SQL filters and time range adjustments applied at the dashboard level propagate to all tiles.
-- Custom dashboard filters — custom dashboards support explicit filter controls that are populated with values from your data, allowing users to scope all tiles without writing queries manually.
-- Click-to-view events — clicking on data in a dashboard tile and selecting **View Events** navigates to the [Search](/use-cases/observability/clickstack/search) page with relevant filters for log and trace data.
-- [Prebuilt dashboard drill-downs](/use-cases/observability/clickstack/dashboards#presets) — the [Services](/use-cases/observability/clickstack/dashboards#services-dashboard), [ClickHouse](/use-cases/observability/clickstack/dashboards#clickhouse-dashboard), and [Kubernetes](/use-cases/observability/clickstack/dashboards#kubernetes-dashboard) dashboards include richer, built-in drill-down navigation across tabs.
-
-Multi-level drill-downs from one custom dashboard to another (dashboard → dashboard → detail view) are not currently supported.
+- [Dashboard-level filtering](/use-cases/observability/clickstack/dashboards#filter-dashboards): Lucene or SQL filters and time range adjustments applied at the dashboard level propagate to all tiles.
+- Custom dashboard filters: custom dashboards support explicit filter controls that are populated with values from your data, allowing users to scope all tiles without writing queries manually.
+- Click-to-view events: clicking on data in a dashboard tile and selecting **View Events** navigates to the [Search](/use-cases/observability/clickstack/search) page with relevant filters for log and trace data.
+- [Table row-click drilldowns](/use-cases/observability/clickstack/dashboards/row-click-drilldowns): a table tile can be configured so that clicking a row opens the Search page or another dashboard, carrying the row's values through as filters. This supports multi-level workflows, such as a service inventory that drills into a per-service detail dashboard.
+- [Prebuilt dashboard drill-downs](/use-cases/observability/clickstack/dashboards#presets): the [Services](/use-cases/observability/clickstack/dashboards#services-dashboard), [ClickHouse](/use-cases/observability/clickstack/dashboards#clickhouse-dashboard), and [Kubernetes](/use-cases/observability/clickstack/dashboards#kubernetes-dashboard) dashboards include richer, built-in drill-down navigation across tabs.
 
 :::note
 The **View Events** drill-down works best with log and trace data. Because metrics data cannot be viewed on the [Search](/use-cases/observability/clickstack/search) page, drilling down from a metrics tile will link to logs from around the selected time frame instead.
@@ -100,8 +99,8 @@ No. While SQL queries can be used to discover metrics today, this is not the int
 
 ## Further reading {#further-reading}
 
-- [Alerts](/use-cases/observability/clickstack/alerts) — search alerts, dashboard chart alerts, and webhook integrations.
-- [Dashboards](/use-cases/observability/clickstack/dashboards) — creating visualizations, building dashboards, and applying filters.
-- [Search](/use-cases/observability/clickstack/search) — querying logs and traces with Lucene and SQL syntax.
-- [Schemas](/use-cases/observability/clickstack/ingesting-data/schemas) — OpenTelemetry data schemas for logs, traces, and metrics.
-- [Architecture](/use-cases/observability/clickstack/architecture) — ClickStack components and how they fit together.
+- [Alerts](/use-cases/observability/clickstack/alerts): search alerts, dashboard chart alerts, and webhook integrations.
+- [Dashboards](/use-cases/observability/clickstack/dashboards): creating visualizations, building dashboards, and applying filters.
+- [Search](/use-cases/observability/clickstack/search): querying logs and traces with Lucene and SQL syntax.
+- [Schemas](/use-cases/observability/clickstack/ingesting-data/schemas): OpenTelemetry data schemas for logs, traces, and metrics.
+- [Architecture](/use-cases/observability/clickstack/architecture): ClickStack components and how they fit together.

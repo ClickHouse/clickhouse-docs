@@ -1,13 +1,13 @@
 ---
 slug: /cloud/managed-postgres/quickstart
 sidebar_label: 'Quickstart'
-title: 'Quickstart'
+title: 'Quickstart for Managed Postgres'
 description: 'Experience NVMe-powered Postgres performance and add real-time analytics with native ClickHouse integration'
 keywords: ['managed postgres', 'quickstart', 'getting started', 'create database', 'nvme', 'performance']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import createPg from '@site/static/images/managed-postgres/create-service.png';
 import pgOverview from '@site/static/images/managed-postgres/overview.png';
@@ -19,9 +19,7 @@ import getClickHouseHost from '@site/static/images/managed-postgres/get-clickhou
 import analyticsList from '@site/static/images/managed-postgres/analytics-list.png';
 import replicatedTables from '@site/static/images/managed-postgres/replicated-tables.png';
 
-# Quickstart for Managed Postgres
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="quick-start" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.quick-start-beta" />
 
 ClickHouse Managed Postgres is enterprise-grade Postgres backed by NVMe storage, delivering up to 10x faster performance for disk-bound workloads compared to network-attached storage like EBS. This quickstart is divided into two parts:
 
@@ -240,7 +238,7 @@ While Postgres excels at transactional workloads (OLTP), ClickHouse is purpose-b
 This section shows you how to replicate your Postgres data to ClickHouse and query it seamlessly.
 
 ### Setup ClickHouse integration {#setup-integrate-clickhouse}
-Now that we have tables and data in Postgres, let's replicate the tables to ClickHouse for analytics. We start by clicking on **ClickHouse integration** in the sidebar. Then you can click on **Replicate data in ClickHouse**.
+Now that we have tables and data in Postgres, let's replicate the tables to ClickHouse for analytics. We start by clicking on **Sync to ClickHouse** in the sidebar. Then you can click on **Replicate data in ClickHouse**.
 <Image img={integrationLanding} alt="Managed Postgres integration empty" size="md" border/>
 In the form that follows, you can enter a name for your integration and select an existing ClickHouse instance to replicate to. If you don't have a ClickHouse instance yet, you can create one directly from this form.
 :::info Important
@@ -259,7 +257,7 @@ The replication process will start, and you will be taken to the integration ove
 
 ### Query ClickHouse from Postgres {#pg-clickhouse-extension}
 
-The `pg_clickhouse` extension lets you query ClickHouse data directly from Postgres using standard SQL. This means your application can use Postgres as a unified query layer for both transactional and analytical data. See the [full documentation](/integrations/pg_clickhouse) for details.
+The `pg_clickhouse` extension lets you query ClickHouse data directly from Postgres using standard SQL. This means your application can use Postgres as a unified query layer for both transactional and analytical data. See the [full documentation](/cloud/managed-postgres/extensions/pg_clickhouse) for details.
 
 Enable the extension:
 

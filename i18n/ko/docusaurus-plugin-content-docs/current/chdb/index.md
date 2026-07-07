@@ -10,11 +10,8 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import dfBench from '@site/static/images/chdb/df_bench.png';
 
-
-# chDB \{#chdb\}
-
-chDB는 [ClickHouse](https://github.com/clickhouse/clickhouse) v25.8.2.1을 기반으로 하는 빠른 인프로세스 SQL OLAP 엔진입니다.
-별도의 ClickHouse 서버에 연결하지 않고도 프로그래밍 언어 환경에서 ClickHouse의 기능과 성능을 활용할 수 있습니다.
+chDB는 [ClickHouse](https://github.com/clickhouse/clickhouse) v25.8.2.1 기반의 빠른 인프로세스 SQL OLAP 엔진입니다.
+ClickHouse 서버에 연결하지 않고도 프로그래밍 언어에서 ClickHouse의 강력한 기능을 활용하고자 할 때 사용할 수 있습니다.
 
 ## 주요 기능 \{#key-features\}
 

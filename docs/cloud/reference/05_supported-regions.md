@@ -9,8 +9,6 @@ doc_type: 'reference'
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# Supported cloud regions
-
 ## AWS regions {#aws-regions}
 
 - ap-northeast-1 (Tokyo)
@@ -111,6 +109,7 @@ Customers must request onboarding through Sales or Support to set up services in
 - AWS eu-north-1 (Stockholm) **Private Region**
 - AWS eu-west-1 (Ireland)
 - AWS eu-west-2 (London)
+- AWS mx-central-1 (Mexico) **Private Region**
 - AWS sa-east-1 (South America) **Private Region**
 - AWS us-east-1 (N. Virginia)
 - AWS us-east-2 (Ohio)

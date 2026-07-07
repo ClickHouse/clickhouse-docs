@@ -7,6 +7,7 @@ pagination_next: null
 description: 'ClickStack demo days for 2026-04-03'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Demo days']
+sidebar_position: -20260403
 ---
 
 ## New dashboard and saved search listing pages {#new-dashboard-and-saved-search-listing-pages}

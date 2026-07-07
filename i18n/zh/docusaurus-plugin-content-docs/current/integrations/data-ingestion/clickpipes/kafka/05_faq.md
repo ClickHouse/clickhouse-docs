@@ -1,6 +1,6 @@
 ---
 sidebar_label: '常见问题解答'
-description: '关于 ClickPipes for Kafka 的常见问题解答'
+description: '关于 ClickPipes for Kafka 的常见问题解答。'
 slug: /integrations/clickpipes/kafka/faq
 sidebar_position: 1
 title: 'Kafka ClickPipes 常见问题解答'
@@ -16,56 +16,55 @@ integration:
 ### 常规 \{#general\}
 
 <details>
+  <summary>ClickPipes for Kafka 是如何工作的？</summary>
 
-<summary>ClickPipes for Kafka 是如何工作的？</summary>
-
-ClickPipes 使用一套专用架构运行 Kafka Consumer API，从指定的 topic 读取数据，然后将数据插入到特定 ClickHouse Cloud 服务上的 ClickHouse 表中。
+  ClickPipes 使用一套专用架构运行 Kafka Consumer API，从指定的 topic 读取数据，然后将数据插入到特定 ClickHouse Cloud 服务上的 ClickHouse 表中。
 </details>
 
 <details>
+  <summary>ClickPipes 与 ClickHouse Kafka Table Engine 有什么区别？</summary>
 
-<summary>ClickPipes 与 ClickHouse Kafka Table Engine 有什么区别？</summary>
+  Kafka Table Engine 是 ClickHouse 的核心功能，实现了一种“拉取模型 (pull model) ”，即 ClickHouse 服务器自身连接到 Kafka，拉取事件然后在本地写入。
 
-Kafka Table Engine 是 ClickHouse 的核心功能，实现了一种“拉取模型（pull model）”，即 ClickHouse 服务器自身连接到 Kafka，拉取事件然后在本地写入。
-
-ClickPipes 是一项独立于 ClickHouse 服务运行的云服务。它连接到 Kafka（或其他数据源），并将事件推送到关联的 ClickHouse Cloud 服务。这种解耦的架构提供了更高的运维灵活性、清晰的关注点分离、可扩展的摄取能力、优雅的故障管理、良好的可扩展性等优势。
+  ClickPipes 是一项独立于 ClickHouse 服务运行的云服务。它连接到 Kafka (或其他数据源) ，并将事件推送到关联的 ClickHouse Cloud 服务。这种解耦的架构提供了更高的运维灵活性、清晰的关注点分离、可扩展的摄取能力、优雅的故障管理、良好的可扩展性等优势。
 </details>
 
 <details>
+  <summary>使用 ClickPipes for Kafka 有哪些前提条件？</summary>
 
-<summary>使用 ClickPipes for Kafka 有哪些前提条件？</summary>
-
-要使用 ClickPipes for Kafka，您需要一个正在运行的 Kafka broker，以及已启用 ClickPipes 的 ClickHouse Cloud 服务。您还需要确保 ClickHouse Cloud 可以访问您的 Kafka broker。这可以通过在 Kafka 端允许远程连接，并在您的 Kafka 配置中将 [ClickHouse Cloud Egress IP addresses](/manage/data-sources/cloud-endpoints-api) 加入白名单来实现。或者，您可以使用 [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) 将 ClickPipes for Kafka 连接到您的 Kafka brokers。
+  要使用 ClickPipes for Kafka，您需要一个正在运行的 Kafka broker，以及已启用 ClickPipes 的 ClickHouse Cloud 服务。您还需要确保 ClickHouse Cloud 可以访问您的 Kafka broker。这可以通过在 Kafka 端允许远程连接，并在您的 Kafka 配置中将 [ClickHouse Cloud Egress IP addresses](/manage/data-sources/cloud-endpoints-api) 加入白名单来实现。或者，您可以使用 [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) 将 ClickPipes for Kafka 连接到您的 Kafka brokers。
 </details>
 
 <details>
+  <summary>ClickPipes for Kafka 是否支持 AWS PrivateLink？</summary>
 
-<summary>ClickPipes for Kafka 是否支持 AWS PrivateLink？</summary>
-
-支持 AWS PrivateLink。有关如何进行设置的更多信息，请参阅[文档](/integrations/clickpipes/aws-privatelink)。
+  支持 AWS PrivateLink。有关如何进行设置的更多信息，请参阅[文档](/integrations/clickpipes/aws-privatelink)。
 </details>
 
 <details>
+  <summary>我可以使用 ClickPipes for Kafka 向 Kafka topic 写入数据吗？</summary>
 
-<summary>我可以使用 ClickPipes for Kafka 向 Kafka topic 写入数据吗？</summary>
-
-不可以，ClickPipes for Kafka 设计用于从 Kafka topics 读取数据，而不是向其写入数据。要向 Kafka topic 写入数据，您需要使用专门的 Kafka producer。
+  不可以，ClickPipes for Kafka 设计用于从 Kafka topics 读取数据，而不是向其写入数据。要向 Kafka topic 写入数据，您需要使用专门的 Kafka producer。
 </details>
 
 <details>
+  <summary>ClickPipes 是否支持多个 brokers？</summary>
 
-<summary>ClickPipes 是否支持多个 brokers？</summary>
-
-支持，如果这些 brokers 属于同一个 quorum，则可以一起配置，之间使用 `,` 分隔。
+  支持，如果这些 brokers 属于同一个 quorum，则可以一起配置，之间使用 `,` 分隔。
 </details>
 
 <details>
+  <summary>ClickPipes 副本可以扩展吗？</summary>
 
-<summary>ClickPipes 副本可以扩展吗？</summary>
+  可以，用于流式处理的 ClickPipes 既可以横向扩展，也可以纵向扩展。
+  横向扩展通过增加副本数量来提高吞吐量，而纵向扩展则通过为每个副本分配更多资源 (CPU 和 RAM) 来处理更高强度的工作负载。
+  这可以在创建 ClickPipe 时进行配置，或之后在 **Settings** -&gt; **Advanced Settings** -&gt; **Scaling** 中随时调整。
+</details>
 
-可以，用于流式处理的 ClickPipes 既可以横向扩展，也可以纵向扩展。
-横向扩展通过增加副本数量来提高吞吐量，而纵向扩展则通过为每个副本分配更多资源（CPU 和 RAM）来处理更高强度的工作负载。
-这可以在创建 ClickPipe 时进行配置，或之后在 **Settings** -> **Advanced Settings** -> **Scaling** 中随时调整。
+<details>
+  <summary>为什么我在 ClickPipes 设置 UI 中找不到某些 Kafka topics？</summary>
+
+  ClickPipes 的 topic 发现 UI 默认最多列出 1,500 个 topics。如果您的 Kafka 集群拥有超过 1,500 个 topics，则某些 topics 可能不会出现在下拉列表中。要验证您的 topic 是否存在，请直接使用具有相同凭据的 Kafka 客户端检查。如果确认存在，并且您需要将列表上限提高到 1,500 以上，请联系 ClickHouse 支持团队。
 </details>
 
 ### Azure Event Hubs \{#azure-eventhubs\}

@@ -1,12 +1,10 @@
 ---
-description: '将多个数组聚合为包含这些数组的更大数组。'
+description: '将多个数组聚合为由这些数组组成的更大数组。'
 keywords: ['groupArrayArray', 'array_concat_agg']
 slug: /sql-reference/aggregate-functions/reference/grouparrayarray
 title: 'groupArrayArray'
 doc_type: 'reference'
 ---
-
-# groupArrayArray \{#grouparrayarray\}
 
 将多个数组聚合为由这些数组组成的更大数组。
 是将 [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 函数与 [Array](/sql-reference/aggregate-functions/combinators#-array) 组合子结合使用的结果。

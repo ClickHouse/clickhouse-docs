@@ -7,8 +7,6 @@ title: 'mysql'
 doc_type: 'reference'
 ---
 
-# mysql Table Function \{#mysql-table-function\}
-
 원격 MySQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 실행할 수 있습니다.
 
 ## 구문 \{#syntax\}

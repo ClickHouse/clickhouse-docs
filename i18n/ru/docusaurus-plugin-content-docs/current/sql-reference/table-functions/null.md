@@ -1,13 +1,12 @@
 ---
-description: 'Создаёт временную таблицу указанной структуры с табличным движком Null. Функция используется для удобства написания тестов и проведения демонстраций.'
+description: 'Создает временную таблицу указанной структуры с движком таблицы Null.
+  Функция используется для удобства при написании тестов и проведении демонстраций.'
 sidebar_label: 'функция null'
 sidebar_position: 140
 slug: /sql-reference/table-functions/null
 title: 'null'
 doc_type: 'reference'
 ---
-
-# Функция таблицы null \{#null-table-function\}
 
 Создает временную таблицу указанной структуры с движком таблицы [Null](../../engines/table-engines/special/null.md). В соответствии со свойствами движка `Null` данные таблицы игнорируются, а сама таблица немедленно удаляется после выполнения запроса. Функция используется для удобства при написании тестов и проведении демонстраций.
 
@@ -19,7 +18,7 @@ null('structure')
 
 ## Аргумент \{#argument\}
 
-- `structure` — список столбцов и их типов, строка типа [String](../../sql-reference/data-types/string.md).
+* `structure` — список столбцов и их типов, строка типа [String](../../sql-reference/data-types/string.md).
 
 ## Возвращаемое значение \{#returned_value\}
 
@@ -43,4 +42,4 @@ DROP TABLE IF EXISTS t;
 
 ## Связанные разделы \{#related\}
 
-- [Движок таблицы Null](../../engines/table-engines/special/null.md)
+* [Движок таблицы Null](../../engines/table-engines/special/null.md)

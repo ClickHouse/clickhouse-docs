@@ -1,13 +1,11 @@
 ---
-description: '该引擎基于 Atomic 引擎构建。它支持通过写入 ZooKeeper 的 DDL 日志来进行元数据复制，并在指定数据库的所有副本上执行。'
+description: '该引擎基于 Atomic 引擎。它通过将 DDL 日志写入 ZooKeeper，并在给定数据库的所有副本上执行该日志，从而实现元数据复制。'
 sidebar_label: 'Replicated'
 sidebar_position: 30
 slug: /engines/database-engines/replicated
 title: 'Replicated'
 doc_type: 'reference'
 ---
-
-# Replicated \{#replicated\}
 
 该引擎基于 [Atomic](../../engines/database-engines/atomic.md) 引擎。它通过将 DDL 日志写入 ZooKeeper，并在给定数据库的所有副本上执行该日志，从而实现元数据复制。
 

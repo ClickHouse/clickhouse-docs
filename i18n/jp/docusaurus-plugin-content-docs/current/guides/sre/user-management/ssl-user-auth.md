@@ -3,12 +3,10 @@ sidebar_label: 'SSL ユーザー証明書認証'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
 title: 'SSL ユーザー証明書を使用した認証の設定'
-description: 'このガイドでは、SSL ユーザー証明書を用いた認証を構成するための、シンプルで最小限の設定例を示す'
+description: 'このガイドでは、SSL ユーザー証明書を用いた認証を構成するための、シンプルで最小限の設定例を示します。'
 doc_type: 'guide'
-keywords: ['ssl', 'authentication', 'security', 'certificates', 'user management']
+keywords: ['ssl', '認証', 'セキュリティ', '証明書', 'ユーザー管理']
 ---
-
-# SSL ユーザー証明書を使用した認証の設定 \{#configuring-ssl-user-certificate-for-authentication\}
 
 import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
@@ -19,13 +17,12 @@ import SelfManaged from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_s
 :::note
 SSL ユーザー認証は、`https`、`native`、`mysql`、`postgresql` インターフェイスを使用する場合にサポートされています。
 
-安全な認証を行うには、ClickHouse ノードで `<verificationMode>strict</verificationMode>` を設定する必要があります（テスト目的であれば `relaxed` でも動作します）。
+安全な認証を行うには、ClickHouse ノードで `<verificationMode>strict</verificationMode>` を設定する必要があります (テスト目的であれば `relaxed` でも動作します) 。
 
 MySQL インターフェイスで AWS NLB を使用する場合、以下の非公開オプションを有効にするよう AWS サポートに依頼する必要があります。
 
 > I would like to be able to configure our NLB proxy protocol v2 as below `proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`.
 > :::
-
 
 ## 1. SSL ユーザー証明書を作成する \{#1-create-ssl-user-certificates\}
 

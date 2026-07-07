@@ -2,7 +2,7 @@
 description: '로컬 디스크를 대상으로 하거나 로컬 디스크에서 수행하는 백업/복원에 대한 자세한 설명'
 sidebar_label: '로컬 디스크 / S3 디스크'
 slug: /operations/backup/disk
-title: 'ClickHouse에서의 백업 및 복원'
+title: '디스크로의 BACKUP / RESTORE'
 doc_type: 'guide'
 ---
 
@@ -10,9 +10,6 @@ import GenericSettings from '@site/i18n/ko/docusaurus-plugin-content-docs/curren
 import S3Settings from '@site/i18n/ko/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 import ExampleSetup from '@site/i18n/ko/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/ko/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
-
-
-# 로컬 디스크로 BACKUP / RESTORE \{#backup-to-a-local-disk\}
 
 ## 구문 \{#syntax\}
 

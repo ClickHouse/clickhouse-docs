@@ -6,9 +6,7 @@ title: 'WITH 句'
 doc_type: 'reference'
 ---
 
-# WITH 句 \{#with-clause\}
-
-ClickHouse は、共通テーブル式（Common Table Expressions、[CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)）、共通スカラ―式（Common Scalar Expressions）、および再帰クエリ（Recursive Queries）をサポートしています。
+ClickHouse は、共通テーブル式 (Common Table Expressions、[CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)) 、共通スカラ式 (Common Scalar Expressions) 、および再帰クエリ (Recursive Queries) をサポートしています。
 
 ## 共通テーブル式 \{#common-table-expressions\}
 

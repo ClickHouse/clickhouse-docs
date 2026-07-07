@@ -18,10 +18,7 @@ import luzmo_02 from '@site/static/images/integrations/data-visualization/luzmo_
 import luzmo_03 from '@site/static/images/integrations/data-visualization/luzmo_03.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Интеграция Luzmo с ClickHouse \{#integrating-luzmo-with-clickhouse\}
-
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## 1. Настройка подключения к ClickHouse \{#1-setup-a-clickhouse-connection\}
 

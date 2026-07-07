@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse のクエリキャッシュ機能の利用と設定に関するガイド'
+description: 'ClickHouse でクエリキャッシュ機能を使用および設定するためのガイド'
 sidebar_label: 'クエリキャッシュ'
 sidebar_position: 65
 slug: /operations/query-cache
 title: 'クエリキャッシュ'
 doc_type: 'guide'
 ---
-
-# クエリキャッシュ \{#query-cache\}
 
 クエリキャッシュを使用すると、`SELECT` クエリを一度だけ実行して結果を保存し、同じクエリの後続の実行にはキャッシュから直接結果を返すことができます。
 クエリの種類によっては、これにより ClickHouse サーバーのレイテンシとリソース消費を劇的に削減できます。
@@ -142,51 +140,84 @@ SELECT 1 SETTINGS use_query_cache = true, query_cache_tag = 'tag 2';
 クエリキャッシュからタグ `tag` が付いたエントリのみを削除するには、`SYSTEM CLEAR QUERY CACHE TAG 'tag'` 文を使用します。
 
 
-ClickHouse はテーブルデータを [max_block_size](/operations/settings/settings#max_block_size) 行ずつのブロック単位で読み取ります。フィルタリングや集約などの処理の結果、
+## サブクエリのキャッシュ \{#subquery-caching\}
+
+デフォルトでは、外側のクエリで `use_query_cache` を有効にしても、その設定はサブクエリには伝播しません。つまり、各サブクエリで明示的にキャッシュを有効にする必要があります。
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000 SETTINGS use_query_cache = true)
+WHERE number > 500;
+```
+
+この例では、内側のサブクエリの結果のみがキャッシュされます。外側のクエリはキャッシュされません。
+
+すべてのサブクエリのキャッシュを一度に有効にするには、設定 `query_cache_for_subqueries` を使用します。
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000)
+WHERE number > 500
+SETTINGS use_query_cache = true, query_cache_for_subqueries = true;
+```
+
+bulk propagation が有効な状態で特定のサブクエリに対するキャッシュを明示的に無効にするには、そのサブクエリに `use_query_cache = false` を設定します。
+
+```sql
+SELECT *
+FROM (SELECT number FROM system.numbers LIMIT 1000 SETTINGS use_query_cache = false)
+WHERE number > 500
+SETTINGS use_query_cache = true, query_cache_for_subqueries = true;
+```
+
+サブクエリキャッシュのエントリは、`is_subquery = 1` の [system.query&#95;cache](system-tables/query_cache.md) で確認できます。`query_cache_ttl` 設定はサブクエリキャッシュのエントリにも適用され、サブクエリごとに設定できます。
+
+ClickHouse はテーブルデータを [max&#95;block&#95;size](/operations/settings/settings#max_block_size) 行ずつのブロック単位で読み取ります。フィルタリングや集約などの処理の結果、
 結果ブロックは通常は `max_block_size` よりかなり小さくなりますが、逆に `max_block_size` より大きくなる場合もあります。
-[query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results)（デフォルトで有効）の設定は、
+[query&#95;cache&#95;squash&#95;partial&#95;results](/operations/settings/settings#query_cache_squash_partial_results) (デフォルトで有効) の設定は、
 結果ブロックが非常に小さい場合に結合したり、非常に大きい場合に分割して、`max_block_size` 行のブロックにしてから
 クエリ結果キャッシュに挿入するかどうかを制御します。これによりクエリキャッシュへの書き込み性能は低下しますが、
 キャッシュエントリの圧縮率が向上し、後でクエリキャッシュからクエリ結果を提供する際に、より自然なブロック粒度が得られます。
 
-その結果、クエリキャッシュは各クエリに対して複数の（部分的な）結果ブロックを保持します。この動作はデフォルトとしては有用ですが、
-設定 [query_cache_squash_partial_results](/operations/settings/settings#query_cache_squash_partial_results) を用いることで抑制できます。
+その結果、クエリキャッシュは各クエリに対して複数の (部分的な) 
+結果ブロックを保持します。この動作はデフォルトとしては有用ですが、
+設定 [query&#95;cache&#95;squash&#95;partial&#95;results](/operations/settings/settings#query_cache_squash_partial_results) を用いることで抑制できます。
 
 また、非決定的関数を含むクエリの結果はデフォルトではキャッシュされません。このような関数には次のものが含まれます。
 
-- 辞書へアクセスする関数: [`dictGet()`](/sql-reference/functions/ext-dict-functions) など
-- XML 定義内で `<deterministic>true</deterministic>` タグを持たない
+* 辞書へアクセスする関数: [`dictGet()`](/sql-reference/functions/ext-dict-functions) など
+* XML 定義内で `<deterministic>true</deterministic>` タグを持たない
   [ユーザー定義関数](../sql-reference/statements/create/function.md)
-- 現在の日付や時刻を返す関数:
+* 現在の日付や時刻を返す関数:
   [`now()`](../sql-reference/functions/date-time-functions.md#now),
   [`today()`](../sql-reference/functions/date-time-functions.md#today),
   [`yesterday()`](../sql-reference/functions/date-time-functions.md#yesterday) など
-- ランダムな値を返す関数:
+* ランダムな値を返す関数:
   [`randomString()`](../sql-reference/functions/random-functions.md#randomString),
   [`fuzzBits()`](../sql-reference/functions/random-functions.md#fuzzBits) など
-- クエリ処理に使用される内部の chunk のサイズと順序に依存する関数:
+* クエリ処理に使用される内部の chunk のサイズと順序に依存する関数:
   [`nowInBlock()`](../sql-reference/functions/date-time-functions.md#nowInBlock) など、
   [`rowNumberInBlock()`](../sql-reference/functions/other-functions.md#rowNumberInBlock),
   [`runningDifference()`](../sql-reference/functions/other-functions.md#runningDifference),
   [`blockSize()`](../sql-reference/functions/other-functions.md#blockSize) など
-- 環境に依存する関数:
+* 環境に依存する関数:
   [`currentUser()`](../sql-reference/functions/other-functions.md#currentUser),
   [`queryID()`](/sql-reference/functions/other-functions#queryID),
   [`getMacro()`](../sql-reference/functions/other-functions.md#getMacro) など
 
 それでも非決定的関数を含むクエリの結果を強制的にキャッシュしたい場合は、
-設定 [query_cache_nondeterministic_function_handling](/operations/settings/settings#query_cache_nondeterministic_function_handling) を使用します。
+設定 [query&#95;cache&#95;nondeterministic&#95;function&#95;handling](/operations/settings/settings#query_cache_nondeterministic_function_handling) を使用します。
 
-system テーブルを含むクエリ（例: [system.processes](system-tables/processes.md) や
-[information_schema.tables](system-tables/information_schema.md)）の結果は、デフォルトではキャッシュされません。
-system テーブルを含むクエリの結果を強制的にキャッシュしたい場合は、
-設定 [query_cache_system_table_handling](/operations/settings/settings#query_cache_system_table_handling) を使用します。
+システムテーブルを含むクエリ (例: [system.processes](system-tables/processes.md)` や
+[information&#95;schema.tables](system-tables/information_schema.md)) の結果は、デフォルトではキャッシュされません。
+システムテーブルを含むクエリの結果を強制的にキャッシュしたい場合は、
+設定 [query&#95;cache&#95;system&#95;table&#95;handling](/operations/settings/settings#query_cache_system_table_handling) を使用します。
 
 最後に、セキュリティ上の理由から、クエリキャッシュ内のエントリはユーザー間で共有されません。たとえば、ユーザー A は、
 ユーザー B に対しては存在しない行ポリシーを、B と同じクエリを実行することによって回避できてはなりません。
 ただし必要に応じて、設定
-[query_cache_share_between_users](/operations/settings/settings#query_cache_share_between_users) を指定することで、
-キャッシュエントリを他のユーザーからアクセス可能（すなわち共有）にすることができます。
+[query&#95;cache&#95;share&#95;between&#95;users](/operations/settings/settings#query_cache_share_between_users) を指定することで、
+キャッシュエントリを他のユーザーからアクセス可能 (すなわち共有) にすることができます。
 
 ## 関連コンテンツ \{#related-content\}
 

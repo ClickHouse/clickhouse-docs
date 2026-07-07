@@ -2,7 +2,7 @@
 sidebar_label: 'DynamoDB'
 sidebar_position: 10
 slug: /integrations/dynamodb
-description: 'ClickPipes를 사용하면 ClickHouse를 DynamoDB와 연결할 수 있습니다.'
+description: 'ClickPipes를 사용하면 ClickHouse를 DynamoDB에 연결할 수 있습니다.'
 keywords: ['DynamoDB']
 title: 'DynamoDB에서 ClickHouse로 CDC'
 show_related_blogs: true
@@ -14,9 +14,6 @@ import dynamodb_kinesis_stream from '@site/static/images/integrations/data-inges
 import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-s3-export.png';
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
-
-
-# DynamoDB에서 ClickHouse로 CDC \{#cdc-from-dynamodb-to-clickhouse\}
 
 이 페이지에서는 ClickPipes를 사용하여 DynamoDB에서 ClickHouse로 CDC(Change Data Capture)를 설정하는 방법을 설명합니다. 이 통합은 다음의 두 가지 구성 요소로 이루어집니다:
 

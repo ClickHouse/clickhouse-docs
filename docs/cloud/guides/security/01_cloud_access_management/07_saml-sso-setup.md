@@ -18,13 +18,11 @@ import samlAzureApp from '@site/static/images/cloud/security/saml-azure-app.png'
 import samlAzureClaims from '@site/static/images/cloud/security/saml-azure-claims.png';
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-# SAML SSO setup
-
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
 ClickHouse Cloud supports single-sign on (SSO) via security assertion markup language (SAML). This enables you to sign in securely to your ClickHouse Cloud organization by authenticating with your identity provider (IdP).
 
-We currently support service provider-initiated SSO SSO, multiple organizations using separate connections, and just-in-time provisioning. We don't yet support a system for cross-domain identity management (SCIM) or attribute mapping.
+We support service provider-initiated SSO, multiple organizations using separate connections, and just-in-time provisioning. We also support [SCIM provisioning](/cloud/security/scim-setup) in private preview, with support for Okta. We don't yet support attribute mapping.
 
 Customers enabling SAML integrations can also designate the default role that will be assigned to new users and adjust session timeout settings.
 
@@ -80,7 +78,7 @@ Click `Next: Verify your domains`. Enter your domain in the text box and click `
 Create a TXT record with your DNS provider. Copy the `TXT record name` to the TXT record Name field with your DNS provider. Copy the `Value` to the Content field with your DNS provider. Click `Verify and Finish` to complete the process.
 
 :::note
-It may take several minutes for the DNS record to update and be verified. You may leave the setup page and return later to complete the process without restarting.
+It may take several minutes for the DNS record to update and be verified. You may leave the setup page and return later to complete the process without restarting. The verification value is valid for 48 hours from when it is first generated.
 :::
 
    <Image img={samlSelfServe5} size="lg" alt="Verify your domain" force/> 

@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/anythingllm
 sidebar_label: 'AnythingLLM 통합'
-title: 'AnythingLLM 및 ClickHouse Cloud와 함께 ClickHouse MCP 서버 설정하기'
+title: 'AnythingLLM과 함께 ClickHouse MCP 서버 사용'
 pagination_prev: null
 pagination_next: null
-description: '이 가이드는 Docker를 사용하여 ClickHouse MCP 서버와 함께 AnythingLLM을 설정하는 방법을 설명합니다.'
+description: '이 가이드에서는 Docker를 사용해 ClickHouse MCP 서버와 함께 AnythingLLM을 설정하는 방법을 설명합니다.'
 keywords: ['AI', 'AnythingLLM', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -15,8 +15,6 @@ import Image from '@theme/IdealImage';
 import Conversation from '@site/static/images/use-cases/AI_ML/MCP/allm_conversation.png';
 import MCPServers from '@site/static/images/use-cases/AI_ML/MCP/allm_mcp-servers.png';
 import ToolIcon from '@site/static/images/use-cases/AI_ML/MCP/alm_tool-icon.png';
-
-# AnythingLLM과 함께 ClickHouse MCP 서버 사용 \{#using-clickhouse-mcp-server-with-anythingllm\}
 
 > 이 가이드에서는 Docker를 사용하여 [AnythingLLM](https://anythingllm.com/)을 ClickHouse MCP 서버와 함께 설정하고
 > ClickHouse 예시 데이터셋에 연결하는 방법을 설명합니다.

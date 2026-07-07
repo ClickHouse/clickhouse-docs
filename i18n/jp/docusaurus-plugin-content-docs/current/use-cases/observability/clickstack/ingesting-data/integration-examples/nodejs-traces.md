@@ -10,7 +10,6 @@ keywords: ['Node.js', 'traces', 'OTel', 'ClickStack', '分散トレーシング'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import search_view from '@site/static/images/clickstack/nodejs/traces-search-view.png';
@@ -19,11 +18,8 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack による Node.js アプリケーション・トレースの監視 \{#nodejs-traces-clickstack\}
-
-:::note[TL;DR]
-自動インストルメンテーションを使用して、Node.js アプリケーションの分散トレースを ClickStack で収集します。デモ用データセットと、あらかじめ用意されたダッシュボードが含まれています。
+:::note[要点]
+OpenTelemetry の自動インストルメンテーションを使用して、Node.js アプリケーションの分散トレースを ClickStack に収集します。デモデータセットと事前構築済みダッシュボードが含まれています。
 :::
 
 ## 既存の Node.js アプリケーションとの統合 \{#existing-nodejs\}
@@ -166,7 +162,7 @@ Node.js アプリケーションのパフォーマンス監視をすぐに始め
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">ダッシュボード構成をダウンロード</TrackedLink> \{#download-dashboard\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nodejs-traces-dashboard.json'} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">ダッシュボード構成をダウンロード</TrackedLink> \{#download-dashboard\}
 
 #### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 

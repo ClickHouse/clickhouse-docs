@@ -10,8 +10,6 @@ doc_type: 'reference'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# 受支持的 Cloud 区域 \{#supported-cloud-regions\}
-
 ## AWS 区域 \{#aws-regions\}
 
 * ap-northeast-1 (东京)
@@ -116,6 +114,7 @@ import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge
 * AWS eu-north-1 (斯德哥尔摩) **私有区域**
 * AWS eu-west-1 (爱尔兰)
 * AWS eu-west-2 (伦敦)
+* AWS mx-central-1 (墨西哥) **私有区域**
 * AWS sa-east-1 (南美) **私有区域**
 * AWS us-east-1 (弗吉尼亚北部)
 * AWS us-east-2 (俄亥俄)

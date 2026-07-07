@@ -1,23 +1,20 @@
 ---
 slug: /cloud/data-resiliency
-sidebar_label: '数据恢复能力'
-title: '灾难恢复'
-description: '本指南概述了灾难恢复相关内容。'
+sidebar_label: '数据弹性'
+title: '数据弹性'
+description: '本指南概述了灾难恢复。'
 doc_type: 'reference'
-keywords: ['ClickHouse Cloud', '数据恢复能力', '灾难恢复']
+keywords: ['ClickHouse Cloud', '数据弹性', '灾难恢复']
 ---
 
 import Image from '@theme/IdealImage';
 import restore_backup from '@site/static/images/cloud/guides/restore_backup.png';
 
-
-# 数据弹性 \{#clickhouse-cloud-data-resiliency\}
-
 本页介绍 ClickHouse Cloud 的灾难恢复建议，以及为客户从故障中断中恢复提供指导。
 ClickHouse Cloud 目前不支持自动故障转移，也不支持跨多个地理区域的自动同步。
 
 :::tip
-客户应定期执行备份恢复测试，以了解在其服务规模和配置下的具体恢复时间目标（RTO）。
+客户应定期执行备份恢复测试，以了解在其服务规模和配置下的具体恢复时间目标 (RTO) 。
 :::
 
 ## 定义 \{#definitions\}

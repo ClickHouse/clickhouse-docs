@@ -7,8 +7,6 @@ title: 'SET ステートメント'
 doc_type: 'reference'
 ---
 
-# SET ステートメント \{#set-statement\}
-
 ```sql
 SET param = value
 ```
@@ -21,7 +19,7 @@ SET param = value
 SET profile = 'profile-name-from-the-settings-file'
 ```
 
-boolean 型の設定を true にする場合、値の指定を省略して短縮記法を使うことができます。設定名だけが指定されていると、自動的に `1`（true）として解釈されます。
+boolean 型の設定を true にする場合、値の指定を省略して短縮記法を使うことができます。設定名だけが指定されていると、自動的に `1` (true) として解釈されます。
 
 ```sql
 -- These are equivalent:

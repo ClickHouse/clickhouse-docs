@@ -1,32 +1,30 @@
 ---
 slug: /operations/access-rights
 sidebar_position: 1
-sidebar_label: '사용자 및 역할'
+sidebar_label: 'Users and roles'
 title: '액세스 제어 및 계정 관리'
 keywords: ['ClickHouse Cloud', '액세스 제어', '사용자 관리', 'RBAC', '보안']
-description: 'ClickHouse Cloud에서 액세스 제어 및 계정 관리에 대해 설명합니다'
+description: 'ClickHouse Cloud의 액세스 제어 및 계정 관리에 관해 설명합니다'
 doc_type: 'guide'
 ---
-
-# ClickHouse에서 사용자 및 역할 생성 \{#creating-users-and-roles-in-clickhouse\}
 
 ClickHouse는 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 방식에 기반한 액세스 제어 관리를 지원합니다.
 
 ClickHouse 액세스 엔터티:
 
-- [사용자 계정](#user-account-management)
-- [역할](#role-management)
-- [Row Policy](#row-policy-management)
-- [Settings Profile](#settings-profiles-management)
-- [Quota](#quotas-management)
+* [사용자 계정](#user-account-management)
+* [역할](#role-management)
+* [Row Policy](#row-policy-management)
+* [Settings Profile](#settings-profiles-management)
+* [Quota](#quotas-management)
 
 다음 방법을 사용하여 액세스 엔터티를 구성할 수 있습니다:
 
-- SQL 기반 워크플로우.
+* SQL 기반 워크플로우.
 
-    이 기능을 사용하려면 [액세스 제어를 활성화](#enabling-access-control)해야 합니다.
+  이 기능을 사용하려면 [액세스 제어를 활성화](#enabling-access-control)해야 합니다.
 
-- 서버 [설정 파일](/operations/configuration-files.md) `users.xml` 및 `config.xml`.
+* 서버 [설정 파일](/operations/configuration-files.md) `users.xml` 및 `config.xml`.
 
 SQL 기반 워크플로우 사용을 권장합니다. 두 가지 구성 방법은 동시에 동작하므로, 서버 설정 파일로 계정 및 액세스 권한을 관리하는 경우에도 SQL 기반 워크플로우로 원활하게 전환할 수 있습니다.
 

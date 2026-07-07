@@ -1,13 +1,12 @@
 ---
-description: 'Обзор сторонних инструментов, библиотек и интеграций для ClickHouse'
+description: 'Обзор сторонних инструментов, библиотек и интеграций, доступных
+  для ClickHouse'
 sidebar_position: 24
 slug: /interfaces/third-party/
-toc_folder_title: 'Сторонние решения'
+toc_folder_title: 'Сторонние'
 title: 'Сторонние интерфейсы'
 doc_type: 'landing-page'
 ---
-
-# Сторонние интерфейсы \{#third-party-interfaces\}
 
 Это подборка ссылок на сторонние инструменты, которые предоставляют тот или иной интерфейс к ClickHouse. Это может быть графический интерфейс, интерфейс командной строки или API:
 

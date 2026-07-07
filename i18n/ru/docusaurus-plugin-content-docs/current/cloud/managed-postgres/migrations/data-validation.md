@@ -7,9 +7,9 @@ keywords: ['postgres', 'postgresql', 'логическая репликация'
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
-<PrivatePreviewBadge />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.data-validation-beta" />
 
 ## Сравнение количества строк во всех таблицах \{#data-validation-counts\}
 

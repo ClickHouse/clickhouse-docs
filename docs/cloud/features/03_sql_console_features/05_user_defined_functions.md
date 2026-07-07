@@ -7,13 +7,13 @@ doc_type: 'guide'
 keywords: ['user defined function', 'UDF']
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 
 User-defined functions (UDF) allow users to extend the behavior of ClickHouse beyond what is offered by over a thousand different out-of-box [functions](/sql-reference/functions/regular-functions).
 
 In ClickHouse Cloud, there are two ways to create user-defined functions:
 1. Using SQL
-2. Using the UI and your own code (private preview)
+2. Using the UI and your own code (public beta)
 
 ## SQL user-defined functions {#sql-udfs}
 
@@ -60,13 +60,9 @@ This means:
 
 ## User-defined functions created via UI {#ui-udfs}
 
-<PrivatePreviewBadge/>
+<BetaBadge/>
 
 ClickHouse Cloud offers a UI configuration experience for creating user-defined functions.
-
-:::note
-If you are interested in trying out this feature, please contact [support](https://clickhouse.com/support/program) to enroll in private preview.
-:::
 
 In this example we'll create the same simple executable user-defined function `isBusinessHours` that checks if a certain timestamp falls inside of regular business hours.
 Previously we created it using SQL, but this time we will create it using Python and configure it via the UI.
@@ -90,7 +86,7 @@ for line in sys.stdin:
 EOF
 ```
 
-If your Python script imports third-party packages, you must create a `requirements.txt` file listing those dependencies. For example:
+If your Python script imports third-party packages, list them in a `requirements.txt` file and ClickHouse Cloud installs them for you. You can instead bundle dependencies directly in the ZIP, but then you must include cached packages for both CPU architectures, so `requirements.txt` is simpler. For example:
 
 ```text
 requests>=2.28.0
@@ -131,6 +127,10 @@ Now compress the file into a ZIP archive:
 zip is_business_hours.zip main.py
 ```
 
+:::warning[Symlinks are not allowed]
+ClickHouse Cloud rejects UDF archives that contain symbolic links. Make sure your ZIP bundle contains only regular files and directories — uploads with symlinks will fail validation.
+:::
+
 ### Create a UDF via the UI {#create-udf-via-ui}
 
 1. From the Cloud console homepage, click on the name of your organization in the bottom-left menu.
@@ -166,6 +166,8 @@ true    false
 ```
 
 ### Create a new version {#create-new-version}
+
+To change a UDF's code, create a new version. The **Edit** panel only manages which services a UDF is assigned to; uploading a file there won't replace the deployed code.
 
 1. From the Cloud console homepage, click on the name of your organization in the bottom-left menu.
 2. Select **User-defined functions** from the menu.

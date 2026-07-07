@@ -1,5 +1,7 @@
 ---
-description: '`Atomic` 엔진은 논블로킹(non-blocking) `DROP TABLE` 및 `RENAME TABLE` 쿼리와 원자적(atomic) `EXCHANGE TABLES` 쿼리를 지원합니다. 기본적으로 `Atomic` 데이터베이스 엔진이 사용됩니다.'
+description: '`Atomic` 엔진은 블로킹이 발생하지 않는 `DROP TABLE` 및 `RENAME TABLE`
+  쿼리와 원자적인 `EXCHANGE TABLES` 쿼리를 지원합니다. `Atomic` 데이터베이스 엔진은
+  기본값으로 사용됩니다.'
 sidebar_label: 'Atomic'
 sidebar_position: 10
 slug: /engines/database-engines/atomic
@@ -7,24 +9,17 @@ title: 'Atomic'
 doc_type: 'reference'
 ---
 
-
-
-# Atomic  \{#atomic\}
-
-`Atomic` 엔진은 블로킹이 발생하지 않는 [`DROP TABLE`](#drop-detach-table) 및 [`RENAME TABLE`](#rename-table) 쿼리와 원자적인 [`EXCHANGE TABLES`](#exchange-tables) 쿼리를 지원합니다. `Atomic` 데이터베이스 엔진은 오픈 소스 ClickHouse에서 기본값으로 사용됩니다. 
+`Atomic` 엔진은 블로킹이 발생하지 않는 [`DROP TABLE`](#drop-detach-table) 및 [`RENAME TABLE`](#rename-table) 쿼리와 원자적인 [`EXCHANGE TABLES`](#exchange-tables) 쿼리를 지원합니다. `Atomic` 데이터베이스 엔진은 오픈 소스 ClickHouse에서 기본값으로 사용됩니다.
 
 :::note
 ClickHouse Cloud에서는 [`Shared` 데이터베이스 엔진](/cloud/reference/shared-catalog#shared-database-engine)이 기본값으로 사용되며, 위에서 언급한 연산도 지원합니다.
 :::
-
-
 
 ## 데이터베이스 생성 \{#creating-a-database\}
 
 ```sql
 CREATE DATABASE test [ENGINE = Atomic] [SETTINGS disk=...];
 ```
-
 
 ## 세부 사항 및 권장 사항 \{#specifics-and-recommendations\}
 
@@ -67,7 +62,7 @@ CREATE TABLE name UUID '28f1c61c-2970-457a-bffe-454156ddcfef' (n UInt64) ENGINE 
 RENAME TABLE new_table TO tmp, old_table TO new_table, tmp TO old_table;
 ```
 
-Atomic 엔진을 사용할 수 있습니다:
+원자적 방식으로는 다음을 사용할 수 있습니다:
 
 ```sql title="Atomic"
 EXCHANGE TABLES new_table AND old_table;
@@ -88,7 +83,6 @@ CREATE TABLE db (n UInt64) ENGINE = Atomic SETTINGS disk=disk(type='local', path
 
 지정하지 않으면 `database_disk.disk`에 정의된 디스크가 기본적으로 사용됩니다.
 
-
 ## 참고 \{#see-also\}
 
-- [system.databases](../../operations/system-tables/databases.md) 시스템 테이블
+* [system.databases](../../operations/system-tables/databases.md) 시스템 테이블

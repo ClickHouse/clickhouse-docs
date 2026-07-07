@@ -1,32 +1,28 @@
 ---
 slug: /guides/developer/deduplication
-sidebar_label: '重複排除の戦略'
+sidebar_label: '重複排除戦略'
 sidebar_position: 3
-description: '頻繁にアップサート、更新、削除を行う必要がある場合は、重複排除を利用します。'
-title: '重複排除の戦略'
-keywords: ['重複排除戦略', 'データ重複排除', 'アップサート', '更新と削除', '開発者ガイド']
+description: '頻繁に upsert、更新、削除を行う必要がある場合は、重複排除を使用します。'
+title: '重複排除戦略'
+keywords: ['deduplication strategies', 'data deduplication', 'upserts', 'updates and deletes', 'developer guide']
 doc_type: 'guide'
 ---
 
 import deduplication from '@site/static/images/guides/developer/de_duplication.png';
 import Image from '@theme/IdealImage';
 
-# 重複排除の戦略 \{#deduplication-strategies\}
+**重複排除 (Deduplication)&#x20;**&#x20;とは、***データセットから重複した行を削除する*** プロセスを指します。OLTP データベースでは、各行に一意の主キーがあるため、これは容易に実現できますが、その代わり挿入処理は遅くなります。挿入される各行について、まず既存行の検索が必要となり、見つかった場合はそれを置き換える必要があるためです。
 
-**重複排除（Deduplication）** とは、***データセットから重複した行を削除する*** プロセスを指します。OLTP データベースでは、各行に一意のプライマリキーがあるため、これは容易に実現できますが、その代わり挿入処理は遅くなります。挿入される各行について、まず既存行の検索が必要となり、見つかった場合はそれを置き換える必要があるためです。
+ClickHouse はデータ挿入における高速性を重視して設計されています。ストレージファイルは不変であり、行の挿入前に ClickHouse が既存の主キーを確認することはありません。そのため、重複排除には多少の追加作業が必要になります。これはまた、重複排除が即時には行われず、**最終的に (eventual)&#x20;**&#x20;実施されることを意味し、次のようないくつかの副作用があります。
 
-ClickHouse はデータ挿入における高速性を重視して設計されています。ストレージファイルは不変であり、行の挿入前に ClickHouse が既存のプライマリキーを確認することはありません。そのため、重複排除には多少の追加作業が必要になります。これはまた、重複排除が即時には行われず、**最終的に（eventual）** 実施されることを意味し、次のようないくつかの副作用があります。
+* 任意の時点で、テーブルには依然として重複 (同じソートキーを持つ行) が存在し得る
+* 実際の重複行の削除は、パーツのマージ処理中に行われる
+* クエリでは重複が存在する可能性を考慮する必要がある
 
-- 任意の時点で、テーブルには依然として重複（同じソートキーを持つ行）が存在し得る
-- 実際の重複行の削除は、パーツのマージ処理中に行われる
-- クエリでは重複が存在する可能性を考慮する必要がある
-
-<div class='transparent-table'>
-
-|||
-|------|----|
-|<Image img={deduplication}  alt="Deduplication Logo" size="sm"/>|ClickHouse では、重複排除を含む多くのトピックに関する無償トレーニングを提供しています。[Deleting and Updating Data トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse&utm_medium=docs)は、学習を始めるうえでの良い出発点です。|
-
+<div class="transparent-table">
+  |                                                                  |                                                                                                                                                                                                                        |
+  | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | <Image img={deduplication} alt="Deduplication Logo" size="sm" /> | ClickHouse では、重複排除を含む多くのトピックに関する無償トレーニングを提供しています。[Deleting and Updating Data トレーニングモジュール](https://learn.clickhouse.com/visitor_catalog_class/show/1328954/?utm_source=clickhouse\&utm_medium=docs)は、学習を始めるうえでの良い出発点です。 |
 </div>
 
 ## 重複排除のオプション \{#options-for-deduplication\}

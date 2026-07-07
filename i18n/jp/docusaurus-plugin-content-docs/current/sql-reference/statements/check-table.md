@@ -55,67 +55,63 @@ CHECK TABLE table_name [PARTITION partition_expression | PART part_name] [FORMAT
 
 ## 例 \{#examples\}
 
-デフォルトでは、`CHECK TABLE` クエリはテーブル全体の総合的なチェック結果を表示します。
+デフォルトでは、`CHECK TABLE` クエリにはテーブル全体のチェック結果が表示されます。
 
-```sql
+```sql title="Query"
 CHECK TABLE test_table;
 ```
 
-```text
+```text title="Response"
 ┌─result─┐
 │      1 │
 └────────┘
 ```
 
-各データパーツごとのチェックステータスを確認したい場合は、`check_query_single_value_result` 設定を使用できます。
+個々のデータパーツのチェック状況を確認したい場合は、`check_query_single_value_result` 設定を使用できます。
 
-また、テーブルの特定パーティションをチェックするには、`PARTITION` キーワードを使用できます。
+また、テーブル内の特定のパーティションをチェックするには、`PARTITION` キーワードを使用できます。
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-出力:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 │ 201003_3_3_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-同様に、`PART` キーワードを使用してテーブル内の特定のデータパーツのみをチェックすることもできます。
+同様に、`PART` キーワードを使用すると、テーブルの特定のパーツを確認できます。
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_7_7_0'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
 ```
 
-出力:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message─┐
 │ 201003_7_7_0 │         1 │         │
 └──────────────┴───────────┴─────────┘
 ```
 
-データパートが存在しない場合、そのクエリはエラーを返します。
+パーツが存在しない場合、クエリはエラーを返す点に注意してください:
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PART '201003_111_222_0'
 ```
 
-```text
+```text title="Response"
 DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t0'. (NO_SUCH_DATA_PART)
 ```
 
-### 「Corrupted（破損）」という結果を受け取った場合 \{#receiving-a-corrupted-result\}
+### 「Corrupted (破損) 」という結果を受け取った場合 \{#receiving-a-corrupted-result\}
 
 :::warning
-免責事項：ここで説明する手順（データディレクトリ内のファイルを手動で操作・削除することを含みます）は、実験環境または開発環境でのみ使用してください。本番サーバーでは絶対に実行しないでください。データ損失やその他の予期しない結果を招くおそれがあります。
+免責事項：ここで説明する手順 (データディレクトリ内のファイルを手動で操作・削除することを含みます) は、実験環境または開発環境でのみ使用してください。本番サーバーでは絶対に実行しないでください。データ損失やその他の予期しない結果を招くおそれがあります。
 :::
 
 既存のチェックサムファイルを削除します:
@@ -124,15 +120,13 @@ DB::Exception: No such data part '201003_111_222_0' to check in table 'default.t
 rm /var/lib/clickhouse-server/data/default/t0/201003_3_3_0/checksums.txt
 ```
 
-```sql
+```sql title="Query"
 CHECK TABLE t0 PARTITION ID '201003'
 FORMAT PrettyCompactMonoBlock
 SETTINGS check_query_single_value_result = 0
+```
 
-
-Output:
-
-```text
+```text title="Response"
 ┌─part_path────┬─is_passed─┬─message──────────────────────────────────┐
 │ 201003_7_7_0 │         1 │                                          │
 │ 201003_3_3_0 │         1 │ Checksums recounted and written to disk. │
@@ -164,11 +158,11 @@ SETTINGS check_query_single_value_result = 0
 └──────────┴──────────┴─────────────┴───────────┴─────────┘
 ```
 
-## データが破損している場合 {#if-the-data-is-corrupted}
+## データが破損している場合 \{#if-the-data-is-corrupted\}
 
-テーブルが破損している場合は、破損していないデータを別のテーブルにコピーできます。そのためには、次の手順を実行します。
+テーブルが破損している場合は、破損していないデータを別のテーブルにコピーできます。手順は次のとおりです。
 
-1.  破損したテーブルと同じ構造を持つ新しいテーブルを作成します。これには、クエリ `CREATE TABLE <new_table_name> AS <damaged_table_name>` を実行します。
-2.  次のクエリを単一スレッドで処理するために、`max_threads` の値を1に設定します。これには、クエリ `SET max_threads = 1` を実行します。
-3.  クエリ `INSERT INTO <new_table_name> SELECT * FROM <damaged_table_name>` を実行します。このクエリは、破損したテーブルから破損していないデータを別のテーブルにコピーします。破損部分より前のデータのみがコピーされます。
-4.  `max_threads` の値をリセットするために、`clickhouse-client` を再起動します。
+1. 破損したテーブルと同じ構造を持つ新しいテーブルを作成します。これには、クエリ `CREATE TABLE <new_table_name> AS <damaged_table_name>` を実行します。
+2. 次のクエリを単一スレッドで処理するため、`max_threads` の値を 1 に設定します。これには、クエリ `SET max_threads = 1` を実行します。
+3. クエリ `INSERT INTO <new_table_name> SELECT * FROM <damaged_table_name>` を実行します。このクエリにより、破損したテーブルから破損していないデータが別のテーブルにコピーされます。コピーされるのは、破損した部分より前のデータのみです。
+4. `max_threads` の値をリセットするには、`clickhouse-client` を再起動します。

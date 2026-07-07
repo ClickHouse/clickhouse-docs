@@ -1,15 +1,13 @@
 ---
-description: '`Dictionary` 엔진은 딕셔너리 데이터를 ClickHouse 테이블 형태로 제공합니다.'
+description: '`딕셔너리` 엔진은 딕셔너리 데이터를 ClickHouse 테이블 형태로 제공합니다.'
 sidebar_label: '딕셔너리'
 sidebar_position: 20
 slug: /engines/table-engines/special/dictionary
-title: 'Dictionary 테이블 엔진'
+title: '딕셔너리 테이블 엔진'
 doc_type: 'reference'
 ---
 
-# 딕셔너리 테이블 엔진 \{#dictionary-table-engine\}
-
-`Dictionary` 엔진은 [딕셔너리](../../../sql-reference/statements/create/dictionary/overview.md) 데이터를 ClickHouse 테이블 형태로 보여줍니다.
+`딕셔너리` 엔진은 [딕셔너리](../../../sql-reference/statements/create/dictionary/overview.md) 데이터를 ClickHouse 테이블로 표시합니다.
 
 ## 예시 \{#example\}
 

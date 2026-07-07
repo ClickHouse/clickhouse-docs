@@ -6,8 +6,6 @@ title: '比较函数'
 doc_type: 'reference'
 ---
 
-# 比较函数 \{#comparison-functions\}
-
 ## 比较规则 \{#comparison-rules\}
 
 下面的比较函数返回类型为 [UInt8](/sql-reference/data-types/int-uint) 的 `0` 或 `1`。只有同一组内的值可以进行比较 (例如 `UInt16` 和 `UInt64`) ，不同组之间的值不能相互比较 (例如 `UInt16` 和 `DateTime`) 。

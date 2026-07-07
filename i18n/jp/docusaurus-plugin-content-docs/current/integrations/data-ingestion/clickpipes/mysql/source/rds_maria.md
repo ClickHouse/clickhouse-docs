@@ -20,15 +20,12 @@ import security_group_in_rds_mysql from '@site/static/images/integrations/data-i
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
 
+これは、MySQL ClickPipe を使用してデータをレプリケートするために、RDS MariaDB インスタンスを設定する手順を説明するガイドです。
 
-# RDS MariaDB ソース設定ガイド \{#rds-mariadb-source-setup-guide\}
-
-これは、MySQL ClickPipe を介してデータをレプリケーションできるように、RDS MariaDB インスタンスを構成するためのステップバイステップガイドです。
-
-<br/>
+<br />
 
 :::info
-あわせて、MySQL の FAQ も[こちら](/integrations/data-ingestion/clickpipes/mysql/faq.md)からご確認いただくことを推奨します。FAQ ページは随時更新されています。
+[こちら](/integrations/data-ingestion/clickpipes/mysql/faq.md)の MySQL よくある質問にも目を通すことをお勧めします。このページは現在も随時更新されています。
 :::
 
 ## バイナリログの保持を有効にする \{#enable-binlog-retention-rds\}

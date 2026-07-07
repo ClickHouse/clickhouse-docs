@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse 中 DateTime64 数据类型文档，该类型用于存储具有亚秒级精度的时间戳'
+description: 'ClickHouse 中 DateTime64 数据类型的文档，该类型用于存储具有子秒级精度的时间戳'
 sidebar_label: 'DateTime64'
 sidebar_position: 18
 slug: /sql-reference/data-types/datetime64
 title: 'DateTime64'
-doc_type: 'reference'
+doc_type: '参考'
 ---
-
-# DateTime64 \{#datetime64\}
 
 用于存储某一瞬时时刻，该时刻可以表示为日历日期和一天中的时间，并具有可配置的子秒级精度。
 

@@ -7,9 +7,7 @@ keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
 doc_type: 'guide'
 ---
 
-# C および C++ 用 chDB \{#chdb-for-c-and-c\}
-
-chDB は、ClickHouse の機能をアプリケーションに直接組み込むためのネイティブ C/C++ API を提供します。この API は、シンプルなクエリと、永続的な接続やストリーミングクエリ結果などの高度な機能の両方をサポートしています。
+chDB は、ClickHouse の機能をアプリケーションに直接組み込むためのネイティブ C/C++ API を提供します。この API は、単純なクエリだけでなく、永続的な接続やクエリ結果のストリーミングなどの高度な機能もサポートしています。
 
 ## インストール \{#installation\}
 
@@ -336,4 +334,4 @@ cleanup:
 
 - **メインリポジトリ**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **イシューとサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb/issues)で問題を報告してください
-- **C API ドキュメント**: [バインディングドキュメント](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+- **C API ドキュメント**: [バインディングドキュメント](https://github.com/chdb-io/chdb-core/blob/main/bindings.md)

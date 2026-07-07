@@ -1,13 +1,11 @@
 ---
-description: 'last_value ウィンドウ関数に関するドキュメント'
+description: 'last_value ウィンドウ関数のドキュメント'
 sidebar_label: 'last_value'
 sidebar_position: 4
 slug: /sql-reference/window-functions/last_value
 title: 'last_value'
 doc_type: 'reference'
 ---
-
-# last&#95;value \{#last&#95;value\}
 
 順序付けされたフレーム内で評価された最後の値を返します。デフォルトでは NULL 引数はスキップされますが、`RESPECT NULLS` 修飾子を使用すると、この動作を変更できます。
 
@@ -40,9 +38,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 この例では、架空のプレミアリーグのサッカー選手の給与データセットから、最も給与の低い選手を見つけるために `last_value` 関数を使用します。
 
-クエリ:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -63,15 +59,13 @@ INSERT INTO salaries FORMAT VALUES
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        last_value(player) OVER (ORDER BY salary DESC RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lowest_paid_player
 FROM salaries;
 ```
 
-結果:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─lowest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Michael Stanley    │
 2. │ Robert George   │ 195000 │ Michael Stanley    │

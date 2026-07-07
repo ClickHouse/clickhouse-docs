@@ -1,13 +1,12 @@
 ---
-description: 'Руководство по настройке защищённого взаимодействия по SSL/TLS между ClickHouse и ZooKeeper'
-sidebar_label: 'Защищённое взаимодействие с Zookeeper'
+description: 'Руководство по настройке защищённого SSL/TLS-взаимодействия между ClickHouse
+  и ZooKeeper'
+sidebar_label: 'Защищённое взаимодействие с ZooKeeper'
 sidebar_position: 45
 slug: /operations/ssl-zookeeper
-title: 'Опциональное защищённое взаимодействие между ClickHouse и Zookeeper'
+title: 'Опциональное защищённое взаимодействие между ClickHouse и ZooKeeper'
 doc_type: 'guide'
 ---
-
-# Опциональное защищённое взаимодействие между ClickHouse и ZooKeeper \{#optional-secured-communication-between-clickhouse-and-zookeeper\}
 
 import SelfManaged from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_automated.md';
 

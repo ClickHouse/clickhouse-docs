@@ -1,13 +1,11 @@
 ---
-description: '테이블 TTL 관리 문서'
+description: '테이블 TTL 작업에 대한 문서'
 sidebar_label: 'TTL'
 sidebar_position: 44
 slug: /sql-reference/statements/alter/ttl
-title: '테이블 TTL 관리'
-doc_type: 'reference'
+title: '테이블 TTL 작업'
+doc_type: '참고'
 ---
-
-# 테이블 TTL 작업 \{#manipulations-with-table-ttl\}
 
 :::note
 TTL을 사용한 오래된 데이터 관리 방법에 대한 자세한 내용은 [TTL로 데이터 관리하기](/guides/developer/ttl.md) 사용자 가이드를 참조하십시오. 아래 내용에서는 기존 TTL 규칙을 변경하거나 제거하는 방법을 설명합니다.

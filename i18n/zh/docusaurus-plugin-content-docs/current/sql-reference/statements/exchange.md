@@ -7,8 +7,6 @@ title: 'EXCHANGE 语句'
 doc_type: 'reference'
 ---
 
-# EXCHANGE 语句 \{#exchange-statement\}
-
 以原子方式交换两个表或字典的名称。
 也可以通过使用临时名称的 [`RENAME`](./rename.md) 查询来实现这一操作，但在这种情况下该操作不是原子的。
 

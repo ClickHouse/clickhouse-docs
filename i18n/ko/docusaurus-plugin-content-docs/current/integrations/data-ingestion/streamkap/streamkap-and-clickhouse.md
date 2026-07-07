@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'Streamkap을 ClickHouse에 연결하기'
 sidebar_position: 11
-keywords: ['clickhouse', 'Streamkap', 'CDC', '연결', '통합', 'etl', '데이터 통합', '데이터 변경 캡처(Change Data Capture)']
+keywords: ['clickhouse', 'Streamkap', 'CDC', '연결', '통합', 'etl', '데이터 통합', '변경 데이터 캡처']
 slug: /integrations/sttreamkap
-description: 'Airbyte 데이터 파이프라인을 사용하여 스트리밍 데이터를 ClickHouse로 수집합니다'
+description: 'Airbyte 데이터 파이프라인을 사용해 데이터를 ClickHouse로 스트리밍합니다'
 
 title: 'Streamkap을 ClickHouse에 연결하기'
 doc_type: 'guide'
@@ -16,14 +16,11 @@ integration:
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Streamkap을 ClickHouse에 연결하기 \{#connect-streamkap-to-clickhouse\}
+<a href="https://www.streamkap.com/" target="_blank">Streamkap</a>은(는) 스트리밍 Change Data Capture(CDC)와 스트림 처리에 특화된 실시간 데이터 통합 플랫폼입니다. Apache Kafka, Apache Flink, Debezium을 기반으로 한 고성능 확장형 스택 위에 구축되었으며, SaaS 또는 BYOC(Bring your own Cloud) 배포 형태의 완전 관리형 서비스로 제공됩니다.
 
-<PartnerBadge/>
-
-<a href="https://www.streamkap.com/" target="_blank">Streamkap</a>은(는) 스트리밍 Change Data Capture(CDC)와 스트림 처리에 특화된 실시간 데이터 통합 플랫폼입니다. Apache Kafka, Apache Flink, Debezium을 기반으로 한 고성능 확장형 스택 위에 구축되었으며, SaaS 또는 BYOC(Bring your own Cloud) 배포 형태의 완전 관리형 서비스로 제공됩니다. 
-
-Streamkap을 사용하면 PostgreSQL, MySQL, SQL Server, MongoDB 및 <a href="https://streamkap.com/connectors" target="_blank">기타</a> 소스 데이터베이스에서 발생하는 모든 insert, update, delete 작업을 밀리초 단위 지연으로 곧바로 ClickHouse로 스트리밍할 수 있습니다. 
+Streamkap을 사용하면 PostgreSQL, MySQL, SQL Server, MongoDB 및 <a href="https://streamkap.com/connectors" target="_blank">기타</a> 소스 데이터베이스에서 발생하는 모든 insert, update, delete 작업을 밀리초 단위 지연으로 곧바로 ClickHouse로 스트리밍할 수 있습니다.
 
 이는 실시간 분석 대시보드, 운영 분석, 그리고 머신 러닝 모델에 실시간 데이터를 공급하는 데 이상적입니다.
 

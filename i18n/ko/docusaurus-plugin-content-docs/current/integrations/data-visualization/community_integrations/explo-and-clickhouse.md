@@ -31,12 +31,9 @@ import explo_15 from '@site/static/images/integrations/data-visualization/explo_
 import explo_16 from '@site/static/images/integrations/data-visualization/explo_16.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Explo를 ClickHouse에 연결하기 \{#connecting-explo-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-어떤 플랫폼에서도 사용할 수 있는 고객 대상 분석 솔루션입니다. 아름다운 시각화를 위해 설계되었으며, 단순성을 위해 구현되었습니다.
+모든 플랫폼을 위한 고객 대상 분석. 뛰어난 시각화를 위해 설계되었습니다. 간편하게 사용할 수 있도록 만들어졌습니다.
 
 ## 목표 \{#goal\}
 

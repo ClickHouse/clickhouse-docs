@@ -11,9 +11,13 @@ doc_type: 'guide'
 ## Automatic idling {#automatic-idling}
 In the **Settings** page, you can also choose whether or not to allow automatic idling of your service when it is inactive for a certain duration (i.e. when the service isn't executing any user-submitted queries).  Automatic idling reduces the cost of your service, as you're not billed for compute resources when the service is paused.
 
+:::warning[Configure the IP access list for your service]
+When you create a ClickHouse Cloud service, the default setting for the IP allow list is 'Allow from anywhere.' We strongly recommend restricting access to specific IP addresses or ranges as soon as possible. Services set to `Allow from anywhere` may be periodically moved from an idle to an active state by internet crawlers and scanners that look for public IPs, which may result in unexpected costs.
+:::
+
 ### Adaptive Idling {#adaptive-idling}
  ClickHouse Cloud implements adaptive idling to prevent disruptions while optimizing cost savings. The system evaluates several conditions before transitioning a service to idle. Adaptive idling overrides the idling duration setting when any of the below listed conditions are met:
-- When the number of parts exceeds the maximum idle parts threshold (default: 10,000), the service isn't idled so that background maintenance can continue
+- When the number of parts exceeds the maximum active parts threshold (default: 10,000), the service isn't idled so that background maintenance can continue
 - When there are ongoing merge operations, the service isn't idled until those merges complete to avoid interrupting critical data consolidation
 - Additionally, the service also adapts idle timeouts based on server initialization time:
   - If server initialization time is less than 15 minutes, no adaptive timeout is applied and the customer-configured default idle timeout is used

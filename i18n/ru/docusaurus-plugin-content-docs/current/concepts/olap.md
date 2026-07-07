@@ -1,14 +1,12 @@
 ---
 sidebar_position: 2
 sidebar_label: 'Что такое OLAP?'
-description: 'OLAP расшифровывается как Online Analytical Processing. Это широкий термин, который можно рассматривать с двух точек зрения: с технической и с бизнес-точки зрения.'
+description: 'OLAP расшифровывается как Online Analytical Processing. Это обобщающий термин, на который можно смотреть с двух точек зрения: технической и с точки зрения бизнеса.'
 title: 'Что такое OLAP?'
 slug: /concepts/olap
 keywords: ['OLAP']
 doc_type: 'reference'
 ---
-
-# Что такое OLAP? \{#what-is-olap\}
 
 [OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) расшифровывается как Online Analytical Processing. Это обобщающий термин, на который можно смотреть с двух точек зрения: технической и с точки зрения бизнеса. На самом базовом уровне можно просто прочитать эти слова в обратном порядке:
 

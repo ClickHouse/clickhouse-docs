@@ -10,9 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# ClickHouse MCP サーバーを Ollama と連携して利用する \{#using-clickhouse-mcp-server-with-ollama\}
-
-> 本ガイドでは、ClickHouse MCP サーバーを Ollama と連携して使用する方法を説明します。
+> このガイドでは、ClickHouse MCPサーバーをOllamaと連携して使用する方法を説明します。
 
 <VerticalStepper headerLevel="h2">
   ## Ollama のインストール \{#install-ollama\}

@@ -10,9 +10,11 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 如何使用 Chainlit 和 ClickHouse MCP server 构建 AI 智能体 \{#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server\}
-
-本指南介绍如何将功能强大的 Chainlit 聊天界面框架与 ClickHouse Model Context Protocol (MCP) Server 相结合，以构建交互式数据应用程序。Chainlit 使你可以用最少的代码为 AI 应用构建对话式界面，而 ClickHouse MCP server 则提供与 ClickHouse 高性能列式数据库的无缝集成。
+这个指南将介绍如何将 Chainlit 强大的聊天界面框架
+与 ClickHouse Model Context Protocol (MCP) Server 结合起来，构建交互式数据
+应用。Chainlit 让您能够以极少的代码为 AI
+应用构建对话式界面，而 ClickHouse MCP server 则提供与 ClickHouse 高性能
+列式数据库的无缝集成。
 
 ## 前提条件 \{#prerequisites\}
 

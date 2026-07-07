@@ -8,13 +8,11 @@ doc_type: 'guide'
 keywords: ['データ形式', 'テンプレート', 'Regex', 'カスタム形式', '解析']
 ---
 
-# ClickHouse で テンプレート と Regex を使用してカスタムテキストデータをインポートおよびエクスポートする \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}
-
-独自テキスト形式のデータ、たとえば非標準的なフォーマット、不正な JSON、壊れた CSV などを扱わなければならないことはよくあります。CSV や JSON といった標準パーサーでは、こうしたすべてのケースを扱えるとは限りません。しかし ClickHouse には強力な テンプレート フォーマットと Regex フォーマットが用意されており、これらのケースにも対応できます。
+カスタムのテキスト形式のデータを扱う必要が生じることは少なくありません。たとえば、非標準の形式、無効な JSON、壊れた CSV などです。このようなケースでは、CSV や JSON などの標準的なパーサーでは対応できないことがあります。しかし、ClickHouse には強力な Template および Regex フォーマットが用意されているため、こうした場合にも対応できます。
 
 ## テンプレートに基づくインポート \{#importing-based-on-a-template\}
 
-次の[ログファイル](assets/error.log)からデータをインポートしたいとします。
+次の[ログファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log)からデータをインポートしたいとします。
 
 ```bash
 head error.log
@@ -47,7 +45,7 @@ ENGINE = MergeTree
 ORDER BY (host, request, time)
 ```
 
-指定されたテンプレートを使ってデータをインポートするには、テンプレート文字列をファイルに保存する必要があります（この例では [row.template](assets/row.template) ファイル）。
+指定されたテンプレートを使ってデータをインポートするには、テンプレート文字列をファイルに保存する必要があります（この例では [row.template](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/row.template) ファイル）。
 
 ```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
@@ -99,7 +97,7 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 
 テンプレートを使用して任意のテキスト形式でデータをエクスポートすることもできます。この場合は、次の 2 つのファイルを作成する必要があります。
 
-[結果セットテンプレート](assets/output.results)、結果セット全体のレイアウトを定義します。
+[結果セットテンプレート](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.results)、結果セット全体のレイアウトを定義します。
 
 ```response
 == Top 10 IPs ==
@@ -107,7 +105,7 @@ ${data}
 --- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
-ここで `rows_read` と `time` は、各リクエストごとに利用できるシステムメトリクスです。一方で `data` は、[**row template file**](assets/output.rows) で定義されたテンプレートに基づいて生成される行を表し（このファイルでは `${data}` は常に最初のプレースホルダーとして指定する必要があります）、
+ここで `rows_read` と `time` は、各リクエストごとに利用できるシステムメトリクスです。一方で `data` は、[**row template file**](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.rows) で定義されたテンプレートに基づいて生成される行を表し（このファイルでは `${data}` は常に最初のプレースホルダーとして指定する必要があります）、
 
 ```response
 ${ip:Escaped} generated ${total:Escaped} requests
@@ -142,7 +140,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 
 ### HTML ファイルへのエクスポート \{#exporting-to-html-files\}
 
-テンプレートベースの結果は、[`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 句を使用してファイルにエクスポートすることもできます。次の [resultset](assets/html.results) および [row](assets/html.row) のフォーマットに基づいて HTML ファイルを生成してみましょう。
+テンプレートベースの結果は、[`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 句を使用してファイルにエクスポートすることもできます。次の [resultset](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.results) および [row](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.row) のフォーマットに基づいて HTML ファイルを生成してみましょう。
 
 ```sql
 SELECT
@@ -204,7 +202,7 @@ FORMAT XML
 
 ## 正規表現に基づくデータのインポート \{#importing-data-based-on-regular-expressions\}
 
-[Regexp](/interfaces/formats/Regexp) フォーマットは、入力データをより複雑な方法で解析する必要がある、高度なユースケースに対応します。ここでは [error.log](assets/error.log) のサンプルファイルを解析し、今回はファイル名とプロトコルも抽出して、それぞれ別のカラムに保存します。まず、そのための新しいテーブルを準備します。
+[Regexp](/interfaces/formats/Regexp) フォーマットは、入力データをより複雑な方法で解析する必要がある、高度なユースケースに対応します。ここでは [error.log](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log) のサンプルファイルを解析し、今回はファイル名とプロトコルも抽出して、それぞれ別のカラムに保存します。まず、そのための新しいテーブルを準備します。
 
 ```sql
 CREATE TABLE error_log

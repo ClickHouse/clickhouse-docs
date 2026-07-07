@@ -3,7 +3,7 @@ sidebar_label: 'Коннектор HTTP Sink для Confluent Platform'
 sidebar_position: 4
 slug: /integrations/kafka/cloud/confluent/http
 description: 'Использование коннектора HTTP Sink с Kafka Connect и ClickHouse'
-title: 'Коннектор Confluent HTTP Sink'
+title: 'Коннектор Confluent HTTP sink'
 doc_type: 'guide'
 keywords: ['Confluent HTTP Sink Connector', 'HTTP Sink ClickHouse', 'Kafka HTTP connector
 ', 'ClickHouse HTTP integration', 'Confluent Cloud HTTP Sink']
@@ -16,15 +16,12 @@ import httpAuth from '@site/static/images/integrations/data-ingestion/kafka/conf
 import httpAdvanced from '@site/static/images/integrations/data-ingestion/kafka/confluent/http_advanced.png';
 import createMessageInTopic from '@site/static/images/integrations/data-ingestion/kafka/confluent/create_message_in_topic.png';
 
+Коннектор HTTP Sink не зависит от типа данных, поэтому ему не требуется схема Kafka, при этом он также поддерживает специфические для ClickHouse типы данных, такие как Maps и Arrays. Эта дополнительная гибкость достигается ценой немного более сложной конфигурации.
 
-# Коннектор Confluent HTTP Sink \{#confluent-http-sink-connector\}
-
-Коннектор HTTP Sink не зависит от формата данных, поэтому не требует схемы Kafka и при этом поддерживает специфичные для ClickHouse типы данных, такие как `Map` и `Array`. Эта дополнительная гибкость приводит к небольшому усложнению конфигурации.
-
-Ниже описана простая установка, считывающая сообщения из одного топика Kafka и вставляющая строки в таблицу ClickHouse.
+Ниже мы описываем простую установку, при которой сообщения считываются из одного топика Kafka, а строки вставляются в таблицу ClickHouse.
 
 :::note
-  HTTP Connector распространяется по [лицензии Confluent Enterprise](https://docs.confluent.io/kafka-connect-http/current/overview.html#license).
+Коннектор HTTP распространяется по [лицензии Confluent Enterprise](https://docs.confluent.io/kafka-connect-http/current/overview.html#license).
 :::
 
 ### Быстрый старт \{#quick-start-steps\}

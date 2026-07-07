@@ -7,8 +7,6 @@ sidebar_label: 'avgMap'
 doc_type: 'reference'
 ---
 
-# avgMap \{#avgmap\}
-
 ## 설명 \{#description\}
 
 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 결합자는 [`avg`](/sql-reference/aggregate-functions/reference/avg)

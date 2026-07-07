@@ -2,7 +2,7 @@
 sidebar_label: '백업 검토 및 복원'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: '개요'
+title: '백업 검토 및 복원'
 keywords: ['백업', 'Cloud 백업', '복원']
 description: 'ClickHouse Cloud의 백업에 대한 개요를 제공합니다'
 doc_type: 'guide'
@@ -17,14 +17,11 @@ import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
 
+이 가이드에서는 ClickHouse Cloud에서 백업이 작동하는 방식, 서비스의 백업을 구성할 때 사용할 수 있는 옵션, 그리고 백업에서 복원하는 방법을 설명합니다.
 
-# 백업 검토 및 복원 \{#review-and-restore-backups\}
+**사전 요구 사항**
 
-이 가이드는 ClickHouse Cloud에서 백업이 동작하는 방식, 서비스에 대한 백업 구성 옵션, 그리고 백업에서 복원하는 방법을 설명합니다.
-
-**사전 준비 사항**
-
-- ["ClickHouse Cloud에서 백업이 작동하는 방식"](/cloud/features/backups#how-backups-work-in-clickhouse-cloud) (기능 개요 페이지)를 읽었습니다.
+* [&quot;ClickHouse Cloud에서 백업이 작동하는 방식&quot;](/cloud/features/backups#how-backups-work-in-clickhouse-cloud)을 읽었습니다 (기능 개요 페이지)
 
 ## 백업 상태 목록 \{#backup-status-list\}
 
@@ -38,14 +35,14 @@ import backup_service_provisioning from '@site/static/images/cloud/manage/backup
 
 백업 비용을 파악하려면 사용량 화면에서 서비스별 백업 비용을 확인할 수 있습니다(아래 그림 참조). 사용자 지정 일정을 적용한 상태로 며칠간 백업을 실행한 후에는, 그 비용 수준을 파악하고 이를 바탕으로 월간 백업 비용을 추정할 수 있습니다.
 
-<Image img={backup_usage} size="md" alt="ClickHouse Cloud의 백업 사용량 차트" border/>
+<Image img={backup_usage} size="md" alt="ClickHouse Cloud의 백업 사용량 차트" border />
 
-백업 총비용을 추정하려면 먼저 백업 일정을 설정해야 합니다. 또한 일정 설정 전에 월간 비용을 미리 추정할 수 있도록 [pricing calculator](https://clickhouse.com/pricing)를 업데이트하고 있습니다. 비용을 추정하려면 다음과 같은 입력값이 필요합니다:
+백업 총비용을 추정하려면 먼저 백업 일정을 설정해야 합니다. 일정을 설정하기 전에 다음 입력값을 제공하여 [요금 계산기](https://clickhouse.com/pricing)를 사용해 월간 비용 추정치를 확인할 수 있습니다:
 
-- 전체 백업과 증분 백업의 크기
-- 원하는 수행 주기
-- 원하는 보존 기간
-- Cloud 제공자 및 리전
+* 전체 백업과 증분 백업의 크기
+* 원하는 백업 수행 주기
+* 원하는 백업 보존 기간
+* Cloud 제공자 및 리전
 
 :::note
 서비스 내 데이터 크기가 시간이 지남에 따라 증가함에 따라, 백업에 대한 예상 비용 역시 변동된다는 점을 유의해야 합니다.

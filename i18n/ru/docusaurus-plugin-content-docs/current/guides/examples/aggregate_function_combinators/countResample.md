@@ -7,11 +7,9 @@ sidebar_label: 'countResample'
 doc_type: 'reference'
 ---
 
-# countResample \{#countResample\}
-
 ## Описание \{#description\}
 
-Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample) 
+Комбинатор [`Resample`](/sql-reference/aggregate-functions/combinators#-resample)
 можно применить к агрегатной функции [`count`](/sql-reference/aggregate-functions/reference/count),
 чтобы подсчитать значения заданного ключевого столбца по фиксированному числу
 интервалов (`N`).
@@ -58,5 +56,6 @@ SELECT countResample(30, 75, 30)(name, age) AS amount FROM employee_data
 ```
 
 ## См. также \{#see-also\}
-- [`count`](/sql-reference/aggregate-functions/reference/count)
-- [`Комбинатор Resample`](/sql-reference/aggregate-functions/combinators#-resample)
+
+* [`count`](/sql-reference/aggregate-functions/reference/count)
+* [`Комбинатор Resample`](/sql-reference/aggregate-functions/combinators#-resample)

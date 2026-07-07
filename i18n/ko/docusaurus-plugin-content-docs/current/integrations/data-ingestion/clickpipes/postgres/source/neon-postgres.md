@@ -16,11 +16,8 @@ import neon_ip_allow from '@site/static/images/integrations/data-ingestion/click
 import neon_conn_details from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/neon-postgres/neon-conn-details.png'
 import Image from '@theme/IdealImage';
 
-
-# Neon Postgres 소스 설정 가이드 \{#neon-postgres-source-setup-guide\}
-
-이 문서는 ClickPipes에서 복제에 사용할 수 있는 Neon Postgres를 설정하는 방법을 안내합니다.
-이 설정을 진행하기 전에 [Neon 콘솔](https://console.neon.tech/app/projects)에 로그인했는지 확인하십시오.
+이 가이드는 ClickPipes에서 복제에 사용할 Neon Postgres를 설정하는 방법을 설명합니다.
+이 설정을 진행하기 전에 [Neon console](https://console.neon.tech/app/projects)에 로그인되어 있는지 확인하십시오.
 
 ## 권한이 있는 사용자 생성 \{#creating-a-user-with-permissions\}
 

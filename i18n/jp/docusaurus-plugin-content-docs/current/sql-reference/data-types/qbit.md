@@ -39,6 +39,29 @@ SELECT vec FROM test ORDER BY id;
 ```
 
 
+## 配列をQBitに変換する \{#converting-arrays-to-qbit\}
+
+配列の長さが `QBit` の次元と一致していれば、配列は `QBit` に変換されます。配列の要素型は `QBit` の要素型と一致している必要はありません。数値型の要素であれば、どの型でも自動的に変換されます。これにより、既存の埋め込みベクトルのカラムをそのまま `QBit` カラムに移行できます。
+
+```sql
+CREATE TABLE embeddings (id UInt32, embedding Array(Float32)) ENGINE = Memory;
+INSERT INTO embeddings VALUES (1, [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]), (2, [0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1]);
+
+CREATE TABLE vectors (id UInt32, vec QBit(Float32, 8)) ENGINE = Memory;
+INSERT INTO vectors SELECT id, embedding FROM embeddings;
+
+SELECT * FROM vectors ORDER BY id;
+```
+
+```text
+┌─id─┬─vec───────────────────────────────┐
+│  1 │ [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8] │
+│  2 │ [0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1] │
+└────┴───────────────────────────────────┘
+```
+
+この変換は、たとえば `CAST(embedding AS QBit(Float32, 8))` のように、`CAST` を使って明示的に行うこともできます。
+
 ## QBit サブカラム \{#qbit-subcolumns\}
 
 `QBit` では、保存されているベクトルの各ビットプレーンに個別にアクセスできるサブカラムアクセスパターンを実装しています。各ビット位置には `.N` という構文でアクセスでき、`N` はビット位置を表します。

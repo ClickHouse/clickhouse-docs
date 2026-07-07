@@ -29,25 +29,22 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Power BI \{#power-bi\}
+Microsoft Power BI 可以查询来自 [ClickHouse Cloud](https://clickhouse.com/cloud) 或自管理部署的数据，也可以将数据加载到内存中。
 
-<ClickHouseSupportedBadge/>
+您可以使用多种 Power BI 版本来可视化数据：
 
-Microsoft Power BI 可以从 [ClickHouse Cloud](https://clickhouse.com/cloud) 或自托管部署中查询数据，或将数据加载到内存中。
+* Power BI Desktop：用于创建仪表盘和可视化内容的 Windows 桌面应用程序
+* Power BI Service：Azure 中提供的 SaaS 服务，用于托管在 Power BI Desktop 中创建的仪表盘
 
-可以使用多种 Power BI 产品形态来可视化数据：
+Power BI 要求您先在 Desktop 版本中创建仪表盘，然后将其发布到 Power BI Service。
 
-* Power BI Desktop：用于创建仪表板和可视化的 Windows 桌面应用程序
-* Power BI Service：在 Azure 中以 SaaS 形式提供，用于托管在 Power BI Desktop 中创建的仪表板
+本教程将指导您完成以下操作：
 
-Power BI 要求先在 Desktop 版本中创建仪表板，然后将其发布到 Power BI Service。
-
-本教程将指导完成以下步骤：
-
-* [安装 ClickHouse ODBC 驱动](#install-the-odbc-driver)
-* [在 Power BI Desktop 中安装 ClickHouse Power BI Connector](#power-bi-installation)
-* [从 ClickHouse 查询数据并在 Power BI Desktop 中进行可视化](#query-and-visualise-data)
+* [安装 ClickHouse ODBC 驱动程序](#install-the-odbc-driver)
+* [将 ClickHouse Power BI Connector 安装到 Power BI Desktop 中](#power-bi-installation)
+* [从 ClickHouse 查询数据以在 Power BI Desktop 中进行可视化](#query-and-visualise-data)
 * [为 Power BI Service 设置本地数据网关](#power-bi-service)
 
 ## 先决条件 \{#prerequisites\}

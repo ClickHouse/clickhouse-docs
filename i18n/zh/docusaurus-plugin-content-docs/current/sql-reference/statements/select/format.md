@@ -2,11 +2,9 @@
 description: 'FORMAT 子句文档'
 sidebar_label: 'FORMAT'
 slug: /sql-reference/statements/select/format
-title: 'FORMAT 子句'
+title: 'FORMAT Clause'
 doc_type: 'reference'
 ---
-
-# FORMAT 子句 \{#format-clause\}
 
 ClickHouse 支持多种[序列化格式](../../../interfaces/formats.md)，可用于查询结果等多种用途。为 `SELECT` 的输出选择格式有多种方式，其中一种是在查询末尾指定 `FORMAT format`，从而以特定格式获取结果数据。
 

@@ -26,18 +26,15 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
-# MySQL에서 ClickHouse로 데이터 수집하기 (CDC 사용) \{#ingesting-data-from-mysql-to-clickhouse-using-cdc\}
-
 <BetaBadge />
 
 :::info
-ClickPipes를 통해 MySQL에서 ClickHouse Cloud로 데이터를 수집하는 기능은 퍼블릭 베타 단계입니다.
+ClickPipes를 통해 MySQL에서 ClickHouse Cloud로 데이터를 수집하는 기능은 현재 Public Beta입니다.
 :::
 
-MySQL ClickPipe는 MySQL 및 MariaDB 데이터베이스에서 ClickHouse Cloud로 데이터를 수집하기 위한 완전 관리형이면서도 안정적인 방법을 제공합니다. 일회성 수집을 위한 **대량 적재(bulk load)** 와 지속적인 수집을 위한 **Change Data Capture (CDC)** 를 모두 지원합니다.
+MySQL ClickPipe는 MySQL 및 MariaDB 데이터베이스의 데이터를 ClickHouse Cloud로 수집할 수 있는 완전 관리형의 안정적인 방법을 제공합니다. **대량 적재**를 통한 일회성 수집과 **변경 데이터 캡처(CDC)** 를 통한 지속적인 수집을 모두 지원합니다.
 
-MySQL ClickPipes는 ClickPipes UI를 사용하여 수동으로 배포하고 관리할 수 있으며, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 및 [Terraform](/integrations/clickpipes/programmatic-access/terraform)를 사용해 프로그래밍 방식으로도 배포하고 관리할 수 있습니다.
+MySQL ClickPipes는 ClickPipes UI를 사용해 수동으로 배포하고 관리할 수 있으며, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 및 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 사용해 프로그래밍 방식으로도 배포하고 관리할 수 있습니다.
 
 ## 사전 준비 사항 \{#prerequisites\}
 

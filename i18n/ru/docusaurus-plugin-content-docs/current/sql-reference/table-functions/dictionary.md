@@ -1,6 +1,6 @@
 ---
 description: 'Представляет данные словаря в виде таблицы ClickHouse. Работает так же,
-  как движок словаря Dictionary.'
+  как движок Dictionary.'
 sidebar_label: 'dictionary'
 sidebar_position: 47
 slug: /sql-reference/table-functions/dictionary
@@ -8,9 +8,7 @@ title: 'dictionary'
 doc_type: 'reference'
 ---
 
-# Табличная функция dictionary \{#dictionary-table-function\}
-
-Отображает данные словаря [dictionary](../statements/create/dictionary/overview.md) в виде таблицы ClickHouse. Работает так же, как движок [Dictionary](../../engines/table-engines/special/dictionary.md).
+Представляет данные [словаря](../statements/create/dictionary/overview.md) в виде таблицы ClickHouse. Работает так же, как движок [Dictionary](../../engines/table-engines/special/dictionary.md).
 
 ## Синтаксис \{#syntax\}
 
@@ -40,26 +38,21 @@ dictionary('dict')
 
 Создайте словарь:
 
-```sql
+```sql title="Query"
 CREATE DICTIONARY new_dictionary(id UInt64, value UInt64 DEFAULT 0) PRIMARY KEY id
 SOURCE(CLICKHOUSE(HOST 'localhost' PORT tcpPort() USER 'default' TABLE 'dictionary_source_table')) LAYOUT(DIRECT());
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT * FROM dictionary('new_dictionary');
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─id─┬─value─┐
 │  0 │     0 │
 │  1 │     1 │
 └────┴───────┘
 ```
-
 
 ## См. также \{#related\}
 

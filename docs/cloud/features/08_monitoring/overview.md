@@ -8,7 +8,6 @@ sidebar_position: 1
 doc_type: 'guide'
 ---
 
-# Monitoring your ClickHouse Cloud deployment
 
 ## Overview {#overview}
 

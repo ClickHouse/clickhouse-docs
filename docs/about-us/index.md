@@ -6,7 +6,6 @@ doc_type: 'landing-page'
 keywords: ['about', 'overview', 'introduction']
 ---
 
-# About ClickHouse
 
 In this section of the docs you'll find information about ClickHouse. Refer to
 the table of contents below for a list of pages in this section of the docs.

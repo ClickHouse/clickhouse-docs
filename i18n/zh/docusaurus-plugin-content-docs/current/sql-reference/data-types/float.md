@@ -116,6 +116,48 @@ SELECT 0 / 0
 请参阅 [ORDER BY 子句](../../sql-reference/statements/select/order-by.md) 部分中关于 `NaN` 排序的规则。
 
 
+## 集合语义中的 NaN 值 \{#nan-values-in-set-semantics\}
+
+IEEE 754 标准规定，标量比较 `NaN = NaN` 会返回 `false`。
+ClickHouse 对 `=` 运算符也遵循这一规则。
+
+不过，`NaN` 并不是一个单一的值；凡是指数位全为 1 且
+尾数非零的位模式，都属于 `NaN`。不同的运算以及不同的 CPU 架构，可能会生成
+符号位不同或尾数载荷不同的 `NaN` 值。例如：
+
+* `0./0.` 会生成一个 `NaN`，其符号位在大多数 x86 平台上为 1。
+* 字面量 `nan` 会生成一个符号位为 0 的 `NaN`。
+* 在 [PR #98230](https://github.com/ClickHouse/ClickHouse/pull/98230) 之后，AArch64 NEON 路径中的
+  `log` 对负输入返回的 `NaN`，其符号位与 glibc 标量 `log` 的返回结果不同。
+
+ClickHouse 中的哈希表按字节比较键，因此不同的 `NaN` 位模式会被哈希到
+不同的桶中，并在包括
+`DISTINCT`、`GROUP BY`、`uniqExact`、`countDistinct` 以及基于 `Float` 键的等值 `JOIN` 在内的集合语义操作中
+被视为不同的值：
+
+```sql
+SELECT countDistinct(arrayJoin([0./0., nan, log(-1.)]));
+-- May return 2 or 3 depending on architecture and build, even though all three inputs are NaN.
+```
+
+这与 IEEE 754 一致 (每个 `NaN` 都不等于任何其他值，包括其自身) ，
+但这可能会让人感到意外。如果需要让基于集合语义的操作将所有 `NaN` 值视为相等，
+请在查询中先将它们规范化：
+
+```sql
+-- Replace every NaN with a single canonical NaN value
+SELECT countDistinct(if(isNaN(x), CAST('nan' AS Float64), x))
+FROM (SELECT arrayJoin([0./0., nan, log(-1.)]) AS x);
+-- Returns 1.
+
+-- Or exclude NaN values from the set entirely
+SELECT countDistinct(if(isNaN(x), NULL, x))
+FROM (SELECT arrayJoin([0./0., nan, log(-1.)]) AS x);
+-- Returns 0.
+```
+
+同样的方法也适用于 `DISTINCT`、`GROUP BY` 和 `JOIN` 中的键。
+
 ## BFloat16 \{#bfloat16\}
 
 `BFloat16` 是一种 16 位浮点数数据类型，包含 8 位指数、1 位符号位和 7 位尾数位。  

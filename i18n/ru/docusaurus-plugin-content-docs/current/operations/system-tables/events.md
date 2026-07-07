@@ -1530,6 +1530,38 @@ SELECT * FROM system.events LIMIT 5
 
 Количество файлов, прочитанных движками таблиц, работающими с файлами (например, File/S3/URL/HDFS).
 
+### ExecutableUserDefinedFunctionElapsedMicroseconds \{#executableuserdefinedfunctionelapsedmicroseconds\}
+
+Астрономическое время, затраченное на выполнение пользовательских функций executable&#95;pool, в микросекундах.
+
+### ExecutableUserDefinedFunctionInputBytes \{#executableuserdefinedfunctioninputbytes\}
+
+Общее количество байтов, записанных в stdin дочерних процессов executable&#95;pool пользовательских функций.
+
+### ExecutableUserDefinedFunctionInvocations \{#executableuserdefinedfunctioninvocations\}
+
+Количество вызовов пользовательских функций типа executable&#95;pool.
+
+### ExecutableUserDefinedFunctionOutputBytes \{#executableuserdefinedfunctionoutputbytes\}
+
+Общее количество байтов, прочитанных из stdout дочерних процессов пользовательских функций executable&#95;pool.
+
+### ExecutableUserDefinedFunctionPeakMemoryByteSeconds \{#executableuserdefinedfunctionpeakmemorybyteseconds\}
+
+Пиковый объем памяти на процесс, используемый дочерними процессами пользовательской функции executable&#95;pool, интегрированный по астрономическому времени, в байт-секундах.
+
+### ExecutableUserDefinedFunctionPoolWaitMicroseconds \{#executableuserdefinedfunctionpoolwaitmicroseconds\}
+
+Время ожидания в `tryBorrowObject`, когда пул пользовательских функций `executable_pool` исчерпан, в микросекундах.
+
+### ExecutableUserDefinedFunctionSystemTimeMicroseconds \{#executableuserdefinedfunctionsystemtimemicroseconds\}
+
+Время ЦП в режиме ядра, затраченное дочерними процессами executable_pool пользовательских функций, в микросекундах.
+
+### ExecutableUserDefinedFunctionUserTimeMicroseconds \{#executableuserdefinedfunctionusertimemicroseconds\}
+
+Время ЦП в пользовательском режиме, затраченное дочерними процессами executable_pool пользовательских функций, в микросекундах.
+
 ### ExecuteShellCommand \{#executeshellcommand\}
 
 Количество выполнений команд оболочки.
@@ -1654,6 +1686,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество открытых файлов.
 
+### FileProgressCallbackInvocations \{#fileprogresscallbackinvocations\}
+
+Количество вызовов `FileProgressCallback` на каждый запрос (учитывается каждое событие `FileProgress` для каждого файла, переданное клиенту по native TCP или через `clickhouse-local`).
+
 ### FileSegmentCompleteMicroseconds \{#filesegmentcompletemicroseconds\}
 
 Время выполнения FileSegment::complete() в файловом кэше
@@ -1765,6 +1801,10 @@ SELECT * FROM system.events LIMIT 5
 ### FilesystemCacheFailedEvictionCandidates \{#filesystemcachefailedevictioncandidates\}
 
 Количество файловых сегментов, которые неожиданно не удалось вытеснить при динамическом вытеснении файлового кэша
+
+### FilesystemCacheFailedReserveAttempts \{#filesystemcachefailedreserveattempts\}
+
+Количество неудачных попыток резервирования места в файловом кеше.
 
 ### FilesystemCacheFreeSpaceKeepingThreadRun \{#filesystemcachefreespacekeepingthreadrun\}
 
@@ -2264,11 +2304,19 @@ SELECT * FROM system.events LIMIT 5
 
 ### KeeperBatchMaxCount \{#keeperbatchmaxcount\}
 
-Количество случаев, когда размер пакета был ограничен количеством элементов
+Количество пакетов, достигнувших ограничения max&#95;requests&#95;batch&#95;size
+
+### KeeperBatchMaxReadCount \{#keeperbatchmaxreadcount\}
+
+Количество пакетов, достигших лимита max&#95;read&#95;batch&#95;size
+
+### KeeperBatchMaxReadTotalSize \{#keeperbatchmaxreadtotalsize\}
+
+Количество пакетов, достигших ограничения max&#95;read&#95;batch&#95;bytes&#95;size
 
 ### KeeperBatchMaxTotalSize \{#keeperbatchmaxtotalsize\}
 
-Количество случаев, когда размер пакета был ограничен общим размером в байтах
+Количество пакетов, для которых достигнут предел `max_requests_batch_bytes_size`
 
 ### KeeperChangelogFileSyncMicroseconds \{#keeperchangelogfilesyncmicroseconds\}
 
@@ -2390,6 +2438,10 @@ SELECT * FROM system.events LIMIT 5
 
 Количество завершённых операций чтения снимка
 
+### KeeperReadSnapshotDeferred \{#keeperreadsnapshotdeferred\}
+
+Количество отложенных чтений снимков, так как запрошенный снимок больше недоступен локально; NuRaft повторно попытается прочитать последний доступный снимок.
+
 ### KeeperReadSnapshotFailed \{#keeperreadsnapshotfailed\}
 
 Количество неудачных операций чтения снимка
@@ -2493,6 +2545,34 @@ SELECT * FROM system.events LIMIT 5
 ### KeeperTotalElapsedMicroseconds \{#keepertotalelapsedmicroseconds\}
 
 Суммарная задержка Keeper для одного запроса
+
+### KeeperWatchTriggeredNodeChildrenChanged \{#keeperwatchtriggerednodechildrenchanged\}
+
+Количество срабатываний наблюдений при операциях изменения дочерних узлов
+
+### KeeperWatchTriggeredNodeCreated \{#keeperwatchtriggerednodecreated\}
+
+Количество срабатываний наблюдения при операции `CREATE`
+
+### KeeperWatchTriggeredNodeDataChanged \{#keeperwatchtriggerednodedatachanged\}
+
+Количество срабатываний наблюдений при операциях изменения данных узла
+
+### KeeperWatchTriggeredNodeDeleted \{#keeperwatchtriggerednodedeleted\}
+
+Количество срабатываний наблюдений при операции `DELETE`
+
+### KeeperWatchesTriggered \{#keeperwatchestriggered\}
+
+Число срабатываний наблюдений
+
+### KeeperWriteBatchCount \{#keeperwritebatchcount\}
+
+Число батчей запросов на запись, обработанных Keeper
+
+### KeeperWriteBatchTotalRequests \{#keeperwritebatchtotalrequests\}
+
+Общее количество запросов на запись, обработанных Keeper батчами
 
 ### LoadedDataParts \{#loadeddataparts\}
 
@@ -4698,6 +4778,42 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Количество случаев, когда заголовок отсутствовал в кэше.
 
+### TextIndexLazyAdvanceCount \{#textindexlazyadvancecount\}
+
+Количество операций перехода вперёд, выполненных в режиме ленивого списка постингов.
+
+### TextIndexLazyBlocksSkippedResolved \{#textindexlazyblocksskippedresolved\}
+
+Количество упакованных блоков, пропущенных из-за того, что выходная область в режиме ленивого списка вхождений уже была определена (все единицы для OR, все нули для AND).
+
+### TextIndexLazyBruteForceIntersections \{#textindexlazybruteforceintersections\}
+
+Количество пересечений полным перебором, выполненных в ленивом режиме списка постингов.
+
+### TextIndexLazyLeapfrogIntersections \{#textindexlazyleapfrogintersections\}
+
+Количество пересечений методом leapfrog, выполненных в режиме ленивой обработки списка вхождений.
+
+### TextIndexLazyPackedBlocksDecoded \{#textindexlazypackedblocksdecoded\}
+
+Количество декодированных упакованных блоков в режиме lazy posting list.
+
+### TextIndexLazySegmentsBuilt \{#textindexlazysegmentsbuilt\}
+
+Количество сегментов, фактически прочитанных и декодированных (промахи кэша) в режиме ленивого списка вхождений.
+
+### TextIndexLazySegmentsPrepared \{#textindexlazysegmentsprepared\}
+
+Количество подготовленных сегментов (прочитанных с диска или кэшированных) в режиме ленивого списка вхождений.
+
+### TextIndexLazySegmentsSkippedDense \{#textindexlazysegmentsskippeddense\}
+
+Количество полностью плотных сегментов, целиком заполняемых (memset для OR, инкремент для AND) вместо декодирования блоков, в режиме ленивого списка вхождений.
+
+### TextIndexLazySegmentsSkippedResolved \{#textindexlazysegmentsskippedresolved\}
+
+Количество сегментов, пропущенных из-за того, что в режиме ленивого списка вхождений выходная область уже была определена (полностью заполнена единицами для OR, полностью заполнена нулями для AND).
+
 ### TextIndexPostingsCacheHits \{#textindexpostingscachehits\}
 
 Количество случаев, когда список вхождений текстового индекса был найден в кэше.
@@ -4841,6 +4957,22 @@ Number of queries to be interpreted and potentially executed. Does not include q
 ### UncompressedCacheWeightLost \{#uncompressedcacheweightlost\}
 
 Количество байтов, вытесненных из несжатого кэша.
+
+### UniqueKeyIndexCacheHits \{#uniquekeyindexcachehits\}
+
+Количество случаев, когда запись была найдена в кэше индекса UNIQUE KEY, поэтому SST-блок не требовалось загружать.
+
+### UniqueKeyIndexCacheLookupMicroseconds \{#uniquekeyindexcachelookupmicroseconds\}
+
+Реальное время внутри `UniqueKeyIndexCache::Lookup` + `UniqueKeyIndexCache::Insert` (адаптер `CacheBase` на стороне ClickHouse для кэша блоков RocksDB).
+
+### UniqueKeyIndexCacheMisses \{#uniquekeyindexcachemisses\}
+
+Количество случаев, когда запись не находилась в кэше индекса UNIQUE KEY, и поэтому приходилось загружать SST-блок с диска.
+
+### UniqueKeySSTWriteMicroseconds \{#uniquekeysstwritemicroseconds\}
+
+Общее реальное время, затраченное за время жизни `SSTIndexWriter`, — включает `Open` для SST, каждый Put через `addEncoded`, а также `Finish` и копирование через `writeFile` в `finalizeToStorage`. Не включает работу, которую статические вспомогательные функции выполняют до создания writer’а (кодирование + сортировка путей без префикса). Публикуется один раз для каждого writer’а.
 
 ### UserThrottlerBytes \{#userthrottlerbytes\}
 
@@ -5030,8 +5162,68 @@ Number of queries to be interpreted and potentially executed. Does not include q
 
 Количество микросекунд, затраченных на ожидание ответов от ZooKeeper после создания запроса, в сумме по всем потокам, отправляющим запросы.
 
+### ZooKeeperWatchCallbackDurationMicroseconds \{#zookeeperwatchcallbackdurationmicroseconds\}
+
+Общее время, затраченное на выполнение обратных вызовов наблюдения ZooKeeper (сетевой поток).
+
+### ZooKeeperWatchCallbackErrors \{#zookeeperwatchcallbackerrors\}
+
+Количество исключений, возникших в обратных вызовах наблюдения ZooKeeper.
+
 ### ZooKeeperWatchResponse \{#zookeeperwatchresponse\}
 
-Количество полученных от ZooKeeper watch-уведомлений.
+Количество полученных от ZooKeeper уведомлений наблюдения.
+
+### ZooKeeperWatchTriggeredBackupCoordination \{#zookeeperwatchtriggeredbackupcoordination\}
+
+Количество уведомлений от наблюдений, переданных механизму координации резервного копирования / восстановления.
+
+### ZooKeeperWatchTriggeredClusterDiscovery \{#zookeeperwatchtriggeredclusterdiscovery\}
+
+Количество уведомлений механизма наблюдения, отправленных в ClusterDiscovery.
+
+### ZooKeeperWatchTriggeredDistributedDDL \{#zookeeperwatchtriggereddistributedddl\}
+
+Количество уведомлений наблюдения ZooKeeper, помещённых в очередь DDLWorker.
+
+### ZooKeeperWatchTriggeredMaterializedViewRefresh \{#zookeeperwatchtriggeredmaterializedviewrefresh\}
+
+Количество уведомлений механизма наблюдения, отправленных для координации обновления MaterializedView.
+
+### ZooKeeperWatchTriggeredObjectStorageQueue \{#zookeeperwatchtriggeredobjectstoragequeue\}
+
+Количество уведомлений механизма наблюдения, отправленных в ObjectStorageQueue / S3Queue.
+
+### ZooKeeperWatchTriggeredOther \{#zookeeperwatchtriggeredother\}
+
+Количество уведомлений наблюдения, отправленных некатегоризованным обработчикам обратного вызова.
+
+### ZooKeeperWatchTriggeredReplicatedAccessControl \{#zookeeperwatchtriggeredreplicatedaccesscontrol\}
+
+Количество уведомлений от наблюдений, направленных в ReplicatedAccessStorage.
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeLeaderElection \{#zookeeperwatchtriggeredreplicatedmergetreeleaderelection\}
+
+Количество уведомлений наблюдения, отправленных для выбора лидера ReplicatedMergeTree / блокировок реплик.
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeLog \{#zookeeperwatchtriggeredreplicatedmergetreelog\}
+
+Количество уведомлений наблюдения, отправленных для записей журнала ReplicatedMergeTree.
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeMutations \{#zookeeperwatchtriggeredreplicatedmergetreemutations\}
+
+Количество уведомлений наблюдения ZooKeeper, отправленных для мутаций ReplicatedMergeTree.
+
+### ZooKeeperWatchTriggeredReplicatedMergeTreeReplicaSync \{#zookeeperwatchtriggeredreplicatedmergetreereplicasync\}
+
+Количество уведомлений о наблюдении, отправленных в ожидании обработки репликами записей журнала (SYNC REPLICA, ALTER, мутации).
+
+### ZooKeeperWatchTriggeredUserDefinedSQLObjects \{#zookeeperwatchtriggereduserdefinedsqlobjects\}
+
+Количество уведомлений наблюдения, переданных в UserDefinedSQLObjectsZooKeeperStorage.
+
+### ZooKeeperWatchTriggeredWorkloadEntity \{#zookeeperwatchtriggeredworkloadentity\}
+
+Количество уведомлений наблюдения, направленных в WorkloadEntityKeeperStorage.
 
 {/*AUTOGENERATED_DESCRIPTIONS_END*/ }

@@ -10,14 +10,11 @@ doc_type: 'reference'
 import CompressionBlock from '@site/static/images/data-compression/ch_compression_block.png';
 import Image from '@theme/IdealImage';
 
-
-# 压缩模式 \{#compression-modes\}
-
-ClickHouse 协议支持对带有校验和的**数据块**进行压缩。
-如果不确定选择哪种模式，请使用 `LZ4`。
-
+ClickHouse 协议支持对 **数据块** 进行带校验和的压缩。
+如果不确定该选择哪种模式，请使用 `LZ4`。
+``
 :::tip
-了解更多可用的[列压缩编解码器](/sql-reference/statements/create/table#column_compression_codec)，并在创建表时或之后指定它们。
+详细了解可用的[列压缩编解码器](/sql-reference/statements/create/table#column_compression_codec)，并在创建表时或之后指定它们。
 :::
 
 ## 模式 \{#modes\}

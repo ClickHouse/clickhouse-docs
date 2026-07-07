@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'class', 'reference', 'api', 'columnexpr', 'lazy
 doc_type: 'reference'
 ---
 
-# DataStore クラスリファレンス \{#datastore-class-reference\}
-
-このリファレンスでは、DataStore API の中核となるクラスについて解説します。
+このリファレンスでは、DataStore API の中核となるクラスを説明します。
 
 ## DataStore \{#datastore\}
 

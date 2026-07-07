@@ -11,10 +11,14 @@ integration:
   - category: 'clickpipes'
 ---
 
-# ClickPipes for MySQL FAQ
 
 ### Does the MySQL ClickPipe support MariaDB? {#does-the-clickpipe-support-mariadb}
 Yes, the MySQL ClickPipe supports MariaDB 10.0 and above. The configuration for it is very similar to MySQL, using GTID replication by default.
+
+### Why did my pipe fail with an unsupported MariaDB partial row event? {#mariadb-partial-row-event-unsupported}
+MariaDB 12.3 and above can emit a [partial rows event](https://mariadb.com/docs/server/server-management/server-monitoring-logs/binary-log/row-binlog-events#partial_rows_log_event) in the binlog, which we don't support yet.
+
+To recover, resync the pipe. To reduce the chance of hitting this again, you can also raise `binlog_row_event_fragment_threshold` setting on the source so fewer row changes get fragmented — keep it below your `max_allowed_packet`, since a single unfragmented binlog event larger than `max_allowed_packet` will fail the replication stream instead (see [Why is my pipe failing with a max_allowed_packet binlog error?](#binlog-event-exceeded-max-allowed-packet)).
 
 ### Does the MySQL ClickPipe support PlanetScale, Vitess, or TiDB? {#does-the-clickpipe-support-planetscale-vitess}
 No, these don't support MySQL's binlog API.
@@ -25,6 +29,45 @@ We support both `GTID` & `FilePos` replication. Unlike Postgres there is no slot
 It's also possible for an inactive database to rotate the log file without allowing ClickPipes to progress to a more recent offset. You may need to setup a heartbeat table with regularly scheduled updates.
 
 At the start of an initial load we record the binlog offset to start at. This offset must still be valid when the initial load finishes in order for CDC to progress. If you're ingesting a large amount of data be sure to configure an appropriate binlog retention period. While setting up tables you can speed up initial load by configuring *Use a custom partitioning key for initial load* for large tables under advanced settings so that we can load a single table in parallel.
+
+### Why is my pipe failing with a max_allowed_packet binlog error? {#binlog-event-exceeded-max-allowed-packet}
+
+If your pipe fails with an error similar to:
+
+```text
+MySQL execute error: ERROR 1236 (HY000): log event entry exceeded max_allowed_packet;
+Increase max_allowed_packet on source
+```
+
+it means a single binlog event (corresponding to one row change) is larger than your MySQL server's [`max_allowed_packet`](https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_max_allowed_packet) setting. Because the server can't send an event that exceeds this limit, the binlog stream read aborts and CDC can't progress.
+
+This is most often caused by rows containing large `BLOB`, `TEXT`, or `JSON` values. To resolve it:
+
+- **Increase `max_allowed_packet` on the source.** Raise it above the size of your largest row change — setting it to the maximum of `1G` is usually safe:
+  ```sql
+  SET GLOBAL max_allowed_packet = 1073741824; -- 1 GiB
+  ```
+  Set it in your server configuration (e.g. `my.cnf` or the DB Parameter Group) as well so it persists across restarts.
+- **If a single row is larger than 1G:** resync the pipe.
+
+### Why is my pipe failing with a partial JSON binlog error? {#binlog-partial-json-unsupported}
+
+If your pipe fails with an error similar to:
+
+```text
+Received a partial JSON update event while processing <database>.<table>; binlog_row_value_options must be disabled (set to '')
+```
+
+it means the source MySQL server has [`binlog_row_value_options`](https://dev.mysql.com/doc/refman/8.0/en/replication-options-binary-log.html#sysvar_binlog_row_value_options) set to `PARTIAL_JSON`. With this option enabled, MySQL logs updates to `JSON` columns as partial diffs (only the changed paths) rather than the full document. ClickPipes cannot apply these partial diffs, so CDC can't progress.
+
+To resolve it:
+
+- **Disable `PARTIAL_JSON` on the source.** Set the value back to empty:
+  ```sql
+  SET GLOBAL binlog_row_value_options = '';
+  ```
+  Clear it in your server configuration (e.g. `my.cnf` or the DB Parameter Group) as well so it persists across restarts.
+- **Resync the pipe** so replication resumes from a clean offset.
 
 ### Why am I getting a TLS certificate validation error when connecting to MySQL? {#tls-certificate-validation-error}
 

@@ -8,8 +8,6 @@ doc_type: 'guide'
 keywords: ['快照', '备份', '恢复', 'SharedMergeTree', 'SharedSet', 'SharedJoin', '轻量级备份', '云备份', 'S3', 'Azure Blob Storage', 'snapshot_locks', 'snapshot_parts', 'experimental_lightweight_snapshot']
 ---
 
-# 快照备份与恢复 \{#snapshot-backup-and-restore\}
-
 快照备份是云原生表引擎的一种轻量级备份模式。它不会复制数据，而是将每个 part 对应的锁节点写入 ClickHouse Keeper。只要快照仍被保留，这些锁就会阻止服务器删除被引用的对象存储 parts。随后，备份记录的是对象存储引用，而不是实际复制任何数据，因此无论表的大小如何，创建快照都很快。
 
 这种轻量级方案适用于 [SharedMergeTree](/cloud/reference/shared-merge-tree)、SharedSet 和 SharedJoin 表。对于所有其他引擎类型 (例如 Log 或 Memory) ，备份会自动回退到标准的复制型备份。

@@ -10,9 +10,7 @@ doc_type: 'guide'
 import observability_14 from '@site/static/images/use-cases/observability/observability-14.png';
 import Image from '@theme/IdealImage';
 
-# Управление данными \{#managing-data\}
-
-Развертывания ClickHouse для задач наблюдаемости неизбежно связаны с большими объемами данных, которыми необходимо управлять. ClickHouse предлагает ряд возможностей для управления такими данными.
+Развертывания ClickHouse для задач обсервабилити неизбежно связаны с большими объемами данных, которыми необходимо управлять. ClickHouse предлагает ряд возможностей для управления данными.
 
 ## Разделы \{#partitions\}
 
@@ -36,7 +34,7 @@ ORDER BY (ServiceName, SeverityText, toUnixTimestamp(Timestamp), TraceId)
 
 Над разделами можно выполнять [ряд операций](/sql-reference/statements/alter/partition), включая [резервное копирование](/sql-reference/statements/alter/partition#freeze-partition), [манипуляции со столбцами](/sql-reference/statements/alter/partition#clear-column-in-partition), мутации, [изменяющие](/sql-reference/statements/alter/partition#update-in-partition)/[удаляющие](/sql-reference/statements/alter/partition#delete-in-partition) данные на уровне строк, а также [очистку индексов (например, вторичных индексов)](/sql-reference/statements/alter/partition#clear-index-in-partition).
 
-В качестве примера предположим, что наша таблица `otel_logs` разбита на разделы по дням. Если заполнить её набором данных со структурированными логами, в ней будут содержаться данные за несколько дней:
+В качестве примера предположим, что наша таблица `otel_logs` разбита на разделы по дням. Если заполнить её набором данных со структурированными журналами, в ней будут содержаться данные за несколько дней:
 
 ```sql
 SELECT Timestamp::Date AS day,
@@ -44,7 +42,9 @@ SELECT Timestamp::Date AS day,
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 2333977 │
 │ 2019-01-23 │ 2326694 │
@@ -63,7 +63,9 @@ Peak memory usage: 4.41 MiB.
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'otel_logs'
+```
 
+```response
 ┌─partition──┐
 │ 2019-01-22 │
 │ 2019-01-23 │
@@ -77,20 +79,21 @@ WHERE `table` = 'otel_logs'
 
 У нас может быть дополнительная таблица `otel_logs_archive`, которую мы используем для хранения более старых данных. Данные можно эффективно перемещать в эту таблицу по партициям (это всего лишь изменение метаданных).
 
-
 ```sql
 CREATE TABLE otel_logs_archive AS otel_logs
---перемещаем данные в архивную таблицу
+--move data to archive table
 ALTER TABLE otel_logs
         (MOVE PARTITION tuple('2019-01-26') TO TABLE otel_logs_archive
---проверяем, что данные перемещены
+--confirm data has been moved
 SELECT
         Timestamp::Date AS day,
         count() AS c
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 2333977 │
 │ 2019-01-23 │ 2326694 │
@@ -98,21 +101,25 @@ ORDER BY c DESC
 │ 2019-01-25 │ 1821770 │
 └────────────┴─────────┘
 
-Получено 4 строки. Затрачено: 0.051 сек. Обработано 8.38 млн строк, 67.03 МБ (163.52 млн строк/сек., 1.31 ГБ/сек.)
-Пиковое использование памяти: 4.40 МиБ.
+4 rows in set. Elapsed: 0.051 sec. Processed 8.38 million rows, 67.03 MB (163.52 million rows/s., 1.31 GB/s.)
+Peak memory usage: 4.40 MiB.
+```
 
+```sql
 SELECT Timestamp::Date AS day,
         count() AS c
 FROM otel_logs_archive
 GROUP BY day
 ORDER BY c DESC
+```
 
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-26 │ 1986456 │
 └────────────┴─────────┘
 
-Получена 1 строка. Затрачено: 0.024 сек. Обработано 1.99 млн строк, 15.89 МБ (83.86 млн строк/сек., 670.87 МБ/сек.)
-Пиковое использование памяти: 4.99 МиБ.
+1 row in set. Elapsed: 0.024 sec. Processed 1.99 million rows, 15.89 MB (83.86 million rows/s., 670.87 MB/s.)
+Peak memory usage: 4.99 MiB.
 ```
 
 В отличие от других методов, при которых пришлось бы использовать `INSERT INTO SELECT` и переписывать данные в новую целевую таблицу.
@@ -133,6 +140,9 @@ SELECT
 FROM otel_logs
 GROUP BY day
 ORDER BY c DESC
+```
+
+```response
 ┌────────day─┬───────c─┐
 │ 2019-01-22 │ 4667954 │
 │ 2019-01-23 │ 4653388 │
@@ -275,9 +285,9 @@ ClickHouse Cloud использует единственную копию дан
 
 Столбцы можно добавлять в схему, используя [значения `DEFAULT`](/sql-reference/statements/create/table#default). Указанное значение по умолчанию будет использоваться, если оно не задано при выполнении INSERT.
 
-Изменения схемы можно внести до изменения любой логики трансформации материализованного представления или конфигурации OTel collector, которые приводят к отправке данных в эти новые столбцы.
+Изменения схемы можно внести до изменения любой логики трансформации materialized view или конфигурации OTel collector, которые приводят к отправке данных в эти новые столбцы.
 
-После изменения схемы вы можете перенастроить экземпляры OTel collector. Предполагая, что пользователи используют рекомендуемый процесс, описанный в разделе [«Извлечение структуры с помощью SQL»](/docs/use-cases/observability/schema-design#extracting-structure-with-sql), когда OTel collectors отправляют данные в табличный движок Null, а материализованное представление отвечает за извлечение целевой схемы и отправку результатов в целевую таблицу для хранения, представление можно изменить, используя [синтаксис `ALTER TABLE ... MODIFY QUERY`](/sql-reference/statements/alter/view). Предположим, у нас есть целевая таблица ниже с соответствующим материализованным представлением (аналогичным используемому в разделе «Извлечение структуры с помощью SQL»), которое извлекает целевую схему из структурированных логов OTel:
+После изменения схемы вы можете перенастроить экземпляры OTel collector. Предполагая, что пользователи используют рекомендуемый процесс, описанный в разделе [«Извлечение структуры с помощью SQL»](/docs/use-cases/observability/schema-design#extracting-structure-with-sql), когда OTel collectors отправляют данные в табличный движок Null, а materialized view отвечает за извлечение целевой схемы и отправку результатов в целевую таблицу для хранения, представление можно изменить, используя [синтаксис `ALTER TABLE ... MODIFY QUERY`](/sql-reference/statements/alter/view). Предположим, у нас есть приведённая ниже целевая таблица с соответствующим materialized view (аналогичным используемому в разделе «Извлечение структуры с помощью SQL»), которое извлекает целевую схему из структурированных логов OTel:
 
 ```sql
 CREATE TABLE default.otel_logs_v2
@@ -336,6 +346,9 @@ ALTER TABLE otel_logs_v2
 SELECT Size
 FROM otel_logs_v2
 LIMIT 5
+```
+
+```response
 ┌──Size─┐
 │ 30577 │
 │  5667 │
@@ -348,7 +361,6 @@ LIMIT 5
 ```
 
 Чтобы обеспечить запись этого значения для всех последующих данных, мы можем изменить наше materialized view с помощью синтаксиса `ALTER TABLE`, как показано ниже:
-
 
 ```sql
 ALTER TABLE otel_logs_mv
@@ -378,7 +390,7 @@ FROM otel_logs
 
 ### Создание новых таблиц \{#create-new-tables\}
 
-В качестве альтернативы описанному выше процессу пользователи могут просто создать новую целевую таблицу с новой схемой. Любые материализованные представления затем можно изменить так, чтобы они использовали эту новую таблицу, с помощью вышеупомянутой команды `ALTER TABLE MODIFY QUERY`. При таком подходе пользователи могут версионировать свои таблицы, например `otel_logs_v3`.
+В качестве альтернативы описанному выше процессу пользователи могут просто создать новую целевую таблицу с новой схемой. Любые materialized views затем можно изменить так, чтобы они использовали эту новую таблицу, с помощью вышеупомянутой команды `ALTER TABLE MODIFY QUERY`. При таком подходе пользователи могут версионировать свои таблицы, например `otel_logs_v3`.
 
 Этот подход оставляет пользователям несколько таблиц, по которым нужно выполнять запросы. Чтобы выполнять запросы по нескольким таблицам, пользователи могут использовать функцию [`merge`](/sql-reference/table-functions/merge), которая принимает шаблоны с подстановочными символами для имени таблицы. Ниже мы демонстрируем это, выполняя запрос к версиям v2 и v3 таблицы `otel_logs`:
 
@@ -388,7 +400,9 @@ FROM merge('otel_logs_v[2|3]')
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 38319300 │
 │   304  │  1360912 │
@@ -411,7 +425,9 @@ FROM otel_logs_merged
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 38319300 │
 │   304  │  1360912 │
@@ -436,7 +452,9 @@ FROM otel_logs_merged
 GROUP BY Status
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─Status─┬────────c─┐
 │   200  │ 39259996 │
 │   304  │  1378564 │

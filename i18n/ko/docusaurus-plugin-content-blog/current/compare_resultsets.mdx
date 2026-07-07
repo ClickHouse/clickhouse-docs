@@ -39,7 +39,7 @@ WITH
 SELECT equals(q1_resultset_hash,q2_resultset_hash) as Q1_equals_Q2
 ```
 
-이 예제에서는 [CTE](https://clickhouse.com/docs/sql-reference/statements/select/with)를 사용하여 두 쿼리 각각의 각 행에 대한 [cityHash](https://clickhouse.com/docs/sql-reference/functions/hash-functions#cityhash64) 값의 합을 계산하고, 두 결과 집합이 동일할 경우 `1`을 반환합니다.
+이 예제에서는 [CTE](/sql-reference/statements/select/with)를 사용하여 두 쿼리 각각의 각 행에 대한 [cityHash](/sql-reference/functions/hash-functions#cityHash64) 값의 합을 계산하고, 두 결과 집합이 동일할 경우 `1`을 반환합니다.
 
 정수 시퀀스 데이터와 Pretty 포맷을 사용하면 다음과 같습니다:
 

@@ -4,13 +4,13 @@ title: 'ClickStack 的 AI 笔记本'
 sidebar_label: 'AI 笔记本'
 pagination_prev: null
 pagination_next: null
-description: '用于 ClickStack 的 AI 驱动排障笔记本'
+description: '用于 ClickStack 的 AI 驱动调查笔记本'
 doc_type: 'guide'
-keywords: ['clickstack', 'AI 笔记本', '排障', '可观测性', 'HyperDX']
+keywords: ['clickstack', 'AI 笔记本', '调查', '可观测性', 'HyperDX']
 ---
 
 import Image from '@theme/IdealImage';
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import notebook_hero from '@site/static/images/use-cases/observability/hyperdx-notebook-hero.png';
 import notebook_list from '@site/static/images/use-cases/observability/hyperdx-notebook-list.png';
 import notebook_tiles from '@site/static/images/use-cases/observability/hyperdx-notebook-tiles.png';
@@ -20,7 +20,7 @@ import notebook_manual_tiles from '@site/static/images/use-cases/observability/h
 import notebook_agent_context from '@site/static/images/use-cases/observability/hyperdx-notebook-agent-context.png';
 import notebook_ai_consent from '@site/static/images/use-cases/observability/hyperdx-notebook-ai-consent.png';
 
-<PrivatePreviewBadge />
+<BetaBadge />
 
 AI Notebooks 是 ClickStack 中的一种交互式调查工具，将 AI 智能体与人工分析结合起来。您可以用自然语言描述问题，AI 智能体会代您查询日志、追踪和指标，并以一系列卡片的形式呈现相关数据、图表和摘要。您也可以在 AI 生成的输出旁添加自己的卡片 (图表、表格、搜索和 Markdown 注释) ，构建完整的调查记录。
 
@@ -32,7 +32,7 @@ AI Notebooks 仅在托管版 ClickStack 部署中可用。
 
 ## 设置 \{#setup\}
 
-AI Notebooks 当前在 ClickHouse Cloud 中处于私有预览阶段。AI 模型和提供商由平台自动管理。
+AI Notebooks 当前在 ClickHouse Cloud 中处于 Beta 阶段。AI 模型和提供商由平台自动管理。
 
 使用 AI Notebooks 之前：
 

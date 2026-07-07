@@ -1,16 +1,14 @@
 ---
 slug: /faq/general/olap
-title: 'OLAP とは何ですか？'
+title: 'OLAP とは何か？'
 toc_hidden: true
 toc_priority: 100
-description: 'Online Analytical Processing（オンライン分析処理）についての解説'
+description: 'Online Analytical Processing とは何かを説明します'
 keywords: ['OLAP']
 doc_type: 'reference'
 ---
 
-# OLAP とは何か？ \{#what-is-olap\}
-
-[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) は Online Analytical Processing（オンライン分析処理）の略です。技術面とビジネス面の 2 つの観点から捉えられる広い概念ですが、非常に大まかには、これらの単語を逆から読むとイメージしやすくなります。
+[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) は Online Analytical Processing (オンライン分析処理) の略です。技術面とビジネス面の 2 つの観点から捉えられる広い概念ですが、非常に大まかには、これらの単語を逆から読むとイメージしやすくなります。
 
 Processing
 :   あるソースデータが処理されて…

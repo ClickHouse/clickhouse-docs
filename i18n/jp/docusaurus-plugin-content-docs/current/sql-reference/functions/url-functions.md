@@ -6,8 +6,6 @@ title: 'URL を扱う関数'
 doc_type: 'reference'
 ---
 
-# URL を操作する関数 \{#functions-for-working-with-urls\}
-
 ## 概要 \{#overview\}
 
 :::note

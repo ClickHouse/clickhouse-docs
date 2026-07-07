@@ -1,13 +1,11 @@
 ---
-description: 'USE SQL 문에 대한 문서'
+description: 'USE 문에 대한 문서'
 sidebar_label: 'USE'
 sidebar_position: 53
 slug: /sql-reference/statements/use
-title: 'USE SQL 문'
+title: 'USE 문'
 doc_type: 'reference'
 ---
-
-# USE 문 \{#use-statement\}
 
 ```sql
 USE [DATABASE] db

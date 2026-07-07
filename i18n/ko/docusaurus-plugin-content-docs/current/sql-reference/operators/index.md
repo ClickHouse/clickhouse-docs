@@ -7,9 +7,7 @@ title: '연산자'
 doc_type: 'reference'
 ---
 
-# 연산자 \{#operators\}
-
-ClickHouse는 연산자의 우선순위(priority), 우선도(precedence), 결합 방향(associativity)에 따라 쿼리 파싱 단계에서 각 연산자를 해당 함수로 변환합니다.
+ClickHouse는 쿼리 파싱 단계에서 연산자의 우선도, 우선순위, 결합 방향에 따라 해당 함수로 변환합니다.
 
 ## Access 연산자 \{#access-operators\}
 
@@ -177,13 +175,11 @@ SELECT
 
 ALL을 사용하는 쿼리:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -194,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 ANY를 사용하는 쿼리:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │
@@ -522,3 +516,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 설정을 활성화하여 최적화할 수 있습니다. `optimize_functions_to_subcolumns = 1`인 경우 함수는 전체 컬럼 데이터를 읽고 처리하는 대신 [null](../../sql-reference/data-types/nullable.md#finding-null) 서브컬럼만 읽습니다. `SELECT n IS NOT NULL FROM table` 쿼리는 `SELECT NOT n.null FROM TABLE`로 변환됩니다.
+
+
+## 불리언 값 확인 \{#checking-boolean-values\}
+
+ClickHouse는 `IS TRUE`, `IS FALSE`, `IS UNKNOWN`, `IS NOT TRUE`, `IS NOT FALSE`, `IS NOT UNKNOWN` 연산자를 지원합니다.
+이 연산자들은 [Bool](../../sql-reference/data-types/boolean.md) 및 `Nullable(Bool)` 표현식에 사용됩니다.
+
+* `expr IS TRUE`는 `expr`가 `true`일 때에만 `1`을 반환합니다.
+* `expr IS FALSE`는 `expr`가 `false`일 때에만 `1`을 반환합니다.
+* `expr IS UNKNOWN`는 `expr`가 `NULL`일 때에만 `1`을 반환합니다.
+* `expr IS NOT TRUE`는 `expr`가 `false` 또는 `NULL`이면 `1`을 반환합니다.
+* `expr IS NOT FALSE`는 `expr`가 `true` 또는 `NULL`이면 `1`을 반환합니다.
+* `expr IS NOT UNKNOWN`는 `expr`가 `NULL`이 아닐 때 `1`을 반환합니다.
+
+불리언 표현식에서는 `IS UNKNOWN`가 `IS NULL`과 동일하고, `IS NOT UNKNOWN`는 `IS NOT NULL`과 동일합니다.
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

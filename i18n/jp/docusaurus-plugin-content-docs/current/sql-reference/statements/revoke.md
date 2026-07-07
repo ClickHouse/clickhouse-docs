@@ -7,8 +7,6 @@ title: 'REVOKE ステートメント'
 doc_type: 'reference'
 ---
 
-# REVOKE ステートメント \{#revoke-statement\}
-
 ユーザーまたはロールから権限を取り消します。
 
 ## 構文 \{#syntax\}
@@ -19,7 +17,7 @@ doc_type: 'reference'
 REVOKE [ON CLUSTER cluster_name] privilege[(column_name [,...])] [,...] ON {db.table|db.*|*.*|table|*} FROM {user | CURRENT_USER} [,...] | ALL | ALL EXCEPT {user | CURRENT_USER} [,...]
 ```
 
-**ユーザーからロールを削除する**
+**ユーザーからロールを取り消す**
 
 ```sql
 REVOKE [ON CLUSTER cluster_name] [ADMIN OPTION FOR] role [,...] FROM {user | role | CURRENT_USER} [,...] | ALL | ALL EXCEPT {user_name | role_name | CURRENT_USER} [,...]

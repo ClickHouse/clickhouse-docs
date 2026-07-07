@@ -1,9 +1,9 @@
 ---
-sidebar_title: 'Анализ запросов'
+sidebar_title: 'Query Insights'
 slug: /cloud/get-started/query-insights
 description: 'Визуализируйте данные system.query_log, чтобы упростить отладку запросов и оптимизацию их производительности'
 keywords: ['query insights', 'query log', 'query log ui', 'system.query_log insights']
-title: 'Анализ запросов'
+title: 'Query Insights'
 doc_type: 'guide'
 ---
 
@@ -14,10 +14,7 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-
-# Анализ запросов \{#query-insights\}
-
-Функция **Анализ запросов** упрощает работу со встроенным журналом запросов ClickHouse с помощью визуализаций и таблиц. Таблица `system.query_log` в ClickHouse является ключевым источником информации для оптимизации запросов, отладки и мониторинга общего состояния и производительности кластера.
+Функция **Query Insights** упрощает использование встроенного журнала запросов ClickHouse с помощью визуализаций и таблиц. Таблица ClickHouse `system.query_log` — ключевой источник информации для оптимизации запросов, отладки и мониторинга общего состояния и производительности кластера.
 
 ## Обзор запросов \{#query-overview\}
 

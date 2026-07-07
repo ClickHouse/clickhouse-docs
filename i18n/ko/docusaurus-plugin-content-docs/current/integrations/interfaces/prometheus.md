@@ -7,8 +7,6 @@ title: 'Prometheus 프로토콜'
 doc_type: 'reference'
 ---
 
-# Prometheus 프로토콜 \{#prometheus-protocols\}
-
 ## 메트릭 노출 \{#expose\}
 
 :::note

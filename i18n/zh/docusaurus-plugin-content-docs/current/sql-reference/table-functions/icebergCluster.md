@@ -1,13 +1,12 @@
 ---
-description: '对 iceberg 表函数的扩展，允许在指定集群中多个节点上并行处理来自 Apache Iceberg 的文件。'
+description: '对 iceberg 表函数的扩展，可在指定集群中的多个节点上并行处理来自
+  Apache Iceberg 的文件。'
 sidebar_label: 'icebergCluster'
 sidebar_position: 91
 slug: /sql-reference/table-functions/icebergCluster
 title: 'icebergCluster'
 doc_type: 'reference'
 ---
-
-# icebergCluster 表函数 \{#icebergcluster-table-function\}
 
 这是对 [iceberg](/sql-reference/table-functions/iceberg.md) 表函数的扩展。
 

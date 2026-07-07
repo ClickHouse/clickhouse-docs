@@ -7,9 +7,7 @@ keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
 doc_type: 'guide'
 ---
 
-# 适用于 C 和 C++ 的 chDB \{#chdb-for-c-and-c\}
-
-chDB 提供原生的 C/C++ API，可将 ClickHouse 的功能直接嵌入到您的应用程序中。该 API 既支持简单查询,也支持高级特性,例如持久连接和查询结果的流式处理。
+chDB 提供原生 C/C++ API，可将 ClickHouse 功能直接嵌入您的应用程序。该 API 既支持简单查询，也支持持久连接和查询结果流式返回等进阶功能。
 
 ## 安装 \{#installation\}
 
@@ -336,4 +334,4 @@ cleanup:
 
 - **主仓库**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **问题与支持**:在 [GitHub 仓库](https://github.com/chdb-io/chdb/issues) 中提交 Issue
-- **C API 文档**: [绑定文档](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+- **C API 文档**: [绑定文档](https://github.com/chdb-io/chdb-core/blob/main/bindings.md)

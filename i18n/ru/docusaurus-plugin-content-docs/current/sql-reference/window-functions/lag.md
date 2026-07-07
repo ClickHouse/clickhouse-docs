@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции lag'
+description: 'Документация по оконной функции lag'
 sidebar_label: 'lag'
 sidebar_position: 9
 slug: /sql-reference/window-functions/lag
 title: 'lag'
 doc_type: 'reference'
 ---
-
-# lag \{#lag\}
 
 Возвращает значение, вычисленное для строки, которая находится на указанном физическом смещении перед текущей строкой в упорядоченном фрейме окна.
 Эта функция аналогична [`lagInFrame`](./lagInFrame.md), но всегда использует фрейм `ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING`.

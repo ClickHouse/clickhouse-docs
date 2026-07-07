@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'aggregation', 'window', 'groupby', 'sum', 'mean
 doc_type: 'reference'
 ---
 
-# DataStore 집계 함수 \{#datastore-aggregation-functions\}
-
-DataStore는 ClickHouse의 강력한 SQL 집계 기능을 활용하여 포괄적인 집계 및 윈도우 함수 지원을 제공합니다.
+DataStore는 ClickHouse의 강력한 SQL 집계 기능을 활용해 집계와 윈도 함수에 대한 포괄적인 지원을 제공합니다.
 
 ## 기본 집계 \{#basic\}
 

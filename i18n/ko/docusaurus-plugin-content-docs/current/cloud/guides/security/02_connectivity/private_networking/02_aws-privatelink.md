@@ -1,6 +1,6 @@
 ---
 title: 'AWS PrivateLink'
-description: '이 문서는 AWS PrivateLink를 사용하여 ClickHouse Cloud에 연결하는 방법을 설명합니다.'
+description: '이 문서에서는 AWS PrivateLink를 사용하여 ClickHouse Cloud에 연결하는 절차를 설명합니다.'
 slug: /manage/security/aws-privatelink
 keywords: ['PrivateLink']
 doc_type: 'guide'
@@ -17,9 +17,6 @@ import aws_private_link_modify_dnsname from '@site/static/images/cloud/security/
 import pe_remove_private_endpoint from '@site/static/images/cloud/security/pe-remove-private-endpoint.png';
 import aws_private_link_pe_filters from '@site/static/images/cloud/security/aws-privatelink-pe-filters.png';
 import aws_private_link_ped_nsname from '@site/static/images/cloud/security/aws-privatelink-pe-dns-name.png';
-
-
-# AWS PrivateLink \{#aws-privatelink\}
 
 <ScalePlanFeatureBadge feature="AWS PrivateLink" />
 
@@ -66,7 +63,7 @@ ClickHouse Cloud는 다음 리전에서 [크로스 리전(cross-region) PrivateL
 1. 엔드포인트 &quot;Service name&quot; 확인.
 2. AWS 엔드포인트 생성.
 3. &quot;Endpoint ID&quot;를 ClickHouse Cloud 조직에 추가합니다.
-4. &quot;Endpoint ID&quot;를 ClickHouse 서비스 허용 목록(allow list)에 추가합니다.
+4. &quot;Endpoint ID&quot;를 ClickHouse 서비스 허용 목록에 추가합니다.
 
 Terraform 예시는 [여기](https://github.com/ClickHouse/terraform-provider-clickhouse/tree/main/examples/)에서 확인할 수 있습니다.
 

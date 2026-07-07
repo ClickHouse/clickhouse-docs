@@ -2,13 +2,11 @@
 sidebar_label: 'ランダムなテストデータの生成'
 title: 'ClickHouse でランダムなテストデータを生成する'
 slug: /guides/generating-test-data
-description: 'ClickHouse におけるランダムなテストデータの生成について学びます'
+description: 'ClickHouse でランダムなテストデータを生成する方法を学びます'
 show_related_blogs: true
 doc_type: 'guide'
 keywords: ['ランダムデータ', 'テストデータ']
 ---
-
-# ClickHouse でランダムなテストデータを生成する \{#generating-random-test-data-in-clickhouse\}
 
 ランダムなデータの生成は、新しいユースケースを試したり実装のベンチマークを行ったりする際に役立ちます。
 ClickHouse には、外部のデータジェネレーターを用意する必要がない場合も多い、[ランダムデータ生成のための多様な関数](/sql-reference/functions/random-functions) が用意されています。

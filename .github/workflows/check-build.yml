@@ -11,6 +11,9 @@ on:
       - synchronize
       - reopened
       - opened
+permissions:
+  contents: read
+
 jobs:
   stylecheck:
     runs-on: ubuntu-latest
@@ -34,9 +37,9 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 20
-      - name: Install markdownlint-cli2
+      - name: Install markdown lint dependencies
         if: matrix.check_type == 'md-lint'
-        run: yarn add -D markdownlint-cli2
+        run: yarn install --frozen-lockfile
 
       # Run the checks here
       - name: Run spellcheck

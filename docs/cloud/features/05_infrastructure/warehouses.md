@@ -16,8 +16,6 @@ import compute_8 from '@site/static/images/cloud/reference/compute-compute-8.png
 import Image from '@theme/IdealImage';
 import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge';
 
-# Warehouses
-
 <ScalePlanFeatureBadge feature="Compute-compute separation"/>
 
 ## What is compute-compute separation? {#what-is-compute-compute-separation}
@@ -88,10 +86,10 @@ _Fig. 4 - User Alice was created in Service 1, but she can use the same credenti
 ### Network access control {#network-access-control}
 
 To restrict access to specific services by other applications or ad-hoc users, you can apply network restrictions.
-To do so, navigate to **Settings** in the service tab of the particular service you wish to restrict access to in ClickHouse Cloud console).
+To do so, navigate to **Settings** in the service tab of the particular service you wish to restrict access to in the ClickHouse Cloud console.
 
 IP filtering settings can be applied to each service separately, which means you can control which application can access which service.
-This allows you to restrict users from using specific services.
+This allows you to restrict access to specific services.
 
 In the example below, Alice is restricted from accessing service 2 in the warehouse:
 
@@ -101,19 +99,19 @@ In the example below, Alice is restricted from accessing service 2 in the wareho
 
 _Fig. 5 - Alice is restricted from accessing service 2 because of network access control settings_
 
-ClickHouse roles and grants can also be applied to control access to the data when users are connecting as an individual rather than the _default_ user. 
+ClickHouse roles and grants can also be applied to control access to the data when you connect as an individual rather than the _default_ user. 
 
 ### Read vs read-write services {#read-vs-read-write}
 
 Services can be one of:
 - **read-write**
   - Can both read and write data to ClickHouse
-  - Performs background merge operations (e.g., merging parts after data inserts), which consume CPU and memory
+  - Performs background merge operations (e.g. merging parts after data inserts), which consume CPU and memory
   - Can export data externally
 - **read-only**
   - Can only read data; it cannot write or modify data in ClickHouse
   - Doesn't perform background merge operations outside of system tables, so its resources are fully dedicated to read queries
-  - Can still export data externally (e.g., via table functions), but cannot change data inside ClickHouse
+  - Can still export data externally (e.g. via table functions), but cannot change data inside ClickHouse
   - Idles without delay, unlike read-write services which may be kept awake by background merges.
 
 Sometimes you want to isolate critical read workloads from write/merge overhead by making a service read only.
@@ -133,13 +131,13 @@ _Fig. 6 - Read-write and Read-only services in a warehouse_
 
 ## Scaling {#scaling}
 
-Each service in a warehouse can be adjusted to your workload in terms of:
-- Number of nodes (replicas). The primary service (the service that was created first in the warehouse) should have 2 or more nodes. Each secondary service can have 1 or more nodes.
-- Size of nodes (replicas)
-- If the service should scale automatically (horizontally and vertically)
-- If the service should be idled on inactivity
+Each service in a warehouse scales independently. You can adjust the number and size of replicas, enable horizontal and vertical autoscaling, and configure auto-idling on inactivity.
 
-For more information, see the ["Autoscaling"](/manage/scaling) page.
+Services, including the primary service, can run with a single replica, but that isn't recommended for production — use at least 2 replicas for high availability. Secondary single-node services can scale vertically, while primary single-node services cannot.
+
+The combined replica count across all services in a warehouse is capped at 50 by default. See [usage limits](/cloud/bestpractices/usage-limits) for details. Contact [support](https://clickhouse.com/support/program) to raise the limit.
+
+[Scheduled scaling](/cloud/features/autoscaling/scheduled-scaling) works for individual services in a warehouse. Warehouse limits still apply — plan schedules so the combined replica count across all services at peak times stays within the warehouse cap. For more information, see [Automatic scaling](/manage/scaling).
 
 ## Changes in `clusterAllReplicas` behavior {#changes-in-behavior}
 
@@ -153,10 +151,6 @@ To query across all services in the warehouse, use the `all_groups.default` clus
 SELECT * FROM clusterAllReplicas('all_groups.default', system, processes)
 ```
 
-:::note
-Secondary single-node services can scale vertically, while primary single-node services cannot.
-:::
-
 ## Limitations {#limitations}
 
 ### Workload isolation limitations {#workload-isolation-limitations}
@@ -164,18 +158,18 @@ Secondary single-node services can scale vertically, while primary single-node s
 Some workloads can't be isolated to specific services; there are edge cases where one workload in one service will affect another service in the warehouse. These include:
 
 -  **All read-write services handle background merge operations by default.** When inserting data to ClickHouse, the database at first inserts the data to some staging partitions, and then performs merges in the background. These merges can consume memory and CPU resources. When two read-write services share the same storage, they both are performing background operations. That means that there can be a situation where there is an `INSERT` query in Service 1, but the merge operation is completed by Service 2. 
-Note that read-only services don't execute background merges, thus they don't spend their resources on this operation. Our support has the ability to turn off merges on a service.
+Note that read-only services don't execute background merges. Contact [support](https://clickhouse.com/support/program) to turn off merges on a read/write service.
 
 - **All read-write services are performing S3Queue table engine insert operations.** When creating a S3Queue table on a read/write service, all other read/write services on the warehouse may perform reading data from S3 and writing data to the database.
 
 - **Inserts on one read-write service can prevent another read-write service from idling if idling is enabled.** There are situations where
  one service performs background merge operations for another service. Those background operations can prevent the second service from idling. Once the background operations are finished, the service will idled. Read-only services aren't affected.
 
-### Helpful Callouts {#callouts}
+### Helpful callouts {#callouts}
 
 - **ClickHouse Versions**: The [upgrade schedule](/manage/updates) is dictated by the primary service's settings. Secondary services cannot have a release schedule independent of the primary service.
 
-- **`CREATE`/`RENAME`/`DROP DATABASE` queries could be blocked by idled/stopped services by default.** If these queries are executed when the service is idled or stopped, these queries can hang. To bypass this, you  can run database management queries with [`settings distributed_ddl_task_timeout=0`](/operations/settings/settings#distributed_ddl_task_timeout) at the session or per query level.
+- **`CREATE`/`RENAME`/`DROP DATABASE` queries could be blocked by idled/stopped services by default.** If these queries are executed when the service is idled or stopped, these queries can hang. To bypass this, you can run database management queries with [`settings distributed_ddl_task_timeout=0`](/operations/settings/settings#distributed_ddl_task_timeout) at the session or per query level.
 
 For example:
 
@@ -186,20 +180,17 @@ SETTINGS distributed_ddl_task_timeout=0
 
 If you manually stop a service, you will need to start it up again in order for queries to be executed. 
 
-- **There is currently a soft limit of 5 services per warehouse.** Contact the support team if you need more than 5 services in a single warehouse.
-- **One replia Primary Sservice** Today, the default behavior is the secondary services can have one replica, the primary service must have at least 2.
-  To enable single replica primary services, please contact support. This behavior will be enabled by default in Q2 2026.
-- **Primary service idling**: Previously, primary services could not auto-idle by default. As of May 2026, primary service auto-idling is enabled by default. As part of the rollout, existing services have access to the feature while new services created post rollout have it enabled by default. 
+- **Primary service idling**: primary service auto-idling is enabled by default.
 
 ## Pricing {#pricing}
 
-Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once - it is included in the first (original) service.
+Compute prices are the same for all services in a warehouse (primary and secondary). Storage is billed only once—it is included in the first (original) service.
 
 Please refer to the pricing calculator on the [pricing](https://clickhouse.com/pricing) page, which will help estimate the cost based on your workload size and tier selection. The Usage Breakdown table will show you the breakdown of compute costs across services. 
 
 ## Backups {#backups}
 
-- As all services in a single warehouse share the same storage, backups are made only on the primary (initial) service. By this, the data for all services in a warehouse is backed up.
+- As all services in a single warehouse share the same storage, backups are made only on the primary (initial) service. This way, the data for all services in a warehouse is backed up.
 - If you restore a backup from a primary service of a warehouse, it will be restored to a completely new service, not connected to the existing warehouse. You can then add more services to the new service immediately after the restore is finished.
 
 ## How to set up a warehouse {#setup-warehouses}

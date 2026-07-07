@@ -1,19 +1,17 @@
 ---
 slug: /use-cases/observability/oss-monitoring
-title: '自托管监控'
-sidebar_label: '自托管监控'
-description: '自托管监控指南'
+title: '自管理监控'
+sidebar_label: '自管理监控'
+description: '自管理监控指南'
 doc_type: 'guide'
-keywords: ['可观测性', '监控', '自托管', '指标', '系统健康状况']
+keywords: ['可观测性', '监控', '自管理', '指标', '系统健康状况']
 ---
 
 import ObservabilityIntegrations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_observability_integration_options.md';
 import DirectIntegrations from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_direct_observability_integration_options.md';
 import CommunityMonitoring from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_community_monitoring.md';
 
-# 自主管理监控 \{#cloud-monitoring\}
-
-本指南为评估 ClickHouse 开源版本的企业团队提供有关生产环境部署中监控与可观测性能力的全面信息。企业客户经常会询问开箱即用的监控功能、与现有可观测性技术栈（包括 Datadog 和 AWS CloudWatch 等工具）的集成方式，以及 ClickHouse 的监控能力与自托管部署相比有哪些差异。
+本指南为评估 ClickHouse 开源版的企业团队提供有关生产部署中监控和可观测性能力的全面信息。企业客户经常会询问开箱即用的监控功能、如何与现有可观测性技术栈 (包括 Datadog 和 AWS CloudWatch 等工具) 集成，以及 ClickHouse 的监控能力与自托管部署相比有何不同。
 
 ### 基于 Prometheus 的集成架构 \{#prometheus\}
 

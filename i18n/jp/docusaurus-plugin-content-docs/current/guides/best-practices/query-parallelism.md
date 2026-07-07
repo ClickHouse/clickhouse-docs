@@ -16,14 +16,11 @@ import visual05 from '@site/static/images/guides/best-practices/query-parallelis
 
 import Image from '@theme/IdealImage';
 
+ClickHouseは[高速化のために設計されて](/concepts/why-clickhouse-is-so-fast)います。利用可能なすべてのCPUコアを使ってクエリを高度に並列実行し、データを処理レーンに分散しながら、ハードウェア性能を限界近くまで引き出すことも少なくありません。
 
-# ClickHouseがクエリを並列実行する方法 \{#how-clickhouse-executes-a-query-in-parallel\}
+このガイドでは、ClickHouseにおけるクエリの並列処理の仕組みと、大規模なワークロードでパフォーマンスを向上させるために、それをどのように調整・監視できるかを説明します。
 
-ClickHouseは[速度のために構築](/concepts/why-clickhouse-is-so-fast)されています。利用可能なすべてのCPUコアを使用し、処理レーン全体にデータを分散し、しばしばハードウェアを限界近くまで押し上げることで、高度に並列な方法でクエリを実行します。
-
-このガイドでは、ClickHouseでクエリの並列処理がどのように機能するか、そして大規模なワークロードでパフォーマンスを向上させるためにそれをどのように調整または監視できるかを説明します。
-
-ここでは、主要な概念を説明するために、[uk_price_paid_simple](/parts)データセットに対する集約クエリを使用します。
+主要な概念を説明するために、[uk&#95;price&#95;paid&#95;simple](/parts)データセットに対する集計クエリを使用します。
 
 ## ステップバイステップ：ClickHouseが集計クエリを並列化する方法 \{#step-by-step-how-clickHouse-parallelizes-an-aggregation-query\}
 

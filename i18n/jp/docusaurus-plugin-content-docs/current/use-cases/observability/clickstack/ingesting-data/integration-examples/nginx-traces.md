@@ -10,18 +10,14 @@ keywords: ['ClickStack', 'Nginx', 'traces', 'otel']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-nginx-traces-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack による Nginx トレースの監視 \{#nginx-traces-clickstack\}
-
-:::note[TL;DR]
-OpenTelemetry Nginx モジュールを使用して、Nginx からの分散トレースを ClickStack で収集します。デモ用データセットと事前構築済みのダッシュボードが含まれています。
+:::note[要点]
+OpenTelemetry Nginx モジュールを使用して、Nginx の分散トレースを ClickStack に取り込みます。デモ用データセットとあらかじめ用意されたダッシュボードが含まれます。
 :::
 
 ## 既存の Nginx との統合 \{#existing-nginx\}
@@ -251,7 +247,7 @@ ClickStack でトレースの監視を始めやすくするために、トレー
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード設定を<TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">ダウンロード</TrackedLink> \{#download\}
+#### ダッシュボード設定を<TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nginx-traces-dashboard.json'} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">ダウンロード</TrackedLink> \{#download\}
 
 #### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 1. HyperDX を開き、［Dashboards］セクションに移動します。

@@ -12,8 +12,6 @@ import projections_2 from '@site/static/images/data-modeling/projections_2.png';
 import Image from '@theme/IdealImage';
 
 
-# 프로젝션 \{#projections\}
-
 ## 소개 \{#introduction\}
 
 ClickHouse는 대량의 데이터에 대한 실시간 분석 쿼리를 가속화하기 위한 다양한 메커니즘을 제공합니다. 이러한 쿼리를 빠르게 하는 메커니즘 중 하나가 바로 _프로젝션_입니다. 프로젝션은 관심 있는 속성 기준으로 데이터를 재정렬하여 쿼리를 최적화합니다. 이 재정렬 방식은 다음과 같을 수 있습니다.

@@ -4,10 +4,8 @@ sidebar_label: 'PostgreSQL'
 sidebar_position: 160
 slug: /engines/table-engines/integrations/postgresql
 title: 'PostgreSQL 表引擎'
-doc_type: '指南'
+doc_type: 'guide'
 ---
-
-# PostgreSQL 表引擎 \{#postgresql-table-engine\}
 
 PostgreSQL 引擎允许对存储在远程 PostgreSQL 服务器上的数据执行 `SELECT` 和 `INSERT` 查询。
 
@@ -16,7 +14,7 @@ PostgreSQL 引擎允许对存储在远程 PostgreSQL 服务器上的数据执行
 :::
 
 :::tip
-了解我们的 [Managed Postgres](/docs/cloud/managed-postgres) 服务。其采用与计算节点物理同机架的 NVMe 存储，相比使用 EBS 等网络附加存储的替代方案，对于受磁盘限制的工作负载可提供最高 10 倍的性能提升，并允许你通过 ClickPipes 中的 Postgres CDC（变更数据捕获）连接器将 Postgres 数据复制到 ClickHouse。
+了解我们的 [Managed Postgres](/docs/cloud/managed-postgres) 服务。其采用与计算节点物理同机架的 NVMe 存储，相比使用 EBS 等网络附加存储的替代方案，对于受磁盘限制的工作负载可提供最高 10 倍的性能提升，并允许你通过 ClickPipes 中的 Postgres CDC (变更数据捕获) 连接器将 Postgres 数据复制到 ClickHouse。
 :::
 
 ## 创建数据表 \{#creating-a-table\}

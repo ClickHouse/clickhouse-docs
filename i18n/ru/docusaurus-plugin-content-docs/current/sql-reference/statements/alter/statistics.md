@@ -37,12 +37,6 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 ALTER TABLE t1 MODIFY STATISTICS c, d TYPE TDigest, Uniq;
 ```
 
-Добавление статистики NullCount к столбцу с типом Nullable:
-
-```sql
-ALTER TABLE t1 ADD STATISTICS nullable_col TYPE NullCount;
-```
-
 :::note
 Статистика поддерживается только для таблиц движка [`*MergeTree`](../../../engines/table-engines/mergetree-family/mergetree.md) (включая [реплицированные](../../../engines/table-engines/mergetree-family/replication.md) варианты).
 :::

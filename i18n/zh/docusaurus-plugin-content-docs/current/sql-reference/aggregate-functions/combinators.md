@@ -7,9 +7,7 @@ title: '聚合函数组合器'
 doc_type: 'reference'
 ---
 
-# 聚合函数组合器 \{#aggregate-function-combinators\}
-
-聚合函数名可以追加一个后缀，从而改变该聚合函数的工作方式。
+聚合函数的名称后面可以附加一个后缀，这会改变该聚合函数的工作方式。
 
 ## -If \{#-if\}
 
@@ -83,15 +81,11 @@ GROUP BY timeslot;
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─toTypeName(c)────────────────────────┬─c─┐
 │ SimpleAggregateFunction(any, UInt64) │ 0 │
 └──────────────────────────────────────┴───┘
@@ -156,15 +150,11 @@ WITH anySimpleState(number) AS c SELECT toTypeName(c), c FROM numbers(1);
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─avg(number)─┬─avgOrDefault(number)─┐
 │         nan │                    0 │
 └─────────────┴──────────────────────┘
@@ -172,9 +162,7 @@ SELECT avg(number), avgOrDefault(number) FROM numbers(0)
 
 另外，`-OrDefault` 也可以与其他组合器一起使用。当聚合函数无法处理空输入时，这会很有用。
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT avgOrDefaultIf(x, x > 10)
 FROM
 (
@@ -182,9 +170,7 @@ FROM
 )
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─avgOrDefaultIf(x, greater(x, 10))─┐
 │                              0.00 │
 └───────────────────────────────────┘
@@ -219,15 +205,11 @@ FROM
 
 在聚合函数名称末尾添加 `-orNull`。
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE number > 10
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─sumOrNull(number)─┬─toTypeName(sumOrNull(number))─┐
 │              ᴺᵁᴸᴸ │ Nullable(UInt64)              │
 └───────────────────┴───────────────────────────────┘
@@ -235,9 +217,7 @@ SELECT sumOrNull(number), toTypeName(sumOrNull(number)) FROM numbers(10) WHERE n
 
 `-OrNull` 也可以与其他组合器一起使用。当聚合函数不接受空输入时，这会很有用。
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT avgOrNullIf(x, x > 10)
 FROM
 (
@@ -245,9 +225,7 @@ FROM
 )
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─avgOrNullIf(x, greater(x, 10))─┐
 │                           ᴺᵁᴸᴸ │
 └────────────────────────────────┘

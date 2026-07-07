@@ -7,7 +7,6 @@ keywords: ['native protocol', 'TCP protocol', 'protocol basics', 'binary protoco
 doc_type: 'guide'
 ---
 
-# Basics
 
 :::note
 Client protocol reference is in progress.

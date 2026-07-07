@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'configuration', 'config', 'settings']
 doc_type: 'reference'
 ---
 
-# DataStore の設定 \{#datastore-configuration\}
-
-DataStore は、実行エンジンの選択、互換モード、ロギング、キャッシュ、プロファイリング、dtype の補正などに関する包括的な設定オプションを提供します。
+DataStore では、実行エンジンの選択、互換性モード、ロギング、キャッシュ、プロファイリング、dtype 補正に関する幅広い設定オプションを利用できます。
 
 ## クイックリファレンス \{#quick-reference\}
 

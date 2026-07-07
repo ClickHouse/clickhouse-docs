@@ -1,13 +1,11 @@
 ---
-description: 'Nothing 特殊データ型に関するドキュメント'
+description: 'Nothing 特殊データ型のドキュメント'
 sidebar_label: 'Nothing'
 sidebar_position: 60
 slug: /sql-reference/data-types/special-data-types/nothing
 title: 'Nothing'
 doc_type: 'reference'
 ---
-
-# Nothing \{#nothing\}
 
 このデータ型の唯一の目的は、値が存在することが想定されていないケースを表すことです。そのため、`Nothing` 型の値を作成することはできません。
 

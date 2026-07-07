@@ -1,23 +1,21 @@
 ---
-description: '此引擎提供与现有 Apache Iceberg 表的只读集成，这些表存储在 Amazon S3、Azure、HDFS 或本地。'
+description: '该引擎为 Amazon S3、Azure、HDFS 以及本地存储中的现有 Apache Iceberg 表提供只读集成。'
 sidebar_label: 'Iceberg'
 sidebar_position: 90
 slug: /engines/table-engines/integrations/iceberg
 title: 'Iceberg 表引擎'
-doc_type: 'reference'
+doc_type: '参考'
 ---
 
-# Iceberg 表引擎 \{#iceberg-table-engine\}
-
-:::warning 
+:::warning
 我们建议在 ClickHouse 中处理 Iceberg 数据时使用 [Iceberg 表函数](/sql-reference/table-functions/iceberg.md)。Iceberg 表函数目前提供了足够的功能，并为 Iceberg 表提供部分只读接口。
 
-Iceberg 表引擎是可用的，但可能存在一些限制。ClickHouse 最初并非为支持其模式会在外部发生变化的表而设计，这可能会影响 Iceberg 表引擎的功能。因此，一些对常规表可用的特性在这里可能不可用，或者可能无法正确工作，尤其是在使用旧版分析器时。
+Iceberg 表引擎是可用的，但可能存在一些限制。ClickHouse 最初并非为支持其schema会在外部发生变化的表而设计，这可能会影响 Iceberg 表引擎的功能。因此，一些对常规表可用的特性在这里可能不可用，或者可能无法正确工作，尤其是在使用旧版分析器时。
 
 为了获得最佳兼容性，在我们持续改进对 Iceberg 表引擎的支持期间，建议优先使用 Iceberg 表函数。
 :::
 
-该引擎提供与现有 Apache [Iceberg](https://iceberg.apache.org/) 表的只读集成，支持位于 Amazon S3、Azure、HDFS 以及本地存储的表。
+该引擎为 Amazon S3、Azure、HDFS 以及本地存储中的现有 Apache [Iceberg](https://iceberg.apache.org/) 表提供只读集成。
 
 ## 创建表 \{#create-table\}
 

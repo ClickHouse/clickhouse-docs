@@ -7,9 +7,7 @@ keywords: ['CSV 形式', 'TSV 形式', 'カンマ区切り値', 'タブ区切り
 doc_type: 'guide'
 ---
 
-# ClickHouse での CSV および TSV データの扱い方 \{#working-with-csv-and-tsv-data-in-clickhouse\}
-
-ClickHouse は、CSV 形式でのデータのインポートおよびエクスポートをサポートしています。CSV ファイルは、ヘッダー行、カスタム区切り文字、エスケープ記号など、さまざまな形式上の違いを持つ場合があるため、ClickHouse ではそれぞれのケースに効率的に対処できるよう、フォーマットと設定が用意されています。
+ClickHouse は、CSV からのデータのインポートと CSV へのデータのエクスポートをサポートしています。CSV ファイルでは、ヘッダー行、独自の区切り文字、エスケープ文字など、フォーマットの仕様が異なる場合があるため、ClickHouse ではそれぞれのケースに効率的に対応できるよう、各種フォーマットと設定を用意しています。
 
 ## CSV ファイルからのデータインポート \{#importing-data-from-a-csv-file\}
 
@@ -26,7 +24,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-[CSV ファイル](assets/data_small.csv)から `sometable` テーブルにデータをインポートするには、ファイルを直接 clickhouse-client にパイプで渡します。
+[CSV ファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.csv)から `sometable` テーブルにデータをインポートするには、ファイルを直接 clickhouse-client にパイプで渡します。
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
@@ -50,7 +48,7 @@ FORMAT CSV
 
 ### ヘッダー付き CSV ファイル \{#csv-files-with-headers\}
 
-次のような [ヘッダー付きの CSV ファイル](assets/data_small_headers.csv) があるとします。
+次のような [ヘッダー付きの CSV ファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small_headers.csv) があるとします。
 
 ```bash
 head data-small-headers.csv
@@ -106,7 +104,7 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 └─────────┘
 ```
 
-この [file](assets/data_small.csv) には 1,000 行ありますが、最初の 10 行をスキップするよう指定したため、ClickHouse は 990 行だけを読み込みました。
+この [file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.csv) には 1,000 行ありますが、最初の 10 行をスキップするよう指定したため、ClickHouse は 990 行だけを読み込みました。
 
 :::tip
 `file()` 関数を使用する場合、ClickHouse Cloud では、ファイルが配置されているマシン上で `clickhouse client` のコマンドを実行する必要があります。別の方法としては、[`clickhouse-local`](/operations/utilities/clickhouse-local.md) を使用してローカルでファイルを操作・検証することもできます。
@@ -163,7 +161,7 @@ SELECT * FROM file('nulls.csv')
 
 ## TSV (タブ区切り) ファイル \{#tsv-tab-separated-files\}
 
-タブ区切りデータ形式は、データ交換形式として広く使用されています。[TSV ファイル](assets/data_small.tsv)から ClickHouse にデータを読み込むには、[TabSeparated](/interfaces/formats/TabSeparated) 形式を使用します。
+タブ区切りデータ形式は、データ交換形式として広く使用されています。[TSV ファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.tsv)から ClickHouse にデータを読み込むには、[TabSeparated](/interfaces/formats/TabSeparated) 形式を使用します。
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.tsv
@@ -313,7 +311,7 @@ FORMAT CSVWithNamesAndTypes
 "2016_Greater_Western_Sydney_Giants_season","2017-05-01",86
 ```
 
-この形式では、ヘッダーは 2 行で構成されます。1 行目はカラム名、もう 1 行はカラムの型です。これにより、ClickHouse（および他のアプリケーション）は、[このようなファイル](assets/data_csv_types.csv) からデータを読み込む際にカラム型を識別できるようになります。
+この形式では、ヘッダーは 2 行で構成されます。1 行目はカラム名、もう 1 行はカラムの型です。これにより、ClickHouse（および他のアプリケーション）は、[このようなファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_csv_types.csv) からデータを読み込む際にカラム型を識別できるようになります。
 
 ```sql
 DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
@@ -350,7 +348,7 @@ SET format_custom_row_between_delimiter = ',';
 SET format_custom_escaping_rule = 'Quoted';
 ```
 
-これで、カスタム形式の[ファイル](assets/data_small_custom.txt)からデータを読み込めます。
+これで、カスタム形式の[ファイル](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small_custom.txt)からデータを読み込めます。
 
 ```sql
 SELECT *

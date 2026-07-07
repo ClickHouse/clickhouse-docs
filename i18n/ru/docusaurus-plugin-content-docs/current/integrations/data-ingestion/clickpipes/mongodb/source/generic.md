@@ -2,7 +2,7 @@
 sidebar_label: 'Универсальный MongoDB'
 description: 'Настройте любой экземпляр MongoDB в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/mongodb/source/generic
-title: 'Руководство по настройке источника Generic MongoDB'
+title: 'Руководство по настройке источника Универсального MongoDB'
 doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
 integration:
@@ -10,11 +10,9 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Общее руководство по настройке источника данных MongoDB \{#generic-mongodb-source-setup-guide\}
-
 :::info
 
-Если вы используете MongoDB Atlas, см. отдельное руководство [здесь](./atlas).
+Если вы используете MongoDB Atlas, см. специальное руководство [здесь](./atlas).
 
 :::
 

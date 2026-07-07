@@ -8,24 +8,23 @@ description: '介绍 ClickHouse Cloud 中的访问控制和账户管理'
 doc_type: 'guide'
 ---
 
-# 在 ClickHouse 中创建用户和角色 \{#creating-users-and-roles-in-clickhouse\}
-
 ClickHouse 支持基于 [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) 方法的访问控制管理。
 
 ClickHouse 访问控制实体：
-- [用户账户](#user-account-management)
-- [角色](#role-management)
-- [行策略](#row-policy-management)
-- [设置配置文件](#settings-profiles-management)
-- [配额](#quotas-management)
+
+* [用户账户](#user-account-management)
+* [角色](#role-management)
+* [行策略](#row-policy-management)
+* [设置配置文件](#settings-profiles-management)
+* [配额](#quotas-management)
 
 您可以通过以下方式配置访问控制实体：
 
-- 基于 SQL 的工作流。
+* 基于 SQL 的工作流。
 
-    您需要[启用](#enabling-access-control)该功能。
+  您需要[启用](#enabling-access-control)该功能。
 
-- 服务器[配置文件](/operations/configuration-files.md) `users.xml` 和 `config.xml`。
+* 服务器[配置文件](/operations/configuration-files.md) `users.xml` 和 `config.xml`。
 
 我们建议使用基于 SQL 的工作流。这两种配置方法可以同时生效，因此如果您使用服务器配置文件来管理账户和访问权限，可以平稳切换到基于 SQL 的工作流。
 

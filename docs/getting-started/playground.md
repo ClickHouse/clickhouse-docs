@@ -8,7 +8,6 @@ title: 'ClickHouse playground'
 doc_type: 'guide'
 ---
 
-# ClickHouse playground
 
 [ClickHouse Playground](https://sql.clickhouse.com) allows people to experiment with ClickHouse by running queries instantly, without setting up their server or cluster.
 Several example datasets are available in Playground.

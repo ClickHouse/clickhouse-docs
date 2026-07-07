@@ -18,8 +18,6 @@ import looker_03 from '@site/static/images/integrations/data-visualization/looke
 import looker_04 from '@site/static/images/integrations/data-visualization/looker_04.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Looker
-
 <PartnerBadge/>
 
 Looker can connect to ClickHouse Cloud or on-premise deployment via the official ClickHouse data source.

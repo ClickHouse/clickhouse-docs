@@ -2,8 +2,8 @@
 sidebar_label: 'Spark ネイティブコネクタ'
 sidebar_position: 2
 slug: /integrations/apache-spark/spark-native-connector
-description: 'ClickHouse と連携した Apache Spark の概要'
-keywords: ['ClickHouse', 'Apache Spark', '移行', 'データ']
+description: 'ClickHouse と Apache Spark の紹介'
+keywords: ['clickhouse', 'Apache Spark', 'migrating', 'data']
 title: 'Spark コネクタ'
 doc_type: 'guide'
 ---
@@ -12,9 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
-
-# Spark connector \{#spark-connector\}
 
 <ClickHouseSupportedBadge />
 

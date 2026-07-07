@@ -1,12 +1,10 @@
 ---
-description: 'Документация по клаузе ALL'
+description: 'Документация по оператору ALL'
 sidebar_label: 'ALL'
 slug: /sql-reference/statements/select/all
-title: 'Клауза ALL'
+title: 'Оператор ALL'
 doc_type: 'reference'
 ---
-
-# Оператор ALL \{#all-clause\}
 
 Если в таблице есть несколько строк, удовлетворяющих условию, то `ALL` возвращает их все. `SELECT ALL` идентичен `SELECT` без `DISTINCT`. Если указаны и `ALL`, и `DISTINCT`, будет выброшено исключение.
 

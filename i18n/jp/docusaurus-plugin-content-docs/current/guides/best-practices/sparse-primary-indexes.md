@@ -34,8 +34,6 @@ import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
 
-# ClickHouse におけるプライマリインデックス実践入門 \{#a-practical-introduction-to-primary-indexes-in-clickhouse\}
-
 ## はじめに \{#introduction\}
 
 このガイドでは、ClickHouse におけるインデックスについて詳しく解説します。以下の点を例示し、詳細に説明します。
@@ -410,78 +408,69 @@ ClickHouse は<a href="https://clickhouse.com/docs/introduction/distinctive-feat
   :::
 
 <details>
-    <summary>
+  <summary>
     プライマリインデックスの内容を確認する
-    </summary>
-    <p>
+  </summary>
 
-セルフマネージドの ClickHouse クラスターでは、サンプルテーブルのプライマリインデックスの内容を確認するために、<a href="https://clickhouse.com/docs/sql-reference/table-functions/file/" target="_blank">file テーブル関数</a>を使用できます。
+  <p>
+    セルフマネージドの ClickHouse クラスターでは、サンプルテーブルのプライマリインデックスの内容を確認するために、<a href="https://clickhouse.com/docs/sql-reference/table-functions/file/" target="_blank">file テーブル関数</a>を使用できます。
 
-このためには、まず稼働中のクラスター内のノードの <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-user_files_path" target="_blank">user_files_path</a> にプライマリインデックスファイルをコピーする必要があります:
-<ul>
-<li>ステップ 1: プライマリインデックスファイルを含むパーツのパス (part-path) を取得する</li>
-`
-SELECT path FROM system.parts WHERE table = 'hits_UserID_URL' AND active = 1
-`
+    このためには、まず稼働中のクラスター内のノードの <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#user_files_path" target="_blank">user&#95;files&#95;path</a> にプライマリインデックスファイルをコピーする必要があります:
 
-テストマシンでは `/Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4` が返されます。
+    <ul>
+      <li>ステップ 1: プライマリインデックスファイルを含むパーツのパス (part-path) を取得する</li>
+      `SELECT path FROM system.parts WHERE table = 'hits_UserID_URL' AND active = 1`
 
-<li>ステップ 2: user_files_path を取得する</li>
-Linux における<a href="https://github.com/ClickHouse/ClickHouse/blob/22.12/programs/server/config.xml#L505" target="_blank">デフォルトの user_files_path</a> は
-`/var/lib/clickhouse/user_files/`
-です。
+      テストマシンでは `/Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4` が返されます。
 
-Linux では、次のコマンドで変更されているかを確認できます: `$ grep user_files_path /etc/clickhouse-server/config.xml`
+      <li>ステップ 2: user&#95;files&#95;path を取得する</li>
+      Linux における<a href="https://github.com/ClickHouse/ClickHouse/blob/22.12/programs/server/config.xml#L505" target="_blank">デフォルトの user&#95;files&#95;path</a> は
+      `/var/lib/clickhouse/user_files/`
+      です。
 
-テストマシンではパスは `/Users/tomschreiber/Clickhouse/user_files/` です。
+      Linux では、次のコマンドで変更されているかを確認できます: `$ grep user_files_path /etc/clickhouse-server/config.xml`
 
-<li>ステップ 3: プライマリインデックスファイルを user_files_path にコピーする</li>
+      テストマシンではパスは `/Users/tomschreiber/Clickhouse/user_files/` です。
 
-`cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx`
+      <li>ステップ 3: プライマリインデックスファイルを user&#95;files&#95;path にコピーする</li>
 
-</ul>
+      `cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx`
+    </ul>
 
-<br/>
-これで SQL を使ってプライマリインデックスの内容を確認できます:
-<ul>
-<li>エントリ数を取得する</li>
-`
-SELECT count( )<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String');
-`
-`1083` が返されます。
+    <br />
 
-<li>最初の 2 つのインデックスマークを取得する</li>
-`
-SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 0, 2;
-`
+    これで SQL を使ってプライマリインデックスの内容を確認できます:
 
-返される値:
+    <ul>
+      <li>エントリ数を取得する</li>
+      `SELECT count( )<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String');`
+      `1083` が返されます。
 
-`
-240923, http://showtopics.html%3...<br/>
-4073710, http://mk.ru&pos=3_0
-`
+      <li>最初の 2 つのインデックスマークを取得する</li>
+      `SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 0, 2;`
 
-<li>最後のインデックスマークを取得する</li>
-`
-SELECT UserID, URL FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;
-`
-返される値:
-`
-4292714039 │ http://sosyal-mansetleri...
-`
-</ul>
-<br/>
-これは、サンプルテーブルについて示したプライマリインデックス内容の図と完全に一致しています。
+      返される値:
 
-</p>
+      `240923, http://showtopics.html%3...<br/>
+      4073710, http://mk.ru&pos=3_0`
+
+      <li>最後のインデックスマークを取得する</li>
+      `SELECT UserID, URL FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;`
+      返される値:
+      `4292714039 │ http://sosyal-mansetleri...`
+    </ul>
+
+    <br />
+
+    これは、サンプルテーブルについて示したプライマリインデックス内容の図と完全に一致しています。
+  </p>
 </details>
 
 プライマリキーのエントリは、各インデックスエントリが特定のデータ範囲の開始位置をマークしているため、インデックスマークと呼ばれます。サンプルテーブルの場合、具体的には次のとおりです。
 
-- UserID のインデックスマーク:
+* UserID のインデックスマーク:
 
-  プライマリインデックスに格納されている `UserID` の値は昇順にソートされています。<br/>
+  プライマリインデックスに格納されている `UserID` の値は昇順にソートされています。<br />
   上記の図における「mark 1」は、グラニュール 1、およびそれ以降のすべてのグラニュールに含まれるテーブル行の `UserID` 値が、4.073.710 以上であることが保証されていることを示しています。
 
 [後ほど説明するように](#the-primary-index-is-used-for-selecting-granules)、このグローバルな順序により、クエリがプライマリキーの 1 列目のカラムをフィルタリングしている場合に、ClickHouse は<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">最初のキーカラムに対するインデックスマーク上での二分探索アルゴリズム</a>を使用できるようになります。
@@ -493,9 +482,9 @@ SELECT UserID, URL FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID
 
   このことがクエリ実行のパフォーマンスにどのような影響を与えるかについては、後ほど詳しく説明します。
 
-### プライマリ索引はグラニュールの選択に使用される \{#the-primary-index-is-used-for-selecting-granules\}
+### プライマリインデックスはグラニュールの選択に使用される \{#the-primary-index-is-used-for-selecting-granules\}
 
-これで、プライマリ索引を活用してクエリを実行できるようになりました。
+これで、プライマリインデックスを活用してクエリを実行できるようになりました。
 
 次のクエリは、UserID 749927693 について最もクリックされた URL の上位 10 件を求めます。
 
@@ -532,7 +521,7 @@ Processed 8.19 thousand rows,
 
 ClickHouse クライアントの出力から、フルテーブルスキャンを行う代わりに、8.19 千行だけが ClickHouse にストリーミングされていることがわかります。
 
-<a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">トレースログ</a>が有効になっている場合、ClickHouse サーバーログファイルには、ClickHouse が 1083 個の UserID インデックスマークに対して<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">二分探索</a>を実行し、UserID カラム値が `749927693` である行を含んでいる可能性のある granule を特定していることが記録されます。これは平均時間計算量 `O(log2 n)` で 19 ステップを必要とします。
+<a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#logger" target="_blank">トレースログ</a>が有効になっている場合、ClickHouse サーバーのログファイルには、ClickHouse が 1083 個の UserID インデックスマークに対して<a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">二分探索</a>を実行し、UserID カラム値が `749927693` の行を含む可能性がある グラニュール を特定していることが記録されます。これは平均時間計算量 `O(log2 n)` で 19 ステップを要します。
 
 ```response
 ...Executor): Key condition: (column 0 in [749927693, 749927693])
@@ -555,7 +544,7 @@ ClickHouse クライアントの出力から、フルテーブルスキャンを
   </summary>
 
   <p>
-    マーク 176 が特定されています（「found left boundary mark」は包含、「found right boundary mark」は排他的）ので、グラニュール 176 からの 8192 行すべて（これは行 1,441,792 から始まります ― このガイドの後半で確認します）が ClickHouse にストリーミングされ、その中から `749927693` という UserID カラム値を持つ実際の行が検索されます。
+    マーク 176 が特定されています (「found left boundary mark」は包含、「found right boundary mark」は排他的) ので、グラニュール 176 からの 8192 行すべて (これは行 1,441,792 から始まります ― このガイドの後半で確認します) が ClickHouse にストリーミングされ、その中から `749927693` という UserID カラム値を持つ実際の行が検索されます。
   </p>
 </details>
 
@@ -572,7 +561,6 @@ LIMIT 10;
 ```
 
 レスポンスは次のようになります。
-
 
 ```response
 ┌─explain───────────────────────────────────────────────────────────────────────────────┐

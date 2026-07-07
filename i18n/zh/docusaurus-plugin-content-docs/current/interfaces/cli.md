@@ -7,10 +7,6 @@ title: 'clickhousectl'
 doc_type: 'reference'
 ---
 
-import BetaBadge from '@theme/badges/BetaBadge';
-
-<BetaBadge />
-
 `clickhousectl` 是用于本地和云端 ClickHouse 的 CLI。
 
 使用 `clickhousectl`，您可以：
@@ -20,7 +16,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 * 对 ClickHouse 服务端执行查询
 * 搭建 ClickHouse Cloud 并创建由云托管的 ClickHouse 集群
 * 管理 ClickHouse Cloud 资源
-* 将官方 ClickHouse agent skills 安装到受支持的代码智能体中
+* 将官方 ClickHouse agent 技能安装到受支持的代码智能体中
 * 将本地 ClickHouse 开发工作推送到云端
 
 `clickhousectl` 可帮助开发者和 AI 智能体基于 ClickHouse 进行开发。

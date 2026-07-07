@@ -1,17 +1,14 @@
 ---
-sidebar_label: '物化: materialized_view'
+sidebar_label: '物化：materialized_view'
 slug: /integrations/dbt/materialization-materialized-view
 sidebar_position: 4
-description: '关于 materialized_view 物化方式的专用文档'
-keywords: ['ClickHouse', 'dbt', 'materialized_view', '可刷新', 'Materialized Views', '补齐']
-title: '物化: materialized_view'
+description: '关于 materialized_view 物化类型的专门说明文档'
+keywords: ['clickhouse', 'dbt', 'materialized_view', '可刷新', 'Materialized Views', '补齐']
+title: 'Materialized views'
 doc_type: 'guide'
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
-
-# Materialized Views \{#materialized-views\}
 
 <ClickHouseSupportedBadge />
 
@@ -39,7 +36,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 1. 使用模型名称创建一个**目标表**
 2. 创建一个名为 `<model_name>_mv` 的 ClickHouse **materialized view**
 
-目标表的表结构会根据该 materialized view 的 `SELECT` 语句中的列自动推断。所有资源（目标表和 materialized view）共享同一套模型配置。
+目标表的 schema 会根据该 materialized view 的 `SELECT` 语句中的列自动推断。所有资源 (目标表和 materialized view) 共享同一套模型配置。
 
 ```sql
 -- models/events_mv.sql
@@ -61,6 +58,9 @@ GROUP BY event_date, event_type
 
 有关更多示例，请参见[测试文件](https://github.com/ClickHouse/dbt-clickhouse/blob/main/tests/integration/adapter/materialized_view/test_materialized_view.py)。
 
+:::tip
+你还可以通过强制实施模型契约，在目标表上定义列级别的 `codec` 和 `ttl`。详情请参见[列配置](/integrations/dbt/materializations#column-configuration)。
+:::
 
 ### 多个 materialized view \{#multiple-materialized-views\}
 
@@ -219,20 +219,20 @@ GROUP BY event_date, event_type
 
 ### 配置选项 \{#explicit-target-configuration\}
 
-在使用显式目标表时，适用以下配置：
+在使用显式目标表时，除[常规 物化 配置](/integrations/dbt/materializations#general-materialization-configurations)和[表专用配置](/integrations/dbt/materializations#materialization-table)外，还适用以下配置：
 
-**在目标表上（`materialized='table'`）：**
+**在目标表上 (`materialized='table'`) ：**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `mv_on_schema_change` | 当该表被 dbt 管理的 MVs 使用时，如何处理 schema 变更。其行为与 [增量模型](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change)中的 `on_schema_change` 配置相同。| **注意**：如果一个 `materialized='table'` 模型没有任何 MV 指向它，它会像往常一样工作，因此即使配置了此设置，也会被忽略。如果该表是 MVs 的目标表，为保护这些表中的数据，此配置的默认值将为 `mv_on_schema_change='fail'`。 |
-| `repopulate_from_mvs_on_full_refresh` | 在执行 `--full-refresh` 时，不运行该表自身的 SQL，而是通过基于所有指向该表的 MVs 的 SQL 执行 INSERT-SELECT 来重建该表。 | `False` |
+| Option                                | Description                                                                                                                                                                          | Default                                                                                                                                       |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mv_on_schema_change`                 | 当该表被 dbt 管理的 MVs 使用时，如何处理 schema 变更。其行为与 [增量模型](https://docs.getdbt.com/docs/build/incremental-models#what-if-the-columns-of-my-incremental-model-change)中的 `on_schema_change` 配置相同。 | **注意**：如果一个 `materialized='table'` 模型没有任何 MV 指向它，它会像往常一样工作，因此即使配置了此设置，也会被忽略。如果该表是 MVs 的目标表，为保护这些表中的数据，此配置的默认值将为 `mv_on_schema_change='fail'`。 |
+| `repopulate_from_mvs_on_full_refresh` | 在执行 `--full-refresh` 时，不运行该表自身的 SQL，而是通过基于所有指向该表的 MVs 的 SQL 执行 INSERT-SELECT 来重建该表。                                                                                                  | `False`                                                                                                                                       |
 
-**在 materialized view 上（`materialized='materialized_view'`）：**
+**在 materialized view 上 (`materialized='materialized_view'`) ：**
 
-| Option | Description | Default |
-|--------|-------------|---------|
-| `catchup` | 在创建 MV 时，是否回填历史数据。 | `True` |
+| Option    | Description        | Default |
+| --------- | ------------------ | ------- |
+| `catchup` | 在创建 MV 时，是否回填历史数据。 | `True`  |
 
 :::note
 通常只需要在 MVs 中将 `catchup` 设置为 `True`，或在其目标表中将 `repopulate_from_mvs_on_full_refresh` 设置为 `True`。如果两者都设置为 `True`，可能会导致数据重复。

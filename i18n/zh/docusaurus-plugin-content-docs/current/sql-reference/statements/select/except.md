@@ -1,20 +1,18 @@
 ---
-description: 'EXCEPT 子句的文档,该子句仅返回第一个查询的结果中不在第二个查询中的行。'
+description: 'EXCEPT 子句的文档，该子句仅返回第一个查询的结果中不在第二个查询中的行。'
 sidebar_label: 'EXCEPT'
 slug: /sql-reference/statements/select/except
 title: 'EXCEPT 子句'
-keywords: ['EXCEPT', 'clause']
+keywords: ['EXCEPT', '子句']
 doc_type: 'reference'
 ---
 
-# EXCEPT 子句 \{#except-clause\}
-
 > `EXCEPT` 子句仅返回第一个查询的结果中不在第二个查询中的行。
 
-- 两个查询必须具有相同数量、相同顺序和相同数据类型的列。
-- `EXCEPT` 的结果可能包含重复行。如果不希望出现这种情况,请使用 `EXCEPT DISTINCT`。
-- 如果未指定括号,多个 `EXCEPT` 语句将从左到右执行。
-- `EXCEPT` 运算符具有与 `UNION` 子句相同的优先级,并且优先级低于 `INTERSECT` 子句。
+* 两个查询必须具有相同数量、相同顺序和相同数据类型的列。
+* `EXCEPT` 的结果可能包含重复行。如果不希望出现这种情况,请使用 `EXCEPT DISTINCT`。
+* 如果未指定括号,多个 `EXCEPT` 语句将从左到右执行。
+* `EXCEPT` 运算符具有与 `UNION` 子句相同的优先级,并且优先级低于 `INTERSECT` 子句。
 
 ## 语法 \{#syntax\}
 
@@ -29,13 +27,14 @@ SELECT column1 [, column2 ]
 FROM table2
 [WHERE condition]
 ```
+
 条件可以是基于您的要求的任何表达式。
 
 此外,`EXCEPT()` 可用于从同一表的结果中排除列,就像 BigQuery (Google Cloud) 中可以做到的那样,使用以下语法:
 
 ```sql
-SELECT column1 [, column2 ] EXCEPT (column3 [, column4])
-FROM table1
+SELECT column1 [, column2 ] EXCEPT (column3 [, column4]) 
+FROM table1 
 [WHERE condition]
 ```
 
@@ -45,7 +44,7 @@ FROM table1
 
 ### 使用 `EXCEPT` 子句过滤数字 \{#filtering-numbers-using-the-except-clause\}
 
-这是一个简单的示例,返回 1 到 10 之间_不属于_ 3 到 8 之间的数字:
+这是一个简单的示例,返回 1 到 10 之间&#95;不属于&#95; 3 到 8 之间的数字:
 
 ```sql title="Query"
 SELECT number
@@ -101,10 +100,10 @@ LIMIT 5
    └─────────────────────────┴────────────┴─────────┴──────┴──────┴─────────┴─────────────┴────────────┘
 ```
 
-### 在加密货币数据中使用 `EXCEPT` 和 `INTERSECT` \{#using-except-and-intersect-with-cryptocurrency-data\}
+### 将 `EXCEPT` 和 `INTERSECT` 与加密货币数据一起使用 \{#using-except-and-intersect-with-cryptocurrency-data\}
 
-`EXCEPT` 和 `INTERSECT` 通常可以通过不同的布尔逻辑互换使用,如果您有两个共享公共列(或多列)的表,它们都很有用。
-例如,假设我们有几百万行包含交易价格和交易量的历史加密货币数据:
+`EXCEPT` 和 `INTERSECT` 往往可以通过不同的布尔逻辑实现相近的效果；如果您有两个共享一个公共列 (或多个列) 的表，这两个运算符都很有用。
+例如，假设我们有几百万行历史加密货币数据，其中包含交易价格和成交量：
 
 ```sql title="Query"
 CREATE TABLE crypto_prices
@@ -149,7 +148,7 @@ LIMIT 10;
 
 现在假设我们有一个名为 `holdings` 的表,其中包含我们拥有的加密货币列表以及硬币数量:
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,
@@ -167,7 +166,7 @@ INSERT INTO holdings VALUES
    ('Bitcoin Diamond', 5000);
 ```
 
-我们可以使用 `EXCEPT` 来回答这样的问题:**"我们拥有的哪些币从未跌破 $10?"**:
+我们可以使用 `EXCEPT` 来回答这样的问题：**&quot;我们持有的哪些币种价格从未跌破 $10？&quot;**：
 
 ```sql title="Query"
 SELECT crypto_name FROM holdings
@@ -204,5 +203,5 @@ WHERE price < 10;
 
 **另请参阅**
 
-- [UNION](/sql-reference/statements/select/union)
-- [INTERSECT](/sql-reference/statements/select/intersect)
+* [UNION](/sql-reference/statements/select/union)
+* [INTERSECT](/sql-reference/statements/select/intersect)

@@ -1,6 +1,6 @@
 ---
 sidebar_label: 'Best practices'
-description: 'Details best practices to follow when working with Kafka ClickPipes'
+description: 'Details best practices to follow when working with Kafka ClickPipes.'
 slug: /integrations/clickpipes/kafka/best-practices
 sidebar_position: 1
 title: 'Best practices'
@@ -11,7 +11,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Best practices {#best-practices}
 
 ## Message Compression {#compression}
 
@@ -20,12 +19,27 @@ To learn more about message compression in Kafka, we recommend starting with thi
 
 ## Limitations {#limitations}
 
-- [`DEFAULT`](/sql-reference/statements/create/table#default) isn't supported.
-- Using a large number of partitions can result in increased latency.  ClickPipes limits the number of partitions that each replica will read at once based on replica size, ranging from 10 (XS) to 240 (XL).  If there are many partitions with no or limited data, processing of those messages may be delayed.
-- Individual messages are limited to 8MB (uncompressed) by default when running with the smallest (XS) replica size, and 16MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
+- [`DEFAULT`](/sql-reference/statements/create/table#default) is not supported.
+- Individual messages are limited to 16MB (uncompressed) by default when running with the smallest (XS) replica size, and 32MB (uncompressed) with larger replicas.  Messages that exceed this limit will be rejected with an error.  If you have a need for larger messages, please contact support.
 
 ## Delivery semantics {#delivery-semantics}
-ClickPipes for Kafka provides `at-least-once` delivery semantics (as one of the most commonly used approaches). We'd love to hear your feedback on delivery semantics [contact form](https://clickhouse.com/company/contact?loc=clickpipes). If you need exactly-once semantics, we recommend using our official [`clickhouse-kafka-connect`](https://clickhouse.com/blog/real-time-event-streaming-with-kafka-connect-confluent-cloud-clickhouse) sink.
+
+ClickPipes for Kafka guarantees at-least-once delivery by default, tracking ingestion progress through Kafka consumer group offsets. It also optionally supports exactly-once semantics, where each Kafka record is inserted into ClickHouse exactly once even across pod restarts, consumer rebalances, and insert failures.
+
+To deliver exactly-once, ClickPipes records each partition's progress in its internal state store using two values:
+
+- **High-water mark** — the offset up to which every record on the partition is confirmed inserted into ClickHouse. On restart, ClickPipes drops any record at or below this mark, so data that already landed is never sent again.
+- **Pending ranges** — the offset ranges of insert blocks sent to ClickHouse but not yet confirmed. After a failure, ClickPipes replays exactly these ranges.
+
+Each insert block covers a contiguous range of offsets and carries a deterministic [deduplication token](/guides/developer/deduplicating-inserts-on-retries) of the form `topic:partition:firstOffset-lastOffset`. On replay, ClickPipes reproduces the same offset range and therefore the same token, so ClickHouse rejects the duplicate. Because the token depends only on the offset range, a replay is deduplicated even when the rebuilt block isn't byte-for-byte identical.
+
+:::note Deduplication window
+Token deduplication is bounded by the target table's [`replicated_deduplication_window`](/operations/settings/merge-tree-settings#replicated_deduplication_window) (the most recent 10,000 insert blocks by default) and [`replicated_deduplication_window_seconds`](/operations/settings/merge-tree-settings#replicated_deduplication_window_seconds) (one hour by default). High-throughput pipes can churn through the block-count window quickly, so we recommend confirming and possibly increasing both of these settings on the target table to cover your worst-case replay delay. Data replayed after its token has left the window can be inserted again, so exactly-once isn't guaranteed in that case.
+:::
+
+The main tradeoff is part size. Larger insert blocks produce fewer, larger [parts](/parts) in ClickHouse, which keeps merge overhead low. ClickPipes holds a partition's rows in memory while it builds a block, so the part size it can reach depends on the memory available to the pipe — when memory is tight, it builds smaller blocks and the table accumulates more parts. Giving the pipe more memory lets it build larger blocks, producing fewer parts.
+
+A pipe works best when the number of partitions is close to the number of internal insert "workers", since each worker then handles roughly one partition and has the memory headroom to build large blocks. Both the worker count and the available memory scale with replica size and count, which you configure under **Settings** -> **Advanced Settings** -> **Scaling**.
 
 ## Authentication {#authentication}
 For Apache Kafka protocol data sources, ClickPipes supports [SASL/PLAIN](https://docs.confluent.io/platform/current/kafka/authentication_sasl/authentication_sasl_plain.html) authentication with TLS encryption, as well as `SASL/SCRAM-SHA-256` and `SASL/SCRAM-SHA-512`. Depending on the streaming source (Redpanda, MSK, etc) will enable all or a subset of these auth mechanisms based on compatibility. If you auth needs differ please [give us feedback](https://clickhouse.com/company/contact?loc=clickpipes).
@@ -116,7 +130,7 @@ Upload of client certificates and keys is also supported for mutual TLS (mTLS) b
 ClickPipes inserts data into ClickHouse in batches. This is to avoid creating too many parts in the database which can lead to performance issues in the cluster.
 
 Batches are inserted when one of the following criteria has been met:
-- The batch size has reached the maximum size (100,000 rows or 32MB per 1GB of pod memory)
+- The batch size has reached the maximum size (100,000 rows or 28MB per 1GB of pod memory)
 - The batch has been open for a maximum amount of time (5 seconds)
 
 ### Latency {#latency}

@@ -10,7 +10,6 @@ integration:
   - category: 'clickpipes'
 ---
 
-# Generic MongoDB source setup guide
 
 :::info
 

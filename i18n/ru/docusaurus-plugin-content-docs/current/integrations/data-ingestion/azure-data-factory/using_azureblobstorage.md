@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'Использование табличной функции ClickHouse azureBlobStorage'
+sidebar_label: 'Использование табличной функции `azureBlobStorage` в ClickHouse'
 slug: /integrations/azure-data-factory/table-function
-description: 'Использование табличной функции ClickHouse azureBlobStorage'
+description: 'Использование табличной функции `azureBlobStorage` в ClickHouse'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'azureBlobStorage']
-title: 'Использование табличной функции ClickHouse azureBlobStorage для импорта данных из Azure в ClickHouse'
+title: 'Использование табличной функции `azureBlobStorage` в ClickHouse'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -14,9 +14,6 @@ import Image from '@theme/IdealImage';
 import azureDataStoreSettings                   from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-settings.png';
 import azureDataStoreAccessKeys                 from '@site/static/images/integrations/data-ingestion/azure-data-factory/azure-data-store-access-keys.png';
 
-
-# Использование табличной функции ClickHouse `azureBlobStorage` \{#using-azureBlobStorage-function\}
-
 Это один из наиболее эффективных и простых способов копирования данных из
 Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощью этой табличной
 функции вы можете указать ClickHouse подключиться напрямую к хранилищу Azure и
@@ -25,7 +22,7 @@ Azure Blob Storage или Azure Data Lake Storage в ClickHouse. С помощь
 Функция предоставляет табличный интерфейс, который позволяет выбирать,
 вставлять и фильтровать данные непосредственно из источника. Функция высоко
 оптимизирована и поддерживает многие широко используемые форматы файлов, включая
-`CSV`, `JSON`, `Parquet`, `Arrow`, `TSV`, `ORC`, `Avro` и другие. Полный список см. в разделе ["Data formats"](/interfaces/formats).
+`CSV`, `JSON`, `Parquet`, `Arrow`, `TSV`, `ORC`, `Avro` и другие. Полный список см. в разделе [&quot;Data formats&quot;](/interfaces/formats).
 
 В этом разделе мы рассмотрим простой стартовый пример переноса
 данных из Azure Blob Storage в ClickHouse, а также важные аспекты

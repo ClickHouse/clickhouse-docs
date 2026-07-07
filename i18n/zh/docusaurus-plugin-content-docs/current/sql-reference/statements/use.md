@@ -7,8 +7,6 @@ title: 'USE 语句'
 doc_type: 'reference'
 ---
 
-# USE 语句 \{#use-statement\}
-
 ```sql
 USE [DATABASE] db
 ```

@@ -7,9 +7,7 @@ doc_type: 'guide'
 keywords: ['SQL フォーマット', 'データエクスポート', 'データインポート', 'バックアップ', 'SQL ダンプ']
 ---
 
-# ClickHouse での SQL データの挿入とダンプ \{#inserting-and-dumping-sql-data-in-clickhouse\}
-
-ClickHouse は、さまざまな方法で OLTP データベース基盤に容易に統合できます。その 1 つの方法として、SQL ダンプを使用して他のデータベースと ClickHouse 間でデータを転送することが挙げられます。
+ClickHouse は、さまざまな方法で OLTP データベースのインフラストラクチャに容易に統合できます。その方法の 1 つとして、SQL ダンプを使用して他のデータベースと ClickHouse の間でデータを転送できます。
 
 ## SQL ダンプの作成 \{#creating-sql-dumps\}
 
@@ -28,7 +26,7 @@ FORMAT SQLInsert
 SET output_format_sql_insert_include_column_names = 0
 ```
 
-これで、[dump.sql](assets/dump.sql) ファイルを別の OLTP データベースに読み込ませることができます。
+これで、[dump.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/dump.sql) ファイルを別の OLTP データベースに読み込ませることができます。
 
 ```bash
 mysql some_db < dump.sql
@@ -74,7 +72,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-デフォルトでは、ClickHouse は未知のカラムをスキップし ([input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) オプションで制御) 、ダンプ内で最初に見つかったテーブルのデータのみを処理します (複数のテーブルが 1 つのファイルにダンプされている場合) 。DDL ステートメントはスキップされます。MySQL のダンプ ([mysql.sql](assets/mysql.sql) ファイル) からテーブルにデータをロードするには、次のようにします：
+デフォルトでは、ClickHouse は未知のカラムをスキップし ([input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields) オプションで制御) 、ダンプ内で最初に見つかったテーブルのデータのみを処理します (複数のテーブルが 1 つのファイルにダンプされている場合) 。DDL ステートメントはスキップされます。MySQL のダンプ ([mysql.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/mysql.sql) ファイル) からテーブルにデータをロードするには、次のようにします：
 
 ```sql
 INSERT INTO some_data

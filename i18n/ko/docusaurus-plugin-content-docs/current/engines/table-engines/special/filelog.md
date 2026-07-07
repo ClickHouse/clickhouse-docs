@@ -7,18 +7,12 @@ title: 'FileLog 테이블 엔진'
 doc_type: 'reference'
 ---
 
-
-
-# FileLog 테이블 엔진 \{#filelog-engine\}
-
-이 엔진은 애플리케이션 로그 파일을 레코드 스트림 형태로 처리할 수 있게 해줍니다.
+이 엔진은 애플리케이션 로그 파일을 레코드 스트림 형태로 처리할 수 있게 합니다.
 
 `FileLog`를 사용하면 다음을 수행할 수 있습니다:
 
-- 로그 파일을 구독할 수 있습니다.
-- 구독한 로그 파일에 새 레코드가 추가될 때 이를 처리할 수 있습니다.
-
-
+* 로그 파일을 구독할 수 있습니다.
+* 구독한 로그 파일에 새 레코드가 추가될 때 처리할 수 있습니다.
 
 ## 테이블 생성 \{#creating-a-table\}
 
@@ -54,7 +48,6 @@ Optional parameters:
 * `poll_directory_watch_events_backoff_max` - 디렉터리 감시 스레드의 최대 대기 시간 값입니다. 기본값: `32000`.
 * `poll_directory_watch_events_backoff_factor` - backoff 속도입니다. 기본적으로 지수(exponential) backoff입니다. 기본값: `2`.
 * `handle_error_mode` — FileLog 엔진의 오류 처리 방식입니다. 가능한 값: default(메시지 파싱에 실패하면 예외를 발생시킵니다), stream(예외 메시지와 원시 메시지를 가상 컬럼 `_error` 및 `_raw_message`에 저장합니다).
-
 
 ## Description \{#description\}
 
@@ -98,17 +91,16 @@ Optional parameters:
   ATTACH TABLE consumer;
 ```
 
-`ALTER`를 사용해 대상 테이블을 변경하려는 경우, 대상 테이블과 뷰에서 입력되는 데이터 간의 불일치를 방지하기 위해 구체화된 뷰(Materialized View)를 비활성화하는 것이 좋습니다.
-
+`ALTER`를 사용해 대상 테이블을 변경하려는 경우, 대상 테이블과 뷰에서 입력되는 데이터 간의 불일치를 방지하기 위해 materialized view를 비활성화하는 것이 좋습니다.
 
 ## 가상 컬럼 \{#virtual-columns\}
 
-- `_filename` - 로그 파일 이름입니다. 데이터 타입: `LowCardinality(String)`.
-- `_offset` - 로그 파일에서의 오프셋입니다. 데이터 타입: `UInt64`.
+* `_filename` - 로그 파일 이름입니다. 데이터 타입: `LowCardinality(String)`.
+* `_offset` - 로그 파일에서의 오프셋입니다. 데이터 타입: `UInt64`.
 
 `handle_error_mode='stream'`인 경우 추가되는 가상 컬럼:
 
-- `_raw_record` - 정상적으로 파싱되지 않은 원시 레코드입니다. 데이터 타입: `Nullable(String)`.
-- `_error` - 파싱에 실패하는 동안 발생한 예외 메시지입니다. 데이터 타입: `Nullable(String)`.
+* `_raw_record` - 정상적으로 파싱되지 않은 원시 레코드입니다. 데이터 타입: `Nullable(String)`.
+* `_error` - 파싱에 실패하는 동안 발생한 예외 메시지입니다. 데이터 타입: `Nullable(String)`.
 
 참고: `_raw_record`와 `_error` 가상 컬럼은 파싱 과정에서 예외가 발생한 경우에만 값이 채워지며, 메시지가 성공적으로 파싱된 경우에는 항상 `NULL`입니다.

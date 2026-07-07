@@ -1,8 +1,8 @@
 ---
 slug: /integrations/postgresql/connecting-to-postgresql
-title: '连接 PostgreSQL'
-keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
-description: '本文介绍将 PostgreSQL 连接到 ClickHouse 的多种方法。'
+title: '将 ClickHouse 连接到 PostgreSQL'
+keywords: ['clickhouse', 'postgres', 'postgresql', '连接', '集成', '表', '引擎']
+description: '介绍将 PostgreSQL 连接到 ClickHouse 的各种方式'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -10,16 +10,13 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# 将 ClickHouse 连接到 PostgreSQL \{#connecting-clickhouse-to-postgresql\}
-
 本页介绍以下几种将 PostgreSQL 与 ClickHouse 集成的方式：
 
 * 使用 `PostgreSQL` 表引擎，从 PostgreSQL 表中读取数据
-* 使用试验性的 `MaterializedPostgreSQL` 数据库引擎，将 PostgreSQL 中的数据库与 ClickHouse 中的数据库进行同步
+* 使用 Experimental `MaterializedPostgreSQL` 数据库引擎，将 PostgreSQL 中的数据库与 ClickHouse 中的数据库进行同步
 
 :::tip
-了解我们的 [Managed Postgres](/docs/cloud/managed-postgres) 服务。该服务基于与计算节点物理同机部署的 NVMe 存储，与使用 EBS 等网络附加存储的其他方案相比，对于受磁盘限制的工作负载可提供高达 10 倍的性能提升，并且允许你通过 ClickPipes 中的 Postgres CDC（变更数据捕获）连接器将 Postgres 数据复制到 ClickHouse。
+了解我们的 [Managed Postgres](/docs/cloud/managed-postgres) 服务。该服务基于与计算节点物理同机部署的 NVMe 存储，与使用 EBS 等网络附加存储的其他方案相比，对于受磁盘限制的工作负载可提供高达 10 倍的性能提升，并且允许你通过 ClickPipes 中的 Postgres CDC (变更数据捕获) 连接器将 Postgres 数据复制到 ClickHouse。
 :::
 
 ## 使用 PostgreSQL 表引擎 \{#using-the-postgresql-table-engine\}
@@ -296,7 +293,7 @@ host    db1             clickhouse_user 192.168.1.0/24          password
 
 ### 2. 在 ClickHouse 中 \{#2-in-clickhouse\}
 
-1. 登录 ClickHouse CLI
+1. 登录 ClickHouse 命令行客户端
 
 ```bash
 clickhouse-client --user default --password ClickHouse123!
@@ -337,7 +334,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 
 ┌─id─┬─column1─┐
@@ -347,7 +346,6 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 3. 测试基本复制 \{#3-test-basic-replication\}
 
@@ -368,7 +366,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 
 ┌─id─┬─column1─┐
@@ -384,7 +384,6 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 4. 总结 \{#4-summary\}
 

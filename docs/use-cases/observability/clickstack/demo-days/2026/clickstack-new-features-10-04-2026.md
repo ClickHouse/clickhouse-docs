@@ -7,6 +7,7 @@ pagination_next: null
 description: 'ClickStack demo days for 2026-04-10'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Demo days']
+sidebar_position: -20260410
 ---
 
 ## Pinnable datasource filters {#pinnable-datasource-filters}

@@ -1,5 +1,5 @@
 ---
-description: '이 엔진은 Apache Arrow Flight를 통해 원격 데이터셋을 쿼리할 수 있도록 지원합니다.'
+description: '이 엔진을 사용하면 Apache Arrow Flight를 통해 원격 데이터 세트에 쿼리할 수 있습니다.'
 sidebar_label: 'ArrowFlight'
 sidebar_position: 186
 slug: /engines/table-engines/integrations/arrowflight
@@ -7,14 +7,8 @@ title: 'ArrowFlight 테이블 엔진'
 doc_type: 'reference'
 ---
 
-
-
-# ArrowFlight 테이블 엔진 \{#arrowflight-table-engine\}
-
 ArrowFlight 테이블 엔진을 사용하면 ClickHouse에서 [Apache Arrow Flight](https://arrow.apache.org/docs/format/Flight.html) 프로토콜을 통해 원격 데이터 세트에 쿼리할 수 있습니다.
 이 통합을 통해 ClickHouse는 Flight를 지원하는 외부 서버에서 열 지향 Arrow 형식으로 데이터를 높은 성능으로 가져올 수 있습니다.
-
-
 
 ## 테이블 생성 \{#creating-a-table\}
 
@@ -31,7 +25,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name (name1 [type1], name2 [type2], ...)
 * `password` - 기본 HTTP 스타일 인증에 사용하는 비밀번호입니다.
   `username`과 `password`를 지정하지 않으면 인증을 사용하지 않는다는 의미입니다.
   (이는 Arrow Flight 서버가 이를 허용하는 경우에만 동작합니다.)
-
 
 ## 사용 예시 \{#usage-example\}
 
@@ -60,15 +53,12 @@ SELECT * FROM remote_flight_data ORDER BY id;
 └────┴─────────┴───────┘
 ```
 
-
 ## 참고 사항 \{#notes\}
 
 * ClickHouse에 정의된 스키마는 Flight 서버가 반환하는 스키마와 일치해야 합니다.
 * 이 엔진은 연합 쿼리, 데이터 가상화, 스토리지와 컴퓨트 분리에 적합합니다.
 
-
-
 ## 같이 보기 \{#see-also\}
 
 * [Apache Arrow Flight SQL](https://arrow.apache.org/docs/format/FlightSql.html)
-* [ClickHouse의 Arrow 포맷 통합](/interfaces/formats/Arrow)
+* [ClickHouse의 Arrow 형식 통합](/interfaces/formats/Arrow)

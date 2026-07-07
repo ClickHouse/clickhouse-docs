@@ -7,7 +7,6 @@ doc_type: 'guide'
 keywords: ['audit logging', 'database logs', 'compliance', 'security', 'monitoring']
 ---
 
-# Database audit log {#database-audit-log}
 
 ClickHouse provides database audit logs by default. This page focuses on security relevant logs. For more information on data recorded by the system, refer to the docs for [system tables](/operations/system-tables/overview).
 

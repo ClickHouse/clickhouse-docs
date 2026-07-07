@@ -7,9 +7,7 @@ title: 'PARALLEL WITH 句'
 doc_type: 'reference'
 ---
 
-# PARALLEL WITH 句 \{#parallel-with-clause\}
-
-複数のステートメントを並列実行できます。
+複数のステートメントを並列に実行できます。
 
 ## 構文 \{#syntax\}
 
@@ -41,11 +39,12 @@ DROP TABLE table2;
 
 ## 設定 \{#settings\}
 
-[max_threads](../../operations/settings/settings.md#max_threads) 設定は、起動されるスレッド数を制御します。
+[max&#95;threads](../../operations/settings/settings.md#max_threads) 設定は、起動されるスレッド数を制御します。
 
 ## UNION との比較 \{#comparison-with-union\}
 
 `PARALLEL WITH` 句は、そのオペランドを並列実行するという点で [UNION](select/union.md) と少し似ています。ただし、いくつかの違いがあります。
-- `PARALLEL WITH` はオペランドの実行結果を一切返さず、発生した例外を再スローすることしかできません。
-- `PARALLEL WITH` は、オペランドが同じ結果列の集合を持つ必要はありません。
-- `PARALLEL WITH` は、任意のステートメント（`SELECT` だけでなく）を実行できます。
+
+* `PARALLEL WITH` はオペランドの実行結果を一切返さず、発生した例外を再スローすることしかできません。
+* `PARALLEL WITH` は、オペランドが同じ結果列の集合を持つ必要はありません。
+* `PARALLEL WITH` は、任意のステートメント (`SELECT` だけでなく) を実行できます。

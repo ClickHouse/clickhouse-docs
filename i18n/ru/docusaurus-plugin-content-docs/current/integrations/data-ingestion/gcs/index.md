@@ -13,14 +13,11 @@ import Image from '@theme/IdealImage';
 import GCS_examine_bucket_1 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-1.png';
 import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestion/s3/GCS-examine-bucket-2.png';
 
-
-# Интеграция Google Cloud Storage с ClickHouse \{#integrate-google-cloud-storage-with-clickhouse\}
-
 :::note
-Если вы используете ClickHouse Cloud в [Google Cloud](https://cloud.google.com), эта страница к вам не относится, так как ваши сервисы уже используют [Google Cloud Storage](https://cloud.google.com/storage). Если вы хотите выполнять `SELECT` или `INSERT` данных из GCS, обратитесь к табличной функции [`gcs`](/sql-reference/table-functions/gcs).
+Если вы используете ClickHouse Cloud в [Google Cloud](https://cloud.google.com), эта страница к вам не относится, поскольку ваши сервисы уже используют [Google Cloud Storage](https://cloud.google.com/storage). Если вы хотите выполнить `SELECT` или `INSERT` данных из GCS, см. [табличную функцию `gcs`](/sql-reference/table-functions/gcs).
 :::
 
-В ClickHouse GCS рассматривается как привлекательное решение для хранения данных для пользователей, стремящихся разделить хранение и вычисления. Для этого реализована поддержка использования GCS в качестве хранилища для движка MergeTree. Это позволит пользователям использовать масштабируемость и экономические преимущества GCS, а также производительность вставки и выполнения запросов движка MergeTree.
+ClickHouse рассматривает GCS как привлекательное решение для хранения данных, если вам нужно разделить хранилище и compute. Для этого предусмотрена поддержка использования GCS в качестве хранилища для движка MergeTree. Это позволяет использовать преимущества GCS с точки зрения масштабируемости и стоимости, сохраняя при этом производительность движка MergeTree при вставке данных и выполнении запросов.
 
 ## MergeTree с хранилищем в GCS \{#gcs-backed-mergetree\}
 
@@ -32,7 +29,6 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 
 Эта часть конфигурации показана на выделенном фрагменте и задаёт следующее:
 
-* Пакетные удаления не выполняются. GCS в настоящее время не поддерживает пакетные удаления, поэтому автоопределение отключено, чтобы подавить сообщения об ошибках.
 * Тип диска — `s3`, поскольку используется API S3.
 * Endpoint, предоставленный GCS
 * HMAC‑ключ и секрет сервисного аккаунта
@@ -44,7 +40,7 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
         <disks>
             <gcs>
             <!--highlight-start-->
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -66,7 +62,6 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 </clickhouse>
 ```
 
-
 #### Конфигурация хранилища &gt; disks &gt; cache \{#storage_configuration--disks--cache\}
 
 Пример конфигурации, показанный ниже, включает кэш в памяти объёмом 10Gi для диска `gcs`.
@@ -76,7 +71,7 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -105,8 +100,7 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 </clickhouse>
 ```
 
-
-#### Конфигурация хранилища &gt; policies &gt; gcs&#95;main \{#storage_configuration--policies--gcs_main\}
+#### Конфигурация хранилища &gt; policies &gt; gcs_main \{#storage_configuration--policies--gcs_main\}
 
 Политики хранения в конфигурации позволяют выбирать, где размещаются данные. Политика, показанная ниже, позволяет хранить данные на диске `gcs` при указании политики `gcs_main`. Например, `CREATE TABLE ... SETTINGS storage_policy='gcs_main'`.
 
@@ -115,7 +109,7 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/BUCKET NAME/FOLDER NAME/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -139,7 +133,6 @@ import GCS_examine_bucket_2 from '@site/static/images/integrations/data-ingestio
 ```
 
 Полный список настроек, относящихся к этому описанию диска, можно найти [здесь](/engines/table-engines/mergetree-family/mergetree.md/#table_engine-mergetree-s3).
-
 
 ### Создание таблицы \{#creating-a-table\}
 
@@ -414,7 +407,7 @@ ClickHouse Keeper для работы требует двух узлов, поэ
     <storage_configuration>
         <disks>
             <gcs>
-                <support_batch_delete>false</support_batch_delete>
+                <support_batch_delete>true</support_batch_delete>
                 <type>s3</type>
                 <endpoint>https://storage.googleapis.com/REPLICA 1 BUCKET/REPLICA 1 FOLDER/</endpoint>
                 <access_key_id>SERVICE ACCOUNT HMAC KEY</access_key_id>
@@ -440,7 +433,6 @@ ClickHouse Keeper для работы требует двух узлов, поэ
     </storage_configuration>
 </clickhouse>
 ```
-
 
 ### Запустите ClickHouse Keeper \{#start-clickhouse-keeper\}
 

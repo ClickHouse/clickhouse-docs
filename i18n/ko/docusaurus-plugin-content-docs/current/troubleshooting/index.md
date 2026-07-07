@@ -20,9 +20,7 @@ title: '일반적인 문제 해결'
 description: '느린 쿼리, 메모리 오류, 연결 문제, 설정 문제 등 ClickHouse에서 자주 발생하는 문제를 해결하는 방법을 제공합니다.'
 ---
 
-# 일반적인 문제 해결 \{#troubleshooting-common-issues\}
-
-ClickHouse 사용 중 문제가 발생했습니까? 이 절에서는 자주 발생하는 문제의 해결 방법을 제공합니다.
+ClickHouse 사용 중 문제가 발생했습니까? 여기에서 일반적인 문제에 대한 해결 방법을 확인하십시오.
 
 ## 성능 및 오류 \{#performance-and-errors\}
 

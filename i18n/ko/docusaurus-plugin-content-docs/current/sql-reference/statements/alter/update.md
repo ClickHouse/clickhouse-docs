@@ -1,13 +1,11 @@
 ---
-description: 'ALTER TABLE ... UPDATE SQL 문 문서'
+description: 'ALTER TABLE ... UPDATE SQL 문에 대한 문서'
 sidebar_label: 'UPDATE'
 sidebar_position: 40
 slug: /sql-reference/statements/alter/update
 title: 'ALTER TABLE ... UPDATE SQL 문'
 doc_type: 'reference'
 ---
-
-# ALTER TABLE ... UPDATE SQL 문 \{#alter-table-update-statements\}
 
 ```sql
 ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN PARTITION partition_id] WHERE filter_expr
@@ -32,7 +30,6 @@ ALTER TABLE [db.]table [ON CLUSTER cluster] UPDATE column1 = expr1 [, ...] [IN P
 * [mutations&#95;sync](/operations/settings/settings.md/#mutations_sync) 설정
 * [경량 `UPDATE`](/sql-reference/statements/update) - 패치 파트(patch parts)를 사용하는 대체 경량 업데이트
 * [`APPLY PATCHES`](/sql-reference/statements/alter/apply-patches) - 경량 업데이트에서 생성된 패치를 수동으로 적용
-
 
 ## 관련 콘텐츠 \{#related-content\}
 

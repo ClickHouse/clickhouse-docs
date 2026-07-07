@@ -1,5 +1,5 @@
 ---
-description: 'RENAME ステートメントのリファレンス'
+description: 'RENAME ステートメントのドキュメント'
 sidebar_label: 'RENAME'
 sidebar_position: 48
 slug: /sql-reference/statements/rename
@@ -7,9 +7,7 @@ title: 'RENAME ステートメント'
 doc_type: 'reference'
 ---
 
-# RENAME ステートメント \{#rename-statement\}
-
-データベース、テーブル、またはディクショナリの名前を変更します。1 つのクエリで複数のエンティティの名前を変更できます。
+データベース、テーブル、または Dictionary の名前を変更します。1 つのクエリで複数のエンティティの名前を変更できます。
 複数のエンティティを対象とした `RENAME` クエリはアトミックな操作ではないことに注意してください。エンティティ名をアトミックに入れ替えるには、[EXCHANGE](./exchange.md) ステートメントを使用してください。
 
 **構文**

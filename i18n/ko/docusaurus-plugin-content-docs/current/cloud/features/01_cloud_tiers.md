@@ -7,13 +7,11 @@ keywords: ['Cloud 티어', '서비스 요금제', 'Cloud 요금제 티어', 'Clo
 doc_type: 'reference'
 ---
 
-# ClickHouse Cloud 티어 \{#clickhouse-cloud-tiers\}
+ClickHouse Cloud에서는 여러 티어를 사용할 수 있습니다.
+티어는 조직 수준에서 할당됩니다. 따라서 한 조직 내의 서비스는 동일한 티어에 속합니다.
+이 페이지에서는 사용 사례에 적합한 티어를 설명합니다.
 
-ClickHouse Cloud에는 여러 티어가 있습니다. 
-티어는 조직 내 어떤 수준에든 할당될 수 있습니다. 따라서 조직 내 서비스는 모두 동일한 티어에 속합니다.
-이 페이지에서는 특정 사용 사례에 가장 적합한 티어를 설명합니다.
-
-**Cloud 티어 요약:**
+**클라우드 티어 요약:**
 
 <table>
   <thead>

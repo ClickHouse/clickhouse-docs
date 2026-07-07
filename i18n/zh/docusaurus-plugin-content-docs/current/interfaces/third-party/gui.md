@@ -7,8 +7,6 @@ title: '第三方开发者提供的图形界面'
 doc_type: 'reference'
 ---
 
-# 第三方开发者的可视化界面 \{#visual-interfaces-from-third-party-developers\}
-
 ## 开源 \{#open-source\}
 
 ### agx \{#agx\}
@@ -93,18 +91,20 @@ doc_type: 'reference'
 
 ### ClickHouse Schema Flow Visualizer \{#clickhouse-schemaflow-visualizer\}
 
-[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) 是一个用于通过 Mermaid.js 图表可视化 ClickHouse 表关系的强大开源 Web 应用。你可以通过直观界面浏览数据库和数据表，利用可选的行数与大小信息探索表元数据，并导出交互式 schema 图。
+[ClickHouse Schema Flow Visualizer](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer) 是一款用于可视化 ClickHouse 表之间关系的开源 Web 应用。
+它可连接到 ClickHouse 实例，解析 `system.tables` 元数据 (引擎类型、依赖关系、materialized view 的 SELECT) ，并渲染交互式表级数据流图，以及列级关系图，其中每条边都标注了转换表达式。图使用 Dagre 进行布局，并以纯内联 SVG 渲染——无需加载客户端图表运行时。
 
-功能特性：
+功能：
 
-- 通过直观界面浏览 ClickHouse 数据库和数据表
-- 使用 Mermaid.js 图表可视化表之间的关系
-- 使用与表类型匹配的颜色编码图标，以获得更佳可视化效果
-- 查看数据在数据表之间流动的方向
-- 将图表导出为独立的 HTML 文件
-- 切换元数据可见性（表行数和大小信息）
-- 通过 TLS 与 ClickHouse 建立安全连接
-- 适配所有设备的响应式 Web 界面
+* 通过直观的侧边栏浏览 ClickHouse 数据库和表
+* 数据流视图：展示表级上游来源和下游 materialized view
+* 关系视图：显示列级映射，并在每条边上展示解析后的转换表达式 (例如 `toStartOfHour(scheduled_departure)`、`avgState(delay_minutes)`) 
+* 为 `MergeTree`、`Replicated*`、`Distributed`、`MaterializedView` 和 `Dictionary` 提供按引擎类型区分的图标和颜色编码
+* 在关系视图中点击某一列，可高亮显示其在整个管道中的完整数据路径
+* 提供实时侧边栏过滤器，以及 `Ctrl+K` / `⌘K` 命令面板，可快速跳转到任意表、列或引擎
+* 可选的元数据叠加层，显示每个表的行数和磁盘占用大小
+* 将当前图导出为独立的 HTML 文件
+* 通过 TLS 连接到 ClickHouse，并可选择跳过验证以及使用自定义 CA / 客户端证书
 
 [ClickHouse Schema Flow Visualizer - 源代码](https://github.com/FulgerX2007/clickhouse-schemaflow-visualizer)
 
@@ -367,16 +367,20 @@ ClickHouse 数据源插件为 ClickHouse 作为后端数据库提供支持。
 
 ### CHouse UI \{#chouse-ui\}
 
-[CHouse UI](https://chouse-ui.com) 是一个专为 **团队** 和 **安全数据访问** 打造的开源 ClickHouse Web 界面。与需要直接数据库凭证的传统客户端不同，CHouse UI 提供强大的 **基于角色的访问控制（RBAC）** 层，使管理员可以在不暴露底层凭证的情况下授予细粒度权限。
+[CHouse UI](https://chouse-ui.com) 是一个开源、自托管的 ClickHouse Web 界面，专为**在生产环境中运行 ClickHouse 的团队**打造。大多数工具只擅长某一个方面——查询工作区、dashboard、AI assistant、集群监控；而 CHouse UI 则将这些能力*融为一体*：既提供团队访问层，又具备多集群统一监控和自治的只读 AI SRE。与需要直接使用数据库 credentials 的客户端不同，它会在服务端加密存储这些信息，并通过自身的 **Role-Based Access Control (RBAC（基于角色的访问控制）)** 层控制访问，因此浏览器永远不会接触到 ClickHouse 密码。
 
-关键特性包括：
+功能：
 
-- **企业级安全** - 服务器端凭证加密、详细审计日志和访问控制规则。
-- **团队协作** - 定义自定义角色（例如，为分析师配置特定表访问）并安全共享查询。
-- **AI 驱动洞察** - 集成 LLM 支持，用于查询优化和可视化解释。
-- **完整工具集** - 提供功能完善的 SQL 编辑器、监控仪表盘、模式（schema）浏览器以及无缝的数据导入/导出功能。
+* **团队访问与安全** - 应用层 RBAC（基于角色的访问控制） (预定义 + 自定义角色、细粒度的按数据库/表划分的数据访问规则) 、带真实会话上下文的审计日志，以及使用 AES-256-GCM 加密后存储在服务端的 credentials。
+* **多集群统一视图** - 在一个面板中查看所有已配置的集群 (状态、内存、活动查询、异常、趋势火花线) ，每张卡片独立轮询，并由后端快照轮询器提供支持。
+* **Chouse AI — Fleet Doctor** - 一个自治的只读 AI SRE：它通过受保护的、仅允许 `system.*` 的 `SELECT` 工具 (ClickHouse `readonly=1`) 扫描整个集群 fleet，定位根因，并生成结构化报告，其中包含对高负载查询的深度分析和建议的重写方案。它绝不会修改集群。
+* **监控标签页中的 AI** - 在 Query Logs 的某一行上提供“使用 Chouse AI 优化” (重写 + 优化前→优化后 `EXPLAIN` 预估 + 在 SQL 工作区中打开) ，并可对 `system.errors` 的某一行或某条 part 日志条目一键执行“诊断”。
+* **阈值告警** - 针对节点内存百分比、单个查询内存占用和长时间运行查询的规则，可发送到 Slack 和电子邮件——并在超出阈值时附带自治式根因分析。
+* **完整工作区** - Monaco SQL 编辑器、schema 浏览器、支持终止查询的实时查询视图、ClickHouse 原生监控 (内存明细、parts/merges、副本延迟、延迟百分位数) ，以及数据导入/导出。
 
-[CHouse UI 源码](https://github.com/daun-gatal/chouse-ui)
+开源 (Apache 2.0) ，优先支持本地部署——所有功能均开箱即用，没有付费层级。
+
+[CHouse UI Source Code](https://github.com/daun-gatal/chouse-ui)
 
 ### clickhouse-flow \{#clickhouse-flow\}
 

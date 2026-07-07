@@ -7,6 +7,7 @@ pagination_next: null
 description: 'ClickStack デモデイズ - 2026-04-17'
 doc_type: 'guide'
 keywords: ['ClickStack', 'デモデイズ']
+sidebar_position: -20260417
 ---
 
 ## ログとトレースの要約 \{#summarize-logs-and-traces\}

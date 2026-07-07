@@ -14,8 +14,6 @@ integration:
 import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
 
-# ClickHouse Go \{#clickhouse-go\}
-
 ## クイックスタート \{#quick-start\}
 
 まずは簡単な例から始めましょう。これは ClickHouse に接続し、`system` データベースに対して `SELECT` を実行します。始めるにあたっては、接続情報を手元に用意しておく必要があります。

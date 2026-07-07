@@ -6,8 +6,6 @@ title: 'NumericIndexedVector 函数'
 doc_type: 'reference'
 ---
 
-# NumericIndexedVector \{#numericindexedvector\}
-
 NumericIndexedVector 是一种抽象数据结构，它封装了向量，并实现向量聚合和按元素运算。Bit-Sliced Index 是其存储方式。关于理论基础和使用场景，请参考论文 [Large-Scale Metric Computation in Online Controlled Experiment Platform](https://arxiv.org/pdf/2405.08411)。
 
 ## BSI \{#bit-sliced-index\}

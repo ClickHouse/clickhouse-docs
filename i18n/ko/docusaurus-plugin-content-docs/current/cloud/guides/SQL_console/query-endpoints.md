@@ -3,7 +3,7 @@ sidebar_title: 'Query API 엔드포인트'
 slug: /cloud/get-started/query-endpoints
 description: '저장된 쿼리에서 쉽게 REST API 엔드포인트를 생성합니다'
 keywords: ['api', '쿼리 API 엔드포인트', '쿼리 엔드포인트', '쿼리 REST API']
-title: 'Query API 엔드포인트'
+title: '쿼리 API 엔드포인트 설정'
 doc_type: 'guide'
 ---
 
@@ -17,10 +17,7 @@ import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# 쿼리 API 엔드포인트 설정 \{#setting-up-query-api-endpoints\}
-
-**Query API Endpoints** 기능을 사용하면 ClickHouse Cloud 콘솔에서 저장된 SQL 쿼리로부터 직접 API 엔드포인트를 생성할 수 있습니다. 이를 통해 네이티브 드라이버를 사용해 ClickHouse Cloud 서비스에 연결할 필요 없이 HTTP를 통해 API 엔드포인트를 호출하여 저장된 쿼리를 실행할 수 있습니다.
+**Query API Endpoints** 기능을 사용하면 ClickHouse Cloud 콘솔에 저장된 모든 SQL 쿼리에서 직접 API 엔드포인트를 생성할 수 있습니다. 네이티브 드라이버를 통해 ClickHouse Cloud 서비스에 연결할 필요 없이 HTTP로 API 엔드포인트에 액세스하여 저장된 쿼리를 실행할 수 있습니다.
 
 ## 사전 준비 사항 \{#quick-start-guide\}
 
@@ -537,7 +534,7 @@ SELECT * FROM system.tables;
 </Tabs>
 
 
-### 요청을 보내고 응답을 스트림으로 파싱하기`
+### 요청을 보내고 응답을 스트림으로 파싱하기
 
 **Query API 엔드포인트용 SQL:**
 
@@ -606,7 +603,6 @@ SELECT name, database FROM system.tables;
     ```
   </TabItem>
 </Tabs>
-
 
 ### 파일의 스트림을 테이블에 삽입 \{#request-with-query-variables-and-version-2-on-jsoncompacteachrow-format\}
 

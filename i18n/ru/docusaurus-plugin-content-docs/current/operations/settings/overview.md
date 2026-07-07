@@ -6,8 +6,6 @@ title: 'Обзор настроек'
 doc_type: 'reference'
 ---
 
-# Обзор настроек \{#settings-overview\}
-
 ## Обзор \{#overview\}
 
 :::note

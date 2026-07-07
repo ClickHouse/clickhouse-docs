@@ -32,7 +32,7 @@ import SystemTableCloud from '@site/i18n/zh/docusaurus-plugin-content-docs/curre
 * `client_hostname` ([String](../../sql-reference/data-types/)) — 运行 clickhouse-client 或其他 TCP 客户端的客户端机器的主机名。
 * `client_name` ([String](../../sql-reference/data-types/)) — clickhouse-client 或其他 TCP 客户端的名称。
 * `client_revision` ([UInt64](../../sql-reference/data-types/)) — clickhouse-client 或其他 TCP 客户端的修订版本号。
-* `client_version_major` ([UInt64](../../sql-reference/data-types/)) — clickhouse-client 或其他 TCP 客户端的主版本号。`
+* `client_version_major` ([UInt64](../../sql-reference/data-types/)) — clickhouse-client 或其他 TCP 客户端的主版本号。&#96;
 * `client_version_minor` ([UInt64](../../sql-reference/data-types/)) — clickhouse-client 或其他 TCP 客户端的次版本号。
 * `client_version_patch` ([UInt64](../../sql-reference/data-types/)) — clickhouse-client 或其他 TCP 客户端版本的补丁号部分。
 * `http_method` ([UInt8](../../sql-reference/data-types/)) — 启动查询的 HTTP 方法。可能的取值为：0 — 查询是从 TCP 接口发起的。1 — 使用了 GET 方法。2 — 使用了 POST 方法。

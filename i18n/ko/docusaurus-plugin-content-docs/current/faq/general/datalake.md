@@ -3,12 +3,10 @@ title: 'ClickHouse는 데이터 레이크를 지원하나요?'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/datalake
-description: 'ClickHouse는 Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive 등을 포함한 데이터 레이크를 지원합니다'
+description: 'ClickHouse는 Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive를 포함한 데이터 레이크를 지원합니다'
 doc_type: 'reference'
-keywords: ['data lake', 'lakehouse']
+keywords: ['데이터 레이크', '레이크하우스']
 ---
-
-# ClickHouse는 데이터 레이크를 지원하나요? \{#does-clickhouse-support-data-lakes\}
 
 ClickHouse는 Iceberg, Delta Lake, Apache Hudi, Apache Paimon, Hive를 포함한 데이터 레이크를 지원합니다.
 

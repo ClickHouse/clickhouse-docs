@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/getting-started/sample-data
-title: 'Пример логов, трейсов и метрик'
+title: 'ClickStack - Пример логов, трейсов и метрик'
 sidebar_position: 0
 pagination_prev: null
 pagination_next: null
@@ -35,29 +35,26 @@ import select_service from '@site/static/images/clickstack/select_service.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-
-# ClickStack - Пример журналов, трассировок и метрик \{#clickstack-sample-dataset\}
-
-В этом руководстве на примере тестового набора данных рассматриваются как ClickStack Open Source, так и управляемый ClickStack.
+В этом руководстве показаны ClickStack Open Source и Управляемый ClickStack на примере набора данных.
 
 <Tabs groupId="sample-logs">
   <TabItem value="managed-clickstack" label="Управляемый ClickStack" default>
     <VerticalStepper headerLevel="h3">
       Данное руководство предполагает, что вы выполнили [Руководство по началу работы с управляемым ClickStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud) и [зафиксировали учетные данные для подключения](/use-cases/observability/clickstack/getting-started/managed#next-steps).
 
-      ### Выберите сервис
+      ### Выберите сервис \{#select-your-service-managed\}
 
       Выберите сервис с Managed ClickStack на главной странице ClickHouse Cloud.
 
       <Image img={select_service} alt="Выберите сервис" size="lg" />
 
-      ### Перейдите к пользовательскому интерфейсу ClickStack (HyperDX)
+      ### Перейдите к пользовательскому интерфейсу ClickStack (HyperDX) \{#navigate-to-the-hyperdx-ui-managed\}
 
       Выберите `ClickStack` в левом меню, чтобы перейти к интерфейсу ClickStack, где вы будете автоматически авторизованы.
 
       <Image img={hyperdx} alt="Пользовательский интерфейс ClickStack" size="lg" />
 
-      ### Загрузка образцов данных
+      ### Загрузка образцов данных \{#download-sample-data-managed\}
 
       Чтобы заполнить интерфейс примерными данными, загрузите следующий файл:
 
@@ -72,7 +69,7 @@ import TabItem from '@theme/TabItem';
 
       Этот файл содержит примеры логов, метрик и трасс (traces) из нашего публичного демо OpenTelemetry (https://github.com/ClickHouse/opentelemetry-demo) — простого интернет-магазина с микросервисами. Скопируйте этот файл в выбранную вами директорию.
 
-      ### Загрузка тестовых данных
+      ### Загрузка тестовых данных \{#load-sample-data-managed\}
 
       Чтобы загрузить эти данные, отправьте их на HTTP-эндпоинт развёрнутого коллектора OpenTelemetry (OTel).
 
@@ -99,7 +96,7 @@ import TabItem from '@theme/TabItem';
 
       Загрузка данных займёт несколько минут. Дождитесь завершения загрузки, прежде чем переходить к следующим шагам.
 
-      ### Просмотр сессий
+      ### Просмотр сессий \{#explore-sessions-managed\}
 
       Предположим, что поступили сообщения о проблемах пользователей при оплате товаров. Мы можем просмотреть их действия, используя возможности воспроизведения сеансов HyperDX.
 
@@ -127,7 +124,7 @@ import TabItem from '@theme/TabItem';
 
       Выберите эту ошибку `500`. Ни раздел `Overview`, ни `Column Values` не указывают на источник проблемы, помимо того факта, что ошибка неожиданна и приводит к `Internal Error`.
 
-      ### Изучение трассировок
+      ### Изучение трассировок \{#explore-traces-managed\}
 
       Перейдите на вкладку `Trace`, чтобы увидеть полную распределённую трассировку.
 
@@ -147,7 +144,7 @@ import TabItem from '@theme/TabItem';
 
       Установлено, что кеш в сервисе платежей переполняется, что блокирует завершение платежей.
 
-      ### Просмотр логов
+      ### Просмотр логов \{#explore-logs-managed\}
 
       Для получения дополнительной информации можно вернуться к представлению `Search`:
 
@@ -157,7 +154,7 @@ import TabItem from '@theme/TabItem';
 
       Видно, что несмотря на недавнее возникновение проблемы, количество затронутых платежей велико. Кроме того, кеш, связанный с платежами Visa, судя по всему, является источником проблем.
 
-      ### Метрики диаграммы
+      ### Метрики диаграммы \{#chart-metrics-managed\}
 
       Хотя в код явно была внесена ошибка, мы можем использовать метрики для проверки размера кэша. Перейдите в представление `Chart Explorer`.
 
@@ -171,19 +168,19 @@ import TabItem from '@theme/TabItem';
     В следующем примере предполагается, что вы запустили Open Source ClickStack, следуя [инструкциям для универсального образа](/use-cases/observability/clickstack/getting-started/oss), и подключились к [локальному экземпляру ClickHouse](/use-cases/observability/clickstack/getting-started/oss#complete-connection-credentials).
 
     <VerticalStepper headerLevel="h3">
-      ### Перейдите к пользовательскому интерфейсу ClickStack (HyperDX)
+      ### Перейдите к пользовательскому интерфейсу ClickStack (HyperDX) \{#navigate-to-the-hyperdx-ui\}
 
       Откройте [http://localhost:8080](http://localhost:8080), чтобы получить доступ к интерфейсу ClickStack.
 
       <Image img={hyperdx} alt="Интерфейс ClickStack" size="lg" />
 
-      ### Скопируйте ключ API для приёма данных
+      ### Скопируйте ключ API для приёма данных \{#copy-ingestion-api-key\}
 
       Перейдите в [`Team Settings`](http://localhost:8080/team) и скопируйте `Ingestion API Key` из раздела `API Keys`. Этот ключ API обеспечивает безопасную передачу данных через коллектор OpenTelemetry.
 
       <Image img={copy_api_key} alt="Копировать ключ API" size="lg" />
 
-      ### Загрузка образцов данных
+      ### Загрузка образцов данных \{#download-sample-data\}
 
       Чтобы заполнить интерфейс примерными данными, загрузите следующий файл:
 
@@ -198,7 +195,7 @@ import TabItem from '@theme/TabItem';
 
       Этот файл содержит примеры логов, метрик и трейсов из нашего публичного [OpenTelemetry demo](https://github.com/ClickHouse/opentelemetry-demo) — простого интернет-магазина с микросервисами. Скопируйте этот файл в директорию по вашему выбору.
 
-      ### Загрузка тестовых данных
+      ### Загрузка тестовых данных \{#load-sample-data\}
 
       Чтобы загрузить эти данные, мы просто отправляем их на HTTP-эндпоинт развернутого коллектора OpenTelemetry (OTel).
 
@@ -232,7 +229,7 @@ import TabItem from '@theme/TabItem';
 
       Загрузка данных займёт несколько минут. Дождитесь завершения загрузки, прежде чем переходить к следующим шагам.
 
-      ### Просмотр сессий
+      ### Просмотр сессий \{#explore-sessions\}
 
       Предположим, что поступили сообщения о проблемах пользователей при оплате товаров. Мы можем просмотреть их действия, используя возможности воспроизведения сеансов HyperDX.
 
@@ -260,7 +257,7 @@ import TabItem from '@theme/TabItem';
 
       Выберите эту ошибку `500`. Ни в разделе `Overview`, ни в `Column Values` не указано происхождение проблемы — известно лишь, что ошибка неожиданна и вызывает `Internal Error`.
 
-      ### Изучение трассировок
+      ### Изучение трассировок \{#explore-traces\}
 
       Перейдите на вкладку `Trace`, чтобы увидеть полную распределённую трассировку.
 
@@ -280,7 +277,7 @@ import TabItem from '@theme/TabItem';
 
       Установлено, что кеш в сервисе платежей переполняется, что блокирует завершение платежей.
 
-      ### Просмотр логов
+      ### Просмотр логов \{#explore-logs\}
 
       Для получения дополнительной информации можно вернуться к [представлению `Search`](http://localhost:8080/search):
 
@@ -290,7 +287,7 @@ import TabItem from '@theme/TabItem';
 
       Видно, что несмотря на недавнее возникновение проблемы, количество затронутых платежей велико. Кроме того, кеш, связанный с платежами Visa, судя по всему, является источником проблем.
 
-      ### Метрики диаграммы
+      ### Метрики диаграммы \{#chart-metrics\}
 
       Хотя в код явно была внесена ошибка, мы можем использовать метрики, чтобы подтвердить размер кэша. Перейдите в представление `Chart Explorer`.
 

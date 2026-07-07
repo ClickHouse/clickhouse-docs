@@ -1,8 +1,8 @@
 ---
 slug: /dictionary
-title: '概要'
+title: 'Dictionary'
 keywords: ['dictionary', 'dictionaries']
-description: 'Dictionary は、高速なルックアップのためのキー・バリュー型データ表現を提供します。'
+description: 'Dictionary は、高速なルックアップ向けにデータをキー・バリュー形式で表現します。'
 doc_type: 'guide'
 ---
 
@@ -10,17 +10,14 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
-# Dictionary \{#dictionary\}
-
 ClickHouse における Dictionary は、さまざまな[内部および外部ソース](/sql-reference/statements/create/dictionary/sources#dictionary-sources)からのデータをインメモリの[キー・バリュー](https://en.wikipedia.org/wiki/Key%E2%80%93value_database)形式で表現し、超低レイテンシーなルックアップクエリのために最適化されたものです。
 
 Dictionary は次の用途に有用です:
 
-- 特に `JOIN` を使用する場合に、クエリのパフォーマンスを向上させる
-- インジェスト処理を低速化することなく、取り込むデータをオンザフライで拡充する
+* 特に `JOIN` を使用する場合に、クエリのパフォーマンスを向上させる
+* インジェスト処理を低速化することなく、取り込むデータをオンザフライで拡充する
 
-<Image img={dictionaryUseCases} size="lg" alt="ClickHouse における Dictionary のユースケース"/>
+<Image img={dictionaryUseCases} size="lg" alt="ClickHouse における Dictionary のユースケース" />
 
 ## Dictionary を使用した結合の高速化 \{#speeding-up-joins-using-a-dictionary\}
 
@@ -69,8 +66,10 @@ INNER JOIN
 WHERE Id IN (PostIds)
 ORDER BY Controversial_ratio ASC
 LIMIT 1
+```
 
-行 1:
+```response
+Row 1:
 ──────
 Id:                     25372161
 Title:                  How to add exception handling to SqlDataSource.UpdateCommand
@@ -78,8 +77,8 @@ UpVotes:                13
 DownVotes:              13
 Controversial_ratio: 0
 
-1 行が返されました。経過時間: 1.283秒。処理された行数: 4億1844万行、7.23 GB (3億2607万行/秒、5.63 GB/秒)
-ピークメモリ使用量: 3.18 GiB。
+1 rows in set. Elapsed: 1.283 sec. Processed 418.44 million rows, 7.23 GB (326.07 million rows/s., 5.63 GB/s.)
+Peak memory usage: 3.18 GiB.
 ```
 
 > **`JOIN` の右側には小さいデータセットを使用する**: このクエリでは、外側とサブクエリの両方で `PostId` によるフィルタリングを行っているため、必要以上に冗長に見えるかもしれません。これはクエリの応答時間を短く保つためのパフォーマンス最適化です。最適なパフォーマンスを得るには、常に `JOIN` の右側がより小さな集合となるようにし、可能な限り小さく保ってください。JOIN のパフォーマンス最適化のコツや利用可能なアルゴリズムの理解については、[このブログ記事シリーズ](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1) を参照することをおすすめします。
@@ -88,7 +87,7 @@ Controversial_ratio: 0
 
 #### Dictionary の適用 \{#applying-a-dictionary\}
 
-これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため（[ssd&#95;cache](/sql-reference/statements/create/dictionary/layouts/ssd-cache) は例外）、データサイズに留意しておく必要があります。ここで `votes` テーブルのサイズを確認します：
+これらの概念を示すために、投票データに対して Dictionary を使用します。Dictionary は通常メモリ上に保持されるため ([ssd&#95;cache](/sql-reference/statements/create/dictionary/layouts/ssd-cache) は例外) 、データサイズに留意しておく必要があります。ここで `votes` テーブルのサイズを確認します：
 
 ```sql
 SELECT table,
@@ -98,13 +97,15 @@ SELECT table,
 FROM system.columns
 WHERE table IN ('votes')
 GROUP BY table
+```
 
+```response
 ┌─table───────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ votes           │ 1.25 GiB        │ 3.79 GiB          │  3.04 │
 └─────────────────┴─────────────────┴───────────────────┴───────┘
 ```
 
-データは Dictionary 内で非圧縮のまま保存されるため、すべてのカラム（実際にはそうしません）を Dictionary に保存すると仮定すると、少なくとも 4GB のメモリが必要になります。Dictionary はクラスター全体でレプリケートされるため、このメモリ量は *ノードごとに* 確保しておく必要があります。
+データは Dictionary 内で非圧縮のまま保存されるため、すべてのカラム (実際にはそうしません) を Dictionary に保存すると仮定すると、少なくとも 4GB のメモリが必要になります。Dictionary はクラスター全体でレプリケートされるため、このメモリ量は *ノードごとに* 確保しておく必要があります。
 
 > 以下の例では、Dictionary 用のデータは ClickHouse テーブルを起点としています。これは最も一般的な Dictionary のソースですが、ファイル、HTTP、さらには [Postgres](/sql-reference/statements/create/dictionary/sources/postgresql) を含むデータベースなど、[複数のソース](/sql-reference/statements/create/dictionary/sources#dictionary-sources) がサポートされています。後ほど示すように、Dictionary は自動更新が可能であり、頻繁に変更が発生する小規模なデータセットをダイレクトに JOIN で参照可能にする理想的な手段です。
 
@@ -131,7 +132,9 @@ PRIMARY KEY PostId
 SOURCE(CLICKHOUSE(QUERY 'SELECT PostId, countIf(VoteTypeId = 2) AS UpVotes, countIf(VoteTypeId = 3) AS DownVotes FROM votes GROUP BY PostId'))
 LIFETIME(MIN 600 MAX 900)
 LAYOUT(HASHED())
+```
 
+```response
 0 rows in set. Elapsed: 36.063 sec.
 ```
 
@@ -143,7 +146,9 @@ Dictionary によって消費されているメモリを確認するには:
 SELECT formatReadableSize(bytes_allocated) AS size
 FROM system.dictionaries
 WHERE name = 'votes_dict'
+```
 
+```response
 ┌─size─────┐
 │ 4.00 GiB │
 └──────────┘
@@ -151,16 +156,19 @@ WHERE name = 'votes_dict'
 
 特定の `PostId` に対する賛成票数と反対票数は、シンプルな `dictGet` 関数で取得できるようになりました。以下の例では、投稿 `11227902` の値を取得しています。
 
-
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
+```
 
+```response
 ┌─votes──────┐
 │ (34999,32) │
 └────────────┘
+```
 
-これを先ほどのクエリに適用することで、JOINを削除できます：
+これを先ほどのクエリに適用すると、JOIN を削除できます：
 
+```sql
 WITH PostIds AS
 (
         SELECT Id
@@ -175,9 +183,11 @@ FROM posts
 WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
+```
 
-3行のセット。経過時間：0.551秒。処理：1億1964万行、3.29 GB（2億1696万行/秒、5.97 GB/秒）
-ピークメモリ使用量：552.26 MiB。
+```response
+3 rows in set. Elapsed: 0.551 sec. Processed 119.64 million rows, 3.29 GB (216.96 million rows/s., 5.97 GB/s.)
+Peak memory usage: 552.26 MiB.
 ```
 
 このクエリははるかに単純なだけでなく、実行速度も2倍以上速くなります。さらに、Dictionary には賛成票・反対票がそれぞれ 10 を超える投稿だけを読み込み、あらかじめ計算しておいた物議度の値だけを保持するようにすれば、より最適化できます。
@@ -209,7 +219,9 @@ FROM posts
 WHERE Title ILIKE '%clickhouse%'
 LIMIT 5
 FORMAT PrettyCompactMonoBlock
+```
 
+```response
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
 │ 52296928 │ Comparison between two Strings in ClickHouse                  │ Spain                 │
 │ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi   │
@@ -218,8 +230,8 @@ FORMAT PrettyCompactMonoBlock
 │ 55758594 │ ClickHouse create temporary table                             │ Perm', Russia         │
 └──────────┴───────────────────────────────────────────────────────────────┴───────────────────────┘
 
-5行が返されました。経過時間: 0.033秒。処理された行数: 425万行、82.84 MB (1億3062万行/秒、2.55 GB/秒)
-ピークメモリ使用量: 249.32 MiB。
+5 rows in set. Elapsed: 0.033 sec. Processed 4.25 million rows, 82.84 MB (130.62 million rows/s., 2.55 GB/s.)
+Peak memory usage: 249.32 MiB.
 ```
 
 上記の結合例と同様に、同じ Dictionary を使用して、ほとんどの投稿がどこから投稿されているのかを効率的に判定できます。
@@ -233,7 +245,9 @@ WHERE location != ''
 GROUP BY location
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─location───────────────┬──────c─┐
 │ India                  │ 787814 │
 │ Germany                │ 685347 │
@@ -250,7 +264,7 @@ Peak memory usage: 248.84 MiB.
 
 上記の例では、クエリ時に Dictionary を使用して結合を回避しました。Dictionary は、挿入時に行をエンリッチするためにも使用できます。これは通常、エンリッチに用いる値が変化せず、Dictionary を埋めるために利用できる外部ソースに存在する場合に適しています。この場合、行を挿入時にエンリッチしておくことで、クエリ時に Dictionary を参照してルックアップする必要を回避できます。
 
-Stack Overflow におけるユーザーの `Location` が決して変わらない（実際には変わりますが）と仮定してみましょう。具体的には、`users` テーブルの `Location` カラムです。`posts` テーブルに対して Location ごとの分析クエリを実行したいとします。このテーブルには `UserId` が含まれています。
+Stack Overflow におけるユーザーの `Location` が決して変わらない (実際には変わりますが) と仮定してみましょう。具体的には、`users` テーブルの `Location` カラムです。`posts` テーブルに対して Location ごとの分析クエリを実行したいとします。このテーブルには `UserId` が含まれています。
 
 Dictionary は、`users` テーブルをデータソースとして、ユーザー ID から Location へのマッピングを提供します。
 
@@ -284,13 +298,15 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 
 上記の例では、`Location` は `MATERIALIZED` カラムとして宣言されています。これは、値を `INSERT` クエリの一部として指定することもできますが、常に計算された値が使用されることを意味します。
 
-> ClickHouse は、[`DEFAULT` columns](/sql-reference/statements/create/table#default_values)（値を挿入することも、指定されていない場合に計算させることもできるカラム）もサポートしています。
+> ClickHouse は、[`DEFAULT` columns](/sql-reference/statements/create/table#default_values) (値を挿入することも、指定されていない場合に計算させることもできるカラム) もサポートしています。
 
 テーブルにデータを投入するには、通常どおり S3 からの `INSERT INTO SELECT` を使用できます。
 
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
@@ -303,7 +319,9 @@ WHERE Location != ''
 GROUP BY Location
 ORDER BY c DESC
 LIMIT 4
+```
 
+```response
 ┌─Location───────────────┬──────c─┐
 │ India                  │ 787814 │
 │ Germany                │ 685347 │
@@ -314,7 +332,6 @@ LIMIT 4
 4 rows in set. Elapsed: 0.142 sec. Processed 59.82 million rows, 1.08 GB (420.73 million rows/s., 7.60 GB/s.)
 Peak memory usage: 666.82 MiB.
 ```
-
 
 ## Dictionary の高度なトピック \{#advanced-dictionary-topics\}
 

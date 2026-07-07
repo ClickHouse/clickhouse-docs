@@ -10,8 +10,6 @@ doc_type: 'reference'
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
 
-# 지원 Cloud 리전 \{#supported-cloud-regions\}
-
 ## AWS 리전 \{#aws-regions\}
 
 * ap-northeast-1 (도쿄)
@@ -104,11 +102,11 @@ HIPAA 규정을 준수하는 리전에 서비스를 설정하려면 고객은 Bu
 * GCP us-central1 (Iowa)
 * GCP us-east1 (South Carolina)
 
-## PCI 규정 준수 리전 \{#pci-compliant-regions\}
+## PCI 규정을 준수하는 리전 \{#pci-compliant-regions\}
 
 <EnterprisePlanFeatureBadge feature="PCI" support="true" />
 
-고객이 PCI 규정 준수 리전에서 서비스를 구성하려면 Sales 또는 Support를 통해 온보딩을 요청해야 합니다. 다음 리전에서 PCI 규정 준수를 지원합니다.
+고객이 PCI 규정을 준수하는 리전에서 서비스를 구성하려면 Sales 또는 Support를 통해 온보딩을 요청해야 합니다. 다음 리전에서 PCI 규정 준수를 지원합니다.
 
 * AWS af-south-1 (South Africa) **프라이빗 리전**
 * AWS ca-central-1 (Canada) **프라이빗 리전**
@@ -116,6 +114,7 @@ HIPAA 규정을 준수하는 리전에 서비스를 설정하려면 고객은 Bu
 * AWS eu-north-1 (Stockholm) **프라이빗 리전**
 * AWS eu-west-1 (Ireland)
 * AWS eu-west-2 (London)
+* AWS mx-central-1 (Mexico) **프라이빗 리전**
 * AWS sa-east-1 (South America) **프라이빗 리전**
 * AWS us-east-1 (N. Virginia)
 * AWS us-east-2 (Ohio)

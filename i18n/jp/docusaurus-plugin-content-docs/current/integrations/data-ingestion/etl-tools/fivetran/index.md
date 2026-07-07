@@ -14,10 +14,7 @@ keywords: ['fivetran', 'データ移行', 'etl', 'clickhouse destination', '自�
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Fivetran と ClickHouse Cloud \{#fivetran-and-clickhouse-cloud\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 ## 概要 \{#overview\}
 

@@ -1,5 +1,5 @@
 ---
-sidebar_label: '概览'
+sidebar_label: '概述'
 slug: /migrations/snowflake-overview
 description: '从 Snowflake 迁移到 ClickHouse'
 keywords: ['Snowflake']
@@ -11,8 +11,6 @@ doc_type: 'guide'
 import snowflake_architecture from '@site/static/images/cloud/onboard/discover/use_cases/snowflake_architecture.png';
 import cloud_architecture from '@site/static/images/cloud/onboard/discover/use_cases/cloud_architecture.png';
 import Image from '@theme/IdealImage';
-
-# 从 Snowflake 迁移到 ClickHouse \{#snowflake-to-clickhouse-migration\}
 
 > 本文档介绍如何将数据从 Snowflake 迁移到 ClickHouse。
 

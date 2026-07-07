@@ -10,17 +10,13 @@ keywords: ['Redis', 'metrics', 'OTEL', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/import-redis-metrics-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг метрик Redis с помощью ClickStack \{#redis-metrics-clickstack\}
-
-:::note[TL;DR]
-Отслеживайте метрики производительности Redis в ClickStack с помощью приёмника Redis в OTel. Включает демо-набор данных и готовую панель мониторинга.
+:::note[Кратко]
+Отслеживайте метрики производительности Redis в ClickStack с помощью приемника Redis для OTel. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим Redis \{#existing-redis\}
@@ -292,7 +288,7 @@ cat redis-metrics-sum.csv | docker exec -i clickstack-demo \
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-metrics-dashboard.json'} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
 
 #### Импорт готового дашборда \{#import-dashboard\}
 

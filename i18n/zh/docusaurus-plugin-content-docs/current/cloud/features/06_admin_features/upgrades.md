@@ -2,9 +2,9 @@
 sidebar_label: '升级'
 slug: /manage/updates
 title: '升级'
-description: '使用 ClickHouse Cloud，您无需再为打补丁和版本升级操心。我们会定期推出包含修复、新功能以及性能改进的升级。'
+description: '使用 ClickHouse Cloud，您无需担心打补丁和升级。我们会定期推出包含修复、新功能以及性能改进的升级版本。'
 doc_type: 'guide'
-keywords: ['升级', '版本管理', '云功能', '维护', '更新']
+keywords: ['升级', '版本管理', 'Cloud 功能', '维护', '更新']
 ---
 
 import Image from '@theme/IdealImage';
@@ -13,9 +13,6 @@ import ScalePlanFeatureBadge from '@theme/badges/ScalePlanFeatureBadge'
 import fast_release from '@site/static/images/cloud/manage/fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
-
-
-# 升级 \{#upgrades\}
 
 使用 ClickHouse Cloud，您无需担心打补丁和升级。我们会定期推出包含修复、新功能以及性能改进的升级版本。有关 ClickHouse 新增内容的完整列表，请参阅我们的 [Cloud 变更日志](/whats-new/changelog/cloud)。
 
@@ -83,7 +80,7 @@ Basic 等级服务会自动加入快速发布通道。
 Basic 等级服务会在快速发布通道之后不久进行升级。
 :::
 
-### 慢速发布通道 (延后升级)  \{#slow-release-channel-deferred-upgrades\}
+### 慢速发布通道 (延后升级) \{#slow-release-channel-deferred-upgrades\}
 
 <EnterprisePlanFeatureBadge feature="慢速发布通道" />
 
@@ -99,7 +96,7 @@ Basic 等级服务会在快速发布通道之后不久进行升级。
 你可以随时更改发布通道。但在某些情况下，更改只会应用于未来的发布。
 
 * 切换到更快的通道会立即升级你的服务。例如：慢速到常规、常规到快速
-* 如果你的服务正在使用[计划升级](#scheduled-upgrades))，则升级将在下一次计划升级时进行
+* 如果你的服务正在使用[计划升级](#scheduled-upgrades)，则升级将在下一次计划升级时进行。
 * 切换到更慢的通道不会将你的服务降级，并会让你保持当前版本，直到该通道中有更新的版本可用。例如：常规到慢速、快速到常规或慢速
   :::
 

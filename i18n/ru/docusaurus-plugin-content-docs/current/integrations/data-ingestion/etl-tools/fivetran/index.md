@@ -9,15 +9,12 @@ integration:
   - support_level: 'core'
   - category: 'data_ingestion'
   - website: 'https://github.com/ClickHouse/clickhouse-fivetran-destination'
-keywords: ['fivetran', 'перенос данных', 'etl', 'приёмник ClickHouse', 'автоматизированная платформа данных', 'режим History', 'SCD Type 2']
+keywords: ['fivetran', 'перенос данных', 'etl', 'пункт назначения ClickHouse', 'автоматизированная платформа данных', 'режим History', 'SCD Type 2']
 ---
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# Fivetran и ClickHouse Cloud \{#fivetran-and-clickhouse-cloud\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 ## Обзор \{#overview\}
 

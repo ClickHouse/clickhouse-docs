@@ -10,7 +10,6 @@ keywords: ['EC2', 'AWS', 'логи хоста', 'systemd', 'syslog', 'OTel', 'Cl
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import search_view from '@site/static/images/clickstack/host-logs/ec2/search-view.png';
 import log_view from '@site/static/images/clickstack/host-logs/ec2/log-view.png';
@@ -22,10 +21,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Мониторинг логов хостов EC2 с помощью ClickStack \{#ec2-host-logs-clickstack\}
-
-:::note[TL;DR]
-Собирайте и визуализируйте системные логи EC2 в ClickStack с помощью OpenTelemetry Collector с автоматическим обогащением метаданными EC2 (ID экземпляра, регион, AZ, тип экземпляра). Включает Демонстрационный датасет и готовую панель мониторинга.
+:::note[Кратко]
+Собирайте и визуализируйте системные логи EC2 в ClickStack с помощью OpenTelemetry Collector с автоматическим обогащением метаданными EC2 (ID экземпляра, регион, AZ, тип инстанса). Включает демонстрационный датасет и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим экземпляром EC2 \{#existing-ec2\}
@@ -439,7 +436,7 @@ docker run --name clickstack-demo \
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/host-logs-dashboard.json'} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
 
 #### Импортируйте готовый дашборд \{#import-dashboard\}
 

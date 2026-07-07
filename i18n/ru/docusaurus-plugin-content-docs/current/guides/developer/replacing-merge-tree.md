@@ -111,7 +111,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 ```sql
 INSERT INTO stackoverflow.posts_updateable SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet') WHERE AnswerCount > 0 LIMIT 10000
+```
 
+```response
 0 rows in set. Elapsed: 1.980 sec. Processed 8.19 thousand rows, 3.52 MB (4.14 thousand rows/s., 1.78 MB/s.)
 ```
 
@@ -119,7 +121,9 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 
 ```sql
 SELECT count() FROM stackoverflow.posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
@@ -158,7 +162,9 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0
 LIMIT 5000
+```
 
+```response
 0 rows in set. Elapsed: 4.056 sec. Processed 1.42 million rows, 2.20 GB (349.63 thousand rows/s., 543.39 MB/s.)
 ```
 
@@ -193,16 +199,20 @@ INSERT INTO posts_updateable SELECT
 FROM posts_updateable --select 100 random rows
 WHERE (Id % toInt32(floor(randUniform(1, 11)))) = 0 AND AnswerCount > 0
 LIMIT 1000
+```
 
+```response
 0 rows in set. Elapsed: 0.166 sec. Processed 135.53 thousand rows, 212.65 MB (816.30 thousand rows/s., 1.28 GB/s.)
 ```
 
-Результатом вышеописанных операций будет 16 000 строк, т.е. 10 000 + 5 000 + 1 000. На самом деле правильный итог должен быть другим: у нас должно быть всего на 1 000 строк меньше исходного количества, т.е. 10 000 − 1 000 = 9 000.
+Результатом вышеописанных операций будет 16 000 строк, т.е. 10 000 + 5 000 + 1 000. На самом деле правильный итог должен быть другим: у нас должно быть всего на 1 000 строк меньше исходного количества, т.е. 10 000 − 1 000 = 9 000.
 
 ```sql
 SELECT count()
 FROM posts_updateable
+```
 
+```response
 ┌─count()─┐
 │   10000 │
 └─────────┘
@@ -211,12 +221,13 @@ FROM posts_updateable
 
 Ваши результаты могут отличаться в зависимости от того, какие слияния уже произошли. Мы видим, что итоговое количество отличается, так как у нас есть дублирующиеся строки. Применение `FINAL` к таблице даёт корректный результат.
 
-
 ```sql
 SELECT count()
 FROM posts_updateable
 FINAL
+```
 
+```response
 ┌─count()─┐
 │    9000 │
 └─────────┘
@@ -224,7 +235,6 @@ FINAL
 1 row in set. Elapsed: 0.006 sec. Processed 11.81 thousand rows, 212.54 KB (2.14 million rows/s., 38.61 MB/s.)
 Peak memory usage: 8.14 MiB.
 ```
-
 
 ## Производительность с `FINAL` \{#final-performance\}
 
@@ -257,7 +267,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CreationDate, Id)
 
 INSERT INTO stackoverflow.posts_no_part SELECT 0 AS Version, 0 AS Deleted, *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 182.895 sec. Processed 59.82 million rows, 38.07 GB (327.07 thousand rows/s., 208.17 MB/s.)
 ```
 
@@ -277,7 +289,9 @@ FROM posts_no_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │        371480 │
 ...
@@ -309,7 +323,9 @@ FROM posts_with_part
 FINAL
 GROUP BY year
 ORDER BY year ASC
+```
 
+```response
 ┌─year─┬─total_answers─┐
 │ 2008 │       387832  │
 │ 2009 │       1165506 │
@@ -322,8 +338,7 @@ ORDER BY year ASC
 17 rows in set. Elapsed: 0.994 sec. Processed 64.65 million rows, 983.64 MB (65.02 million rows/s., 989.23 MB/s.)
 ```
 
-Как видно, секционирование в данном случае значительно улучшило производительность запроса за счёт того, что процесс дедупликации выполняется параллельно на уровне партиций.
-
+Как видно, партиционирование в данном случае значительно улучшило производительность запроса за счёт того, что процесс дедупликации выполняется параллельно на уровне партиций.
 
 ## Особенности поведения слияний \{#merge-behavior-considerations\}
 

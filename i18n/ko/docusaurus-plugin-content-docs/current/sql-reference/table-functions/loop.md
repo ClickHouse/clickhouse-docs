@@ -5,12 +5,6 @@ title: 'loop'
 doc_type: 'reference'
 ---
 
-
-
-# loop 테이블 함수(Table Function) \{#loop-table-function\}
-
-
-
 ## 구문 \{#syntax\}
 
 ```sql
@@ -20,22 +14,17 @@ SELECT ... FROM loop(table);
 SELECT ... FROM loop(other_table_function(...));
 ```
 
-
 ## Arguments \{#arguments\}
 
-| Argument                    | Description                                                                                                          |
-|-----------------------------|----------------------------------------------------------------------------------------------------------------------|
-| `database`                  | 데이터베이스 이름입니다.                                                                                             |
-| `table`                     | 테이블 이름입니다.                                                                                                   |
+| Argument                    | Description                                                                                           |
+| --------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `database`                  | 데이터베이스 이름입니다.                                                                                         |
+| `table`                     | 테이블 이름입니다.                                                                                            |
 | `other_table_function(...)` | 다른 테이블 함수입니다. 예시: `SELECT * FROM loop(numbers(10));`에서 `other_table_function(...)`는 `numbers(10)`입니다. |
-
-
 
 ## 반환 값 \{#returned_values\}
 
 쿼리 결과를 반환하기 위한 무한 루프입니다.
-
-
 
 ## 예제 \{#examples\}
 

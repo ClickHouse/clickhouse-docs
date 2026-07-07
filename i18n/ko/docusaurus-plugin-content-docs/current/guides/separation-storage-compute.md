@@ -12,8 +12,6 @@ import Image from '@theme/IdealImage';
 import BucketDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_S3_authentication_and_bucket.md';
 import s3_bucket_example from '@site/static/images/guides/s3_bucket_example.png';
 
-# 스토리지와 컴퓨트 분리 \{#separation-of-storage-and-compute\}
-
 ## 개요 \{#overview\}
 
 이 가이드는 ClickHouse와 S3를 사용하여 스토리지와 컴퓨트를 분리한 아키텍처를 구현하는 방법을 설명합니다.

@@ -18,12 +18,10 @@ import dataflow_extended_template_form from '@site/static/images/integrations/da
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# Dataflow BigQuery から ClickHouse へのテンプレート \{#dataflow-bigquery-to-clickhouse-template\}
+BigQuery から ClickHouse へのテンプレートは、BigQuery テーブルから ClickHouse テーブルにデータを取り込むバッチパイプラインです。
+このテンプレートでは、テーブル全体を読み取ることも、指定された SQL クエリを使用して特定のレコードをフィルタリングすることもできます。
 
-BigQuery から ClickHouse への Dataflow テンプレートは、BigQuery テーブルから ClickHouse テーブルへデータをバッチで取り込むパイプラインです。
-このテンプレートは、テーブル全体を読み取ることも、指定された SQL クエリを使用して特定のレコードに絞り込むこともできます。
-
-<TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## パイプラインの要件 \{#pipeline-requirements\}
 
@@ -188,4 +186,7 @@ Google Cloud Console の [Dataflow Jobs タブ](https://console.cloud.google.com
 
 ## テンプレートのソースコード \{#template-source-code\}
 
-このテンプレートのソースコードは、ClickHouse の [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) フォークで公開されています。
+このテンプレートのソースコードは、以下で公開されています。
+
+* [`GoogleCloudPlatform/DataflowTemplates`](https://github.com/GoogleCloudPlatform/DataflowTemplates/tree/main/v2/googlecloud-to-clickhouse) — アップストリームの Google Cloud Platform リポジトリ。
+* [`ClickHouse/DataflowTemplates`](https://github.com/ClickHouse/DataflowTemplates) — ClickHouse のフォーク。

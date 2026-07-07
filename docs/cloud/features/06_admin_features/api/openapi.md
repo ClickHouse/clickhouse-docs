@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Managing API keys'
 slug: /cloud/manage/openapi
-title: 'Managing API Keys'
+title: 'Managing API keys'
 description: 'ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.'
 doc_type: 'guide'
 keywords: ['api', 'openapi', 'rest api', 'documentation', 'cloud management']
@@ -13,8 +13,6 @@ import image_03 from '@site/static/images/cloud/manage/openapi3.png';
 import image_04 from '@site/static/images/cloud/manage/openapi4.png';
 import image_05 from '@site/static/images/cloud/manage/openapi5.png';
 import Image from '@theme/IdealImage';
-
-# Managing API keys
 
 ClickHouse Cloud provides an API utilizing OpenAPI that allows you to programmatically manage your account and aspects of your services.
 

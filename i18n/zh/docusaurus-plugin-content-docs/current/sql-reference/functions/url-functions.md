@@ -6,8 +6,6 @@ title: '处理 URL 的函数'
 doc_type: 'reference'
 ---
 
-# 用于处理 URL 的函数 \{#functions-for-working-with-urls\}
-
 ## 概述 \{#overview\}
 
 :::note

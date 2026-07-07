@@ -7,14 +7,16 @@ keywords: ['읽기 레플리카', '확장성', '읽기 확장', 'Postgres 레플
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import warehouseView from '@site/static/images/managed-postgres/warehouse-view.png';
 import readReplicaDialog from '@site/static/images/managed-postgres/read-replica-dialog.png';
+import readReplicasFlow from '@site/static/images/managed-postgres/read-replicas-flow.png';
+import readReplicasTable from '@site/static/images/managed-postgres/read-replicas-table.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="read-replicas" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.read-replicas-beta" />
 
-읽기 레플리카를 사용하면 기본 Managed Postgres 데이터베이스의 하나 이상의 복사본을 생성할 수 있습니다. 이러한 레플리카는 PostgreSQL의 네이티브 복제 기능을 사용하여 기본 데이터베이스를 지속적으로 따라가며 변경 사항과 동기화됩니다.
+읽기 레플리카를 사용하면 프라이머리 Managed Postgres 데이터베이스의 하나 이상의 복사본을 생성할 수 있습니다. 이러한 레플리카는 PostgreSQL의 네이티브 복제 기능을 사용하여 프라이머리 데이터베이스를 지속적으로 따라가며 변경 사항과 동기화됩니다.
 
 읽기 레플리카를 관리하려면 웨어하우스에서 편집 아이콘을 클릭하십시오.
 
@@ -24,6 +26,19 @@ import readReplicaDialog from '@site/static/images/managed-postgres/read-replica
 
 <Image img={readReplicaDialog} alt="읽기 레플리카 관리 대화 상자" size="md" border />
 
+## 읽기 레플리카 관리 \{#managing-read-replicas\}
+
+**Read replicas** 페이지에서는 오른쪽 상단의 **Flow** 및 **Table** 컨트롤을 사용해 두 가지 보기로 전환할 수 있습니다.
+
+**Flow** 보기에는 복제 토폴로지가 표시됩니다. 상단에는 프라이머리 인스턴스가 있고, 각 연결된 레플리카로 아래쪽 화살표가 이어져 서비스 tier, 리전, 상태를 한눈에 확인할 수 있습니다:
+
+<Image img={readReplicasFlow} alt="프라이머리 및 레플리카 토폴로지를 보여주는 Read replicas 흐름 보기" size="lg" border />
+
+**Table** 보기에는 각 레플리카의 서비스 이름, 클라우드 제공업체 및 리전, 서비스 상태, 생성 시간, 그리고 **Detach service** 작업이 나열됩니다:
+
+<Image img={readReplicasTable} alt="Read replicas 테이블 보기" size="lg" border />
+
+새 레플리카를 생성하려면 어느 보기에서든 오른쪽 상단의 **Create read replica**를 클릭하십시오.
 
 ## 읽기 전용 레플리카를 사용하는 이유 \{#why-use-read-replicas\}
 

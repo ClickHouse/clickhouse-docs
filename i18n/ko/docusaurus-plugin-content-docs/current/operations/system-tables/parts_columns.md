@@ -61,7 +61,6 @@ doc_type: 'reference'
 * `estimates.min` ([Nullable(String)](../../sql-reference/data-types/)) — 컬럼의 추정된 최소값입니다.
 * `estimates.max` ([Nullable(String)](../../sql-reference/data-types/)) — 컬럼의 예상 최대값입니다.
 * `estimates.cardinality` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 컬럼의 카디널리티 추정값.
-* `estimates.null_count` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 컬럼의 NULL 값 추정 개수입니다.
 * `serialization_kind` ([String](../../sql-reference/data-types/)) — 컬럼 시리얼라이제이션의 종류
 * `substreams` ([Array(String)](../../sql-reference/data-types/)) — 컬럼이 직렬화되는 하위 스트림의 이름
 * `filenames` ([Array(String)](../../sql-reference/data-types/)) — 각 컬럼의 각 하위 스트림별 파일 이름
