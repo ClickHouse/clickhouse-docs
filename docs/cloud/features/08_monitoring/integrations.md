@@ -64,7 +64,7 @@ The Datadog Agent periodically polls the ClickHouse instance and collects metric
 
 ### ClickHouse Datadog DBM {#clickhouse-datadog-dbm}
 
-Database Monitoring (DBM) for ClickHouse is developed and maintained  by Datadog. It works by configuring the Datadog Agent to collect system tables data from the ClickHouse instance, providing query-level performance insights similar to what the ClickHouse Cloud Console provides natively. ClickHouse has no involvement in this integration — issues should be directed to Datadog or resolved by the customer.
+Database Monitoring (DBM) for ClickHouse is developed and maintained by Datadog. It works by configuring the Datadog Agent to collect system tables data from the ClickHouse instance, providing query-level performance insights similar to what the ClickHouse Cloud Console provides natively. ClickHouse has no involvement in this integration — issues should be directed to Datadog or resolved by the customer.
 
 - Metrics are free; the customer pays extra for logs and system tables data ingestion
 - **OSS ClickHouse:** fully supported
