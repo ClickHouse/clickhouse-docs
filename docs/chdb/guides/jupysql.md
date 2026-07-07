@@ -285,7 +285,7 @@ When we run a saved query it will be converted into a Common Table Expression (C
 In the following query we compute the neighborhoods with the highest average tip:
 
 ```python
-%sql SELECT * FROM tips_by_neighborhood LIMIT 5
+%sql SELECT * FROM tips_by_neighborhood ORDER BY avg_tip DESC LIMIT 5
 ```
 
 ```text
@@ -319,6 +319,7 @@ The following query finds the neighborhoods with the highest average tip among t
 %%sql
 SELECT * FROM tips_by_neighborhood
 WHERE trips >= {{min_trips}}
+ORDER BY avg_tip DESC
 LIMIT 10
 ```
 
