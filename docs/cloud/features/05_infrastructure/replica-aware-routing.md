@@ -2,7 +2,7 @@
 title: 'Replica-aware routing'
 slug: /manage/replica-aware-routing
 description: 'How to use Replica-aware routing to increase cache re-use'
-keywords: ['cloud', 'sticky endpoints', 'sticky', 'endpoints', 'sticky routing', 'routing', 'replica aware routing']
+keywords: ['cloud', 'sticky endpoints', 'sticky', 'endpoints', 'sticky routing', 'routing', 'replica aware routing', 'session_id']
 doc_type: 'guide'
 unlisted: true
 ---
@@ -11,30 +11,46 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge/>
 
-Replica-aware routing (also known as sticky sessions, sticky routing, or session affinity) utilizes [Envoy proxy's ring hash load balancing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/upstream/load_balancing/load_balancers#ring-hash). The main purpose of replica-aware routing is to increase the chance of cache reuse. It doesn't guarantee isolation.
+Replica-aware routing (also known as sticky sessions, sticky routing, or session affinity) increases the chance of cache reuse by consistently routing related requests to the same ClickHouse replica. It is best-effort and does not guarantee isolation.
 
-When enabling replica-aware routing for a service, we allow a wildcard subdomain on top of the service hostname. For a service with the host name `abcxyz123.us-west-2.aws.clickhouse.cloud`, you can use any hostname which matches `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` to visit the service:
+:::warning Protocol support — HTTP/HTTPS only
+Replica-aware routing is applied at the proxy layer over the **HTTP/HTTPS interface**, using the `session_id` query parameter (see below). It is **not available over the native protocol** (native port, e.g. the `clickhouse-go` driver in its default native mode). If you need sticky routing from a native-protocol client, connect that workload over the HTTP interface instead — for `clickhouse-go` (v2), set `Protocol: clickhouse.HTTP` on the connection.
+:::
 
-|Example hostnames|
-|---|
-|`aaa.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`|
-|`000.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`|
-|`clickhouse-is-the-best.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`|
+## HTTP-based routing (session_id) {#http-based-routing}
 
-When Envoy receives a hostname that matches such a pattern, it will compute the routing hash based on the hostname and find the corresponding ClickHouse server on the hash ring based on the computed hash. Assuming that there is no ongoing change to the service (e.g. server restarts, scale out/in), Envoy will always choose the same ClickHouse server to connect to.
+To pin a workload to a replica, set the `session_id` query parameter on the HTTPS interface. The proxy parses the request and uses consistent hashing on the `session_id` to select a replica, so all requests sharing the same `session_id` are routed to the same server — until the cluster topology changes.
 
-Note the original hostname will still use `LEAST_CONNECTION` load balancing, which is the default routing algorithm.
+```bash
+echo 'SELECT hostName()' | curl \
+  -H 'X-ClickHouse-User: default' -H 'X-ClickHouse-Key: <password>' \
+  'https://<host>:8443/?session_id=my-workload-1' -d @-
+```
 
-## Limitations of Replica-aware routing {#limitations-of-replica-aware-routing}
+Every request carrying `session_id=my-workload-1` lands on the same replica. A different `session_id` value hashes independently and may land on the same or a different replica — the mapping is consistent, but you do not choose *which* replica a given value maps to.
+
+## Subdomain-based routing (deprecated) {#subdomain-based-routing-deprecated}
+
+:::danger Deprecated
+The subdomain-based mechanism below is **deprecated** and is no longer enabled on new services. It does not scale (each sticky endpoint requires its own TLS certificate). Use the [HTTP-based `session_id` method](#http-based-routing) instead.
+:::
+
+Previously, enabling replica-aware routing allowed a wildcard subdomain on top of the service hostname. For a service with the host name `abcxyz123.us-west-2.aws.clickhouse.cloud`, any hostname matching `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` (e.g. `aaa.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`) was hashed by Envoy to a consistent replica. The original hostname continued to use `LEAST_CONNECTION` load balancing, the default routing algorithm.
+
+## Limitations of replica-aware routing {#limitations-of-replica-aware-routing}
 
 ### Replica-aware routing doesn't guarantee isolation {#replica-aware-routing-does-not-guarantee-isolation}
 
-Any disruption to the service, e.g. server pod restarts (due to any reason like a version upgrade, crash, vertical scaling up, etc.), server scaled out / in, will cause a disruption to the routing hash ring. This will cause connections with the same hostname to land on a different server pod.
+Any disruption to the service — server pod restarts (version upgrade, crash, vertical scaling), or scale out / in — changes the routing hash ring. This causes requests sharing the same `session_id` to land on a different server pod.
 
 ### Replica-aware routing doesn't work out of the box with private link {#replica-aware-routing-does-not-work-out-of-the-box-with-private-link}
 
-Customers need to manually add a DNS entry to make name resolution work for the new hostname pattern. It is possible that this can cause imbalance in the server load if customers use it incorrectly.
+When using the deprecated subdomain method, customers need to manually add a DNS entry to make name resolution work for the new hostname pattern. It is possible that this can cause imbalance in the server load if customers use it incorrectly.
+
+### Replica-aware routing requires the HTTP protocol {#replica-aware-routing-requires-http}
+
+Sticky routing is keyed on the `session_id` query parameter, which only exists on the HTTP/HTTPS interface. The native binary protocol carries no such parameter for the proxy to hash on, so replica-aware routing is not available over the native protocol. Native-protocol clients must move the relevant workload to the HTTP interface to use this feature.
 
 ## Configuring replica-aware routing {#configuring-replica-aware-routing}
 
-To enable Replica-aware routing, please contact [our support team](https://clickhouse.com/support/program).
+To enable replica-aware routing, please contact [our support team](https://clickhouse.com/support/program).

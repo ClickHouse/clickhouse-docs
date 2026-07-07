@@ -7,7 +7,6 @@ doc_type: 'reference'
 keywords: ['ClickPipes', 'monitoring', 'metrics', 'Prometheus', 'observability']
 ---
 
-
 In addition to in-console monitoring, ClickPipes exposes metrics to a [Prometheus-compatible endpoint](/integrations/prometheus) for scraping. These metrics are published with other ClickHouse Cloud service metrics, and allow you to integrate ClickPipes monitoring with your existing observability stack (e.g., [Grafana](/integrations/prometheus#integrating-with-grafana), [Datadog](/integrations/prometheus#integrating-with-datadog)).
 
 ## Metric labels {#metric-labels}
@@ -89,14 +88,30 @@ ClickPipes_Latency{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickho
 | `ClickPipes_Latency`                      | Gauge (_avg_) | Time in milliseconds between when a record was produced at the source and when it was written to ClickHouse. |
 | `ClickPipes_SourceReplicationLatency_MiB` | Gauge (_avg_) | **CDC ClickPipes** Replication lag at the source in MiB. For Postgres ClickPipes, this reflects the replication slot lag. |
 
-### Resource usage {#metrics-resources}
+### Resource utilization {#metrics-resources}
+
+#### Streaming and object storage ClickPipes {#metrics-resources-streaming-os}
+
+`ClickPipes_Replica_*` metrics report resource utilization for streaming and object storage ClickPipes. Each ClickPipe has **dedicated compute**, so these values reflect utilization for individual ClickPipes.
 
 | Metric                           | Type           | Description |
 |----------------------------------|----------------|-------------|
-| `ClickPipes_Replica_CPUUsage`    | Gauge (_avg_)  | Average CPU usage of the ingestion replicas, in millicores. |
-| `ClickPipes_Replica_CPULimit`    | Gauge (_last_) | Configured CPU limit of the ingestion replicas, in millicores. |
-| `ClickPipes_Replica_MemoryUsage` | Gauge (_avg_)  | Average memory usage of the ingestion replicas, in bytes. |
-| `ClickPipes_Replica_MemoryLimit` | Gauge (_last_) | Configured memory limit of the ingestion replicas, in bytes. |
+| `ClickPipes_Replica_CPUUsage`        | Gauge (_avg_)  | Average CPU usage of the ingestion replicas, in millicores. |
+| `ClickPipes_Replica_CPULimit`        | Gauge (_last_) | Configured CPU limit of the ingestion replicas, in millicores. |
+| `ClickPipes_Replica_MemoryUsage`     | Gauge (_avg_)  | Average memory usage of the ingestion replicas, in bytes. |
+| `ClickPipes_Replica_MemoryLimit`     | Gauge (_last_) | Configured memory limit of the ingestion replicas, in bytes. |
+
+#### CDC ClickPipes {#metrics-resources-cdc}
+
+`ClickPipes_CDC_*` metrics report resource utilization for CDC ClickPipes. All CDC ClickPipes in the same service **share compute**, so these values reflect the combined usage of every CDC ClickPipe in the service.
+
+| Metric                           | Type           | Description |
+|----------------------------------|----------------|-------------|
+| `ClickPipes_CDC_CPUUsage`            | Gauge (_avg_)  | Average CPU usage, in millicores. Shared across all CDC ClickPipes in the service. |
+| `ClickPipes_CDC_CPULimit`            | Gauge (_last_) | Configured CPU limit, in millicores. Shared across all CDC ClickPipes in the service. |
+| `ClickPipes_CDC_MemoryUsage`         | Gauge (_avg_)  | Average memory usage, in bytes. Shared across all CDC ClickPipes in the service. |
+| `ClickPipes_CDC_MemoryLimit`         | Gauge (_last_) | Configured memory limit, in bytes. Shared across all CDC ClickPipes in the service. |
+| `ClickPipes_CDC_NetworkReceiveBytes` | Gauge          | Inbound network bandwidth, in bytes (delta per scrape window). Shared across all CDC ClickPipes in the service. |
 
 ### State and progress {#metrics-state}
 

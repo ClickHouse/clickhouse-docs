@@ -10,7 +10,6 @@ keywords: ['MongoDB', '로그', 'OTel', 'ClickStack', '데이터베이스 모니
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import log_view from '@site/static/images/clickstack/mongodb/log-view.png';
@@ -289,7 +288,7 @@ OTel `filelog` 리시버를 사용하여 ClickStack에서 MongoDB 서버 로그(
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/mongodb-logs-dashboard.json')} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">다운로드</TrackedLink> 대시보드 구성 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/mongodb-logs-dashboard.json'} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">다운로드</TrackedLink> 대시보드 구성 \{#download\}
 
 #### 미리 구성된 대시보드 가져오기 \{#import-dashboard\}
 

@@ -10,7 +10,6 @@ keywords: ['Node.js', 'traces', 'OTEL', 'ClickStack', 'distributed tracing']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import search_view from '@site/static/images/clickstack/nodejs/traces-search-view.png';
@@ -163,7 +162,7 @@ Node.js 애플리케이션 성능 모니터링을 바로 시작할 수 있도록
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">대시보드 구성 파일 다운로드</TrackedLink> \{#download-dashboard\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nodejs-traces-dashboard.json'} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">대시보드 구성 파일 다운로드</TrackedLink> \{#download-dashboard\}
 
 #### 사전 구성된 대시보드 가져오기 \{#import-dashboard\}
 

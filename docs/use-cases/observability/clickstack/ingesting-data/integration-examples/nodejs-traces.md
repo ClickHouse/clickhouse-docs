@@ -10,7 +10,6 @@ keywords: ['Node.js', 'traces', 'OTEL', 'ClickStack', 'distributed tracing']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import search_view from '@site/static/images/clickstack/nodejs/traces-search-view.png';
@@ -162,7 +161,7 @@ To help you get started monitoring Node.js application performance, we provide a
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download-dashboard}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nodejs-traces-dashboard.json'} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download-dashboard}
 
 #### Import the pre-built dashboard {#import-dashboard}
 

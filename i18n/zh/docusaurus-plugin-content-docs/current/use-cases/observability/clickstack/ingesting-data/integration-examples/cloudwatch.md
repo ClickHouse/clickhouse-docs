@@ -10,7 +10,6 @@ keywords: ['AWS', 'CloudWatch', 'OTEL', 'ClickStack', 'logs']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/cloudwatch/finish-import.png';
@@ -336,7 +335,7 @@ HyperDX 会使用您浏览器的本地时区显示时间戳。演示数据覆盖
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/cloudwatch-logs-dashboard.json')} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/cloudwatch-logs-dashboard.json'} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
 
 #### 导入仪表板 \{#import-dashboard\}
 
