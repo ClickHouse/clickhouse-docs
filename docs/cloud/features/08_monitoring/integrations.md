@@ -30,7 +30,7 @@ For users interested in monitoring their ClickHouse deployment in Datadog, Click
 
 The recommended way to serve service-level metrics from ClickHouse Cloud in Datadog.
 
-The customer provides a Datadog API key, and Datadog periodically polls the ClickHouse Cloud API to collect metrics using a push-based method authenticated via an OAuth handshake.
+You provide a Datadog API key, and Datadog periodically polls the ClickHouse Cloud API to collect metrics using a push-based method authenticated via an OAuth handshake.
 
 - **Cloud only** — not suitable for OSS ClickHouse
 - Metrics are **not** treated as custom metrics by Datadog
