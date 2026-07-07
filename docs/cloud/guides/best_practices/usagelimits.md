@@ -39,6 +39,10 @@ or look together at how we can increase them in a controlled manner.
 For warehouse replica and scaling limits, see [warehouses](/cloud/reference/warehouses#scaling).
 
 :::note
+The values above are default guardrails. The limit enforced for a specific service may be higher than the value shown here, as larger services are configured with more headroom. The actual limit that applies to your service is included in the warning you receive as you approach it.
+:::
+
+:::note
 For Single Replica Services, the maximum number of databases is restricted to 
 100, and the maximum number of tables is restricted to 500. In addition, storage
 for Basic Tier Services is limited to 1 TB.
