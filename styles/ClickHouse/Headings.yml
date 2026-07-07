@@ -51,6 +51,7 @@ exceptions:
   - CLI
   - ClickHouse
   - ClickHouse Cloud
+  - Cloud SQL
   - Control Plane
   - ClickHouse Keeper
   - ClickPipe

@@ -20,7 +20,7 @@ This guide covers the **Postgres CDC** ClickPipe group. Cloud SQL for PostgreSQL
 PSC connectivity is only available when your ClickPipe is hosted on GCP. Check the [region matrix](#supported-gcp-regions) before you start.
 :::
 
-## How it works
+## How it works {#how-it-works}
 
 ClickPipes uses **Reverse Private Endpoints (RPEs)** to reach private sources. For GCP, an RPE is a PSC **endpoint** that the ClickPipes data plane creates inside its own VPC and that consumes a PSC **service attachment** you publish in front of your Postgres instance.
 
@@ -33,13 +33,13 @@ Two patterns are supported, both using the same RPE endpoint type (`GCP_PSC_SERV
 
 Each RPE provisions a single static internal IP in the ClickPipes VPC. Unlike AWS VPC endpoints, GCP PSC does not propagate DNS, so you tell ClickPipes which private DNS name to map to that IP using `custom_private_dns_mappings`.
 
-## Supported Postgres sources
+## Supported Postgres sources {#supported-postgres-sources}
 
 - Cloud SQL for PostgreSQL (native PSC)
 - Cloud SQL for PostgreSQL on a private VPC, fronted by a producer-owned PSC service attachment
 - Self-managed PostgreSQL on Compute Engine, fronted by a producer-owned PSC service attachment
 
-## Prerequisites
+## Prerequisites {#prerequisites}
 
 - A ClickHouse Cloud service hosted on GCP, in a [supported region](#supported-gcp-regions).
 - A GCP project where Cloud SQL (or your Postgres host) lives. You need IAM rights to:
@@ -50,9 +50,9 @@ Each RPE provisions a single static internal IP in the ClickPipes VPC. Unlike AW
 
 ---
 
-## Path A: Cloud SQL native PSC (recommended)
+## Path A: Cloud SQL native PSC (recommended) {#path-a-cloud-sql-native-psc}
 
-### Step 1 — Enable PSC on the Cloud SQL instance
+### Step 1 — Enable PSC on the Cloud SQL instance {#step-1-enable-psc}
 
 Either create a new instance with PSC enabled or update an existing one. PSC requires the instance's public IP to be disabled (`ipv4_enabled = false`).
 
@@ -78,7 +78,7 @@ gcloud sql instances patch <INSTANCE_NAME> \
 
 The `--allowed-psc-projects` (`psc_config.allowed_consumer_projects` in the API and Terraform) is the auto-accept list. As long as the ClickPipes consumer project is on it, Cloud SQL accepts the endpoint automatically — no manual approval step.
 
-### Step 2 — Read the service attachment URI and DNS name
+### Step 2 — Read the service attachment URI and DNS name {#step-2-service-attachment-dns}
 
 These two values are what you hand to ClickPipes.
 
@@ -100,9 +100,9 @@ Keep both. ClickPipes needs the service attachment URI to provision the endpoint
 Cloud SQL's DNS names end with . (FQDN notation) but the ClickHouse form expects a hostname without it. Drop the trailing dot:
 3d2deea033cc.swpbkd47gmtq.us-central1.sql.goog
 
-### Step 3 — Create the Reverse Private Endpoint in ClickPipes
+### Step 3 — Create the reverse private endpoint in ClickPipes {#step-3-create-rpe}
 
-#### Option 1: ClickPipes UI
+#### Option 1: ClickPipes UI {#option-1-clickpipes-ui}
 
 1. In ClickHouse Cloud, open your service and go to **Data Sources** > **ClickPipes**.
 2. Select the data source you want to ingest data from.
@@ -113,7 +113,7 @@ Cloud SQL's DNS names end with . (FQDN notation) but the ClickHouse form expects
    - **Description** — any human-readable label.
 4. Click **Create** and wait. The endpoint moves through `Provisioning` → `Ready`. (You will not see `PendingAcceptance` for the native PSC path, because Cloud SQL auto-accepts.)
 
-#### Option 2: Terraform
+#### Option 2: Terraform {#option-2-terraform}
 
 Use the [`gcp-cloud-sql-native-psc`](https://github.com/ClickHouse/clickpipes-terraform-modules/tree/main/modules/gcp-cloud-sql-native-psc) module from the public [`clickpipes-terraform-modules`](https://github.com/ClickHouse/clickpipes-terraform-modules) repository. It provisions the Cloud SQL instance, enables native PSC, creates the RPE, and optionally creates the ClickPipe.
 
@@ -164,7 +164,7 @@ resource "clickhouse_clickpipes_reverse_private_endpoint" "cloud_sql" {
 }
 ```
 
-#### Option 3: API
+#### Option 3: API {#option-3-api}
 
 ```bash
 curl -X POST \
@@ -181,7 +181,7 @@ curl -X POST \
   }'
 ```
 
-### Step 4 — Create the Postgres ClickPipe
+### Step 4 — Create the Postgres ClickPipe {#step-4-create-clickpipe}
 
 In the ClickPipes UI, choose **Postgres CDC** → **Cloud SQL for PostgreSQL** (`cloudsqlpostgres`) and:
 
@@ -194,7 +194,7 @@ The pipe routes Postgres traffic through the RPE's internal IP, with DNS resolut
 
 ---
 
-## Path B: Producer-owned PSC (private network Cloud SQL or self-managed Postgres)
+## Path B: Producer-owned PSC (private network Cloud SQL or self-managed Postgres) {#path-b-producer-owned-psc}
 
 Use this path when:
 
@@ -234,7 +234,7 @@ You can find the consumer forwarding rule ID on the RPE detail page in the Click
 
 ---
 
-## Managing existing reverse private endpoints
+## Managing existing reverse private endpoints {#managing-reverse-private-endpoints}
 
 Go to **Data Sources** → **Reverse Private Endpoints** in your service to:
 
@@ -242,13 +242,13 @@ Go to **Data Sources** → **Reverse Private Endpoints** in your service to:
 - Reuse an existing RPE across multiple ClickPipes that target the same Postgres host.
 - Delete RPEs that are no longer in use. Deleting an RPE also tears down the consumer endpoint in the ClickPipes VPC; the service attachment on your side is untouched.
 
-## Supported GCP regions
+## Supported GCP regions {#supported-gcp-regions}
 
 GCP PSC RPE is available in every region where ClickPipes is hosted on GCP. The PSC endpoint must be created in the **same region** as the service attachment — pick a Cloud SQL region that matches a ClickPipes-on-GCP region.
 
 > _TODO: paste the current region list before publishing._
 
-## Limitations
+## Limitations {#limitations}
 
 - The RPE endpoint and the service attachment must be in the **same GCP region**.
 - One RPE provisions **one static internal IP**. GCP PSC does not propagate DNS, so you must supply the source's private DNS name via `custom_private_dns_mappings`.
