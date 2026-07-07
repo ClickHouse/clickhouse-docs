@@ -14,10 +14,6 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge/>
 
-:::note
-SCIM provisioning is in private preview.
-:::
-
 <EnterprisePlanFeatureBadge feature="SCIM"/>
 
 ClickHouse Cloud supports SCIM 2.0 (System for Cross-domain Identity Management) for automated user and group lifecycle management. Once connected to your identity provider, every user you assign to the ClickHouse Cloud application is automatically created in your organization with the right role, profile updates flow through automatically, and removing a user from your IdP removes their access — no manual invites, no orphaned accounts.
@@ -264,21 +260,41 @@ Tokens can't be recovered. In **Organization settings → SAML and SCIM settings
 
 ## Frequently asked questions {#faq}
 
-**Do I need SAML SSO before I can use SCIM?**
+<details>
+<summary><strong>Do I need SAML SSO before I can use SCIM?</strong></summary>
+
 Yes. SCIM creates the user accounts, but ClickHouse Cloud authenticates them through SAML. Set up [SAML SSO](/cloud/security/saml-setup) first.
 
-**Can I use the same enterprise application for SAML and SCIM?**
+</details>
+
+<details>
+<summary><strong>Can I use the same enterprise application for SAML and SCIM?</strong></summary>
+
 Yes. With SAML-based SSO, a single Entra ID enterprise application handles both single sign-on and SCIM provisioning.
 
-**Why is the Secret Token formatted as `key:secret`?**
+</details>
+
+<details>
+<summary><strong>Why is the Secret Token formatted as <code>key:secret</code>?</strong></summary>
+
 Entra ID authenticates by sending the Secret Token as an `Authorization: Bearer` header. The ClickHouse Cloud SCIM endpoint expects the bearer value to be your token key and secret joined by a colon.
 
-**How quickly do changes in Entra ID show up in ClickHouse Cloud?**
+</details>
+
+<details>
+<summary><strong>How quickly do changes in Entra ID show up in ClickHouse Cloud?</strong></summary>
+
 Entra ID provisions on a recurring cycle of roughly 40 minutes. For an immediate update, use **Provision on demand** for the specific user.
 
-**Where do I get help if I'm stuck?**
+</details>
+
+<details>
+<summary><strong>Where do I get help if I'm stuck?</strong></summary>
+
 Open a support ticket from the ClickHouse Cloud Console (**Help → Contact support**) and include:
 
 - your organization id,
 - the name (and object id) of your Entra ID enterprise application, and
 - a screenshot of the failing entry from **Provisioning → View provisioning logs**.
+
+</details>
