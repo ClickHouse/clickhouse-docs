@@ -13,9 +13,7 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 ## Datadog integration {#direct-datadog}
 
-For Prometheus endpoint setup details, see the [Prometheus integration page](/integrations/prometheus#integrating-with-datadog).
-
-For users interested in monitoring their ClickHouse deployment in Datadog, ClickHouse offers multiple integrations, suited to different deployment modes. Each has its own tradeoffs, and some are owned by ClickHouse while others are owned by Datadog. Integrations are listed in recommended order.
+To monitor your ClickHouse deployment in Datadog, ClickHouse offers several integrations, suited to different deployment modes. Each has its own tradeoffs, and some are owned by ClickHouse while others are owned by Datadog. Integrations are listed in recommended order.
 
 | Integration | Docs | Deployment | Signals |
 |---|---|---|---|
@@ -30,20 +28,20 @@ For users interested in monitoring their ClickHouse deployment in Datadog, Click
 
 The recommended way to serve service-level metrics from ClickHouse Cloud in Datadog.
 
-You provide a Datadog API key, and Datadog periodically polls the ClickHouse Cloud API to collect metrics using a push-based method authenticated via an OAuth handshake.
+You connect your Datadog account to ClickHouse Cloud through an OAuth handshake (**Connect Accounts** in the Datadog integration tile). ClickHouse Cloud then pushes service-level metrics to Datadog, rather than Datadog polling the service directly.
 
 - **Cloud only** — not suitable for OSS ClickHouse
 - Metrics are **not** treated as custom metrics by Datadog
 - Does **not** prevent the service from idling
 - Ships with a pre-configured set of dashboards and monitors
 
-For onboarding steps, see [ClickHouse Cloud & Datadog - Integration](#).
+For onboarding steps, see [Datadog's ClickHouse Cloud integration guide](https://docs.datadoghq.com/integrations/clickhouse-cloud/).
 
 ### ClickHouse Cloud Prometheus integration {#clickhouse-cloud-prometheus-integration}
 
 The most common and universal way to collect service-level and org-level telemetry from ClickHouse Cloud.
 
-The customer configures the Datadog Agent with the [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) to periodically poll the ClickHouse Cloud API and collect metrics. See the [Prometheus integration page](/integrations/prometheus#integrating-with-datadog) for configuration details.
+You configure the Datadog Agent with the [OpenMetrics integration](https://docs.datadoghq.com/integrations/openmetrics/) to periodically poll the ClickHouse Cloud API and collect metrics. See the [Prometheus integration page](/integrations/prometheus#integrating-with-datadog) for configuration details.
 
 - **Cloud only** — not suitable for OSS ClickHouse
 - Metrics are treated as **custom metrics** by Datadog
@@ -51,7 +49,7 @@ The customer configures the Datadog Agent with the [OpenMetrics integration](htt
 
 ### ClickHouse Datadog Agent integration {#clickhouse-datadog-agent-integration}
 
-The most common way to get data from on-premises ClickHouse services into Datadog. It also works with ClickHouse Cloud, with some caveats.
+The most common way to get data from OSS ClickHouse services into Datadog. It also works with ClickHouse Cloud, with some caveats.
 
 The Datadog Agent periodically polls the ClickHouse instance and collects metrics and logs. This integration ships with a pre-configured set of dashboards.
 
@@ -64,7 +62,7 @@ The Datadog Agent periodically polls the ClickHouse instance and collects metric
 
 ### ClickHouse Datadog DBM {#clickhouse-datadog-dbm}
 
-Database Monitoring (DBM) for ClickHouse is developed and maintained by Datadog. It works by configuring the Datadog Agent to collect system tables data from the ClickHouse instance, providing query-level performance insights similar to what the ClickHouse Cloud Console provides natively. ClickHouse has no involvement in this integration — issues should be directed to Datadog or resolved by the customer.
+Database Monitoring (DBM) for ClickHouse is developed and maintained by Datadog. It works by configuring the Datadog Agent to collect system tables data from the ClickHouse instance, providing query-level performance insights similar to what the ClickHouse Cloud Console provides natively. ClickHouse has no involvement in this integration — direct any issues to Datadog rather than ClickHouse.
 
 - Metrics are free; you pay extra for logs and system tables data ingestion
 - **OSS ClickHouse:** fully supported
