@@ -95,28 +95,24 @@ Not every metric is emitted by every pipe type. In particular, CDC ClickPipes (P
 
 ### Resource utilization {#metrics-resources}
 
-#### Streaming and object storage ClickPipes {#metrics-resources-streaming-os}
-
 `ClickPipes_Replica_*` metrics report resource utilization for streaming and object storage ClickPipes. Each ClickPipe has **dedicated compute**, so these values reflect utilization for individual ClickPipes.
 
-| Metric                           | Type           | Description |
-|----------------------------------|----------------|-------------|
-| `ClickPipes_Replica_CPUUsage`        | Gauge (_avg_)  | Average CPU usage of the ingestion replicas, in millicores. |
-| `ClickPipes_Replica_CPULimit`        | Gauge (_last_) | Configured CPU limit of the ingestion replicas, in millicores. |
-| `ClickPipes_Replica_MemoryUsage`     | Gauge (_avg_)  | Average memory usage of the ingestion replicas, in bytes. |
-| `ClickPipes_Replica_MemoryLimit`     | Gauge (_last_) | Configured memory limit of the ingestion replicas, in bytes. |
-
-#### CDC ClickPipes {#metrics-resources-cdc}
+| Metric                           | Type           | Available for | Description |
+|----------------------------------|----------------|---------------|-------------|
+| `ClickPipes_Replica_CPUUsage`        | Gauge (_avg_)  | Streaming, object storage | Average CPU usage of the ingestion replicas, in millicores. |
+| `ClickPipes_Replica_CPULimit`        | Gauge (_last_) | Streaming, object storage | Configured CPU limit of the ingestion replicas, in millicores. |
+| `ClickPipes_Replica_MemoryUsage`     | Gauge (_avg_)  | Streaming, object storage | Average memory usage of the ingestion replicas, in bytes. |
+| `ClickPipes_Replica_MemoryLimit`     | Gauge (_last_) | Streaming, object storage | Configured memory limit of the ingestion replicas, in bytes. |
 
 `ClickPipes_CDC_*` metrics report resource utilization for CDC ClickPipes. All CDC ClickPipes in the same service **share compute**, so these values reflect the combined usage of every CDC ClickPipe in the service.
 
-| Metric                           | Type           | Description |
-|----------------------------------|----------------|-------------|
-| `ClickPipes_CDC_CPUUsage`            | Gauge (_avg_)  | Average CPU usage, in millicores. Shared across all CDC ClickPipes in the service. |
-| `ClickPipes_CDC_CPULimit`            | Gauge (_last_) | Configured CPU limit, in millicores. Shared across all CDC ClickPipes in the service. |
-| `ClickPipes_CDC_MemoryUsage`         | Gauge (_avg_)  | Average memory usage, in bytes. Shared across all CDC ClickPipes in the service. |
-| `ClickPipes_CDC_MemoryLimit`         | Gauge (_last_) | Configured memory limit, in bytes. Shared across all CDC ClickPipes in the service. |
-| `ClickPipes_CDC_NetworkReceiveBytes` | Gauge          | Inbound network bandwidth, in bytes (delta per scrape window). Shared across all CDC ClickPipes in the service. |
+| Metric                           | Type           | Available for | Description |
+|----------------------------------|----------------|---------------|-------------|
+| `ClickPipes_CDC_CPUUsage`            | Gauge (_avg_)  | CDC | Average CPU usage, in millicores. Shared across all CDC ClickPipes in the service. |
+| `ClickPipes_CDC_CPULimit`            | Gauge (_last_) | CDC | Configured CPU limit, in millicores. Shared across all CDC ClickPipes in the service. |
+| `ClickPipes_CDC_MemoryUsage`         | Gauge (_avg_)  | CDC | Average memory usage, in bytes. Shared across all CDC ClickPipes in the service. |
+| `ClickPipes_CDC_MemoryLimit`         | Gauge (_last_) | CDC | Configured memory limit, in bytes. Shared across all CDC ClickPipes in the service. |
+| `ClickPipes_CDC_NetworkReceiveBytes` | Gauge          | CDC | Inbound network bandwidth, in bytes (delta per scrape window). Shared across all CDC ClickPipes in the service. |
 
 ### State and progress {#metrics-state}
 
