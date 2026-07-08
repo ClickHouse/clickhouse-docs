@@ -296,6 +296,12 @@ GROUP BY _path
 ORDER BY rows DESC;
 ```
 
+### Check scan volume {#debug-query-log}
+
+Compare `read_rows` and `read_bytes` in [system.query_log](/operations/system-tables/query_log) before and after adding filters or tuning settings. ProfileEvents like `ReadBufferFromS3Bytes` and `CachedReadBufferReadFromCacheBytes` show how much data came from object storage versus the local cache. See [Query optimization](/optimize/query-optimization) for a full walkthrough of query_log and EXPLAIN.
+
+Disable [enable_filesystem_cache](/operations/settings/settings#enable_filesystem_cache) when benchmarking so cache hits don't mask changes between runs.
+
 ### Metadata logs {#debug-metadata-logs}
 
 ClickHouse exposes three system tables for metadata-level debugging. Enable logging at query time only. They're not for continuous monitoring.
@@ -326,4 +332,12 @@ On ClickHouse Cloud, log data is local to each node. Use `clusterAllReplicas` to
 Verbose Iceberg log levels disable metadata caching for manifest lists and files, which slows subsequent queries on the same table. Use high verbosity only while actively investigating. For Delta Lake predicate issues, enable [delta_lake_throw_on_engine_predicate_error](/operations/settings/settings#delta_lake_throw_on_engine_predicate_error) (25.8+) to fail fast when the kernel can't push a filter down.
 
 See the [iceberg_metadata_log](/operations/system-tables/iceberg_metadata_log) and [delta_lake_metadata_log](/operations/system-tables/delta_lake_metadata_log) reference pages for column details and verbosity options.
+
+## Next steps {#next-steps}
+
+- [Getting started](/use-cases/data-lake/getting-started) — End-to-end walkthrough from direct querying to writing back
+- [Querying directly](/use-cases/data-lake/getting-started/querying-directly) — Table functions, engines, and cluster variants for all four formats
+- [Connecting to catalogs](/use-cases/data-lake/getting-started/connecting-catalogs) — `DataLakeCatalog` setup with Unity Catalog
+- [Writing to data lakes](/use-cases/data-lake/getting-started/writing-data) — Write data back to Iceberg and Delta Lake
+- [Support matrix](/use-cases/data-lake/support-matrix) — Feature comparison across formats, catalogs, and storage backends
 
