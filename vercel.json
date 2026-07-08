@@ -1538,6 +1538,11 @@
       "permanent": true
     },
     {
+      "source": "/docs/interfaces/third-party/moose-olap",
+      "destination": "/docs/interfaces/third-party/client-libraries",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/interfaces/third-party/client_libraries",
       "destination": "/docs/interfaces/third-party/client-libraries",
       "permanent": true
