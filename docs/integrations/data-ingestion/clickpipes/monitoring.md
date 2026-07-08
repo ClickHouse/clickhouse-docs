@@ -22,7 +22,7 @@ ClickPipes metrics use the [standard service-level labels](/integrations/prometh
 
 ### Sample response {#sample-response}
 
-The following shows what ClickPipes metrics look like in a Prometheus scrape response:
+The following shows what ClickPipes metrics look like in a Prometheus scrape response for a Kafka ClickPipe. Note that the set of exposed metrics varies by pipe type — see [Available metrics](#available-metrics) for which metrics apply to which pipe types:
 
 ```response
 # HELP ClickPipes_Info Always equal to 1. Label "clickpipe_state" contains the current state of the pipe: Stopped/Provisioning/Running/Paused/Failed
@@ -56,37 +56,42 @@ ClickPipes_Latency{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickho
 
 ## Available metrics {#available-metrics}
 
+Not every metric is emitted by every pipe type. In particular, CDC ClickPipes (Postgres, MySQL, MongoDB) expose a different subset of metrics than streaming and object storage ClickPipes.
+
+- **Streaming, object storage** — Kafka, Kinesis, Pub/Sub, S3, and GCS
+- **CDC** — Postgres, MySQL, and MongoDB ClickPipes
+- **All** — every pipe type
+
 ### Data transfer {#metrics-data-transfer}
 
-| Metric                                     | Type    | Description |
-|--------------------------------------------|---------|-------------|
-| `ClickPipes_FetchedBytes_Total`            | Counter | Total uncompressed bytes fetched from the source. |
-| `ClickPipes_FetchedBytesCompressed_Total`  | Counter | Total compressed bytes fetched from the source. If the source data is uncompressed, equivalent to `ClickPipes_FetchedBytes_Total`. |
-| `ClickPipes_FetchedBytesInitialLoad_Total` | Counter | **CDC ClickPipes** Total uncompressed bytes fetched during the initial load phase. |
-| `ClickPipes_FetchedBytesResync_Total`      | Counter | **CDC ClickPipes** Total uncompressed bytes fetched during a resync operation. |
-| `ClickPipes_SentBytes_Total`               | Counter | Total uncompressed bytes sent to ClickHouse. |
-| `ClickPipes_SentBytesCompressed_Total`     | Counter | Total compressed bytes sent to ClickHouse. |
+| Metric                                     | Type    | Available for | Description |
+|--------------------------------------------|---------|---------------|-------------|
+| `ClickPipes_FetchedBytes_Total`            | Counter | Streaming, object storage | Total uncompressed bytes fetched from the source. |
+| `ClickPipes_FetchedBytesCompressed_Total`  | Counter | All | Total bytes fetched from the source, as read over the wire. If the source data is uncompressed, equivalent to `ClickPipes_FetchedBytes_Total`. |
+| `ClickPipes_FetchedBytesInitialLoad_Total` | Counter | CDC | Total bytes fetched during the initial load phase, including resyncs. |
+| `ClickPipes_SentBytes_Total`               | Counter | Streaming, object storage | Total uncompressed bytes sent to ClickHouse. |
+| `ClickPipes_SentBytesCompressed_Total`     | Counter | Streaming, object storage | Total compressed bytes sent to ClickHouse. |
 
 ### Events and records {#metrics-events}
 
-| Metric                              | Type    | Description |
-|-------------------------------------|---------|-------------|
-| `ClickPipes_FetchedEvents_Total`    | Counter | Total number of records fetched from the source. |
-| `ClickPipes_SentEvents_Total`       | Counter | Total number of records sent to ClickHouse. |
-| `ClickPipes_FetchedEvents_PerTable` | Gauge   | **CDC ClickPipes** Number of records fetched per destination table and event type. Uses additional `destination_table` and `event_type` labels. |
+| Metric                              | Type    | Available for | Description |
+|-------------------------------------|---------|---------------|-------------|
+| `ClickPipes_FetchedEvents_Total`    | Counter | Streaming, object storage | Total number of records fetched from the source. |
+| `ClickPipes_SentEvents_Total`       | Counter | Streaming, object storage | Total number of records sent to ClickHouse. |
+| `ClickPipes_FetchedEvents_PerTable` | Gauge   | CDC | Number of records fetched per destination table and event type. Uses additional `destination_table` and `event_type` labels. |
 
 ### Errors {#metrics-errors}
 
-| Metric                    | Type    | Description |
-|---------------------------|---------|-------------|
-| `ClickPipes_Errors_Total` | Counter | Total [errors](/integrations/clickpipes#error-reporting) encountered during ingestion. |
+| Metric                    | Type    | Available for | Description |
+|---------------------------|---------|---------------|-------------|
+| `ClickPipes_Errors_Total` | Counter | All | Total [errors](/integrations/clickpipes#error-reporting) encountered during ingestion. |
 
 ### Latency {#metrics-latency}
 
-| Metric                                    | Type | Description |
-|-------------------------------------------|------|-------------|
-| `ClickPipes_Latency`                      | Gauge (_avg_) | Time in milliseconds between when a record was produced at the source and when it was written to ClickHouse. |
-| `ClickPipes_SourceReplicationLatency_MiB` | Gauge (_avg_) | **CDC ClickPipes** Replication lag at the source in MiB. For Postgres ClickPipes, this reflects the replication slot lag. |
+| Metric                                    | Type | Available for | Description |
+|-------------------------------------------|------|---------------|-------------|
+| `ClickPipes_Latency`                      | Gauge (_avg_) | Streaming, object storage | Time in milliseconds between when a record was produced at the source and when it was written to ClickHouse. |
+| `ClickPipes_SourceReplicationLatency_MiB` | Gauge (_avg_) | CDC (Postgres only) | Replication slot lag at the source in MiB. Only emitted by Postgres ClickPipes. |
 
 ### Resource utilization {#metrics-resources}
 
@@ -115,11 +120,11 @@ ClickPipes_Latency{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickho
 
 ### State and progress {#metrics-state}
 
-| Metric                          | Type | Description |
-|---------------------------------|------|-------------|
-| `ClickPipes_Info`               | Gauge | Always equal to `1`. Use the `clickpipe_state` label to filter or alert on pipe state. |
-| `ClickPipes_LastFetchedBatchId` | Gauge | ID of the last batch fetched from the source. |
-| `ClickPipes_LastSentBatchId`    | Gauge | ID of the last batch sent to ClickHouse. |
+| Metric                          | Type | Available for | Description |
+|---------------------------------|------|---------------|-------------|
+| `ClickPipes_Info`               | Gauge | All | Always equal to `1`. Use the `clickpipe_state` label to filter or alert on pipe state. |
+| `ClickPipes_LastFetchedBatchId` | Gauge | CDC | ID of the last batch fetched from the source. |
+| `ClickPipes_LastSentBatchId`    | Gauge | CDC | ID of the last batch sent to ClickHouse. |
 
 ## Related pages {#related}
 
