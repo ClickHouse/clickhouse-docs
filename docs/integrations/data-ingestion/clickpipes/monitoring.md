@@ -56,7 +56,7 @@ ClickPipes_Latency{clickhouse_org="11dfa1ec-767d-43cb-bfad-618ce2aaf959",clickho
 
 ## Available metrics {#available-metrics}
 
-Not every metric is emitted by every pipe type. In particular, CDC ClickPipes (Postgres, MySQL, MongoDB, BigQuery) expose a different subset of metrics than streaming and object storage ClickPipes.
+Not every metric is emitted by every pipe type. In particular, CDC ClickPipes expose a different subset of metrics than streaming and object storage ClickPipes.
 
 - **Streaming, object storage** — Kafka, Kinesis, Pub/Sub, S3, and GCS
 - **CDC** — Postgres, MySQL, MongoDB and BigQuery
