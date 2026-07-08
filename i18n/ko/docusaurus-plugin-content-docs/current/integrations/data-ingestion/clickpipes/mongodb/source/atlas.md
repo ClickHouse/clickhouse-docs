@@ -19,8 +19,6 @@ import mongo_atlas_restrict_access from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 
 
-# MongoDB Atlas 소스 설정 가이드 \{#mongodb-atlas-source-setup-guide\}
-
 ## oplog 보존 기간 구성 \{#enable-oplog-retention\}
 
 복제를 위해서는 최소 24시간의 oplog 보존 기간이 필요합니다. 초기 스냅샷이 완료되기 전에 oplog가 잘려 나가지 않도록, oplog 보존 기간을 72시간 이상으로 설정할 것을 권장합니다. UI에서 oplog 보존 기간을 설정하려면:

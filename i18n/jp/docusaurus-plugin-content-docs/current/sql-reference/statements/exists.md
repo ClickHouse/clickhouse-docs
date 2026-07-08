@@ -1,13 +1,11 @@
 ---
-description: 'EXISTS ステートメントのリファレンス'
+description: 'EXISTS 句のドキュメント'
 sidebar_label: 'EXISTS'
 sidebar_position: 45
 slug: /sql-reference/statements/exists
-title: 'EXISTS ステートメント'
+title: 'EXISTS 句'
 doc_type: 'reference'
 ---
-
-# EXISTS 句 \{#exists-statement\}
 
 ```sql
 EXISTS [TEMPORARY] [TABLE|DICTIONARY|DATABASE] [db.]name [INTO OUTFILE filename] [FORMAT format]

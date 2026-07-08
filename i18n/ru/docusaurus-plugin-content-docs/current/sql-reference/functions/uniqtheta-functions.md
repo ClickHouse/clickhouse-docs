@@ -6,11 +6,9 @@ title: 'Функции uniqTheta'
 doc_type: 'reference'
 ---
 
-# Функции uniqTheta \{#uniqtheta-functions\}
+Функции uniqTheta работают с двумя объектами типа uniqThetaSketch для выполнения вычислений операций над множествами, таких как ∪ / ∩ / × (объединение/пересечение/отрицание), и возвращают новый объект типа uniqThetaSketch, содержащий результат.
 
-Функции uniqTheta работают с двумя объектами uniqThetaSketch для выполнения вычислений операций над множествами, таких как ∪ / ∩ / × (объединение/пересечение/отрицание), и возвращают новый объект uniqThetaSketch, содержащий результат.
-
-Объект uniqThetaSketch создаётся агрегирующей функцией uniqTheta с суффиксом -State.
+Объект типа uniqThetaSketch создаётся агрегирующей функцией uniqTheta с суффиксом -State.
 
 UniqThetaSketch — это структура данных для хранения приближённого множества значений.
 Для дополнительной информации см.: [Theta Sketch Framework](https://datasketches.apache.org/docs/Theta/ThetaSketches.html#theta-sketch-framework).
@@ -41,7 +39,6 @@ FROM
 └───────────┴───────────────┴───────────────┘
 ```
 
-
 ## uniqThetaIntersect \{#uniqthetaintersect\}
 
 Выполняет вычисление пересечения (операция над множествами ∩) двух объектов uniqThetaSketch; результатом является новый uniqThetaSketch.
@@ -67,7 +64,6 @@ FROM
 │             1 │             2 │             3 │
 └───────────────┴───────────────┴───────────────┘
 ```
-
 
 ## uniqThetaNot \{#uniqthetanot\}
 

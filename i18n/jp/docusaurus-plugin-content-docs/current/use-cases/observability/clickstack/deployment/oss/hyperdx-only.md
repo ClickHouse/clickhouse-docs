@@ -21,7 +21,7 @@ HyperDX はスタックの他のコンポーネントとは独立して使用で
 
 すべての機能を有効にするには、ダッシュボード、保存済み検索、ユーザー設定、アラートなどのアプリケーション状態を保存するための MongoDB インスタンスを用意する必要があります。
 
-このモードでは、データのインジェストは完全にユーザー側の管理となります。独自にホストした OpenTelemetry collector、クライアントライブラリからの直接インジェスト、ClickHouse ネイティブのテーブルエンジン（Kafka や S3 など）、ETL パイプライン、あるいは ClickPipes のようなマネージドインジェストサービスを使用して、データを ClickHouse に取り込むことができます。このアプローチは最大限の柔軟性を提供し、すでに ClickHouse を運用していて、その上に HyperDX をレイヤーとして重ねて可視化、検索、アラートを実現したいチームに適しています。
+このモードでは、データのインジェストは完全にユーザー側の管理となります。独自にホストした OpenTelemetry collector、クライアントライブラリからの直接インジェスト、ClickHouse ネイティブのテーブルエンジン (Kafka や S3 など) 、ETL パイプライン、あるいは ClickPipes のようなマネージドインジェストサービスを使用して、データを ClickHouse に取り込むことができます。このアプローチは最大限の柔軟性を提供し、すでに ClickHouse を運用していて、その上に HyperDX をレイヤーとして重ねて可視化、検索、アラートを実現したいチームに適しています。
 
 
 ### 適用対象 \{#suitable-for\}
@@ -78,9 +78,3 @@ ClickHouse Cloud などの外部 ClickHouse クラスターに接続します。
 スタンドアロン collector のデプロイと設定の詳細については、[「OpenTelemetry によるインジェスト」](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration) を参照してください。
 
 <JSONSupport />
-
-HyperDX 専用イメージの場合、ユーザーは `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` パラメータを設定するだけで十分です。例:
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -e MONGO_URI=mongodb://YOUR_MONGODB_URI -p 8080:8080 docker.hyperdx.io/hyperdx/hyperdx
-```

@@ -11,8 +11,6 @@ import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
 
-# HTTP 인터페이스 \{#http-interface\}
-
 ## 전제 조건 \{#prerequisites\}
 
 이 문서의 예제를 따라 하려면 다음이 필요합니다.
@@ -630,7 +628,7 @@ __exception__
 
 ## 매개변수가 있는 쿼리 \{#cli-queries-with-parameters\}
 
-매개변수가 있는 쿼리를 작성하고, 해당 매개변수에 대한 값을 대응하는 HTTP 요청 매개변수로부터 전달할 수 있습니다. 자세한 내용은 [CLI용 매개변수가 있는 쿼리](../../interfaces/cli.md#cli-queries-with-parameters)를 참조하십시오.
+매개변수가 있는 쿼리를 작성하고, 해당 매개변수에 대한 값을 대응하는 HTTP 요청 매개변수로부터 전달할 수 있습니다. 자세한 내용은 [CLI용 매개변수가 있는 쿼리](/interfaces/client#cli-queries-with-parameters)를 참조하십시오.
 
 ### 예제 \{#example-3\}
 

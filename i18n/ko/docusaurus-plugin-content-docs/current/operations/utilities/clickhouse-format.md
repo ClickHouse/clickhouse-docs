@@ -1,11 +1,9 @@
 ---
-description: 'ClickHouse 데이터 포맷 작업을 위한 format 유틸리티 사용 안내'
+description: 'ClickHouse 데이터 포맷 작업을 위한 format 유틸리티 사용 가이드'
 slug: /operations/utilities/clickhouse-format
 title: 'clickhouse-format'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-# clickhouse-format 유틸리티 \{#clickhouse-format-utility\}
 
 입력 쿼리를 포맷합니다.
 
@@ -26,42 +24,36 @@ doc_type: 'reference'
 
 ## 예시 \{#examples\}
 
-1. 쿼리 포맷팅:
+1. 쿼리 포맷 설정:
 
-```bash
+```bash title="Query"
 $ clickhouse-format --query "select number from numbers(10) where number%2 order by number desc;"
 ```
 
-결과:
-
-```bash
+```bash title="Response"
 SELECT number
 FROM numbers(10)
 WHERE number % 2
 ORDER BY number DESC
 ```
 
-2. 하이라이트 및 한 줄:
+2. 강조 표시 및 한 줄 표시:
 
-```bash
+```bash title="Query"
 $ clickhouse-format --oneline --hilite <<< "SELECT sum(number) FROM numbers(5);"
 ```
 
-결과:
-
-```sql
+```sql title="Response"
 SELECT sum(number) FROM numbers(5)
 ```
 
 3. 다중 쿼리:
 
-```bash
+```bash title="Query"
 $ clickhouse-format -n <<< "SELECT min(number) FROM numbers(5); SELECT max(number) FROM numbers(5);"
 ```
 
-결과:
-
-```sql
+```sql title="Response"
 SELECT min(number)
 FROM numbers(5)
 ;
@@ -74,37 +66,31 @@ FROM numbers(5)
 
 4. 난독화:
 
-```bash
+```bash title="Query"
 $ clickhouse-format --seed Hello --obfuscate <<< "SELECT cost_first_screen BETWEEN a AND b, CASE WHEN x >= 123 THEN y ELSE NULL END;"
 ```
 
-결과:
-
-```sql
+```sql title="Response"
 SELECT treasury_mammoth_hazelnut BETWEEN nutmeg AND span, CASE WHEN chive >= 116 THEN switching ELSE ANYTHING END;
 ```
 
-동일한 쿼리에 다른 시드 문자열을 사용한 경우:
+같은 쿼리와 다른 시드 문자열:
 
-```bash
+```bash title="Query"
 $ clickhouse-format --seed World --obfuscate <<< "SELECT cost_first_screen BETWEEN a AND b, CASE WHEN x >= 123 THEN y ELSE NULL END;"
 ```
 
-결과:
-
-```sql
+```sql title="Response"
 SELECT horse_tape_summer BETWEEN folklore AND moccasins, CASE WHEN intestine >= 116 THEN nonconformist ELSE FORESTRY END;
 ```
 
-5. 역슬래시 추가:
+5. 백슬래시 추가:
 
-```bash
+```bash title="Query"
 $ clickhouse-format --backslash <<< "SELECT * FROM (SELECT 1 AS x UNION ALL SELECT 1 UNION DISTINCT SELECT 3);"
 ```
 
-결과:
-
-```sql
+```sql title="Response"
 SELECT * \
 FROM  \
 ( \

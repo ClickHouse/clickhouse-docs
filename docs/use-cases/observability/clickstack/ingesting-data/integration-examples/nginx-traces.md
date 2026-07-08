@@ -10,14 +10,11 @@ keywords: ['ClickStack', 'Nginx', 'traces', 'otel']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-nginx-traces-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring Nginx Traces with ClickStack {#nginx-traces-clickstack}
 
 :::note[TL;DR]
 Capture distributed traces from Nginx in ClickStack using the OpenTelemetry Nginx module. Includes a demo dataset and pre-built dashboard.
@@ -249,7 +246,7 @@ To help you get started monitoring traces with ClickStack, we provide essential 
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nginx-traces-dashboard.json'} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 1. Open HyperDX and navigate to the Dashboards section.

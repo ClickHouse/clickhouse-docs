@@ -7,10 +7,8 @@ title: 'Keeper HTTP API およびダッシュボード'
 doc_type: 'reference'
 ---
 
-# Keeper HTTP API とダッシュボード \{#keeper-http-api-and-dashboard\}
-
-ClickHouse Keeper は、監視・ヘルスチェック・ストレージ管理のための HTTP API と組み込み Web ダッシュボードを提供します。
-このインターフェースを使用すると、運用者は Web ブラウザや HTTP クライアントを通じて、クラスタの状態を確認し、コマンドを実行し、Keeper ストレージを管理できます。
+ClickHouse Keeper は、監視、ヘルスチェック、およびストレージ管理のための HTTP API と埋め込み Web ダッシュボードを提供します。
+このインターフェイスにより、運用担当者は Web ブラウザーまたは HTTP クライアントを使用して、クラスターの状態を確認し、コマンドを実行し、Keeper ストレージを管理できます。
 
 ## 設定 \{#configuration\}
 

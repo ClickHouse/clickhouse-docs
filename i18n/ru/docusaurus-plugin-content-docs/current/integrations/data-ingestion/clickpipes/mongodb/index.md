@@ -2,7 +2,7 @@
 sidebar_label: 'Ингестия данных из MongoDB в ClickHouse'
 description: 'Описывает, как напрямую подключить вашу MongoDB к ClickHouse Cloud.'
 slug: /integrations/clickpipes/mongodb
-title: 'Ингестия данных из MongoDB в ClickHouse (с использованием CDC)'
+title: 'Ингестия данных из MongoDB в ClickHouse (с использованием CDC (фиксация изменений данных))'
 doc_type: 'руководство'
 keywords: ['clickpipes', 'mongodb', 'cdc', 'ингестия данных', 'синхронизация в реальном времени']
 integration:
@@ -20,20 +20,19 @@ import ch_permissions from '@site/static/images/integrations/data-ingestion/clic
 import Image from '@theme/IdealImage';
 import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ssh-tunnel.jpg'
 
-
-# Приём данных из MongoDB в ClickHouse (с использованием CDC) \{#ingesting-data-from-mongodb-to-clickhouse-using-cdc\}
-
-<BetaBadge/>
+<BetaBadge />
 
 :::info
-Приём данных из MongoDB в ClickHouse Cloud через ClickPipes находится в стадии публичного бета-тестирования.
+Ингестия данных из MongoDB в ClickHouse Cloud через ClickPipes находится в стадии публичной бета-версии.
 :::
 
 :::note
-В консоли и документации ClickHouse Cloud термины «table» и «collection» используются как взаимозаменяемые для MongoDB.
+В консоли ClickHouse Cloud и документации термины &quot;table&quot; и &quot;collection&quot; применительно к MongoDB используются как синонимы.
 :::
 
-Вы можете использовать ClickPipes для приёма данных из базы данных MongoDB в ClickHouse Cloud. Исходная база данных MongoDB может размещаться в локальной инфраструктуре (on-premises) или в облаке с использованием таких сервисов, как MongoDB Atlas.
+Вы можете использовать ClickPipes для ингестии данных из вашей базы данных MongoDB в ClickHouse Cloud. Исходная база данных MongoDB может размещаться локально или в облаке с использованием таких сервисов, как MongoDB Atlas.
+
+MongoDB ClickPipes можно развертывать и управлять ими вручную через интерфейс ClickPipes, а также программно с помощью [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) и [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Предварительные требования \{#prerequisites\}
 

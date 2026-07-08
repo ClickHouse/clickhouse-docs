@@ -22,14 +22,12 @@ import client_details from '@site/static/images/_snippets/client_details.png';
 import new_rows_from_csv from '@site/static/images/_snippets/new_rows_from_csv.png';
 import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_launch_sql_console.md';
 
-# Быстрый старт с ClickHouse Cloud \{#clickhouse-cloud-quick-start\}
-
 > Самый быстрый и простой способ начать работу с ClickHouse — создать новый
-> сервис в [ClickHouse Cloud](https://console.clickhouse.cloud). В этом руководстве по быстрому старту вы сможете настроить систему
-> в три простых шага.
+> сервис в [ClickHouse Cloud](https://console.clickhouse.cloud). В этом руководстве по быстрому старту вы выполните настройку
+> за три простых шага.
 
 <VerticalStepper type="numbered">
-  ## Создайте сервис ClickHouse \{#1-create-a-clickhouse-service\}
+  ## Создайте сервис ClickHouse
 
   Чтобы создать бесплатный сервис ClickHouse в [ClickHouse Cloud](https://console.clickhouse.cloud), вам нужно просто зарегистрироваться, выполнив следующие шаги:
 
@@ -48,7 +46,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  По умолчанию новые организации размещаются на тарифе Scale и создают 3 реплики, каждая с 4 виртуальными процессорами и 16 ГиБ оперативной памяти. [Вертикальное автомасштабирование](/manage/scaling#vertical-auto-scaling) включено по умолчанию на тарифе Scale. Вы можете изменить тариф организации позже на странице &#39;Тарифы&#39;.
+  По умолчанию новые организации размещаются на тарифе Scale и создают 3 реплики, каждая с 4 виртуальными процессорами и 16 ГиБ оперативной памяти. [Вертикальное автомасштабирование](/cloud/features/autoscaling/vertical) включено по умолчанию на тарифе Scale. Вы можете изменить тариф организации позже на странице &#39;Тарифы&#39;.
 
   При необходимости можно настроить ресурсы сервиса, указав минимальное и максимальное количество реплик для масштабирования. Когда всё готово, нажмите `Create service`.
 
@@ -58,16 +56,16 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   Поздравляем! Ваш сервис ClickHouse Cloud запущен и работает, процесс подключения завершён. Продолжайте чтение, чтобы узнать, как начать приём данных и выполнять запросы к ним.
 
-  ## Подключение к ClickHouse \{#2-connect-to-clickhouse\}
+  ## Подключение к ClickHouse
 
   Существует два способа подключения к ClickHouse:
 
   * Подключитесь через нашу веб-консоль SQL
-  * Подключение из приложения
+  * Подключение приложения
 
   <br />
 
-  ### Подключение через SQL-консоль \{#connect-using-sql-console\}
+  ### Подключение через SQL-консоль
 
   Для быстрого начала работы ClickHouse предоставляет веб-консоль SQL, на которую вы будете перенаправлены после завершения онбординга.
 
@@ -81,13 +79,13 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   В списке должно отображаться 4 базы данных, а также все добавленные вами.
 
-  <Image img={show_databases} size="md" alt="SQL-консоль" border />
+  <Image img={show_databases} size="md" alt="SQL Console" border />
 
   <br />
 
   Вот и всё — вы готовы начать использовать свой новый сервис ClickHouse!
 
-  ### Подключение приложения \{#connect-with-your-app\}
+  ### Подключение приложения
 
   Нажмите кнопку подключения в меню навигации. Откроется модальное окно с учетными данными для вашего сервиса и инструкциями по подключению с использованием вашего интерфейса или клиентских библиотек.
 
@@ -97,7 +95,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   Если вы не видите клиент для вашего языка программирования, ознакомьтесь со списком [интеграций](/integrations).
 
-  ## Добавление данных \{#3-add-data\}
+  ## Добавление данных
 
   ClickHouse эффективнее всего работает с данными! Существует несколько способов добавления данных, большинство из которых доступны на странице Data Sources, доступной из навигационного меню.
 
@@ -113,7 +111,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   * Загрузите файл — поддерживаются форматы JSON, CSV и TSV
   * Загрузите данные из файла по URL-адресу
 
-  ### ClickPipes \{#clickpipes\}
+  ### ClickPipes
 
   [ClickPipes](http://clickhouse.com/docs/integrations/clickpipes) — управляемая платформа интеграции, которая упрощает приём данных из различных источников до нескольких нажатий кнопок. Разработанная для самых требовательных рабочих нагрузок, надёжная и масштабируемая архитектура ClickPipes обеспечивает стабильную производительность и отказоустойчивость. ClickPipes можно использовать как для долгосрочной потоковой передачи данных, так и для однократной загрузки.
 
@@ -121,7 +119,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
   <br />
 
-  ### Добавление данных через SQL Console \{#add-data-using-the-sql-console\}
+  ### Добавление данных через SQL Console
 
   Как и большинство систем управления базами данных, ClickHouse логически группирует таблицы в **базы данных**. Для создания новой базы данных в ClickHouse используйте команду [`CREATE DATABASE`](../../sql-reference/statements/create/database.md):
 
@@ -146,7 +144,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   В приведённом выше примере `my_first_table` — это таблица [`MergeTree`](../../engines/table-engines/mergetree-family/mergetree.md) с четырьмя столбцами:
 
   * `user_id`:  32-битное целое число без знака ([UInt32](../../sql-reference/data-types/int-uint.md))
-  * `message`: тип данных [String](../../sql-reference/data-types/string.md), который заменяет такие типы, как `VARCHAR`, `BLOB`, `CLOB` и другие типы в сторонних системах управления базами данных
+  * `message`: тип данных [String](../../sql-reference/data-types/string.md), который заменяет такие типы, как `VARCHAR`, `BLOB`, `CLOB` и другие типы данных в других системах управления базами данных
   * `timestamp`: значение типа [DateTime](../../sql-reference/data-types/datetime.md), представляющее момент времени
   * `metric`: 32-битное число с плавающей запятой ([Float32](../../sql-reference/data-types/float.md))
 
@@ -162,11 +160,11 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   Существует множество движков таблиц, но для простой таблицы на одноузловом сервере ClickHouse чаще всего выбирают [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md).
   :::
 
-  #### Краткое введение в первичные ключи \{#a-brief-intro-to-primary-keys\}
+  #### Краткое введение в первичные ключи
 
   Прежде чем двигаться дальше, важно понять, как работают первичные ключи в ClickHouse (их реализация может оказаться неожиданной!):
 
-  * первичные ключи в ClickHouse ***не уникальны*** для каждой строки таблицы
+  * первичные ключи в ClickHouse ***не являются уникальными*** для каждой строки таблицы
 
   Первичный ключ таблицы ClickHouse определяет порядок сортировки данных при записи на диск. Каждые 8192 строки или 10 МБ
   данных (называемые **гранулярностью индекса**) создают запись в файле индекса первичного ключа. Эта концепция гранулярности
@@ -176,12 +174,12 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   Первичный ключ определяется с помощью параметра `PRIMARY KEY`. Если таблица создаётся без указания `PRIMARY KEY`,
   ключом становится кортеж, заданный в предложении `ORDER BY`. При одновременном указании `PRIMARY KEY` и `ORDER BY` первичный ключ должен быть подмножеством порядка сортировки.
 
-  Первичный ключ также является ключом сортировки и представляет собой кортеж `(user_id, timestamp)`. Таким образом, данные в каждом
+  Первичный ключ также является сортировочным ключом и представляет собой кортеж `(user_id, timestamp)`. Таким образом, данные в каждом
   файле столбца будут отсортированы сначала по `user_id`, затем по `timestamp`.
 
   Для более глубокого изучения основных концепций ClickHouse см. [&quot;Основные концепции&quot;](../../managing-data/core-concepts/index.md).
 
-  #### Вставка данных в таблицу \{#insert-data-into-your-table\}
+  #### Вставка данных в таблицу
 
   Вы можете использовать знакомую команду [`INSERT INTO TABLE`](../../sql-reference/statements/insert-into.md) в ClickHouse, но важно понимать, что каждая вставка в таблицу [`MergeTree`](/engines/table-engines/mergetree-family/mergetree.md) приводит к созданию **части** в хранилище.
 
@@ -211,7 +209,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   SELECT * FROM helloworld.my_first_table
   ```
 
-  ### Добавление данных с помощью клиента ClickHouse \{#add-data-using-the-clickhouse-client\}
+  ### Добавление данных с помощью клиента ClickHouse
 
   Вы также можете подключиться к сервису ClickHouse Cloud с помощью утилиты командной строки [**clickhouse client**](/interfaces/cli). Нажмите `Connect` в левом меню, чтобы получить эти сведения. В диалоговом окне выберите `Native` из выпадающего списка:
 
@@ -291,7 +289,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
   exit
   ```
 
-  ### Загрузка файла \{#upload-a-file\}
+  ### Загрузка файла
 
   Распространённая задача при начале работы с базой данных — загрузить имеющиеся данные из файлов. Мы предоставляем образцы данных онлайн, которые можно использовать для демонстрации работы с данными о кликах (clickstream) — они включают идентификатор пользователя, посещённый URL и временную метку события.
 
@@ -333,7 +331,7 @@ import SQLConsoleDetail from '@site/i18n/ru/docusaurus-plugin-content-docs/curre
 
 * В [учебнике](/tutorial.md) вы вставите 2 миллиона строк в таблицу и выполните несколько аналитических запросов
 * У нас есть список [примеров наборов данных](/getting-started/index.md) с инструкциями по их загрузке
-* Посмотрите наше 25‑минутное видео [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/)
+* Посмотрите наше 12‑минутное видео [Getting Started with ClickHouse](https://clickhouse.com/company/events/getting-started-with-clickhouse/)
 * Если ваши данные поступают из внешнего источника, ознакомьтесь с [подборкой руководств по интеграции](/integrations/index.mdx) для подключения к очередям сообщений, базам данных, конвейерам и другим системам
 * Если вы используете UI/BI‑инструмент визуализации, ознакомьтесь с [руководствами по подключению UI к ClickHouse](/integrations/data-visualization)
 * Руководство пользователя по [первичным ключам](/guides/best-practices/sparse-primary-indexes.md) содержит всё необходимое о первичных ключах и их определении

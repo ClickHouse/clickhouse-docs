@@ -7,9 +7,7 @@ title: 'Сборка на Linux для E2K'
 doc_type: 'guide'
 ---
 
-# Сборка на Linux для E2K \{#build-on-linux-for-e2k\}
-
-В ClickHouse имеется экспериментальная поддержка архитектуры E2K (Эльбрус‑2000), и он может быть скомпилирован только в нативном режиме с минимальной конфигурацией, используя специально собранные для E2K библиотеки, такие как Boost, jemalloc, libunwind, Zstd.
+ClickHouse имеет экспериментальную поддержку E2K (Elbrus-2000) и может быть собран только в нативном режиме с минимальной конфигурацией, с использованием специально собранных для E2K библиотек, таких как boost, jemalloc, libunwind и zstd.
 
 ## Сборка ClickHouse \{#build-clickhouse\}
 
@@ -24,7 +22,7 @@ cmake -DCMAKE_CROSSCOMPILING=OFF -DCOMPILER_CACHE=disabled \
  -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr \
  -DGLIBC_COMPATIBILITY=OFF -DENABLE_LIBRARIES=OFF -DWERROR=OFF \
  -DENABLE_SSL=OFF -DENABLE_OPENSSL_DYNAMIC=ON \
- -DUSE_SIMDJSON=OFF -DENABLE_JEMALLOC=OFF -DENABLE_TESTS=OFF -DUSE_SYSTEM_COMPILER_RT=OFF \
+ -DUSE_SIMDJSON=OFF -DENABLE_JEMALLOC=OFF -DENABLE_TESTS=OFF \
  -DBOOST_USE_UCONTEXT=ON -DENABLE_NURAFT=ON -DENABLE_RAPIDJSON=ON -DUSE_LIBFIU=ON ..
 ninja -j8
 ```

@@ -1,5 +1,5 @@
 ---
-description: '聚合函数概览页，包含所有聚合函数的完整列表'
+description: '聚合函数的入口页，包含完整的聚合函数列表'
 sidebar_position: 36
 slug: /sql-reference/aggregate-functions/reference/
 title: '聚合函数'
@@ -8,9 +8,7 @@ toc_hidden: true
 doc_type: 'landing-page'
 ---
 
-# 聚合函数 \{#aggregate-functions\}
-
-ClickHouse 支持所有标准 SQL 聚合函数（[sum](../reference/sum.md)、[avg](../reference/avg.md)、[min](../reference/min.md)、[max](../reference/max.md)、[count](../reference/count.md)），以及大量其他聚合函数。
+ClickHouse 支持所有标准 SQL 聚合函数 ([sum](../reference/sum.md)、[avg](../reference/avg.md)、[min](../reference/min.md)、[max](../reference/max.md)、[count](../reference/count.md)) ，以及大量其他聚合函数。
 
 {/* 本页的目录表格由以下脚本自动生成：
   https://github.com/ClickHouse/clickhouse-docs/blob/main/scripts/autogenerate-table-of-contents.sh

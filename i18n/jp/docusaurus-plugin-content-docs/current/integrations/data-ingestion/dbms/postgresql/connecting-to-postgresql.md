@@ -1,8 +1,8 @@
 ---
 slug: /integrations/postgresql/connecting-to-postgresql
-title: 'PostgreSQL への接続'
+title: 'ClickHouse と PostgreSQL の接続'
 keywords: ['clickhouse', 'postgres', 'postgresql', 'connect', 'integrate', 'table', 'engine']
-description: 'PostgreSQL を ClickHouse に接続するさまざまな方法を説明するページです'
+description: 'PostgreSQL を ClickHouse に接続するさまざまな方法を説明するページ'
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -10,16 +10,13 @@ doc_type: 'guide'
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# ClickHouse と PostgreSQL の接続 \{#connecting-clickhouse-to-postgresql\}
-
 このページでは、PostgreSQL と ClickHouse を統合するための次のオプションについて説明します。
 
 * PostgreSQL のテーブルから読み取るための `PostgreSQL` テーブルエンジンの利用
 * PostgreSQL 内のデータベースと ClickHouse 内のデータベースを同期するための、実験的な `MaterializedPostgreSQL` データベースエンジンの利用
 
 :::tip
-当社の [Managed Postgres](/docs/cloud/managed-postgres) サービスをご検討ください。コンピュートと物理的に同一場所にある NVMe ストレージを採用しており、EBS のようなネットワーク接続ストレージを使用する代替手段と比べて、ディスクボトルネックとなるワークロードで最大 10 倍の高いパフォーマンスを実現します。また、ClickPipes の Postgres CDC（変更データキャプチャ）コネクタを使用して、Postgres データを ClickHouse にレプリケートできます。
+当社の [Managed Postgres](/docs/cloud/managed-postgres) サービスをご検討ください。コンピュートと物理的に同一場所にある NVMe ストレージを採用しており、EBS のようなネットワーク接続ストレージを使用する代替手段と比べて、ディスクボトルネックとなるワークロードで最大 10 倍の高いパフォーマンスを実現します。また、ClickPipes の Postgres CDC (変更データキャプチャ) コネクタを使用して、Postgres データを ClickHouse にレプリケートできます。
 :::
 
 ## PostgreSQL テーブルエンジンの使用 \{#using-the-postgresql-table-engine\}
@@ -336,7 +333,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 
 ┌─id─┬─column1─┐
@@ -346,7 +345,6 @@ Query id: df2381ac-4e30-4535-b22e-8be3894aaafc
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 3. 基本的なレプリケーションをテストする \{#3-test-basic-replication\}
 
@@ -367,7 +365,9 @@ ch_env_2 :) select * from db1_postgres.table1;
 
 SELECT *
 FROM db1_postgres.table1
+```
 
+```response
 Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 
 ┌─id─┬─column1─┐
@@ -383,7 +383,6 @@ Query id: b0729816-3917-44d3-8d1a-fed912fb59ce
 │  2 │ def     │
 └────┴─────────┘
 ```
-
 
 ### 4. まとめ \{#4-summary\}
 

@@ -7,8 +7,6 @@ title: '조합 가능한 프로토콜'
 doc_type: 'reference'
 ---
 
-# 조합형 프로토콜 \{#composable-protocols\}
-
 ## 개요 \{#overview\}
 
 Composable 프로토콜을 사용하면 ClickHouse 서버에 대한 TCP 접근을 보다 유연하게 구성할 수 있습니다. 이 구성은 기존 구성 방식과 병행하여 사용할 수도 있고, 기존 구성 방식을 대체할 수도 있습니다.

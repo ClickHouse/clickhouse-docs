@@ -29,26 +29,23 @@ import powerbi_dsn_credentials from '@site/static/images/integrations/data-visua
 import powerbi_16 from '@site/static/images/integrations/data-visualization/powerbi_16.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Power BI \{#power-bi\}
+Microsoft Power BI は、[ClickHouse Cloud](https://clickhouse.com/cloud) またはセルフマネージド環境のデータに対してクエリを実行したり、データをメモリに読み込んだりできます。
 
-<ClickHouseSupportedBadge/>
+データの可視化に使用できる Power BI には、いくつかの種類があります。
 
-Microsoft Power BI は、[ClickHouse Cloud](https://clickhouse.com/cloud) または自己管理型のデプロイメント環境からデータをクエリしたり、メモリ内にロードしたりできます。
+* Power BI Desktop: ダッシュボードやビジュアライゼーションを作成するための Windows デスクトップ アプリケーション
+* Power BI サービス: Azure 内で SaaS として利用でき、Power BI Desktop で作成したダッシュボードをホストします
 
-データを可視化するために使用できる Power BI には、いくつかの形態があります。
+Power BI では、Desktop 版でダッシュボードを作成し、それを Power BI サービス に公開する必要があります。
 
-* Power BI Desktop: ダッシュボードや可視化を作成するための Windows デスクトップアプリケーション
-* Power BI Service: Power BI Desktop で作成したダッシュボードをホストするための SaaS として Azure 上で提供されるサービス
+このチュートリアルでは、次の手順を説明します。
 
-Power BI では、Desktop 版でダッシュボードを作成し、それを Power BI Service に公開する必要があります。
-
-このチュートリアルでは、次の手順について説明します。
-
-* [ClickHouse ODBC ドライバーをインストールする](#install-the-odbc-driver)
-* [ClickHouse Power BI Connector を Power BI Desktop にインストールする](#power-bi-installation)
-* [Power BI Desktop での可視化のために ClickHouse からデータをクエリする](#query-and-visualise-data)
-* [Power BI Service 用のオンプレミス データ ゲートウェイをセットアップする](#power-bi-service)
+* [ClickHouse ODBC Driver のインストール](#install-the-odbc-driver)
+* [Power BI Desktop への ClickHouse Power BI Connector のインストール](#power-bi-installation)
+* [Power BI Desktop で可視化するための ClickHouse データへのクエリ](#query-and-visualise-data)
+* [Power BI サービス 用のオンプレミス データ ゲートウェイの設定](#power-bi-service)
 
 ## 前提条件 \{#prerequisites\}
 

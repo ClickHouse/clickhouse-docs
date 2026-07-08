@@ -14,8 +14,6 @@ integration:
 import failover_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/failover_slot.png'
 import Image from '@theme/IdealImage';
 
-# ClickPipes for Postgres FAQ
-
 ### Are transaction rollbacks replicated to ClickHouse? {#are-transaction-rollbacks-replicated}
 
 No. CDC replicates only committed transactions. Rolled-back transactions are never sent to ClickHouse.
@@ -277,7 +275,6 @@ max_slot_wal_keep_size = 200GB
 It is a recoverable, completely non-fatal error. ClickPipes will automatically attempt to reconnect and resume the replication process.
 
 It can happen for a few reasons:
-- **Low wal_sender_timeout:** Make sure `wal_sender_timeout` is 5 minutes or higher. This setting controls how long the server waits for a response from the client before closing the connection. If the timeout is too low, it can lead to premature disconnections.
 - **Network Issues:** Temporary network disruptions can cause the connection to drop.
 - **Postgres Server Restart:** If the Postgres server is restarted or crashes, the connection will be lost.
 

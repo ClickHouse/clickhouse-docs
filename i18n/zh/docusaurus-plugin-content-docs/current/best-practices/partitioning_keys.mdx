@@ -16,7 +16,7 @@ import merges_with_partitions from '@site/static/images/bestpractices/merges_wit
 分区本质上是一种数据管理技术，而非查询优化工具。尽管它可以在特定工作负载下提升性能，但不应作为加速查询的首选机制；必须在充分理解其影响的前提下谨慎选择分区键，并且仅在其与数据生命周期需求或已充分分析的访问模式相契合时才使用。
 :::
 
-在 ClickHouse 中，分区会根据指定的键将数据组织成逻辑片段。这通过在建表时使用 `PARTITION BY` 子句来定义，通常用于按时间区间、类别或其他与业务相关的维度对行进行分组。分区表达式的每个唯一值都会在磁盘上形成其独立的物理分区，ClickHouse 会针对每个值将数据存储在各自的 part 中。分区能够改进数据管理，简化数据保留策略，并且可以帮助优化某些查询模式。
+在 ClickHouse 中，分区会根据指定的键将数据组织成逻辑片段。这通过在建表时使用 `PARTITION BY` 子句来定义，通常用于按时间区间、类别或其他与业务相关的维度对行进行分组。分区表达式的每个唯一值都会在磁盘上形成其独立的物理分区，ClickHouse 会针对每个值将数据存储在各自的 分区片段 中。分区能够改进数据管理，简化数据保留策略，并且可以帮助优化某些查询模式。
 
 例如，考虑下面这个英国房产成交价格数据集的表，它使用 `toStartOfMonth(date)` 作为分区键。
 
@@ -33,7 +33,7 @@ ORDER BY (town, street)
 PARTITION BY toStartOfMonth(date)
 ```
 
-每当向表中插入一组行时，ClickHouse 不会像[这里](/operations/settings/settings#max_insert_block_size)描述的那样创建一个包含所有插入行的单一数据部分，而是会针对插入行中每个唯一的分区键值创建一个新的数据部分：
+每当向表中插入一组行时，ClickHouse 不会像[此处](/operations/settings/settings#max_insert_block_size)描述的那样创建一个包含所有插入行的单一分区片段，而是会针对插入行中每个唯一的分区键值创建一个新的分区片段：
 
 <Image img={partitions} size="lg" alt="分区" />
 
@@ -41,7 +41,7 @@ ClickHouse 服务器首先根据分区键值 `toStartOfMonth(date)` 将上图示
 
 如需更详细的分区说明，建议参阅[本指南](/partitions)。
 
-启用分区后，ClickHouse 只会在分区内部对数据部分进行[合并](/merges)，而不会跨分区进行合并。我们在上面的示例表中对此进行了说明，见[这里](/parts)：
+启用分区后，ClickHouse 只会在分区内部对分区片段进行[合并](/merges)，而不会跨分区进行合并。我们在上面的示例表中对此进行了说明，见[此处](/parts)：
 
 <Image img={merges_with_partitions} size="md" alt="分区" />
 

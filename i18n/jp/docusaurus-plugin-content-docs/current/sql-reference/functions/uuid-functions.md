@@ -420,7 +420,7 @@ SELECT dateTimeToSnowflakeID(toDateTime('2021-08-15 18:57:56', 'Asia/Shanghai'))
 
 ## dateTimeToUUIDv7 \{#dateTimeToUUIDv7\}
 
-導入バージョン: v25.9.0
+導入バージョン: v25.8.0
 
 与えられた時刻の [DateTime](../data-types/datetime.md) 値を基に、その時刻の [UUIDv7](https://en.wikipedia.org/wiki/UUID#Version_7) を生成します。
 
@@ -473,7 +473,6 @@ SELECT dateTimeToUUIDv7(toDateTime('2021-08-15 18:57:56'));
 │ 017b4b2d-7720-76ed-ae44-bbcf71ed0fd3 │
 └──────────────────────────────────────┘
 ```
-
 
 ## generateSnowflakeID \{#generateSnowflakeID\}
 

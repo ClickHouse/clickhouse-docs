@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Backup or restore using UI'
 slug: /cloud/manage/backups/backup-restore-via-ui
-title: 'Take a backup or restore a backup from the UI'
+title: 'Backup / restore via user-interface'
 description: 'Page describing how to take a backup or restore a backup from the UI with your own bucket'
 sidebar_position: 2
 doc_type: 'guide'
@@ -21,7 +21,9 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
-# Backup / restore via user-interface {#ui-experience}
+:::note
+Automated backups to your external bucket are configured to run as "full" backups every 24 hours, and the frequency is not configurable.  
+:::
 
 ## AWS {#AWS}
 

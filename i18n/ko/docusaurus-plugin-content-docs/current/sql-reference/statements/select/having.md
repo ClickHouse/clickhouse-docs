@@ -1,12 +1,10 @@
 ---
-description: 'HAVING 절에 대한 설명서'
+description: 'HAVING 절에 대한 문서'
 sidebar_label: 'HAVING'
 slug: /sql-reference/statements/select/having
 title: 'HAVING 절'
 doc_type: 'reference'
 ---
-
-# HAVING 절 \{#having-clause\}
 
 [GROUP BY](/sql-reference/statements/select/group-by)를 사용해 생성된 집계 결과를 필터링합니다. [WHERE](../../../sql-reference/statements/select/where.md) 절과 유사하지만, `WHERE`는 집계가 수행되기 전에 실행되고 `HAVING`은 집계가 수행된 후에 실행된다는 차이가 있습니다.
 
@@ -14,7 +12,7 @@ doc_type: 'reference'
 
 ## 예시 \{#example\}
 
-다음과 같은 `sales` 테이블이 있다고 가정해 보겠습니다:
+다음과 같은 `sales` 테이블이 있다고 가정하겠습니다:
 
 ```sql
 CREATE TABLE sales

@@ -2,7 +2,7 @@
 sidebar_label: 'MinIO'
 sidebar_position: 6
 slug: /integrations/minio
-description: '介绍如何在 ClickHouse 中使用 MinIO 的页面'
+description: '介绍如何将 MinIO 与 ClickHouse 配合使用的页面'
 title: '使用 MinIO'
 doc_type: 'guide'
 integration:
@@ -10,8 +10,6 @@ integration:
   - category: 'data_ingestion'
 keywords: ['s3', 'minio', '对象存储', '数据加载', '兼容存储']
 ---
-
-# 使用 MinIO \{#using-minio\}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 

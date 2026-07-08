@@ -1,20 +1,18 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
-sidebar_label: '시맨틱 레이어로 ClickHouse Assistant 채팅 맞춤화하기'
-title: '시맨틱 레이어로 ClickHouse Assistant 에이전트 대화 최적화하기'
+sidebar_label: '시맨틱 레이어로 ClickHouse Assistant 채팅 커스터마이징하기'
+title: '시맨틱 레이어로 ClickHouse Assistant 대화 최적화하기'
 pagination_prev: null
 pagination_next: null
-description: 'AGENTS.md를 사용하여 ClickHouse Assistant 채팅 에이전트에 맞춤 비즈니스 로직과 데이터별 지침을 제공하는 방법에 대한 가이드'
+description: 'AGENTS.md를 사용하여 ClickHouse Assistant 채팅 에이전트에 사용자 지정 비즈니스 로직과 데이터별 지침을 제공하는 방법에 대한 가이드'
 keywords: ['AI', 'ClickHouse Cloud', 'Agent', 'AGENTS.md', 'Semantic Layer', 'Custom Instructions', 'System Prompt']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 시맨틱 레이어로 ClickHouse Assistant 채팅 커스터마이징하기 \{#customize-clickhouse-assistant-chat-with-a-semantic-layer\}
+ClickHouse Assistant 채팅 에이전트는 에이전트의 system prompt에 시맨틱 레이어로 추가되는 특수한 저장된 쿼리인 **AGENTS.md**를 통해 특정 비즈니스 로직, 데이터 구조, 도메인 지식을 이해하도록 커스터마이징할 수 있습니다.
 
-ClickHouse Assistant 채팅 에이전트는 **AGENTS.md**를 통해 조직의 비즈니스 로직, 데이터 구조, 도메인 지식을 이해하도록 커스터마이징할 수 있습니다. **AGENTS.md**는 에이전트의 시스템 프롬프트 위에 시맨틱 레이어 역할을 하는, 특별한 저장된 쿼리입니다.
-
-AGENTS.md 파일을 생성하면 각 대화가 시작될 때마다 주입되는 사용자 정의 지시 사항을 제공하여, 조직 고유의 요구 사항, 계산, 관례에 기반해 SQL 쿼리 생성과 데이터 분석을 안내할 수 있습니다.
+AGENTS.md 파일을 만들면 조직의 고유한 요구 사항, 계산 방식, 규칙에 따라 SQL 쿼리 생성과 데이터 분석을 안내할 수 있도록, 모든 대화 시작 시 주입되는 사용자 지정 지침을 제공할 수 있습니다.
 
 ## 작동 방식 \{#how-it-works\}
 

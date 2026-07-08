@@ -7,16 +7,15 @@ title: 'Google Cloud Storage と ClickHouse Cloud の連携'
 doc_type: 'guide'
 ---
 
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
-import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
-import gcs_subscription_input from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png';
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import Image from '@theme/IdealImage';
+import cp_iam from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png"
+import cp_credentials from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png"
+import gcs_subscription_input from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png"
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import Image from "@theme/IdealImage"
 
-GCS ClickPipe は、Google Cloud Storage (GCS) からデータをインジェストするための、フルマネージドで高い耐障害性を備えた手段を提供します。**一度限り**のインジェストと**継続的なインジェスト**の両方を、exactly-once セマンティクスでサポートします。
+GCS ClickPipe は、Google Cloud Storage (GCS) からデータをインジェストするための、フルマネージドで高い耐障害性を備えた手段を提供します。**一回限り**のインジェストと**継続的なインジェスト**の両方を、exactly-once セマンティクスでサポートします。
 
-GCS ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) や [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) を使用してプログラムから管理することもできます。
-
+GCS ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムから管理することもできます。
 
 ## サポートされる形式 \{#supported-formats\}
 
@@ -163,9 +162,9 @@ ClickPipes には、多くのユースケースの要件を満たす妥当なデ
 
 ### スケーリング \{#scaling\}
 
-Object Storage ClickPipes は、[垂直オートスケーリング設定の構成](/manage/scaling#configuring-vertical-auto-scaling)によって決定される最小の ClickHouse サービスサイズに基づいてスケーリングされます。ClickPipe のサイズは、ClickPipe 作成時に決定されます。その後に ClickHouse サービス設定を変更しても、ClickPipe のサイズには影響しません。
+Object Storage ClickPipes は、[垂直オートスケーリング設定の構成](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)によって決定される最小の ClickHouse サービスサイズに基づいてスケーリングされます。ClickPipe のサイズは、ClickPipe 作成時に決定されます。その後に ClickHouse サービス設定を変更しても、ClickPipe のサイズには影響しません。
 
-大規模な取り込みジョブのスループット（処理能力）を向上させるには、ClickPipe を作成する前に ClickHouse サービスをスケーリングすることを推奨します。
+大規模な取り込みジョブのスループット (処理能力) を向上させるには、ClickPipe を作成する前に ClickHouse サービスをスケーリングすることを推奨します。
 
 ## 既知の制限事項 \{#known-limitations\}
 

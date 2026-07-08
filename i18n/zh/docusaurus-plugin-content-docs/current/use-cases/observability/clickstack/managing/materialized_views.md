@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/materialized_views
-title: 'ClickStack - Materialized Views'
-sidebar_label: 'Materialized Views'
+title: 'ClickStack - materialized views'
+sidebar_label: 'Materialized views'
 description: '使用 materialized view 优化 ClickStack 性能'
 doc_type: 'guide'
 keywords: ['clickstack', '可观测性', 'materialized views', '性能', '优化', '可视化', '聚合']
@@ -356,13 +356,17 @@ GROUP BY
     hour,
     ServiceName
 ORDER BY hour DESC
+```
 
+```response
 ┌─database─┬─table──────────┬─parts─┬──rows─┬─marks─┐
 │ otel_v2  │ otel_traces_1m │     1 │ 49385 │     6 │
 └──────────┴────────────────┴───────┴───────┴───────┘
 
 1 row in set. Elapsed: 0.009 sec.
+```
 
+```sql
 EXPLAIN ESTIMATE
 SELECT
     toStartOfHour(Timestamp) AS hour,
@@ -373,7 +377,9 @@ GROUP BY
     hour,
     ServiceName
 ORDER BY hour DESC
+```
 
+```response
 ┌─database─┬─table─────────────┬─parts─┬───rows─┬─marks─┐
 │ otel_v2  │ otel_traces_1m_v2 │     1 │ 212519 │    26 │
 └──────────┴───────────────────┴───────┴────────┴───────┘
@@ -384,7 +390,6 @@ ORDER BY hour DESC
 由于 `otel_traces_1m` 更小且需要扫描的数据块更少，因此会被自动选用。
 
 这两个 materialized view 的性能都优于直接查询基础表，但选择满足需求的最小视图可以获得最佳性能。
-
 
 ### 告警 \{#alerts\}
 

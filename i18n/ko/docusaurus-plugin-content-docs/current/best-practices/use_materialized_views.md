@@ -21,12 +21,11 @@ ClickHouse는 두 가지 유형의 materialized view를 지원합니다: [**incr
 
 <Image img={incremental_materialized_view} size="lg" alt="Materialized view" />
 
-**갱신 가능 구체화 뷰**, 즉 refreshable materialized view는 이에 반해 일정에 따라 갱신됩니다. 이러한 뷰는 전체 쿼리를 주기적으로 다시 실행하고, 그 결과로 대상 테이블의 내용을 덮어씁니다. 이는 Postgres와 같은 전통적인 OLTP 데이터베이스의 materialized view와 유사합니다.
+**갱신 가능 구체화 뷰**, 즉 갱신 가능 구체화 뷰는 이에 반해 일정에 따라 갱신됩니다. 이러한 뷰는 전체 쿼리를 주기적으로 다시 실행하고, 그 결과로 대상 테이블의 내용을 덮어씁니다. 이는 Postgres와 같은 전통적인 OLTP 데이터베이스의 materialized view와 유사합니다.
 
 <Image img={refreshable_materialized_view} size="lg" alt="갱신 가능 구체화 뷰 다이어그램" />
 
 증분형 및 갱신 가능 구체화 뷰 중 어떤 방식을 선택할지는 쿼리의 특성, 데이터 변경 빈도, 삽입 시점마다 뷰가 모든 행을 즉시 반영해야 하는지, 아니면 주기적인 갱신으로 충분한지에 크게 좌우됩니다. 이러한 트레이드오프를 이해하는 것이 ClickHouse에서 성능이 뛰어나고 확장 가능한 materialized view를 설계하는 핵심입니다.
-
 
 ## 증분형 materialized view를 사용해야 하는 경우 \{#when-to-use-incremental-materialized-views\}
 

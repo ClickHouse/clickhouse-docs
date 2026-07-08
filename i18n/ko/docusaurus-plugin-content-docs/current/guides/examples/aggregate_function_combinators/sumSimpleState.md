@@ -7,8 +7,6 @@ sidebar_label: 'sumSimpleState'
 doc_type: 'reference'
 ---
 
-# sumSimpleState \{#sumsimplestate\}
-
 ## 설명 \{#description\}
 
 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 결합자는 모든 입력 값의 합계를 계산하도록 [`sum`](/sql-reference/aggregate-functions/reference/sum)

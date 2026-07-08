@@ -11,8 +11,6 @@ integration:
   - category: 'data_visualization'
 ---
 
-# Рекомендации по анализу \{#analysis-tips\}
-
 ## Функции MEDIAN() и PERCENTILE() \{#median-and-percentile-functions\}
 
 - В режиме Live функции MEDIAN() и PERCENTILE() (начиная с релиза коннектора v0.1.3) используют [функцию ClickHouse quantile()()](/sql-reference/aggregate-functions/reference/quantile/), что значительно ускоряет вычисления, но основано на выборке. Если вам нужны точные результаты вычислений, используйте функции `MEDIAN_EXACT()` и `PERCENTILE_EXACT()` (основанные на [quantileExact()()](/sql-reference/aggregate-functions/reference/quantileexact/)).

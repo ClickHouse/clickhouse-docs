@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'pandas', 'cookbook', 'patterns', 'examples']
 doc_type: 'guide'
 ---
 
-# Pandas Cookbook
 
 Common pandas patterns and their DataStore equivalents. Most code works unchanged!
 

@@ -3,7 +3,7 @@ slug: /best-practices/minimize-optimize-joins
 sidebar_position: 10
 sidebar_label: 'Minimize and optimize JOINs'
 title: 'Minimize and optimize JOINs'
-description: 'Page describing best practices for JOINs'
+description: 'Document describing best practices for using JOINs in ClickHouse'
 keywords: ['JOIN', 'Parallel Hash JOIN']
 show_related_blogs: true
 doc_type: 'guide'
@@ -39,7 +39,7 @@ Follow these best practices to improve JOIN performance:
 * **Default values as no-match markers in outer JOINs**: Left/right/full outer joins include all values from the left/right/both tables. If no join partner is found in the other table for some value, ClickHouse replaces the join partner by a special marker. The SQL standard mandates that databases use NULL as such a marker. In ClickHouse, this requires wrapping the result column in Nullable, creating an additional memory and performance overhead. As an alternative, you can configure the setting `join_use_nulls = 0` and use the default value of the result column data type as the marker.
 
 :::note Use dictionaries carefully
-When using dictionaries for JOINs in ClickHouse, it's important to understand that dictionaries, by design, don't allow duplicate keys. During data loading, any duplicate keys are silently deduplicated—only the last loaded value for a given key is retained. This behavior makes dictionaries ideal for one-to-one or many-to-one relationships where only the latest or authoritative value is needed. However, using a dictionary for a one-to-many or many-to-many relationship (e.g. joining roles to actors where an actor can have multiple roles) will result in silent data loss, as all but one of the matching rows will be discarded. As a result, dictionaries aren't suitable for scenarios requiring full relational fidelity across multiple matches.
+When using dictionaries for JOINs in ClickHouse, it's important to understand that dictionaries, by design, don't allow duplicate keys. During data loading, any duplicate keys are silently deduplicated—only the last loaded value for a given key is retained. This behavior makes dictionaries ideal for one-to-one or many-to-one relationships where only the latest or authoritative value is needed. However, using a dictionary for a one-to-many or many-to-many relationship (e.g. joining roles to actors where an actor can have multiple roles) will result in silent data loss, as all but one of the matching rows will be discarded. As a result, dictionaries aren't suitable for scenarios requiring full relational fidelity across multiple matches. For more on when dictionaries help (and when they don't), see [Dictionary best practices](/dictionary/best-practices).
 :::
 
 ## Choosing the correct JOIN Algorithm {#choosing-the-right-join-algorithm}
@@ -58,7 +58,7 @@ ClickHouse supports several JOIN algorithms that trade off between speed and mem
 Each algorithm has varying support for JOIN types. A full list of supported join types for each algorithm can be found [here](/guides/joining-tables#choosing-a-join-algorithm).
 :::
 
-You can let ClickHouse choose the best algorithm by setting `join_algorithm = 'auto'` (the default), or explicitly control it based on your workload. If you need to select a join algorithm to optimize for performance or memory overhead, we recommend [this guide](/guides/joining-tables#choosing-a-join-algorithm).
+You can let ClickHouse choose the best algorithm by setting `join_algorithm = 'auto'`, or explicitly control it based on your workload. The default value is `direct,parallel_hash,hash`, so ClickHouse uses a direct join when the right-hand side is a dictionary or key-value engine and otherwise falls back to parallel hash, then hash. If you need to select a join algorithm to optimize for performance or memory overhead, we recommend [this guide](/guides/joining-tables#choosing-a-join-algorithm).
 
 For optimal performance:
 

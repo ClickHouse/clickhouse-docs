@@ -10,7 +10,6 @@ keywords: ['Kafka', '로그', 'OTEL', 'ClickStack', '브로커 모니터링', 'L
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import log_view from '@site/static/images/clickstack/kafka/logs/log-view.png';
@@ -20,11 +19,8 @@ import example_dashboard from '@site/static/images/clickstack/kafka/logs/example
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack를 이용한 Kafka 로그 모니터링 \{#kafka-logs-clickstack\}
-
-:::note[TL;DR]
-OTel `filelog` 수신기를 사용해 ClickStack에서 Kafka 브로커 로그(Log4j 형식)를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
+:::note[요약]
+OTel `filelog` 수신기로 Kafka 브로커 로그(Log4j 포맷)를 수집하고 ClickStack에서 시각화합니다. 데모 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 Kafka 통합 \{#existing-kafka\}
@@ -267,7 +263,7 @@ OTel `filelog` 수신기를 사용해 ClickStack에서 Kafka 브로커 로그(Lo
 ## 대시보드 및 시각화
 
 <VerticalStepper headerLevel="h4">
-  #### <TrackedLink href={useBaseUrl('/examples/kafka-logs-dashboard.json')} download="kafka-logs-dashboard.json" eventName="docs.kafka_logs_monitoring.dashboard_download">다운로드</TrackedLink>할 대시보드 구성 파일
+  #### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/kafka-logs-dashboard.json'} download="kafka-logs-dashboard.json" eventName="docs.kafka_logs_monitoring.dashboard_download">다운로드</TrackedLink>할 대시보드 구성 파일
 
   #### 미리 구성된 대시보드 가져오기
 

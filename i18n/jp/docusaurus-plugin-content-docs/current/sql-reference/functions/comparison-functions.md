@@ -6,8 +6,6 @@ title: '比較関数'
 doc_type: 'reference'
 ---
 
-# 比較関数 \{#comparison-functions\}
-
 ## 比較ルール \{#comparison-rules\}
 
 以下の比較関数は、型 [UInt8](/sql-reference/data-types/int-uint) の `0` または `1` を返します。同じグループ内の値同士のみが
@@ -516,7 +514,7 @@ SELECT
 
 ## isNotDistinctFrom \{#isNotDistinctFrom\}
 
-導入バージョン: v25.10.0
+導入バージョン: v23.8.0
 
 2 つの値の間で、NULL セーフな「等価」比較を実行します。
 両方の値が等しい場合、両方が NULL の場合も含めて `true` を返します。

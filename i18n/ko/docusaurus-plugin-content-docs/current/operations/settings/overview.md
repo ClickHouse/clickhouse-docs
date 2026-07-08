@@ -6,8 +6,6 @@ title: '설정 개요'
 doc_type: 'reference'
 ---
 
-# 설정 개요 \{#settings-overview\}
-
 ## 개요 \{#overview\}
 
 :::note

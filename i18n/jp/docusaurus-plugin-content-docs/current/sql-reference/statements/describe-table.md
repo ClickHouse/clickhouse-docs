@@ -7,7 +7,7 @@ title: 'DESCRIBE TABLE'
 doc_type: 'reference'
 ---
 
-テーブル列に関する情報を返します。
+テーブルのカラム情報を返します。
 
 **構文**
 
@@ -15,26 +15,24 @@ doc_type: 'reference'
 DESC|DESCRIBE TABLE [db.]table [INTO OUTFILE filename] [FORMAT format]
 ```
 
-`DESCRIBE` ステートメントは、各テーブル列に対して次の [String](../../sql-reference/data-types/string.md) 型の値を持つ行を返します:
+`DESCRIBE` ステートメントは、各テーブルカラムについて、次の [String](../../sql-reference/data-types/string.md) 型の値を含む1行を返します。
 
-* `name` — 列名。
-* `type` — 列の型。
-* `default_type` — 列の [default expression](/sql-reference/statements/create/table) で使用される句。`DEFAULT`、`MATERIALIZED`、または `ALIAS` のいずれか。デフォルト式がない場合は空文字列が返されます。
+* `name` — カラム名。
+* `type` — カラムの型。
+* `default_type` — カラムの[デフォルト式](/sql-reference/statements/create/table)で使用される句。`DEFAULT`、`MATERIALIZED`、`ALIAS` のいずれかです。デフォルト式がない場合は、空文字列が返されます。
 * `default_expression` — `DEFAULT` 句の後に指定される式。
-* `comment` — [列コメント](/sql-reference/statements/alter/column#comment-column)。
-* `codec_expression` — 列に適用される [codec](/sql-reference/statements/create/table#column_compression_codec)。
-* `ttl_expression` — [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 式。
-* `is_subcolumn` — 内部サブカラムに対して `1` となるフラグ。[describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定でサブカラムの説明が有効になっている場合にのみ、結果に含まれます。
+* `comment` — [カラムコメント](/sql-reference/statements/alter/column#comment-column)。
+* `codec_expression` — カラムに適用される [codec](/sql-reference/statements/create/table#column_compression_codec)。
+* `ttl_expression` — [有効期限 (TTL)](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl) 式。
+* `is_subcolumn` — 内部サブカラムの場合に `1` となるフラグです。[describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定でサブカラムの記述が有効になっている場合にのみ、結果に含まれます。
 
-[Nested](../../sql-reference/data-types/nested-data-structures/index.md) データ構造内のすべての列は個別に記述されます。各列名には、親列名とドットが接頭辞として付けられます。
+[Nested](../../sql-reference/data-types/nested-data-structures/index.md) データ構造内のすべてのカラムは、それぞれ個別に記述されます。各カラム名には、親カラム名とドットがプレフィックスとして付きます。
 
-その他のデータ型の内部サブカラムを表示するには、[describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定を使用します。
+他のデータ型の内部サブカラムを表示するには、[describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定を使用します。
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE describe_example (
     id UInt64, text String DEFAULT 'unknown' CODEC(ZSTD),
     user Tuple (name String, age UInt8)
@@ -44,9 +42,7 @@ DESCRIBE TABLE describe_example;
 DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ id   │ UInt64                        │              │                    │         │                  │                │
 │ text │ String                        │ DEFAULT      │ 'unknown'          │         │ ZSTD(1)          │                │
@@ -54,9 +50,9 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-2つ目のクエリでは、サブカラムも追加で表示されます。
+2番目のクエリでは、サブカラムも表示されます。
 
-```text
+```text title="Response"
 ┌─name──────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┬─is_subcolumn─┐
 │ id        │ UInt64                        │              │                    │         │                  │                │            0 │
 │ text      │ String                        │ DEFAULT      │ 'unknown'          │         │ ZSTD(1)          │                │            0 │
@@ -66,7 +62,7 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └───────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┴──────────────┘
 ```
 
-`DESCRIBE` ステートメントは、サブクエリやスカラー式に対しても使用できます。
+DESCRIBEステートメントは、サブクエリやスカラー式でも使用できます：
 
 ```SQL
 DESCRIBE SELECT 1 FORMAT TSV;
@@ -78,14 +74,12 @@ DESCRIBE SELECT 1 FORMAT TSV;
 DESCRIBE (SELECT 1) FORMAT TSV;
 ```
 
-結果:
-
-```text
+```text title="Response"
 1       UInt8
 ```
 
-この用法では、指定したクエリまたはサブクエリの結果の列に関するメタデータを返します。実行前に複雑なクエリの構造を把握するのに役立ちます。
+この使用方法では、指定したクエリまたはサブクエリの結果カラムに関するメタデータが返されます。実行前に複雑なクエリの構造を把握するのに役立ちます。
 
 **関連項目**
 
-* [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定
+* [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns) 設定。

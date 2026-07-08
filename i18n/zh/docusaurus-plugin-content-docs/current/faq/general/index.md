@@ -1,14 +1,12 @@
 ---
 slug: /faq/general/
 sidebar_position: 1
-sidebar_label: 'ClickHouse 常见问题'
+sidebar_label: '关于 ClickHouse 的常见问题'
 keywords: ['faq', 'questions', 'what is']
-title: 'ClickHouse 常见问题概览'
-description: '列出关于 ClickHouse 常见问题的索引页面'
+title: '关于 ClickHouse 的常见问题'
+description: '关于 ClickHouse 常见问题的索引页面'
 doc_type: 'landing-page'
 ---
-
-# 关于 ClickHouse 的常见问题 \{#general-questions-about-clickhouse\}
 
 * [什么是 ClickHouse？](../../intro.md)
 * [为什么 ClickHouse 如此之快？](../../concepts/why-clickhouse-is-so-fast.mdx)

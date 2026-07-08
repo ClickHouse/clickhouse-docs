@@ -114,7 +114,7 @@ OPTIMIZE TABLE table DEDUPLICATE BY COLUMNS('column-matched-by-regex') EXCEPT (c
 
 请考虑如下表：
 
-```sql
+```sql title="Query"
 CREATE TABLE example (
     primary_key Int32,
     secondary_key Int32,
@@ -128,18 +128,16 @@ PARTITION BY partition_key
 ORDER BY (primary_key, secondary_key);
 ```
 
-```sql
+```sql title="Query"
 INSERT INTO example (primary_key, secondary_key, value, partition_key)
 VALUES (0, 0, 0, 0), (0, 0, 0, 0), (1, 1, 2, 2), (1, 1, 2, 3), (1, 1, 3, 3);
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           0 │             0 │     0 │             0 │
@@ -160,17 +158,15 @@ SELECT * FROM example;
 
 当未指定用于去重的列时，将会考虑所有列。只有当某行中所有列的值都等于前一行中对应列的值时，该行才会被删除：
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -187,17 +183,15 @@ SELECT * FROM example;
 
 当未显式指定列时，表会按所有不是 `ALIAS` 或 `MATERIALIZED` 的列进行去重。结合上表，这些列是 `primary_key`、`secondary_key`、`value` 和 `partition_key` 列：
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY *;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -214,17 +208,15 @@ SELECT * FROM example;
 
 根据所有不是 `ALIAS` 或 `MATERIALIZED` 且显式排除 `value` 的列进行去重，即：`primary_key`、`secondary_key` 和 `partition_key` 列。
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY * EXCEPT value;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -240,17 +232,15 @@ SELECT * FROM example;
 
 显式按 `primary_key`、`secondary_key` 和 `partition_key` 列进行去重：
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY primary_key, secondary_key, partition_key;
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           1 │             1 │     2 │             2 │
 └─────────────┴───────────────┴───────┴───────────────┘
@@ -266,17 +256,15 @@ SELECT * FROM example;
 
 按所有匹配该正则表达式的列进行去重：`primary_key`、`secondary_key` 和 `partition_key` 列：
 
-```sql
+```sql title="Query"
 OPTIMIZE TABLE example FINAL DEDUPLICATE BY COLUMNS('.*_key');
 ```
 
-```sql
+```sql title="Query"
 SELECT * FROM example;
 ```
 
-结果：
-
-```response
+```response title="Response"
 ┌─primary_key─┬─secondary_key─┬─value─┬─partition_key─┐
 │           0 │             0 │     0 │             0 │
 └─────────────┴───────────────┴───────┴───────────────┘

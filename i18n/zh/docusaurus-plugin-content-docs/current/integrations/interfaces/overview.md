@@ -1,14 +1,12 @@
 ---
-description: '连接 ClickHouse 的网络接口、驱动和工具概览'
+description: '用于连接 ClickHouse 的网络接口、驱动程序和工具概览'
 keywords: ['clickhouse', 'network', 'interfaces', 'http', 'tcp', 'grpc', 'command-line',
   'client', 'jdbc', 'odbc', 'driver']
-sidebar_label: '概览'
+sidebar_label: '概述'
 slug: /interfaces/overview
-title: '驱动和接口'
+title: '驱动程序和接口'
 doc_type: 'reference'
 ---
-
-# 驱动程序和接口 \{#drivers-and-interfaces\}
 
 ClickHouse 提供了两个网络接口 (可选用 TLS 封装以增强安全性) ：
 

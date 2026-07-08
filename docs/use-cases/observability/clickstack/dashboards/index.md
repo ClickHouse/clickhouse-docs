@@ -10,9 +10,10 @@ keywords: ['clickstack', 'dashboards', 'visualization', 'monitoring', 'observabi
 ---
 
 import Image from '@theme/IdealImage';
-import visualization_1 from '@site/static/images/use-cases/observability/hyperdx-visualization-1.png';
-import visualization_2 from '@site/static/images/use-cases/observability/hyperdx-visualization-2.png';
-import visualization_3 from '@site/static/images/use-cases/observability/hyperdx-visualization-3.png';
+import visualization_1 from '@site/static/images/use-cases/observability/clickstack-visualization-1.png';
+import visualization_2 from '@site/static/images/use-cases/observability/clickstack-visualization-2.png';
+import visualization_3 from '@site/static/images/use-cases/observability/clickstack-visualization-3.png';
+import duplicate_series from '@site/static/images/use-cases/observability/clickstack-duplicate-series.png';
 import dashboard_1 from '@site/static/images/use-cases/observability/hyperdx-dashboard-1.png';
 import dashboard_2 from '@site/static/images/use-cases/observability/hyperdx-dashboard-2.png';
 import dashboard_3 from '@site/static/images/use-cases/observability/hyperdx-dashboard-3.png';
@@ -32,6 +33,10 @@ import filtered_dashboard from '@site/static/images/clickstack/dashboards/filter
 import filter_dropdown from '@site/static/images/clickstack/dashboards/filter-dropdown.png';
 import save_filter_values from '@site/static/images/clickstack/dashboards/save-filter-values.png';
 import drilldown from '@site/static/images/clickstack/dashboards/drilldown.png';
+import heatmap_tile_editor from '@site/static/images/clickstack/dashboards/heatmap-tile-editor.png';
+import heatmap_tile_rendered from '@site/static/images/clickstack/dashboards/heatmap-tile-rendered.png';
+import heatmap_tile_drilldown from '@site/static/images/clickstack/dashboards/heatmap-tile-drilldown.png';
+import number_tile_background_chart from '@site/static/images/clickstack/dashboards/number-tile-background-chart.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
 ClickStack supports visualizing events, with built-in support for charting in ClickStack UI (HyperDX). These charts can be added to dashboards for sharing with other users.
@@ -42,7 +47,7 @@ Visualizations can be created from traces, metrics, logs, or any user-defined wi
 
 The **Chart Explorer** interface in HyperDX allows you to visualize metrics, traces, and logs over time, making it easy to create quick visualizations for data analysis. This interface is also reused when creating dashboards. The following section walks through the process of creating a visualization using Chart Explorer.
 
-Each visualization begins by selecting a **data source**, followed by a **metric**, with optional **filter expressions** and **group by** fields. Conceptually, visualizations in HyperDX map to a SQL `GROUP BY` query under the hood — users define metrics to aggregate across selected dimensions.
+Each visualization begins by selecting a **data source**, followed by a **metric**, with optional **filter expressions** and **group by** fields. Conceptually, visualizations in HyperDX map to a SQL `GROUP BY` query under the hood — you define metrics to aggregate across selected dimensions.
 
 :::tip AI-powered chart generation
 ClickStack also supports creating charts from natural language prompts using the [text-to-chart](/use-cases/observability/clickstack/text-to-chart) feature. Describe what you want to see, and ClickStack generates the visualization automatically.
@@ -80,6 +85,10 @@ For example, filter by the service `frontend` by adding the filter `ServiceName:
 
 <Image img={visualization_3} alt="Simple visualization 2" size="lg"/>
 
+To build a series similar to an existing one, you can duplicate it instead of starting from scratch. Click the copy icon (`Duplicate series`) on a series row to insert a copy directly below. The copy keeps the source series' settings, such as the metric, column, and filter. You then change only the fields that differ (for example the aggregation) and give the copy its own alias. Duplicating is available wherever multiple series are supported. It is hidden for visualization types that allow only one series, such as `Number`, `Pie`, and `Heatmap`.
+
+<Image img={duplicate_series} alt="The Duplicate series copy icon and its tooltip on a chart series row" size="lg"/>
+
 :::note
 Visualizations can be created from any data source — metrics, traces, or logs. ClickStack treats all of these as wide events. Any **numeric column** can be charted over time, and **string**, **date**, or **numeric** columns can be used for groupings.
 
@@ -100,13 +109,9 @@ We create a dashboard with two visualizations below using the log and trace data
 
 ### Navigate to Dashboards {#navigate-dashboards}
 
-Select `Dashboards` from the left menu.
+Select `Dashboards` from the left menu. Then click `New Dashboard` to create a temporary or saved dashboard.
 
 <Image img={dashboard_1} alt="Create Dashboard" size="lg"/>
-
-By default, dashboards are temporary to support ad-hoc investigations. 
-
-If using your own HyperDX instance you can ensure this dashboard can later be saved, by clicking `Create New Saved Dashboard`. This option won't be available if using the read-only environment [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com).
 
 ### Create a visualization – average request time by service {#create-a-tile}
 
@@ -149,6 +154,47 @@ Resize the visualization to occupy the full width of the dashboard.
 
 <Image img={dashboard_5} alt="Dashboard with visuals 2" size="lg"/>
 
+### Add a heatmap tile for span duration {#create-a-tile-heatmap}
+
+Heatmap tiles plot the count of events falling into each (time, value) bucket as a colored grid. Use a heatmap when you want to see the **shape** of a distribution over time, not just the average or a single percentile. A latency heatmap reveals bimodal duration patterns, slow-tail clusters, or sudden spreads that a Line chart would average away.
+
+To add a heatmap tile:
+1. Select `Add New Tile`.
+2. Choose the `Heatmap` visualization type from the top menu. The data source dropdown only shows sources whose [source type is `Traces`](/use-cases/observability/clickstack/config#traces). Logs, metrics, and session sources are filtered out, since heatmaps need a span duration column that only traces sources provide.
+3. Pick any of your traces sources by name. The name itself is arbitrary, only the type matters.
+
+Once a source is selected, the heatmap pre-fills:
+
+- **Value**: the source's `Duration Expression`, scaled to the current display unit (for example `(Duration)/1e6` to convert each event's span duration from nanoseconds to milliseconds)
+- **Count**: `count()`
+
+4. Set a chart name, and use `Where` to scope the heatmap to a specific service or set of operations whose performance you want to observe.
+5. Adjust the time range to match the period of interest. Wider ranges expose distribution shifts and bimodal latency patterns that shorter windows can hide.
+
+The example below shows a single service over a 24 hour window, with the fast and slow paths of its span duration clearly separated into two horizontal bands.
+
+To customize the heatmap further, click **Display Settings** to open a drawer for the **Scale** (Log or Linear), **Value**, and **Count** expression. The full list of options are documented in [Customize the heatmap](/use-cases/observability/clickstack/event_deltas#customize) on the Event Deltas page. The same drawer is reused.
+
+Click `Run` to preview the chart, then `Save`.
+
+<Image img={heatmap_tile_editor} alt="Heatmap tile editor with span duration defaults pre-filled, ServiceName payment filter, and Display Settings button" size="lg"/>
+
+The saved tile renders as a heatmap on the dashboard. Hover any cell to see the bucket bounds and event count.
+
+<Image img={heatmap_tile_rendered} alt="Heatmap dashboard tile showing payment service span duration distribution over 24 hours" size="lg"/>
+
+:::tip Two ClickHouse queries per heatmap
+The heatmap runs as two sequential queries: a small **bounds query** that resolves the value range, then a **heatmap query** that counts events per bucket. Both queries are visible in the editor under **Generated SQL** if you want to inspect or copy them.
+:::
+
+#### Drill down to Event Deltas {#heatmap-tile-drilldown}
+
+Click any cell on a rendered heatmap tile to open a **View in Event Deltas** action.
+
+<Image img={heatmap_tile_drilldown} alt="Heatmap cell click revealing the View in Event Deltas action" size="lg"/>
+
+Selecting it opens the [Event Deltas](/use-cases/observability/clickstack/event_deltas) view with the tile's data source, `Where` clause, and time range carried over. From there you can examine the same distribution interactively, slice by attribute to see what makes the slow spans different from the fast ones, and inspect the individual spans behind any cell, without rebuilding the query by hand.
+
 ### Filter dashboard {#filter-dashboards}
 
 Lucene or SQL filters, along with the time range, can be applied at the dashboard level and will automatically propagate to all visualizations.
@@ -163,18 +209,33 @@ The dashboard will be auto-saved. To set the dashboard name, select the title an
 
 </VerticalStepper>
 
-## Dashboards - Editing visualizations {#dashboards-editing-visualizations}
+## Dashboards - editing visualizations {#dashboards-editing-visualizations}
 
 To remove, edit, or duplicate a visualization, hover over it and use the corresponding action buttons.
 
 <Image img={dashboard_edit} alt="Dashboard edit" size="lg"/>
 
+### Tile display settings {#tile-display-settings}
+
+Each tile has a **Display Settings** drawer for options that control how its value is rendered. Open it from the tile editor by clicking **Display Settings**. The available options depend on the visualization type.
+
+Number tiles can show a **background chart**: a trend sparkline drawn behind the value, so its movement over the selected time range is visible at a glance. This is useful for SLO and error-budget tiles, where how a value is trending matters as much as its current reading.
+
+With a number tile selected, open **Display Settings** and set **Background chart** to **Line** or **Area** (or **None** to turn it off). The sparkline is derived from a time-bucketed version of the tile's query, so no extra configuration is needed. It inherits the tile color by default; set a **Background color** to override it with a specific palette color.
+
+<Image img={number_tile_background_chart} alt="Display Settings drawer for a number tile, with Background chart set to Area" size="lg"/>
+
+Background charts apply to query-builder number tiles. Raw SQL number tiles return a single value with no time dimension to bucket, so the option appears but is disabled for them.
+
 ## Dashboard - Listing and search {#dashboard-listing-search}
 
-Dashboards are accessible from the left-hand menu, with built-in search to quickly locate specific dashboards.
-<Image img={dashboard_search} alt="Dashboard search" size="sm"/>
+Dashboards are accessible on the dashboards page. They are organized by tag, with built-in search and filtering to quickly locate specific dashboards.
 
-## Dashboards - Tagging {#tagging}
+Dashboards can be favorited for easy access on the sidebar and at the top of the listing page. Favorites are individual to each user.
+
+<Image img={dashboard_search} alt="Dashboard search" size="lg"/>
+
+## Dashboards - tagging {#tagging}
 <Tagging />
 
 ## Custom filters {#custom-filters}
@@ -197,7 +258,7 @@ Open a saved dashboard and select **Edit Filters** from the toolbar.
 
 Click **Add new filter**. Configure the filter by providing a **Name**, selecting a **Data source**, and entering a **Filter expression** — a SQL column or expression whose distinct values will populate the dropdown. Click **Save filter**.
 
-For example, to add a service filter for trace data, use `ServiceName` as the filter expression with the `Traces` data source.
+For example, to add a service filter for trace data, use `ServiceName` as the filter expression with the `Traces` data source. The "Dropdown values filter" is optional, and provides a way to restrict which values appear in the dropdown.
 
 <Image img={add_filter} alt="Add filter dialog with Name, Data source, and Filter expression fields" size="md"/>
 
@@ -260,7 +321,7 @@ This dashboard queries the ClickHouse [system tables](/operations/system-tables)
 
 ### Services dashboard {#services-dashboard}
 
-The Services dashboard displays currently active services based on trace data. This requires users to have collected traces and configured a valid Traces data source.
+The Services dashboard displays currently active services based on trace data. This requires you to have collected traces and configured a valid Traces data source.
 
 Service names are auto-detected from the trace data, with a series of prebuilt visualizations organized across three tabs: HTTP Services, Database, and Errors.
 

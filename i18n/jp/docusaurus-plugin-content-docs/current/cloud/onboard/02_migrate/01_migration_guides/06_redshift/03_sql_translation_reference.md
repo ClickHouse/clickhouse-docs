@@ -7,8 +7,6 @@ title: 'Amazon Redshift SQL 変換ガイド'
 doc_type: 'reference'
 ---
 
-# Amazon Redshift SQL 変換ガイド \{#amazon-redshift-sql-translation-guide\}
-
 ## データ型 \{#data-types\}
 
 ClickHouse と Redshift 間でデータを移動するユーザーは、ClickHouse がより幅広く、かつ制約の少ない型を提供していることにすぐ気付くでしょう。Redshift では、可変長の場合であってもユーザーは文字列の長さを指定する必要がありますが、ClickHouse は文字列をエンコードせずバイト列として格納することで、この制限と負担をユーザーから取り除きます。そのため、ClickHouse の `String` 型には長さの上限や長さ指定の要件がありません。

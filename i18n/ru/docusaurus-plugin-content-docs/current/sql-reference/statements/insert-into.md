@@ -7,8 +7,6 @@ title: 'Оператор INSERT INTO'
 doc_type: 'reference'
 ---
 
-# Оператор INSERT INTO \{#insert-into-statement\}
-
 Вставляет данные в таблицу.
 
 **Синтаксис**
@@ -95,7 +93,7 @@ INSERT INTO t FORMAT TabSeparated
 Вы можете загружать данные отдельно от запроса, используя [клиент командной строки](/operations/utilities/clickhouse-local) или [HTTP-интерфейс](/interfaces/http).
 
 :::note
-Если вы хотите указать `SETTINGS` для запроса `INSERT`, это необходимо сделать *перед* секцией `FORMAT`, так как всё, что идёт после `FORMAT format_name`, интерпретируется как данные. Например:
+Если вы хотите указать `SETTINGS` для запроса `INSERT`, это необходимо сделать *перед* предложением `FORMAT`, так как всё, что идёт после `FORMAT format_name`, интерпретируется как данные. Например:
 
 ```sql
 INSERT INTO table SETTINGS ... FORMAT format_name data_set
@@ -103,10 +101,49 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 :::
 
-
 ## Ограничения \{#constraints\}
 
 Если у таблицы есть [ограничения](../../sql-reference/statements/create/table.md#constraints), их выражения проверяются для каждой строки вставляемых данных. Если какое-либо из этих ограничений нарушено, сервер выбросит исключение с именем ограничения и его выражением, а выполнение запроса будет прекращено.
+
+## Проверка типов данных \{#data-type-validation\}
+
+ClickHouse проверяет допустимые типы данных (контролируемые настройками, такими как `enable_time_time64_type`, `allow_suspicious_low_cardinality_types`, `allow_suspicious_fixed_string_types` и т. д.) только при создании таблицы (`CREATE TABLE`) и изменении schema (`ALTER TABLE`), но не при выполнении `INSERT`.
+
+Это означает, что если таблица с недопустимым типом данных уже существует, в нее можно вставлять данные, даже если соответствующая настройка отключена на сервере. Это сделано намеренно: после создания таблицы операции вставки не должны блокироваться настройками, которые управляют созданием типов.
+
+Например:
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE events
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id;
+
+SET enable_time_time64_type = 0;
+
+-- This works even though the setting is now disabled.
+-- The table already exists, so inserts are not blocked.
+INSERT INTO events VALUES (1, '14:30:25');
+
+-- But creating a new table with the Time type will fail.
+CREATE TABLE events_new
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id; -- ERR: TYPE_TIME_TIME64_IS_NOT_ENABLED
+```
+
+:::note
+В результате клиент более новой версии (где параметр включён по умолчанию) может вставлять в сервер более старой версии данные с недопустимыми типами, если в целевой таблице уже есть столбцы соответствующих типов. Проверка выполняется на уровне DDL, а не DML.
+:::
+
 
 ## Вставка результатов запроса SELECT \{#inserting-the-results-of-select\}
 
@@ -147,31 +184,28 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 Поддерживаются сжатые файлы. Тип сжатия определяется по расширению имени файла, либо он может быть явно указан в предложении `COMPRESSION`. Поддерживаемые типы: `'none'`, `'gzip'`, `'deflate'`, `'br'`, `'xz'`, `'zstd'`, `'lz4'`, `'bz2'`.
 
-Эта функциональность доступна в [клиенте командной строки](../../interfaces/cli.md) и в [clickhouse-local](../../operations/utilities/clickhouse-local.md).
+Эта функциональность доступна в [клиенте командной строки](../../interfaces/client.md) и в [clickhouse-local](../../operations/utilities/clickhouse-local.md).
 
 **Примеры**
 
 
 ### Один файл с FROM INFILE \{#single-file-with-from-infile\}
 
-Выполните следующие запросы с помощью [клиента командной строки](../../interfaces/cli.md):
+Выполните следующие запросы с помощью [клиента командной строки](../../interfaces/client.md):
 
-```bash
+```bash title="Query"
 echo 1,A > input.csv ; echo 2,B >> input.csv
 clickhouse-client --query="CREATE TABLE table_from_file (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;"
 clickhouse-client --query="INSERT INTO table_from_file FROM INFILE 'input.csv' FORMAT CSV;"
 clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─id─┬─text─┐
 │  1 │ A    │
 │  2 │ B    │
 └────┴──────┘
 ```
-
 
 ### Несколько файлов с FROM INFILE, использующим glob-шаблоны \{#multiple-files-with-from-infile-using-globs\}
 
@@ -210,21 +244,18 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 
 Табличная функция [remote](/sql-reference/table-functions/remote) используется в следующих запросах:
 
-```sql
+```sql title="Query"
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
     VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌──id─┬─text──────────────────┐
 │ 100 │ inserted via remote() │
 └─────┴───────────────────────┘
 ```
-
 
 ## Вставка в ClickHouse Cloud \{#inserting-into-clickhouse-cloud\}
 

@@ -16,7 +16,7 @@ import session_replay from '@site/static/images/clickstack/session-replay/sessio
 import replay_search from '@site/static/images/clickstack/session-replay/replay-search-view.png';
 
 :::note[TL;DR]
-이 가이드는 ClickStack Browser SDK를 사용해 웹 애플리케이션을 세션 리플레이용으로 인스트루먼트하는 방법을 단계별로 설명합니다. 미리 생성된 데이터를 불러오는 다른 샘플 데이터셋과 달리, 이 데모는 사용자의 상호작용을 통해 직접 세션 데이터를 생성하는 인터랙티브 애플리케이션을 제공합니다.
+이 가이드는 ClickStack Browser SDK를 사용해 웹 애플리케이션을 세션 리플레이용으로 계측하는 방법을 단계별로 설명합니다. 미리 생성된 데이터를 불러오는 다른 샘플 데이터셋과 달리, 이 데모는 사용자의 상호작용을 통해 직접 세션 데이터를 생성하는 인터랙티브 애플리케이션을 제공합니다.
 
 소요 시간: 10-15분
 :::

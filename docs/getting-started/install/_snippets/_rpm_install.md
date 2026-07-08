@@ -1,3 +1,5 @@
+import Recommendations from '@site/docs/getting-started/install/_snippets/recommendations.md';
+
 # Install ClickHouse on rpm-based distributions {#from-rpm-packages}
 
 > It is recommended to use official pre-compiled `rpm` packages for **CentOS**, **RedHat**, and all other rpm-based 
@@ -5,7 +7,11 @@
 
 <VerticalStepper>
 
-## Setup the RPM repository {#setup-the-rpm-repository}
+## Review recommendations {#review-recommendations}
+
+<Recommendations />
+
+## Set up the RPM repository {#setup-the-rpm-repository}
 
 Add the official repository by running the following command:
 
@@ -53,7 +59,7 @@ sudo systemctl status clickhouse-server
 
 To start ClickHouse client, run:
 
-```sql
+```bash
 clickhouse-client
 ```
 

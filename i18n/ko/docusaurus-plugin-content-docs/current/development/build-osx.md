@@ -1,5 +1,5 @@
 ---
-description: 'macOS 시스템에서 소스 코드에서 ClickHouse를 빌드하는 가이드'
+description: 'macOS 시스템에서 소스에서 ClickHouse를 빌드하기 위한 가이드'
 sidebar_label: 'macOS에서 macOS용 빌드'
 sidebar_position: 15
 slug: /development/build-osx
@@ -7,8 +7,6 @@ title: 'macOS에서 macOS용 빌드'
 keywords: ['MacOS', 'Mac', 'build']
 doc_type: 'guide'
 ---
-
-# macOS에서 macOS용 ClickHouse를 빌드하는 방법 \{#how-to-build-clickhouse-on-macos-for-macos\}
 
 :::info 이 빌드 가이드는 ClickHouse 자체를 수정하는 기여자를 위한 것입니다.
 ClickHouse 소스 코드를 변경하지 않는 경우 [Quick Start](https://clickhouse.com/docs/get-started/quick-start)에 설명된 대로 미리 빌드된 ClickHouse를 설치할 수 있습니다.

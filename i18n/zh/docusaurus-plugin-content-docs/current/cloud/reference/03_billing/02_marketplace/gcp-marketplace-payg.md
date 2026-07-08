@@ -31,48 +31,48 @@ import Image from '@theme/IdealImage';
 
 1. 前往 [GCP Marketplace](https://cloud.google.com/marketplace)，搜索 ClickHouse Cloud。请确保已选择正确的 GCP 项目。
 
-<Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplace 主页" border/>
+<Image img={gcp_marketplace_payg_1} size="md" alt="GCP Marketplace 主页" border />
 
-2. 点击该[商品列表](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud)，然后点击 **Subscribe（订阅）**。
+2. 点击该[商品列表](https://console.cloud.google.com/marketplace/product/clickhouse-public/clickhouse-cloud)，然后点击 **Subscribe (订阅)&#x20;**。
 
-<Image img={gcp_marketplace_payg_2} size="md" alt="GCP Marketplace 中的 ClickHouse Cloud" border/>
+<Image img={gcp_marketplace_payg_2} size="md" alt="GCP Marketplace 中的 ClickHouse Cloud" border />
 
 3. 在下一个界面中配置订阅：
 
-- 套餐默认为 “ClickHouse Cloud”
-- 订阅周期为 “Monthly”（按月）
-- 选择合适的结算账户
-- 接受条款并点击 **Subscribe（订阅）**
+* 套餐默认为 “ClickHouse Cloud”
+* 订阅周期为 “Monthly” (按月) 
+* 选择合适的结算账户
+* 接受条款并点击 **Subscribe (订阅)&#x20;**
 
 <br />
 
-<Image img={gcp_marketplace_payg_3} size="sm" alt="在 GCP Marketplace 中配置订阅" border/>
+<Image img={gcp_marketplace_payg_3} size="sm" alt="在 GCP Marketplace 中配置订阅" border />
 
 <br />
 
-4. 点击 **Subscribe（订阅）** 后，您会看到一个 **Sign up with ClickHouse（使用 ClickHouse 注册）** 的弹出框。
+4. 点击 **Subscribe (订阅)&#x20;**&#x20;后，您会看到一个 **Sign up with ClickHouse (使用 ClickHouse 注册)&#x20;**&#x20;的弹出框。
 
 <br />
 
-<Image img={gcp_marketplace_payg_4} size="md" alt="GCP Marketplace 注册弹出框" border/>
+<Image img={gcp_marketplace_payg_4} size="md" alt="GCP Marketplace 注册弹出框" border />
 
 <br />
 
-5. 请注意，此时设置尚未完成。您需要点击 **Set up your account（设置您的账号）** 跳转到 ClickHouse Cloud，并在 ClickHouse Cloud 上完成注册。
+5. 请注意，此时设置尚未完成。您需要点击 **Set up your account (设置您的账号)&#x20;**&#x20;跳转到 ClickHouse Cloud，并在 ClickHouse Cloud 上完成注册。
 
 6. 跳转到 ClickHouse Cloud 后，您可以使用已有账号登录，或注册新账号。此步骤非常重要，以便我们将您的 ClickHouse Cloud 组织绑定到 GCP Marketplace 的结算。
 
 <br />
 
-<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud 登录页面" border/>
+<Image img={aws_marketplace_payg_6} size="md" alt="ClickHouse Cloud 登录页面" border />
 
 <br />
 
-如果您是新的 ClickHouse Cloud 用户，请点击页面底部的 **Register（注册）**。系统会提示您创建新用户并验证邮箱。验证邮箱后，您可以离开 ClickHouse Cloud 登录页面，然后在 [https://console.clickhouse.cloud](https://console.clickhouse.cloud) 使用新用户名登录。
+如果您是新的 ClickHouse Cloud 用户，请点击页面底部的 **Register (注册)&#x20;**。系统会提示您创建新用户并验证邮箱。验证邮箱后，您可以离开 ClickHouse Cloud 登录页面，然后在 [https://console.clickhouse.cloud](https://console.clickhouse.cloud) 使用新用户名登录。
 
 <br />
 
-<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud 注册页面" border/>
+<Image img={aws_marketplace_payg_7} size="md" alt="ClickHouse Cloud 注册页面" border />
 
 <br />
 
@@ -80,11 +80,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud 注册信息表单 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 注册信息表单" border />
 
 <br />
 
@@ -96,11 +92,11 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud 登录页面" border/>
+<Image img={gcp_marketplace_payg_5} size="md" alt="ClickHouse Cloud 登录页面" border />
 
 <br />
 
-<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新服务页面" border/>
+<Image img={aws_marketplace_payg_11} size="md" alt="ClickHouse Cloud 新服务页面" border />
 
 <br />
 
@@ -110,7 +106,7 @@ import Image from '@theme/IdealImage';
 
 <br />
 
-<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 确认邮件" border/>
+<Image img={gcp_marketplace_payg_6} size="md" alt="GCP Marketplace 确认邮件" border />
 
 <br />
 

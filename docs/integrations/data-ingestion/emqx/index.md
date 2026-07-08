@@ -39,8 +39,6 @@ import rule_monitor from '@site/static/images/integrations/data-ingestion/emqx/r
 import clickhouse_result from '@site/static/images/integrations/data-ingestion/emqx/clickhouse_result.png';
 import Image from '@theme/IdealImage';
 
-# Integrating EMQX with ClickHouse
-
 ## Connecting EMQX {#connecting-emqx}
 
 [EMQX](https://www.emqx.com/en/try?product=enterprise) is an open source MQTT broker with a high-performance real-time message processing engine, powering event streaming for IoT devices at massive scale. As the most scalable MQTT broker, EMQX can help you connect any device, at any scale. Move and process your IoT data anywhere.

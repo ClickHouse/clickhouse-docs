@@ -108,6 +108,10 @@ mark 캐시를 초기화합니다.
 
 iceberg 메타데이터 캐시를 초기화합니다.
 
+## SYSTEM CLEAR|DROP AVRO SCHEMA CACHE \{#drop-avro-schema-cache\}
+
+`AvroConfluent` 형식에서 사용하는 URL별 Confluent 스키마 레지스트리 캐시를 지웁니다. 이 작업은 스키마 fetch 캐시(id → schema)와 스키마 등록 캐시(subject + schema → id)를 모두 삭제하므로, 이후의 읽기 및 쓰기는 다시 레지스트리 서버를 사용합니다. 레지스트리 측에서 스키마가 삭제되었거나 덮어써진 경우에 유용하며, 테스트에서 레지스트리의 멱등성을 검증할 때도 사용할 수 있습니다.
+
 ## SYSTEM DROP PARQUET METADATA CACHE \{#drop-parquet-metadata-cache\}
 
 parquet 메타데이터 캐시를 초기화합니다.
@@ -253,14 +257,13 @@ LLVM의 XRay 기능을 활용하여 계측 지점을 관리합니다. 이 기능
 
 FUNCTION에 추가할 수 있는 핸들러에는 세 가지 유형이 있습니다:
 
-**Syntax**
+**구문**
 
 ```sql
-SYSTEM INSTRUMENT ADD FUNCTION HANDLER [PARAMETERS]
+SYSTEM INSTRUMENT ADD FUNCTION HANDLER [ARGUMENTS]
 ```
 
 여기서 `FUNCTION`은 `QueryMetricLog::startQuery`와 같은 임의의 함수 또는 해당 함수의 부분 문자열을 의미하며, 핸들러는 다음 중 하나입니다.
-
 
 #### LOG \{#instrument-add-log\}
 
@@ -306,7 +309,7 @@ SYSTEM INSTRUMENT ADD 'QueryMetricLog::startQuery' PROFILE
 SYSTEM INSTRUMENT REMOVE ID
 ```
 
-이들 모두에서 `ALL` 파라미터를 사용합니다:
+이들 모두에서 `ALL` 키워드를 사용합니다:
 
 ```sql
 SYSTEM INSTRUMENT REMOVE ALL
@@ -325,7 +328,6 @@ SYSTEM INSTRUMENT REMOVE 'QueryMetricLog::startQuery'
 ```
 
 계측 지점 정보는 [`system.instrumentation`](../../operations/system-tables/instrumentation.md) 시스템 테이블에서 수집할 수 있습니다.
-
 
 ## 분산 테이블 관리 \{#managing-distributed-tables\}
 
@@ -427,6 +429,8 @@ SYSTEM START MERGES [ON CLUSTER cluster_name] [ON VOLUME <volume_name> | [db.]me
 
 ### SYSTEM STOP TTL MERGES \{#stop-ttl-merges\}
 
+<CloudNotSupportedBadge />
+
 MergeTree 계열 테이블에 대해 [TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)에 따라 오래된 데이터를 삭제하는 백그라운드 작업을 중지할 수 있습니다.
 테이블이 존재하지 않거나 테이블이 MergeTree 엔진을 사용하지 않는 경우에도 `Ok.`를 반환합니다. 데이터베이스가 존재하지 않으면 오류를 반환합니다:
 
@@ -434,16 +438,16 @@ MergeTree 계열 테이블에 대해 [TTL expression](../../engines/table-engine
 SYSTEM STOP TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
 
-
 ### SYSTEM START TTL MERGES \{#start-ttl-merges\}
 
-MergeTree 패밀리의 테이블에 대해 [TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)에 따라 오래된 데이터를 백그라운드에서 삭제하는 작업을 시작할 수 있습니다.
+<CloudNotSupportedBadge />
+
+MergeTree 계열의 테이블에 대해 [TTL expression](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl)에 따라 오래된 데이터를 백그라운드에서 삭제하는 작업을 시작할 수 있습니다.
 테이블이 존재하지 않아도 `Ok.`를 반환합니다. 데이터베이스가 존재하지 않으면 오류를 반환합니다:
 
 ```sql
 SYSTEM START TTL MERGES [ON CLUSTER cluster_name] [[db.]merge_tree_family_table_name]
 ```
-
 
 ### SYSTEM STOP MOVES \{#stop-moves\}
 
@@ -735,24 +739,11 @@ SYSTEM UNLOAD PRIMARY KEY
 ```
 
 
-## 갱신 가능 구체화 뷰(refreshable materialized view) 관리 \{#refreshable-materialized-views\}
+## 갱신 가능 구체화 뷰(refreshable materialized view) 관리 \{#managing-refreshable-materialized-views\}
 
 [갱신 가능 구체화 뷰(refreshable materialized view)](../../sql-reference/statements/create/view.md#refreshable-materialized-view)가 수행하는 백그라운드 작업을 제어하는 명령을 설명합니다.
 
 사용 시에는 [`system.view_refreshes`](../../operations/system-tables/view_refreshes.md)를 주시하십시오.
-
-### SYSTEM REFRESH VIEW \{#refresh-view\}
-
-지정된 VIEW를 예약된 주기와 관계없이 즉시 새로 고치도록 트리거합니다.
-
-```sql
-SYSTEM REFRESH VIEW [db.]name
-```
-
-
-### SYSTEM WAIT VIEW \{#wait-view\}
-
-현재 실행 중인 새로 고침이 완료될 때까지 대기합니다. 새로 고침이 실패하면 예외를 발생시킵니다. 실행 중인 새로 고침이 없으면 즉시 완료되며, 이전 새로 고침이 실패한 경우 예외를 발생시킵니다.
 
 ### SYSTEM STOP [REPLICATED] VIEW, STOP VIEWS \{#stop-view-stop-views\}
 
@@ -778,7 +769,7 @@ SYSTEM STOP VIEWS
 
 지정된 VIEW 또는 모든 갱신 가능한 VIEW에 대해 주기적 갱신을 다시 활성화합니다. 즉시 갱신은 수행되지 않습니다.
 
-VIEW가 Replicated 또는 Shared 데이터베이스에 있는 경우, `START VIEW`는 `STOP VIEW`의 영향을 되돌리고, `START REPLICATED VIEW`는 `STOP REPLICATED VIEW`의 영향을 되돌립니다.
+VIEW가 복제된 또는 Shared 데이터베이스에 있는 경우, `START VIEW`는 `STOP VIEW`의 영향을 되돌리고, `START REPLICATED VIEW`는 `STOP REPLICATED VIEW`의 영향을 되돌립니다. `START VIEW`는 `PAUSE VIEW`의 영향도 되돌립니다.
 
 ```sql
 SYSTEM START VIEW [db.]name
@@ -786,6 +777,47 @@ SYSTEM START VIEW [db.]name
 
 ```sql
 SYSTEM START VIEWS
+```
+
+### SYSTEM PAUSE VIEW, PAUSE VIEWS \{#pause-view-pause-views\}
+
+지정한 뷰 또는 모든 갱신 가능한 뷰의 주기적인 갱신을 비활성화합니다.
+`SYSTEM STOP VIEW`와 달리 `SYSTEM PAUSE VIEW`는 이미 진행 중인 갱신을 중단하지 않습니다. 현재 실행 중인 갱신은 끝까지 완료되며, 이후의 갱신만 방지됩니다.
+
+`SYSTEM START VIEW` 또는 `SYSTEM START VIEWS`로 해제할 수 있습니다.
+
+:::note
+일시 중지 상태는 서버를 재시작해도 유지되지 않습니다. 재시작 후에는 뷰가 구성된 갱신 일정에 따라 다시 갱신을 재개합니다.
+복제된 또는 Shared 데이터베이스에서는 `SYSTEM PAUSE VIEW`가 현재 레플리카에만 영향을 미칩니다.
+:::
+
+```sql
+SYSTEM PAUSE VIEW [db.]name
+```
+
+```sql
+SYSTEM PAUSE VIEWS
+```
+
+### SYSTEM REFRESH VIEW \{#refresh-view\}
+
+지정된 VIEW를 예약된 주기와 관계없이 즉시 새로 고치도록 트리거합니다.
+
+```sql
+SYSTEM REFRESH VIEW [db.]name
+```
+
+
+### SYSTEM WAIT VIEW \{#wait-view\}
+
+실행 중인 갱신이 완료될 때까지 대기합니다. 실행 중인 갱신이 없으면 즉시 반환합니다. 마지막 갱신 시도가 실패한 경우 오류를 반환합니다.
+
+새로 갱신 가능 구체화 VIEW를 생성한 직후(EMPTY 키워드 없이) 초기 갱신이 완료될 때까지 대기하는 데 사용할 수 있습니다.
+
+VIEW가 Replicated 또는 Shared 데이터베이스에 있고, 갱신이 다른 레플리카에서 실행 중인 경우 해당 갱신이 완료될 때까지 대기합니다.
+
+```sql
+SYSTEM WAIT VIEW [db.]name
 ```
 
 
@@ -798,14 +830,10 @@ SYSTEM CANCEL VIEW [db.]name
 ```
 
 
-### SYSTEM WAIT VIEW \{#system-wait-view\}
+## SYSTEM FLUSH OBJECT STORAGE QUEUE \{#flush-object-storage-queue\}
 
-실행 중인 리프레시가 완료될 때까지 대기합니다. 실행 중인 리프레시가 없으면 즉시 반환합니다. 마지막 리프레시 시도가 실패한 경우 오류를 반환합니다.
-
-새로 갱신 가능 구체화 뷰를 생성한 직후(EMPTY 키워드 없이) 초기 리프레시가 완료될 때까지 대기하는 데 사용할 수 있습니다.
-
-뷰가 Replicated 또는 Shared 데이터베이스에 있고, 리프레시가 다른 레플리카에서 실행 중인 경우 해당 리프레시가 완료될 때까지 대기합니다.
+지정된 [S3Queue](../../engines/table-engines/integrations/s3queue.md) 또는 [AzureQueue](../../engines/table-engines/integrations/azure-queue.md) 테이블에서 해당 파일이 처리되거나 영구적인 실패 상태가 될 때까지 대기합니다. 파일이 이미 처리된 경우 즉시 반환합니다. 파일이 영구적으로 실패한 경우(모든 재시도를 모두 소진한 경우) 오류를 발생시킵니다.
 
 ```sql
-SYSTEM WAIT VIEW [db.]name
+SYSTEM FLUSH OBJECT STORAGE QUEUE [db.]table_name PATH 'path'
 ```

@@ -2,13 +2,11 @@
 sidebar_label: '고급 쿼리'
 sidebar_position: 4
 keywords: ['clickhouse', 'python', '쿼리', 'advanced']
-description: 'ClickHouse Connect를 사용한 고급 쿼리'
+description: 'ClickHouse Connect로 고급 쿼리'
 slug: /integrations/language-clients/python/advanced-querying
 title: '고급 쿼리'
 doc_type: 'reference'
 ---
-
-# ClickHouse Connect로 데이터 쿼리하기: 고급 활용 \{#querying-data-with-clickhouse-connect--advanced-usage\}
 
 ## QueryContexts \{#querycontexts\}
 

@@ -2,9 +2,9 @@
 sidebar_label: 'ClickPipes と言語クライアント'
 slug: /manage/integrations
 title: 'ClickPipes と言語クライアント'
-description: 'ClickHouse Cloud 向けの ClickPipes および言語クライアントとの連携'
+description: 'ClickHouse Cloud 向けの ClickPipes および言語クライアントとの統合'
 doc_type: 'landing-page'
-keywords: ['連携', 'Cloud 機能', 'clickpipes', '言語クライアント', 'コネクタ']
+keywords: ['統合', 'Cloud 機能', 'clickpipes', '言語クライアント', 'コネクタ']
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';
@@ -25,7 +25,7 @@ import clickpipes_stack from '@site/static/images/integrations/data-ingestion/cl
 import cp_custom_role from '@site/static/images/integrations/data-ingestion/clickpipes/cp_custom_role.png';
 import Image from '@theme/IdealImage';
 
-ClickHouse Cloud を使えば、お気に入りのツールやサービスを接続できます。
+ClickHouse Cloud を使えば、お気に入りのツールやサービスを接続できます.
 
 
 ## ClickHouse Cloud 向けマネージド統合パイプライン \{#clickpipes\}

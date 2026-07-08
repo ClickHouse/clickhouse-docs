@@ -3,7 +3,7 @@ sidebar_label: 'Holistics'
 slug: /integrations/holistics
 keywords: ['clickhouse', 'Holistics', 'AI', '統合', 'BI', 'データ可視化']
 description: 'Holistics は、適切にガバナンスされ、容易にアクセスできるメトリクスにより、誰もがより良い意思決定を行えるよう支援する、セルフサービス BI と組み込みアナリティクス向けの AI を活用したプラットフォームです。'
-title: 'ClickHouse を Holistics に接続する'
+title: 'ClickHouse の Holistics への接続'
 doc_type: 'guide'
 ---
 
@@ -16,14 +16,11 @@ import holistics_04 from '@site/static/images/integrations/data-visualization/ho
 import holistics_05 from '@site/static/images/integrations/data-visualization/holistics_05.png';
 import holistics_06 from '@site/static/images/integrations/data-visualization/holistics_06.png';
 
+<CommunityMaintainedBadge />
 
-# ClickHouse を Holistics に接続する \{#connecting-clickhouse-to-holistics\}
+[Holistics](https://www.holistics.io/) は、一貫性があり信頼できるメトリクスを実現する、プログラム可能なセマンティックレイヤーを備えた AI ネイティブのセルフサービス BI プラットフォームです。
 
-<CommunityMaintainedBadge/>
-
-[Holistics](https://www.holistics.io/) は、信頼できる一貫したメトリクスのためのプログラマブルなセマンティックレイヤーを備えた、AI ネイティブなセルフサービス BI プラットフォームです。
-
-ClickHouse を Holistics に接続すると、チームはコードベースのセマンティックレイヤーに基づく、高速で信頼性の高い AI 活用型のセルフサービス環境を利用できます。ビジネスユーザーはドラッグ＆ドロップと AI を用いて自信を持ってデータを探索でき、同時にメトリクス定義を再利用可能かつ組み合わせ可能な形で維持し、Git でバージョン管理することができます。
+ClickHouse を Holistics に接続すると、コードベースのセマンティックレイヤーを基盤とした、高速かつ信頼性の高い AI 活用型セルフサービス環境をチームに提供できます。ビジネスユーザーはドラッグ＆ドロップや AI を使って安心してデータを探索できる一方で、メトリクス定義は再利用可能で、組み合わせやすく、Git でバージョン管理された形で維持できます。
 
 ## 前提条件 \{#prerequisites\}
 

@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'BigQuery в ClickHouse'
+sidebar_label: 'BigQuery to ClickHouse'
 sidebar_position: 1
 slug: /integrations/google-dataflow/templates/bigquery-to-clickhouse
 description: 'Вы можете осуществлять приём данных из BigQuery в ClickHouse с помощью шаблона Google Dataflow'
-title: 'Шаблон Dataflow: BigQuery в ClickHouse'
+title: 'Шаблон Dataflow BigQuery to ClickHouse'
 doc_type: 'guide'
 keywords: ['Dataflow', 'BigQuery']
 ---
@@ -18,13 +18,10 @@ import dataflow_extended_template_form from '@site/static/images/integrations/da
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
+Шаблон BigQuery to ClickHouse — это батч-конвейер, который выполняет приём данных из таблицы BigQuery в таблицу ClickHouse.
+Шаблон может считывать всю таблицу целиком или фильтровать отдельные записи с помощью указанного SQL-запроса.
 
-# Шаблон Dataflow BigQuery to ClickHouse \{#dataflow-bigquery-to-clickhouse-template\}
-
-Шаблон BigQuery to ClickHouse представляет собой пакетный конвейер обработки данных, который выполняет приём данных из таблицы BigQuery в таблицу ClickHouse.
-Шаблон может считывать всю таблицу или фильтровать определённые записи с помощью заданного SQL-запроса.
-
-<TOCInline toc={toc}   maxHeadingLevel={2}></TOCInline>
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## Требования к конвейеру \{#pipeline-requirements\}
 
@@ -189,4 +186,7 @@ job:
 
 ## Исходный код шаблона \{#template-source-code\}
 
-Исходный код шаблона доступен в форке репозитория [DataflowTemplates](https://github.com/ClickHouse/DataflowTemplates) от ClickHouse.
+Исходный код шаблона доступен в следующих репозиториях:
+
+* [`GoogleCloudPlatform/DataflowTemplates`](https://github.com/GoogleCloudPlatform/DataflowTemplates/tree/main/v2/googlecloud-to-clickhouse) — основной репозиторий Google Cloud Platform.
+* [`ClickHouse/DataflowTemplates`](https://github.com/ClickHouse/DataflowTemplates) — форк ClickHouse.

@@ -1,15 +1,13 @@
 ---
-description: '텍스트에서 검색어를 빠르게 찾는 방법입니다.'
+description: '텍스트에서 검색어를 빠르게 찾습니다.'
 keywords: ['전문 검색', '텍스트 인덱스', '인덱스', '인덱스']
-sidebar_label: '텍스트 인덱스를 활용한 전문 검색'
+sidebar_label: '텍스트 인덱스를 사용한 전문 검색'
 slug: /engines/table-engines/mergetree-family/textindexes
-title: '텍스트 인덱스를 활용한 전문 검색'
+title: '텍스트 인덱스를 사용한 전문 검색'
 doc_type: 'reference'
 ---
 
-# 텍스트 인덱스를 사용한 전체 텍스트 검색 \{#full-text-search-with-text-indexes\}
-
-텍스트 인덱스(또는 [inverted index](https://en.wikipedia.org/wiki/Inverted_index))는 텍스트 데이터에 대해 빠른 전체 텍스트 검색을 가능하게 합니다.
+텍스트 인덱스(또는 [inverted indexes](https://en.wikipedia.org/wiki/Inverted_index))는 텍스트 데이터에 대해 빠른 전문 검색을 가능하게 합니다.
 텍스트 인덱스는 토큰에서 각 토큰을 포함하는 행 번호로의 매핑을 저장합니다.
 토큰은 토큰화(tokenization)라고 불리는 과정에 의해 생성됩니다.
 예를 들어, ClickHouse의 기본 토크나이저는 영어 문장 &quot;The cat likes mice.&quot;를 토큰 [&quot;The&quot;, &quot;cat&quot;, &quot;likes&quot;, &quot;mice&quot;]로 변환합니다.
@@ -60,7 +58,6 @@ two    : [3]
 
 검색 토큰이 주어지면 이 인덱스 구조를 통해 모든 일치하는 행을 빠르게 찾을 수 있습니다.
 
-
 ## 텍스트 인덱스 생성 \{#creating-a-text-index\}
 
 텍스트 인덱스는 ClickHouse 26.2 버전 이상에서 일반 공급(GA) 상태입니다.
@@ -68,28 +65,12 @@ two    : [3]
 프로덕션 사용 사례에서는 ClickHouse 26.2 이상 버전 사용을 강력히 권장합니다.
 
 :::note
-ClickHouse 26.2보다 이전 버전에서 업그레이드했거나(또는 ClickHouse Cloud와 같이 업그레이드된 경우), [compatibility](../../../operations/settings/settings#compatibility) 설정이 존재하면 인덱스가 비활성화되거나 텍스트 인덱스 관련 성능 최적화가 비활성화될 수 있습니다.
-
-If query
-
-```sql
-SELECT value FROM system.settings WHERE name = 'compatibility';
-```
-
-`26.2`보다 작은 값(예: `25.4`)을 반환하는 경우, 텍스트 인덱스를 사용하려면 추가로 세 가지 설정을 지정해야 합니다:
-
-```sql
-SET enable_full_text_index = true;
-SET query_plan_direct_read_from_text_index = true;
-SET use_skip_indexes_on_data_read = true;
-```
-
-또는 [compatibility](../../../operations/settings/settings#compatibility) 설정을 `26.2` 이상으로 올릴 수 있지만, 이 경우 많은 설정에 영향을 주므로 일반적으로 사전 테스트가 필요합니다.
+텍스트 인덱스는 [compatibility](../../../operations/settings/settings#compatibility) 설정과 관계없이 ClickHouse 26.2 이상 모든 버전에서 사용할 수 있습니다.
 :::
 
 텍스트 인덱스를 생성하려면 다음 구문을 사용하십시오:
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     key UInt64,
@@ -98,6 +79,7 @@ CREATE TABLE table
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
+                                            | asciiCJK
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
@@ -117,19 +99,21 @@ ORDER BY key
 텍스트 인덱스는 다음 타입의 컬럼에 정의할 수 있습니다:
 
 * [String](/sql-reference/data-types/string.md) 및 [FixedString](/sql-reference/data-types/fixedstring.md),
-* [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md), 그리고
-* [Map](/sql-reference/data-types/map.md) 타입( [mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원).
+* [Array(String)](/sql-reference/data-types/array.md) 및 [Array(FixedString)](/sql-reference/data-types/array.md),
+* [Map](/sql-reference/data-types/map.md) 타입([mapKeys](/sql-reference/functions/tuple-map-functions.md/#mapKeys) 및 [mapValues](/sql-reference/functions/tuple-map-functions.md/#mapValues) 함수를 통해 지원), 그리고
+* [JSON](/sql-reference/data-types/newjson.md) 타입([JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths) 및 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues) 함수를 통해 지원).
 
 [Nullable(T)](/sql-reference/data-types/nullable.md) 및 [LowCardinality()](/sql-reference/data-types/lowcardinality.md) 타입의 컬럼도 지원되며, `Array(Nullable(String or FixedString))`도 포함됩니다.
 
 또는 기존 테이블에 텍스트 인덱스를 추가하려면 다음과 같이 합니다.
 
-```sql
+```sql title="Query"
 ALTER TABLE table
     ADD INDEX text_idx(str) TYPE text(
                                 -- Mandatory parameters:
                                 tokenizer = splitByNonAlpha
                                             | splitByString[(S)]
+                                            | asciiCJK
                                             | ngrams[(N)]
                                             | sparseGrams[(min_length[, max_length[, min_cutoff_length]])]
                                             | array
@@ -144,26 +128,26 @@ ALTER TABLE table
 
 ```
 
-이미 존재하는 테이블에 인덱스를 추가했다면, 기존 테이블 파트에 대해 해당 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 느린 전수 검색(brute-force scan)으로 수행됩니다.
+이미 존재하는 테이블에 인덱스를 추가했다면, 기존 테이블 파트에 대해 해당 인덱스를 구체화(materialize)하는 것이 좋습니다. 그렇지 않으면 인덱스가 없는 파트에 대한 검색은 느린 브루트 포스(전체 스캔)으로 수행됩니다.
 
-```sql
+```sql title="Query"
 ALTER TABLE table MATERIALIZE INDEX text_idx SETTINGS mutations_sync = 2;
 ```
 
 텍스트 인덱스를 제거하려면 다음 명령을 실행하십시오.
 
-```sql
+```sql title="Query"
 ALTER TABLE table DROP INDEX text_idx;
 ```
 
-**Tokenizer 인수(필수)**. `tokenizer` 인수는 사용할 tokenizer를 지정합니다:
-
+**토크나이저 인수(필수)**. `tokenizer` 인수는 사용할 토크나이저를 지정합니다:
 
 * `splitByNonAlpha`는 영문자와 숫자가 아닌 ASCII 문자를 기준으로 문자열을 분리합니다(함수 [splitByNonAlpha](/sql-reference/functions/splitting-merging-functions.md/#splitByNonAlpha) 참조).
 * `splitByString(S)`는 사용자 정의 구분자 문자열 `S`를 기준으로 문자열을 분리합니다(함수 [splitByString](/sql-reference/functions/splitting-merging-functions.md/#splitByString) 참조).
   구분자는 선택적 매개변수를 사용하여 지정할 수 있으며, 예를 들어 `tokenizer = splitByString([', ', '; ', '\n', '\\'])`와 같이 설정합니다.
   각 문자열은 여러 문자로 구성될 수 있습니다(예시의 `', '` 등).
   구분자를 명시적으로 지정하지 않으면(예: `tokenizer = splitByString`) 기본 구분자 목록은 공백 한 개 `[' ']`입니다.
+* `asciiCJK`는 Unicode 단어 경계 규칙([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)와 유사)을 사용해 문자열을 token으로 분리합니다. ASCII 영숫자와 밑줄은 연결 문자와 함께 token을 구성합니다(문자의 경우 ASCII `:`, 같은 타입의 문자에 대해서는 `.` 및 `'`). [CJK](https://en.wikipedia.org/wiki/CJK_characters) 문자를 포함한 비-ASCII Unicode 문자는 한 글자짜리 token이 됩니다.
 * `ngrams(N)`는 문자열을 동일한 크기의 `N`-그램으로 분리합니다(함수 [ngrams](/sql-reference/functions/splitting-merging-functions.md/#ngrams) 참조).
   n그램 길이는 1에서 8 사이의 정수 선택적 매개변수를 사용하여 지정할 수 있으며, 예를 들어 `tokenizer = ngrams(3)`와 같이 설정합니다.
   n그램 크기를 명시적으로 지정하지 않으면(예: `tokenizer = ngrams`) 기본값은 3입니다.
@@ -173,7 +157,6 @@ ALTER TABLE table DROP INDEX text_idx;
   `ngrams(N)`과 비교하면, `sparseGrams` 토크나이저는 가변 길이 N-그램을 생성하여 원본 텍스트를 더 유연하게 표현할 수 있습니다.
   예를 들어, `tokenizer = sparseGrams(3, 5, 4)`는 내부적으로 입력 문자열에서 3-, 4-, 5-그램을 생성하지만, 4-그램과 5-그램만 반환합니다.
 * `array`는 토큰화를 수행하지 않으며, 각 행 값이 하나의 token이 됩니다(함수 [array](/sql-reference/functions/array-functions.md/#array) 참조).
-* `unicodeWord`는 Unicode 단어 경계 규칙([Unicode Text Segmentation (UAX #29)](https://unicode.org/reports/tr29/)와 유사)을 사용해 문자열을 token으로 분리합니다. ASCII 영숫자와 밑줄은 연결 문자와 함께 token을 구성합니다(문자의 경우 ASCII `:`, 같은 타입의 문자에 대해서는 `.` 및 `'`). [CJK](https://en.wikipedia.org/wiki/CJK_characters) 문자를 포함한 비-ASCII Unicode 문자는 한 글자짜리 token이 됩니다.
 
 사용 가능한 모든 토크나이저는 [system.tokenizers](../../../operations/system-tables/tokenizers.md)에 나열되어 있습니다.
 
@@ -190,25 +173,22 @@ ALTER TABLE table DROP INDEX text_idx;
 
 예시:
 
-```sql
+```sql title="Query"
 SELECT tokens('abc def', 'ngrams', 3);
 ```
 
-결과:
-
-```result
+```result title="Response"
 ['abc','bc ','c d',' de','def']
 ```
 
 *비-ASCII 입력 처리.*
 텍스트 인덱스는 어떤 언어와 문자 집합의 텍스트 데이터에도 구축할 수 있습니다.
-비-ASCII 텍스트의 경우 CJK 문자를 포함한 Unicode 단어 경계를 올바르게 처리하므로 `unicodeWord` 토크나이저를 권장합니다.
+비-ASCII 텍스트의 경우 CJK 문자를 포함한 Unicode 단어 경계를 올바르게 처리하므로 `asciiCJK` 토크나이저를 권장합니다.
 :::
 
-**Preprocessor 인자(선택 사항)**. preprocessor는 토큰화 전에 입력 문자열에 적용되는 표현식을 의미합니다.
+**전처리기 인수(선택 사항)**. 전처리기는 토큰화 전에 입력 문자열에 적용되는 표현식을 의미합니다.
 
-Preprocessor 인자의 대표적인 사용 사례는 다음과 같습니다.
-
+전처리기 인수의 대표적인 사용 사례는 다음과 같습니다.
 
 1. 대소문자를 구분하지 않는 매칭을 위한 소문자/대문자 변환 또는 case folding(예: [lower](/sql-reference/functions/string-functions.md/#lower), [lowerUTF8](/sql-reference/functions/string-functions.md/#lowerUTF8), [caseFoldUTF8](/sql-reference/functions/string-functions.md/#caseFoldUTF8)).
 2. UTF-8 정규화(예: [normalizeUTF8NFC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFC), [normalizeUTF8NFD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFD), [normalizeUTF8NFKC](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKC), [normalizeUTF8NFKD](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKD), [normalizeUTF8NFKCCasefold](/sql-reference/functions/string-functions.md/#normalizeUTF8NFKCCasefold), [toValidUTF8](/sql-reference/functions/string-functions.md/#toValidUTF8)).
@@ -234,11 +214,12 @@ Preprocessor 인자의 대표적인 사용 사례는 다음과 같습니다.
 
 비결정적 함수 사용은 허용되지 않습니다.
 
-[hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens), [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens) 함수는 검색어를 토큰화하기 전에 먼저 전처리기를 사용하여 검색어를 변환합니다.
+[hasToken](/sql-reference/functions/string-search-functions.md/#hasToken), [hasAllTokens](/sql-reference/functions/string-search-functions.md/#hasAllTokens), [hasAnyTokens](/sql-reference/functions/string-search-functions.md/#hasAnyTokens), [hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) 함수는 검색어를 토큰화하기 전에 먼저 전처리기를 사용하여 검색어를 변환합니다.
+전처리기는 텍스트 인덱스 경로에만 적용되므로, 이러한 함수의 결과는 텍스트 인덱스를 사용하는 쿼리와 사용하지 않는 쿼리 간에 다를 수 있습니다(예: `SETTINGS use_skip_indexes = 0`).
 
 예를 들어,
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -252,7 +233,7 @@ SELECT count() FROM table WHERE hasToken(str, 'Foo');
 
 다음과 동일합니다:
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     str String,
@@ -268,7 +249,7 @@ SELECT count() FROM table WHERE hasToken(str, lower('Foo'));
 
 예시:
 
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     arr Array(String),
@@ -283,13 +264,12 @@ ORDER BY tuple();
 SELECT count() FROM tab WHERE hasAllTokens(arr, 'foo');
 ```
 
-빌드 시 [Map](/sql-reference/data-types/map.md) 타입 컬럼에 대한 텍스트 인덱스에서 전처리기를 정의하려면, 인덱스를
-맵의 키 기준으로 생성할지 값 기준으로 생성할지 결정해야 합니다.
+텍스트 인덱스에서 [맵](/sql-reference/data-types/map.md) 타입 컬럼에 전처리기를 정의하려면, 인덱스를
+맵 키를 대상으로 생성할지 값를 대상으로 생성할지 결정해야 합니다.
 
 예시:
 
-
-```sql
+```sql title="Query"
 CREATE TABLE table
 (
     map Map(String, String),
@@ -328,7 +308,7 @@ SELECT count() FROM tab WHERE hasAllTokens(mapKeys(map), 'foo');
 
 예시:
 
-```sql
+```sql title="Query"
 CREATE TABLE table(
     k UInt64,
     s String,
@@ -339,9 +319,7 @@ ORDER BY k;
 SHOW CREATE TABLE table;
 ```
 
-결과:
-
-```result
+```result title="Response"
 ┌─statement──────────────────────────────────────────────────────────────┐
 │ CREATE TABLE default.table                                            ↴│
 │↳(                                                                     ↴│
@@ -357,7 +335,6 @@ SHOW CREATE TABLE table;
 
 매우 큰 index granularity를 사용하면 텍스트 인덱스가 파트 전체를 대상으로 생성됩니다.
 명시적으로 지정된 index granularity 값은 무시됩니다.
-
 
 ## 텍스트 인덱스 사용하기 \{#using-a-text-index\}
 
@@ -435,6 +412,10 @@ SELECT count() FROM table WHERE comment LIKE ' support %'; -- or `% support %`
 
 `support` 양쪽에 공백을 넣어 두면 해당 용어를 하나의 토큰으로 인식할 수 있습니다.
 
+다행히도 ClickHouse가 역색인 인덱스를 활용해 LIKE 쿼리의 속도를 크게 높일 수 있는 특별한 경우가 있습니다.
+
+자세한 내용은 [LIKE/ILIKE 성능 튜닝 섹션](#like-ilike-queries-perf)을 참조하십시오.
+
 
 #### `startsWith` 및 `endsWith` \{#functions-example-startswith-endswith\}
 
@@ -501,6 +482,24 @@ SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 ```
 
 
+#### `hasPhrase` \{#functions-example-hasphrase\}
+
+[hasPhrase](/sql-reference/functions/string-search-functions.md/#hasPhrase) 함수는 구문과 일치하는지 확인합니다. 즉, 모든 토큰이 검색 문자열에 있는 순서와 동일한 순서로 연속해서 나타나야 합니다.
+
+모든 토큰이 어딘가에 존재하기만 하면 되는 `hasAllTokens`와 달리, `hasPhrase`는 토큰이 연속된 시퀀스로 나타나야 합니다.
+검색 구문은 인덱스 컬럼에 구성된 것과 동일한 토크나이저를 사용해 토큰화됩니다.
+이 함수는 `splitByNonAlpha`, `splitByString`, `ngrams`, 또는 `asciiCJK` 토크나이저 중 하나가 필요합니다.
+
+예시:
+
+```sql
+-- Matches: 'clickhouse' and 'olap' must appear consecutively in that order
+SELECT count() FROM table WHERE hasPhrase(comment, 'clickhouse olap');
+
+-- Does NOT match a row containing 'olap clickhouse' (wrong order)
+-- Does NOT match a row containing 'clickhouse fast olap' (non-consecutive)
+```
+
 #### `has` \{#functions-example-has\}
 
 배열 함수 [has](/sql-reference/functions/array-functions#has)는 문자열 배열에 단일 토큰이 포함되어 있는지 확인합니다.
@@ -511,6 +510,17 @@ SELECT count() FROM table WHERE hasAllTokens(comment, ['clickhouse', 'olap']);
 SELECT count() FROM table WHERE has(array, 'clickhouse');
 ```
 
+
+#### `hasAny` 및 `hasAll` \{#functions-example-hasany-hasall\}
+
+배열 함수 [hasAny](/sql-reference/functions/array-functions#hasAny)와 [hasAll](/sql-reference/functions/array-functions#hasAll)는 인덱싱된 배열 컬럼에 상수 needle 문자열 집합의 일부 또는 전체가 포함되어 있는지 확인합니다.
+
+예시:
+
+```sql
+SELECT count() FROM table WHERE hasAny(tags, ['clickhouse', 'olap']);
+SELECT count() FROM table WHERE hasAll(tags, ['clickhouse', 'olap']);
+```
 
 #### `mapContains` \{#functions-example-mapcontains\}
 
@@ -565,9 +575,7 @@ SELECT count() FROM table WHERE map['engine'] = 'clickhouse';
 다음 예시는 텍스트 인덱스와 함께 `Array(T)` 및 `Map(K, V)` 타입 컬럼을 사용하는 방법을 보여줍니다.
 
 
-### `Array` 및 `Map` 컬럼에서 텍스트 인덱스를 사용하는 예제 \{#text-index-array-and-map-examples\}
-
-#### Array(String) 컬럼에 인덱스 생성하기 \{#text-index-example-array\}
+### Array(String) 컬럼에 인덱스 생성하기 \{#text-index-example-array\}
 
 블로그 플랫폼이 있다고 가정해 보십시오. 작성자는 키워드를 사용해 블로그 게시물을 분류합니다.
 사용자가 주제를 검색하거나 클릭하여 관련 콘텐츠를 발견하도록 하고자 합니다.
@@ -600,8 +608,7 @@ ALTER TABLE posts ADD INDEX keywords_idx(keywords) TYPE text(tokenizer = splitBy
 ALTER TABLE posts MATERIALIZE INDEX keywords_idx; -- Don't forget to rebuild the index for existing data
 ```
 
-
-#### 맵 컬럼 인덱싱 \{#text-index-example-map\}
+### 맵 컬럼 인덱싱 \{#text-index-example-map\}
 
 많은 관측성 관련 사용 사례에서 로그 메시지는 「구성 요소」로 분리되어, 타임스탬프는 날짜-시간 데이터 타입으로, 로그 레벨은 enum 등으로 적절한 데이터 타입에 따라 저장됩니다.
 메트릭 필드는 key-value 쌍으로 저장하는 것이 가장 좋습니다.
@@ -621,7 +628,7 @@ ENGINE = MergeTree
 ORDER BY (timestamp);
 ```
 
-텍스트 인덱스가 없으면 [Map](/sql-reference/data-types/map.md) 데이터에서 검색하려면 테이블 전체를 스캔해야 합니다.
+텍스트 인덱스가 없으면 [Map](/sql-reference/data-types/map.md) 데이터에서 검색하려면 테이블 전체를 스캔해야 합니다:
 
 ```sql
 -- Finds all logs with rate limiting data:
@@ -661,12 +668,260 @@ SELECT * FROM logs WHERE has(mapValues(attributes), '192.168.1.1'); -- fast
 SELECT * FROM logs WHERE mapContainsValueLike(attributes, '% error %'); -- fast
 ```
 
+### JSON 컬럼 인덱싱 \{#text-index-example-json\}
+
+텍스트 인덱스는 `JSON` 컬럼에 세 가지 방식으로 적용할 수 있습니다:
+
+1. **특정 하위 컬럼에 대한 인덱스** — 일반 컬럼과 마찬가지로, 알려진 JSON 경로에 텍스트 인덱스를 생성합니다. 이렇게 하면 해당 경로의 *값*에 인덱스가 생성됩니다.
+2. **[JSONAllPaths](/sql-reference/functions/json-functions.md/#JSONAllPaths)를 사용하는 경로 기반 인덱스** — 각 그래뉼에 존재하는 *모든 경로*에 인덱스를 생성하여, 쿼리한 경로를 포함할 수 없는 그래뉼을 건너뜁니다. `Map` 컬럼과 유사합니다.
+3. **[JSONAllValues](/sql-reference/functions/json-functions.md#JSONAllValues)를 사용하는 값 기반 인덱스** — 모든 JSON 경로의 *모든 값*에 인덱스를 생성하여, 단일 인덱스로 모든 JSON 서브컬럼에 대한 전문 검색을 가속화합니다.
+
+#### 특정 서브컬럼의 인덱스 \{#json-indexes-on-subcolumns\}
+
+일반 컬럼과 동일한 구문을 사용하여 모든 JSON 서브컬럼에 스킵 인덱스를 생성할 수 있습니다.
+
+인덱스 표현식에서 JSON 서브컬럼을 참조하는 방법은 두 가지입니다.
+
+* JSON 타입 힌트에 선언된 **타입이 지정된 경로** — 이름으로 직접 접근합니다: `json.a`.
+* 명시적 캐스트를 사용하는 **동적 경로** — `::` 캐스트 구문을 사용합니다: `json.b::String`.
+
+예시 인덱스 정의:
+
+```sql title="Query"
+CREATE TABLE sensor_data
+(
+    data JSON(sensor_id String),
+    INDEX idx_sensor data.sensor_id TYPE text(tokenizer = splitByNonAlpha),
+    INDEX idx_location data.location::String TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY tuple()
+SETTINGS index_granularity = 1;
+
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number , 'location', 'room_' || toString(number))) FROM numbers(4);
+INSERT INTO sensor_data SELECT toJSONString(map('sensor_id', 'id_' || number, 'location', 'room_' || toString(number))) FROM numbers(4, 4);
+```
+
+예시 쿼리:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.sensor_id = 'id_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_sensor
+        Description: text
+        Condition: (mode: All; tokens: ["5", "id"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+예시 쿼리:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM sensor_data WHERE data.location::String = 'room_5';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx_location
+        Description: text
+        Condition: (mode: All; tokens: ["5", "room"])
+        Parts: 1/2
+        Granules: 1/8
+```
+
+#### JSONAllPaths를 사용한 경로 기반 인덱스 \{#json-indexes-jsonallpaths\}
+
+`Map` 컬럼과 마찬가지로, [`JSONAllPaths`](/sql-reference/functions/json-functions.md/#JSONAllPaths)를 사용하면 [JSON](/sql-reference/data-types/newjson.md) 컬럼에도 텍스트 인덱스를 생성할 수 있습니다.
+이 인덱스는 각 그래뉼에 존재하는 JSON 경로 집합을 저장하며, 쿌리한 경로가 없는 그래뉼을 건너뛰는 데 사용됩니다.
+
+예시 인덱스 정의:
+
+```sql title="Query"
+CREATE TABLE events
+(
+    data JSON,
+    INDEX idx JSONAllPaths(data) TYPE text(tokenizer = array)
+)
+ENGINE = MergeTree
+ORDER BY tuple();
+
+INSERT INTO events VALUES ('{"user": {"name": "Alice"}, "action": "login"}');
+INSERT INTO events VALUES ('{"metric": {"cpu": 0.95}, "host": "srv1"}');
+```
+
+`EXPLAIN indexes = 1`을 사용하면 스킵 인덱스가 실제로 사용되는지 확인할 수 있습니다.
+경로가 하나의 파트에만 존재하면 인덱스가 다른 파트는 건너뜁니다.
+
+예시:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name = 'Alice';
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
+```
+
+경로가 어떤 파트에도 존재하지 않으면, 모든 파트와 그래뉼을 건너뜁니다.
+
+예시:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.nonexistent = 1;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["nonexistent"])
+        Parts: 0/2
+        Granules: 0/2
+```
+
+`IS NOT NULL`도 인덱스를 사용합니다 — 경로가 없는 그래뉼은 건너뜁니다(이 경우 값이 `NULL`이기 때문입니다):
+
+예시:
+
+```sql title="Query"
+EXPLAIN indexes = 1 SELECT * FROM events WHERE data.user.name IS NOT NULL;
+```
+
+```text title="Response"
+...
+    Indexes:
+      Skip
+        Name: idx
+        Description: text
+        Condition: (mode: All; tokens: ["user.name"])
+        Parts: 1/2
+        Granules: 1/2
+```
+
+#### JSONAllValues를 사용한 값 기반 인덱스 \{#json-indexes-jsonallvalues\}
+
+텍스트 인덱스는 함수 [`JSONAllValues`](/sql-reference/functions/json-functions.md#JSONAllValues)를 통해 [JSON](/sql-reference/data-types/newjson.md) 컬럼에 대한 검색을 가속화하는 데 사용할 수 있습니다.
+
+`JSONAllValues`는 JSON 컬럼의 모든 값을 `Array(String)`으로 반환합니다.
+문자열이 아닌 데이터 형식의 값(예: 정수 및 배열)은 텍스트 표현으로 변환됩니다.
+`JSONAllValues`의 텍스트 인덱스는 각 행의 모든 JSON 경로에 걸쳐 이러한 텍스트 표현을 인덱싱합니다.
+이 인덱스는 개별 JSON 서브컬럼에 대해 필터링하는 쿼리를 가속화할 수 있습니다.
+쿼리가 특정 서브컬럼에 대해 필터링할 때(예: `data.user_name = 'alice'`), 텍스트 인덱스는 어떤 JSON 값에도 검색 토큰이 포함되지 않은 행(및 그래뉼)을 빠르게 건너뛸 수 있습니다.
+
+:::note
+서로 다른 JSON 경로에 동일한 토큰이 포함되어 있으면 인덱스에서 거짓 양성(false positive)이 발생할 수 있습니다.
+예를 들어, 1번 행에 `{"a": "hello", "b": "world"}`가 있고 쿼리에서 `data.a = 'world'`를 검색하는 경우, 텍스트 인덱스는 `world`가 경로 `a`가 아니라 `b`에 속한다는 점을 구분할 수 없습니다.
+이 경우 인덱스는 해당 행을 건너뛰지 않으며, 실제 컬럼 데이터에 대한 필터가 최종 판단을 수행합니다.
+이는 인덱스가 빠른 사전 필터 역할을 하는 다른 텍스트 인덱스 사용 사례와 동일한 동작입니다.
+:::
+
+##### 인덱스 생성 \{#json-all-values-creating-the-index\}
+
+인덱스 정의 예시:
+
+```sql
+CREATE TABLE events
+(
+    id UInt64,
+    data JSON,
+    INDEX json_idx JSONAllValues(data) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+```
+
+##### 지원되는 쿼리 패턴 \{#json-all-values-supported-query-patterns\}
+
+인덱스가 생성되면 `String` 컬럼에 사용하는 것과 동일한 함수로 JSON 서브컬럼 쿼리를 더 빠르게 수행할 수 있으며, 모든 컬럼에서는 `equals` 함수도 사용할 수 있습니다.
+
+서브컬럼 접근:
+
+```sql
+SELECT * FROM events WHERE data.user_name = 'alice';
+SELECT * FROM events WHERE data.message LIKE '% error %';
+SELECT * FROM events WHERE startsWith(data.status, 'fail');
+SELECT * FROM events WHERE hasToken(data.title, 'clickhouse');
+```
+
+명시적 `CAST`를 사용한 서브컬럼 접근:
+
+```sql
+SELECT * FROM events WHERE hasAllTokens(data.message::String, 'connection timeout');
+SELECT * FROM events WHERE data.status_code::UInt64 = 404;
+SELECT * FROM events WHERE has(data.tags::Array(String), 'bug')
+```
+
+`IN` 연산자:
+
+```sql
+SELECT * FROM events WHERE data.level IN ('error', 'critical');
+```
+
+
+### 구문 검색 \{#text-index-phrase-search\}
+
+텍스트 인덱스는 `hasPhrase` 함수를 통해 구문 검색을 지원합니다.
+구문에 포함된 모든 토큰은 문서 내에서 연속으로, 동일한 순서로 나타나야 합니다.
+
+텍스트 인덱스는 구문에 포함된 모든 토큰의 포스팅 리스트의 교집합을 계산하여 후보 그래뉼을 식별함으로써 구문 검색을 가속화합니다.
+이후 ClickHouse는 해당 그래뉼 내에서 토큰이 정확히 인접해 있는지 확인합니다.
+
+`hasPhrase`는 `splitByNonAlpha`, `splitByString`, `ngrams`, `asciiCJK` 토크나이저에서 지원됩니다.
+
+구문 문자열은 인덱스에 설정된 토크나이저를 사용해 토큰화됩니다.
+구문에서 토크나이저의 구분 문자는 무시됩니다. 즉, `splitByNonAlpha` 토크나이저에서는 `hasPhrase(text, 'quick+brown')`가 `hasPhrase(text, 'quick brown')`와 동일합니다.
+
+#### 예시 \{#text-index-phrase-search-example\}
+
+```sql title="Query"
+CREATE TABLE tab (
+    id UInt32,
+    text String,
+    INDEX idx(text) TYPE text(tokenizer = splitByNonAlpha)
+)
+ENGINE = MergeTree
+ORDER BY id;
+
+INSERT INTO tab VALUES
+    (1, 'weather in New York'),
+    (2, 'New weather in York'),
+    (3, 'weather in New Orleans');
+```
+
+```sql title="Query"
+SELECT id, text FROM tab WHERE hasPhrase(text, 'weather in New York');
+```
+
+```result title="Response"
+   ┌─id─┬─text────────────────┐
+1. │  1 │ weather in New York │
+   └────┴─────────────────────┘
+```
+
+2행(`'New weather in York'`)은 토큰 순서가 맞지 않기 때문에 일치하지 않습니다.
+3행(`'weather in New Orleans'`)은 `'York'` 토큰이 없기 때문에 일치하지 않습니다.
 
 ## 성능 튜닝 \{#performance-tuning\}
 
 ### 직접 읽기 \{#direct-read\}
 
-일부 유형의 텍스트 쿼리는 &quot;direct read&quot;라고 하는 최적화를 통해 성능이 상당히 향상될 수 있습니다.
+일부 유형의 텍스트 쿼리는 &quot;직접 읽기&quot;라고 하는 최적화를 통해 성능이 상당히 향상될 수 있습니다.
 
 예시:
 
@@ -682,17 +937,17 @@ WHERE string_search_function(column_with_text_index)
 직접 읽기는 두 개의 설정으로 제어됩니다.
 
 * 설정 [query&#95;plan&#95;direct&#95;read&#95;from&#95;text&#95;index](../../../operations/settings/settings#query_plan_direct_read_from_text_index) (기본값은 true) – 직접 읽기를 전반적으로 활성화할지 지정합니다.
-* 설정 [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read) – 직접 읽기를 위한 또 다른 전제 조건입니다. ClickHouse 26.1 이상 버전에서는 이 설정이 기본으로 활성화되어 있습니다. 이전 버전에서는 `SET use_skip_indexes_on_data_read = 1` 명령을 명시적으로 실행해야 합니다.
+* 설정 [use&#95;skip&#95;indexes&#95;on&#95;data&#95;read](../../../operations/settings/settings#use_skip_indexes_on_data_read)는 ClickHouse 버전 &lt; 26.4에서 직접 읽기를 위한 전제 조건이었습니다.
 
 **지원되는 함수**
 
 직접 읽기 최적화는 `hasToken`, `hasAllTokens`, `hasAnyTokens` 함수를 지원합니다.
-텍스트 인덱스가 `array` 토크나이저로 정의된 경우, `equals`, `has`, `mapContainsKey`, `mapContainsValue` 함수에도 직접 읽기가 지원됩니다.
+텍스트 인덱스가 `array` 토크나이저로 정의된 경우, `equals`, `has`, `hasAny`, `hasAll`, `mapContainsKey`, `mapContainsValue` 함수에도 직접 읽기가 지원됩니다.
 이 함수들은 `AND`, `OR`, `NOT` 연산자와 함께 조합하여 사용할 수 있습니다.
 `WHERE` 또는 `PREWHERE` 절에는 (텍스트 컬럼 또는 다른 컬럼에 대한) 추가 비텍스트 검색 함수 기반 필터를 포함할 수도 있습니다. 이 경우에도 직접 읽기 최적화는 여전히 사용되지만, 효과는 줄어듭니다(지원되는 텍스트 검색 함수에만 적용되기 때문입니다).
 
 쿼리가 직접 읽기를 활용하는지 확인하려면 `EXPLAIN PLAN actions = 1`을 사용하여 쿼리를 실행하십시오.
-예를 들어, 직접 읽기가 비활성화된 쿼리는 다음과 같습니다.
+예를 들어, 직접 읽기가 비활성화된 쿼리는
 
 ```sql
 EXPLAIN PLAN actions = 1
@@ -700,7 +955,6 @@ SELECT count()
 FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 0, -- disable direct read
-         use_skip_indexes_on_data_read = 1;
 ```
 
 반환합니다
@@ -723,10 +977,9 @@ SELECT count()
 FROM table
 WHERE hasToken(col, 'some_token')
 SETTINGS query_plan_direct_read_from_text_index = 1, -- enable direct read
-         use_skip_indexes_on_data_read = 1;
 ```
 
-반환값
+반환합니다
 
 ```text
 [...]
@@ -739,35 +992,34 @@ Positions:
 ```
 
 두 번째 EXPLAIN PLAN 출력에는 가상 컬럼 `__text_index_<index_name>_<function_name>_<id>`가 포함됩니다.
-이 컬럼이 존재하면 direct read가 사용됩니다.
+이 컬럼이 존재하면 직접 읽기가 사용됩니다.
 
-WHERE 절의 필터 조건에 텍스트 검색 함수만 포함되어 있는 경우, 쿼리는 컬럼 데이터를 전혀 읽지 않고도 direct read를 통해 가장 큰 성능 향상을 얻을 수 있습니다.
-그러나 쿼리의 다른 부분에서 텍스트 컬럼에 접근하는 경우에도 direct read는 여전히 성능을 개선합니다.
+WHERE 절의 필터 조건에 텍스트 검색 함수만 포함되어 있는 경우, 쿼리는 컬럼 데이터를 전혀 읽지 않고도 직접 읽기를 통해 가장 큰 성능 향상을 얻을 수 있습니다.
+그러나 쿼리의 다른 부분에서 텍스트 컬럼에 접근하는 경우에도 직접 읽기는 여전히 성능을 개선합니다.
 
-**힌트로서의 direct read**
+**힌트로서의 직접 읽기**
 
-힌트로서의 direct read는 기본적으로 일반 direct read와 동일한 원리에 기반하지만, 기본이 되는 텍스트 컬럼을 제거하지 않고 텍스트 인덱스 데이터로부터 추가 필터를 생성해 적용한다는 점이 다릅니다.
+힌트로서의 직접 읽기는 기본적으로 일반 직접 읽기와 동일한 원리에 기반하지만, 기본이 되는 텍스트 컬럼을 제거하지 않고 텍스트 인덱스 데이터로부터 추가 필터를 생성해 적용한다는 점이 다릅니다.
 이는 텍스트 인덱스만 읽어서 처리할 경우 오탐(false positive)이 발생할 수 있는 함수에 사용됩니다.
 
-지원되는 함수는 `like`, `startsWith`, `endsWith`, `equals`, `has`, `mapContainsKey`, `mapContainsValue` 입니다.
+지원되는 함수는 `like`, `startsWith`, `endsWith`, `equals`, `has`, `hasPhrase`, `mapContainsKey`, `mapContainsValue` 입니다.
 
 이 추가 필터는 다른 필터와 결합되어 결과 집합의 선별성을 더 높여, 다른 컬럼에서 읽어야 하는 데이터 양을 더욱 줄이는 데 도움이 됩니다.
 
-힌트로서의 direct read는 [query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) 설정(기본값으로 활성화됨)으로 제어합니다.
+힌트로서의 직접 읽기는 [query&#95;plan&#95;text&#95;index&#95;add&#95;hint](../../../operations/settings/settings#query_plan_text_index_add_hint) 설정(기본값으로 활성화됨)으로 제어합니다.
 
 힌트를 사용하지 않은 쿼리 예시는 다음과 같습니다:
-
 
 ```sql
 EXPLAIN actions = 1
 SELECT count()
 FROM table
 WHERE (col LIKE '%some-token%') AND (d >= today())
-SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 0
+SETTINGS query_plan_text_index_add_hint = 0
 FORMAT TSV
 ```
 
-반환값
+반환합니다
 
 ```text
 [...]
@@ -782,7 +1034,7 @@ EXPLAIN actions = 1
 SELECT count()
 FROM table
 WHERE col LIKE '%some-token%'
-SETTINGS use_skip_indexes_on_data_read = 1, query_plan_text_index_add_hint = 1
+SETTINGS query_plan_text_index_add_hint = 1
 ```
 
 반환값
@@ -798,6 +1050,22 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 이 쿼리에서는 `__text_index_...`, 그다음 `greaterOrEquals(...)`, 마지막으로 `like(...)` 순서로 적용됩니다.
 이러한 적용 순서 덕분에 텍스트 인덱스와 기존 필터만으로 건너뛸 수 있는 그래뉼보다 더 많은 데이터 그래뉼을, `WHERE` 절 이후 쿼리에서 사용되는 읽기 비용이 큰 컬럼을 읽기 전에 건너뛸 수 있어, 최종적으로 읽어야 하는 데이터 양이 더욱 줄어듭니다.
 
+### LIKE/ILIKE 쿼리 \{#like-ilike-queries-perf\}
+
+LIKE/ILIKE 쿼리 패턴이 `%<alpha-numeric-characters-without-spaces>%`이고 텍스트 인덱스 토크나이저가 `splitByNonAlpha` 또는 `array`인 경우, ClickHouse는 역인덱스를 활용해 LIKE/ILIKE 쿼리 속도를 크게 높입니다. 이를 위해 ClickHouse는 일치하는 패턴을 찾을 때 전체 테이블 스캔 대신 역인덱스 딕셔너리를 스캔합니다.
+
+이 최적화가 활성화되면 LIKE/ILIKE 쿼리는 전체 테이블 스캔보다 훨씬 빨라집니다. 하지만 패턴이 딕셔너리의 대부분의 토큰과 일치하는 경우에는 전체 테이블 스캔보다 성능이 더 나빠질 수 있습니다. 다행히 이를 방지하기 위한 폴백 메커니즘이 있습니다.
+
+이 최적화는 다음 설정으로 제어됩니다.
+
+* [use&#95;text&#95;index&#95;like&#95;evaluation&#95;by&#95;dictionary&#95;scan](../../../operations/settings/settings#use_text_index_like_evaluation_by_dictionary_scan)
+
+폴백 메커니즘은 다음 두 가지 설정으로 제어됩니다.
+
+* [text&#95;index&#95;like&#95;min&#95;pattern&#95;length](../../../operations/settings/settings#text_index_like_min_pattern_length)
+* [text&#95;index&#95;like&#95;max&#95;postings&#95;to&#95;read](../../../operations/settings/settings#text_index_like_max_postings_to_read)
+
+이 최적화는 `like` 및 `ilike` 함수만 지원합니다.
 
 ### 캐싱 \{#caching\}
 
@@ -880,8 +1148,8 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 
 각 텍스트 인덱스는 두 가지 (추상적인) 데이터 구조로 구성됩니다.
 
-- 각 토큰을 포스팅 리스트에 매핑하는 딕셔너리
-- 각각이 행 번호 집합을 나타내는 포스팅 리스트들의 집합
+* 각 토큰을 포스팅 리스트에 매핑하는 딕셔너리
+* 각각이 행 번호 집합을 나타내는 포스팅 리스트들의 집합
 
 텍스트 인덱스는 전체 파트에 대해 생성됩니다.
 다른 스킵 인덱스와 달리, 텍스트 인덱스는 데이터 파트 병합 시 인덱스를 다시 만드는 대신 병합 단계에서 병합할 수 있습니다(아래 참고).
@@ -910,7 +1178,7 @@ Prewhere filter column: and(__text_index_idx_col_like_d306f7c9c95238594618ac23eb
 데이터 파트가 병합될 때, 텍스트 인덱스는 처음부터 다시 만들 필요가 없으며, 대신 병합 프로세스의 별도 단계에서 효율적으로 병합할 수 있습니다.
 이 단계 동안 각 입력 파트의 텍스트 인덱스에 대한 정렬된 딕셔너리를 읽어 새로운 통합 딕셔너리로 결합합니다.
 포스팅 리스트의 행 번호 또한 병합된 데이터 파트에서의 새로운 위치를 반영하도록 재계산되며, 이를 위해 초기 병합 단계에서 생성된 기존 행 번호에서 새로운 행 번호로의 매핑을 사용합니다.
-텍스트 인덱스를 병합하는 이러한 방법은 `_part_offset` 컬럼이 있는 [프로젝션](/docs/sql-reference/statements/alter/projection#normal-projection-with-part-offset-field)이 병합되는 방식과 유사합니다.
+텍스트 인덱스를 병합하는 이러한 방법은 `_part_offset` 컬럼이 있는 [프로젝션](/docs/sql-reference/statements/alter/projection#projection-indexes)이 병합되는 방식과 유사합니다.
 소스 파트에 인덱스가 구체화되어 있지 않은 경우, 인덱스를 먼저 생성해 임시 파일에 기록한 다음, 다른 파트와 다른 임시 인덱스 파일의 인덱스와 함께 병합합니다.
 
 **디버깅**
@@ -1037,7 +1305,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1;
 SELECT count()
 FROM hackernews
 WHERE hasAnyTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │  408426 │
@@ -1052,7 +1320,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 SELECT count()
 FROM hackernews
 WHERE hasAnyTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │  408426 │
@@ -1064,21 +1332,20 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 이러한 흔한 「OR」 검색에서는 속도 향상이 한층 더 두드러집니다.
 전체 컬럼 스캔을 피함으로써 쿼리 실행 속도가 거의 89배(1.329초 대비 0.015초) 빨라집니다.
 
-
 ### 3. `hasAllTokens` 사용하기 \{#using-hasAllTokens\}
 
 `hasAllTokens`는 텍스트에 주어진 토큰이 모두 포함되어 있는지 확인합니다.
 &#39;love&#39;와 &#39;ClickHouse&#39;를 모두 포함하는 댓글을 검색합니다.
 
-**Direct read 비활성화 (Standard scan)**
-Direct read가 비활성화된 경우에도 표준 skip 인덱스는 여전히 효과적입니다.
+**직접 읽기 비활성화 (Standard scan)**
+직접 읽기가 비활성화된 경우에도 표준 스킵 인덱스는 여전히 효과적입니다.
 28.7M개의 행을 147.46K개 행으로 줄여 주지만, 여전히 해당 컬럼에서 57.03 MB를 읽어야 합니다.
 
 ```sql
 SELECT count()
 FROM hackernews
 WHERE hasAllTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │      11 │
@@ -1094,7 +1361,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 SELECT count()
 FROM hackernews
 WHERE hasAllTokens(comment, 'love ClickHouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │      11 │
@@ -1103,8 +1370,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 1 row in set. Elapsed: 0.007 sec. Processed 147.46 thousand rows, 147.46 KB
 ```
 
-이 「AND」 검색에서는 direct read 최적화가 표준 skip 인덱스 스캔보다 26배 이상 빠르게 동작합니다(0.184초 vs 0.007초).
-
+이 「AND」 검색에서는 직접 읽기 최적화가 표준 스킵 인덱스 스캔보다 26배 이상 빠르게 동작합니다(0.184초 vs 0.007초).
 
 ### 4. 복합 검색: OR, AND, NOT, ... \{#compound-search\}
 
@@ -1117,7 +1383,7 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse') OR hasToken(comment, 'clickhouse')
-SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_read = 0;
+SETTINGS query_plan_direct_read_from_text_index = 0;
 
 ┌─count()─┐
 │     769 │
@@ -1132,7 +1398,7 @@ SETTINGS query_plan_direct_read_from_text_index = 0, use_skip_indexes_on_data_re
 SELECT count()
 FROM hackernews
 WHERE hasToken(comment, 'ClickHouse') OR hasToken(comment, 'clickhouse')
-SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_read = 1;
+SETTINGS query_plan_direct_read_from_text_index = 1;
 
 ┌─count()─┐
 │     769 │
@@ -1143,7 +1409,6 @@ SETTINGS query_plan_direct_read_from_text_index = 1, use_skip_indexes_on_data_re
 
 인덱스 결과를 결합하면 직접 읽기 쿼리는 34배 더 빨라지며(0.450초 대비 0.013초), 9.58 GB의 컬럼 데이터를 읽지 않아도 됩니다.
 이러한 특정 사례에서는 `hasAnyTokens(comment, ['ClickHouse', 'clickhouse'])`를 사용하는 구문이 더 효율적이며 권장됩니다.
-
 
 ## 관련 콘텐츠 \{#related-content\}
 

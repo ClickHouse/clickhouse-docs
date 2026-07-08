@@ -7,8 +7,6 @@ sidebar_label: 'maxMap'
 doc_type: 'reference'
 ---
 
-# maxMap \{#maxmap\}
-
 ## 描述 \{#description\}
 
 可以将 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器应用于 [`max`](/sql-reference/aggregate-functions/reference/max) 函数，以使用 `maxMap` 聚合组合器函数按键分别计算 Map 中的最大值。

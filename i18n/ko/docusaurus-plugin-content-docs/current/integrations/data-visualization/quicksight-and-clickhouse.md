@@ -21,14 +21,9 @@ import quicksight_06 from '@site/static/images/integrations/data-visualization/q
 import quicksight_07 from '@site/static/images/integrations/data-visualization/quicksight_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# QuickSight \{#quicksight\}
-
-<ClickHouseSupportedBadge/>
-
-QuickSight는 공식 MySQL 데이터 소스와 Direct Query 모드를 사용하여 MySQL 인터페이스를 통해 온프레미스 환경의 ClickHouse(23.11 이상)에 연결할 수 있습니다.
-
-
+QuickSight는 공식 MySQL 데이터 소스와 Direct Query 모드를 사용하여 MySQL 인터페이스를 통해 온프레미스 ClickHouse 설정(23.11+)에 연결할 수 있습니다.
 
 ## 온프레미스 ClickHouse 서버 설정 \{#on-premise-clickhouse-server-setup\}
 
@@ -94,7 +89,7 @@ QuickSight에서는 MySQL 사용자 프로필에 몇 가지 추가 설정이 필
 
 그러나 기본 프로필 대신 MySQL 사용자가 사용할 수 있는 다른 프로필을 할당하는 것이 좋습니다.
 
-마지막으로 ClickHouse Server가 원하는 IP 주소(들)에서 수신하도록 구성합니다.
+마지막으로 ClickHouse 서버가 원하는 IP 주소(들)에서 수신하도록 구성합니다.
 `config.xml`에서 모든 주소에서 수신하도록 다음 항목의 주석을 해제하십시오:
 
 ```bash
@@ -122,49 +117,53 @@ mysql> show databases;
 Read 4 rows, 603.00 B in 0.00156 sec., 2564 rows/sec., 377.48 KiB/sec.
 ```
 
-
 ## QuickSight를 ClickHouse에 연결하기 \{#connecting-quicksight-to-clickhouse\}
 
-먼저 [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com)에 접속한 후 Datasets로 이동하여 "New dataset"을 클릭합니다:
+먼저 [https://quicksight.aws.amazon.com](https://quicksight.aws.amazon.com)에 접속한 후 Datasets로 이동하여 &quot;New dataset&quot;을 클릭합니다:
 
 <Image size="md" img={quicksight_01} alt="Datasets 섹션에서 New dataset 버튼이 표시된 Amazon QuickSight 대시보드" border />
-<br/>
+
+<br />
 
 QuickSight에 포함된 공식 MySQL 커넥터(이름은 단순히 **MySQL**)를 검색합니다:
 
 <Image size="md" img={quicksight_02} alt="검색 결과에서 MySQL이 강조 표시된 QuickSight 데이터 소스 선택 화면" border />
-<br/>
+
+<br />
 
 연결 정보를 입력합니다. 기본적으로 MySQL 인터페이스 포트는 9004이며,
 서버 구성에 따라 다를 수 있습니다.
 
 <Image size="md" img={quicksight_03} alt="호스트 이름, 포트, 데이터베이스 및 자격 증명 필드가 있는 QuickSight MySQL 연결 구성 양식" border />
-<br/>
+
+<br />
 
 이제 ClickHouse에서 데이터를 가져오는 방법으로 두 가지 옵션이 있습니다. 첫 번째로, 목록에서 테이블을 선택할 수 있습니다:
 
 <Image size="md" img={quicksight_04} alt="ClickHouse에서 사용 가능한 데이터베이스 테이블이 표시된 QuickSight 테이블 선택 인터페이스" border />
-<br/>
+
+<br />
 
 또는 데이터를 가져오기 위해 사용자 정의 SQL을 지정할 수도 있습니다:
 
 <Image size="md" img={quicksight_05} alt="ClickHouse에서 데이터를 가져오기 위한 QuickSight 사용자 정의 SQL 쿼리 편집기" border />
-<br/>
 
-"Edit/Preview data"를 클릭하면, 자동으로 분석된 테이블 구조를 확인하거나, 데이터를 해당 방식으로 조회하도록 선택한 경우 사용자 정의 SQL을 조정할 수 있습니다:
+<br />
+
+&quot;Edit/Preview data&quot;를 클릭하면, 자동으로 분석된 테이블 구조를 확인하거나, 데이터를 해당 방식으로 조회하도록 선택한 경우 사용자 정의 SQL을 조정할 수 있습니다:
 
 <Image size="md" img={quicksight_06} alt="컬럼과 샘플 데이터가 포함된 테이블 구조 미리 보기가 표시된 QuickSight 데이터 프리뷰" border />
-<br/>
 
-UI 왼쪽 하단 모서리에서 "Direct Query" 모드가 선택되어 있는지 확인합니다:
+<br />
+
+UI 왼쪽 하단 모서리에서 &quot;Direct Query&quot; 모드가 선택되어 있는지 확인합니다:
 
 <Image size="md" img={quicksight_07} alt="왼쪽 하단 모서리에 Direct Query 모드 옵션이 강조 표시된 QuickSight 인터페이스" border />
-<br/>
+
+<br />
 
 이제 데이터셋을 게시하고 새 시각화를 생성합니다.
 
-
-
 ## 알려진 제한 사항 \{#known-limitations\}
 
-- SPICE 가져오기 기능이 예상대로 동작하지 않습니다. 대신 Direct Query 모드를 사용하십시오. 자세한 내용은 [#58553](https://github.com/ClickHouse/ClickHouse/issues/58553)을 참조하십시오.
+* SPICE 가져오기 기능이 예상대로 동작하지 않습니다. 대신 Direct Query 모드를 사용하십시오. 자세한 내용은 [#58553](https://github.com/ClickHouse/ClickHouse/issues/58553)을 참조하십시오.

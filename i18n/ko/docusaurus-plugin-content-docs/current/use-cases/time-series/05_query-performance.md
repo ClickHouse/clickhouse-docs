@@ -8,11 +8,9 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 시계열 쿼리 성능 \{#time-series-query-performance\}
-
-스토리지를 최적화한 다음에는 쿼리 성능을 향상해야 합니다.
+스토리지를 최적화한 다음 단계는 쿼리 성능을 개선하는 것입니다.
 이 섹션에서는 두 가지 핵심 기법인 `ORDER BY` 키 최적화와 materialized view 사용을 살펴봅니다.
-이러한 접근 방식이 쿼리 시간을 초 단위에서 밀리초 단위로 단축하는 데 어떤 도움이 되는지 살펴봅니다.
+이러한 접근 방식을 통해 쿼리 시간을 초 단위에서 밀리초 단위로 줄일 수 있는 방법을 알아보겠습니다.
 
 ## `ORDER BY` 키 최적화 \{#time-series-optimize-order-by\}
 

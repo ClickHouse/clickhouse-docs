@@ -15,8 +15,6 @@ import dot_01 from '@site/static/images/integrations/data-visualization/dot_01.p
 import dot_02 from '@site/static/images/integrations/data-visualization/dot_02.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-# Dot
-
 <CommunityMaintainedBadge/>
 
 [Dot](https://www.getdot.ai/) is your **AI Data Analyst**.
@@ -26,7 +24,6 @@ It connects directly to ClickHouse so you can ask data questions in natural lang
 
 - A ClickHouse database, either self-hosted or in [ClickHouse Cloud](https://clickhouse.com/cloud)  
 - A [Dot](https://www.getdot.ai/) account  
-- A [Hashboard](https://www.hashboard.com/) account and project.
 
 ## Connecting Dot to ClickHouse {#connecting-dot-to-clickhouse}
 
@@ -37,7 +34,7 @@ It connects directly to ClickHouse so you can ask data questions in natural lang
 2. Click on **Add new connection** and select **ClickHouse**.  
 3. Provide your connection details:  
    - **Host**: ClickHouse server hostname or ClickHouse Cloud endpoint  
-   - **Port**: `9440` (secure native interface) or `9000` (default TCP)  
+   - **Port**: `8443` (ClickHouse Cloud HTTPS) or `8123` (self-hosted HTTP)  
    - **Username / Password**: user with read access  
    - **Database**: optionally set a default schema  
 4. Click **Connect**.

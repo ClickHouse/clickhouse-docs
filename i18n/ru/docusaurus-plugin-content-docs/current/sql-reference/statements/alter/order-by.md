@@ -1,13 +1,11 @@
 ---
-description: 'Документация по управлению ключевыми выражениями'
+description: 'Документация по работе с ключевыми выражениями'
 sidebar_label: 'ORDER BY'
 sidebar_position: 41
 slug: /sql-reference/statements/alter/order-by
-title: 'Управление ключевыми выражениями'
+title: 'Работа с ключевыми выражениями'
 doc_type: 'reference'
 ---
-
-# Работа с ключевыми выражениями \{#manipulating-key-expressions\}
 
 ```sql
 ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY ORDER BY new_expression

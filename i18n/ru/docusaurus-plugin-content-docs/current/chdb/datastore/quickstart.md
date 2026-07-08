@@ -1,15 +1,13 @@
 ---
-title: 'Быстрый старт DataStore'
+title: 'Быстрый старт по DataStore'
 sidebar_label: 'Быстрый старт'
 slug: /chdb/datastore/quickstart
-description: 'Начните работу с DataStore — установка, однострочная миграция из pandas и базовое использование'
+description: 'Начните работу с DataStore — установка, однострочная миграция с pandas и основа использования'
 keywords: ['chdb', 'datastore', 'quickstart', 'installation', 'pandas', 'migration']
 doc_type: 'guide'
 ---
 
-# Быстрый старт по DataStore \{#datastore-quickstart\}
-
-Начните работу с DataStore за считанные минуты. В этом руководстве рассматриваются установка, миграция с pandas и основные сценарии использования.
+Начните работу с DataStore за считаные минуты. В этом руководстве описаны установка, миграция с pandas и основные сценарии использования.
 
 ## Установка \{#installation\}
 
@@ -246,21 +244,18 @@ df = ds.to_pandas() # Same as to_df()
 
 ### Просмотр сгенерированного SQL-кода \{#view-sql\}
 
-```python
+```python title="Query"
 # See what SQL DataStore will execute
 query = ds.filter(ds['age'] > 25).groupby('city').agg({'salary': 'mean'})
 print(query.to_sql())
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 SELECT city, AVG(salary) AS mean
 FROM file('data.csv', 'CSVWithNames')
 WHERE age > 25
 GROUP BY city
 ```
-
 
 ## Работа с разными источниками данных \{#data-sources\}
 

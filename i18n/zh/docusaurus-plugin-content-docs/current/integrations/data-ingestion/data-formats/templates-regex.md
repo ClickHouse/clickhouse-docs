@@ -1,5 +1,5 @@
 ---
-sidebar_label: '正则表达式与模板'
+sidebar_label: '正则表达式和模板'
 sidebar_position: 3
 slug: /integrations/data-formats/templates-regexp
 title: '在 ClickHouse 中使用模板和正则表达式导入和导出自定义文本数据'
@@ -8,13 +8,11 @@ doc_type: 'guide'
 keywords: ['数据格式', '模板', '正则表达式', '自定义格式', '解析']
 ---
 
-# 在 ClickHouse 中使用 Templates 和 Regex 导入与导出自定义文本数据 \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}
-
-我们经常需要处理自定义文本格式的数据，这些数据可能是非标准格式、无效的 JSON，或损坏的 CSV。在这些情况下，使用 CSV 或 JSON 等标准解析器并不总是可行。好在 ClickHouse 提供了功能强大的 Template 和 Regex 格式，可以很好地应对这些场景。
+我们经常需要处理自定义文本格式的数据。它可能是非标准格式、无效的 JSON，或损坏的 CSV。在这类情况下，使用 CSV 或 JSON 这类标准解析器并不总是有效。但 ClickHouse 提供了功能强大的 Template 和正则表达式 格式，可用于应对这些问题。
 
 ## 基于模板导入 \{#importing-based-on-a-template\}
 
-假设我们要从以下[日志文件](assets/error.log)中导入数据：
+假设我们要从以下[日志文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log)中导入数据：
 
 ```bash
 head error.log
@@ -47,7 +45,7 @@ ENGINE = MergeTree
 ORDER BY (host, request, time)
 ```
 
-要使用指定模板导入数据，我们需要将模板字符串保存在一个文件中（在本例中为 [row.template](assets/row.template)）：
+要使用指定模板导入数据，我们需要将模板字符串保存在一个文件中（在本例中为 [row.template](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/row.template)）：
 
 ```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
@@ -99,7 +97,7 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 
 我们也可以使用模板将数据导出为任何文本格式。在这种情况下，我们需要创建两个文件：
 
-[结果集模板](assets/output.results)，用于定义整个结果集的布局：
+[结果集模板](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.results)，用于定义整个结果集的布局：
 
 ```response
 == Top 10 IPs ==
@@ -107,7 +105,7 @@ ${data}
 --- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
-这里，`rows_read` 和 `time` 是每个请求都可用的系统指标。而 `data` 表示生成的行（`${data}` 在此文件中应始终作为第一个占位符），其内容基于 [**row template 文件**](assets/output.rows) 中定义的模板生成：
+这里，`rows_read` 和 `time` 是每个请求都可用的系统指标。而 `data` 表示生成的行（`${data}` 在此文件中应始终作为第一个占位符），其内容基于 [**row template 文件**](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.rows) 中定义的模板生成：
 
 ```response
 ${ip:Escaped} generated ${total:Escaped} requests
@@ -142,7 +140,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 
 ### 导出为 HTML 文件 \{#exporting-to-html-files\}
 
-基于模板的结果也可以使用 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 子句导出到文件。我们来基于给定的 [结果集](assets/html.results) 和 [行](assets/html.row) 格式生成 HTML 文件：
+基于模板的结果也可以使用 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 子句导出到文件。我们来基于给定的 [结果集](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.results) 和 [行](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.row) 格式生成 HTML 文件：
 
 ```sql
 SELECT
@@ -204,7 +202,7 @@ FORMAT XML
 
 ## 基于正则表达式导入数据 \{#importing-data-based-on-regular-expressions\}
 
-[Regexp](/interfaces/formats/Regexp) 格式适用于需要以更复杂方式解析输入数据的场景。我们再次解析 [error.log](assets/error.log) 示例文件，不过这次要提取文件名和协议，并将它们保存到单独的列中。首先，为此准备一张新表：
+[Regexp](/interfaces/formats/Regexp) 格式适用于需要以更复杂方式解析输入数据的场景。我们再次解析 [error.log](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log) 示例文件，不过这次要提取文件名和协议，并将它们保存到单独的列中。首先，为此准备一张新表：
 
 ```sql
 CREATE TABLE error_log

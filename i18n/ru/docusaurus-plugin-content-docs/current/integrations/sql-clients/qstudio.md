@@ -16,14 +16,11 @@ import qstudio_running_query from '@site/static/images/integrations/sql-clients/
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Подключение QStudio к ClickHouse \{#connect-qstudio-to-clickhouse\}
+QStudio — это бесплатный графический SQL-клиент: в нём можно выполнять SQL-скрипты, удобно просматривать таблицы, строить диаграммы и экспортировать результаты. Он работает на любой операционной системе и с любой базой данных.
 
-<CommunityMaintainedBadge/>
-
-QStudio — это бесплатный графический интерфейс SQL-клиента, который позволяет запускать SQL-скрипты, легко просматривать таблицы, строить графики и экспортировать результаты. Он работает на всех операционных системах и с любой базой данных.
-
-QStudio подключается к ClickHouse по JDBC.
+QStudio подключается к ClickHouse с помощью JDBC.
 
 ## 1. Соберите сведения о вашем ClickHouse \{#1-gather-your-clickhouse-details\}
 

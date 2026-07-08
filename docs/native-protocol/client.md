@@ -7,7 +7,6 @@ doc_type: 'reference'
 keywords: ['client packets', 'native protocol client', 'protocol packets', 'client communication', 'TCP client']
 ---
 
-# Client packets
 
 | value | name              | description            |
 |-------|-------------------|------------------------|

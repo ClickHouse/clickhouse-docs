@@ -7,9 +7,7 @@ title: 'LowCardinality(T)'
 doc_type: 'reference'
 ---
 
-# LowCardinality(T) \{#lowcardinalityt\}
-
-将其他数据类型的内部表示转换为字典编码。
+将其他数据类型的内部表示改为字典编码形式。
 
 ## 语法 \{#syntax\}
 

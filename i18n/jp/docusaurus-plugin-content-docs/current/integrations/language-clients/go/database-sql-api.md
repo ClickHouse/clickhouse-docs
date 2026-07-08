@@ -2,13 +2,11 @@
 sidebar_label: 'データベース/SQL API'
 sidebar_position: 4
 keywords: ['clickhouse', 'go', 'golang', 'database', 'sql', 'standard']
-description: 'clickhouse-go で database/sql の標準インターフェースを使う。'
+description: 'clickhouse-go で `database/sql` 標準インターフェイスを使用します。'
 slug: /integrations/language-clients/go/database-sql-api
 title: 'データベース/SQL API'
 doc_type: 'reference'
 ---
-
-# データベース/SQL API \{#database-sql-api\}
 
 標準APIの完全なコード例は[こちら](https://github.com/ClickHouse/clickhouse-go/tree/main/examples/std)で確認できます。
 

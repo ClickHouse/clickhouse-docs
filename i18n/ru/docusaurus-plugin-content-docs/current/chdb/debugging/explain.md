@@ -1,5 +1,5 @@
 ---
-title: 'Метод explain()'
+title: 'метод explain()'
 sidebar_label: 'explain()'
 slug: /chdb/debugging/explain
 description: 'Просмотр планов выполнения запросов DataStore с помощью метода explain()'
@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'explain', 'execution', 'plan', 'sql']
 doc_type: 'reference'
 ---
 
-# Метод explain() \{#explain-method\}
-
-Метод `explain()` показывает план выполнения запроса к DataStore, помогая понять, какие операции будут выполнены и какой SQL-код будет сгенерирован.
+Метод `explain()` показывает план выполнения запроса DataStore, помогая понять, какие операции будут выполнены и какой SQL-код будет сгенерирован.
 
 ## Основы использования \{#basic\}
 

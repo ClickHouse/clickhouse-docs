@@ -2,13 +2,11 @@
 sidebar_label: 'Расширенные запросы'
 sidebar_position: 4
 keywords: ['clickhouse', 'python', 'query', 'advanced']
-description: 'Расширенные запросы с ClickHouse Connect'
+description: 'Расширенные запросы с помощью ClickHouse Connect'
 slug: /integrations/language-clients/python/advanced-querying
 title: 'Расширенные запросы'
 doc_type: 'reference'
 ---
-
-# Запрос данных с помощью ClickHouse Connect: расширенные возможности \{#querying-data-with-clickhouse-connect--advanced-usage\}
 
 ## QueryContexts \{#querycontexts\}
 

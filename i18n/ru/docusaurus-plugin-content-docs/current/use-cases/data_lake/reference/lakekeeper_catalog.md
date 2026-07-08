@@ -11,9 +11,9 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
+import BetaBadge from '@theme/badges/ExperimentalBadge';
 
-<ExperimentalBadge />
+<BetaBadge />
 
 :::note
 Интеграция с каталогом Lakekeeper работает только с таблицами Iceberg.
@@ -260,7 +260,7 @@ SHOW TABLES;
 
 Если в вашей конфигурации есть примерочные данные (например, набор данных taxi), вы должны увидеть таблицы, похожие на следующие:
 
-```sql title="Response"
+```response
 ┌─name──────────┐
 │ default.taxis │
 └───────────────┘
@@ -287,7 +287,7 @@ docker-compose logs spark
 SELECT count(*) FROM `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─count()─┐
 │ 2171187 │
 └─────────┘
@@ -303,7 +303,7 @@ SELECT count(*) FROM `default.taxis`;
 SHOW CREATE TABLE `default.taxis`;
 ```
 
-```sql title="Response"
+```response
 ┌─statement─────────────────────────────────────────────────────────────────────────────────────┐
 │ CREATE TABLE demo.`default.taxis`                                                             │
 │ (                                                                                             │

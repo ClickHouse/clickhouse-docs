@@ -9,17 +9,14 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/jvm/jvm-metrics-import.png';
 import example_dashboard from '@site/static/images/clickstack/jvm/jvm-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 JVM 指标 \{#jvm-clickstack\}
-
 :::note[TL;DR]
-使用 OpenTelemetry Java agent 在 ClickStack 中监控 JVM 应用程序。包含演示数据集和预置仪表板。
+使用 OpenTelemetry Java agent 在 ClickStack 中监控 JVM 应用程序。包含演示数据集和预置仪表盘。
 :::
 
 ## 集成现有 JVM 应用程序 \{#existing-jvm\}
@@ -200,7 +197,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/jvm-metrics-dashboard.json')} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/jvm-metrics-dashboard.json'} download="jvm-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
 
 #### 导入预构建的仪表板 \{#import-dashboard\}
 

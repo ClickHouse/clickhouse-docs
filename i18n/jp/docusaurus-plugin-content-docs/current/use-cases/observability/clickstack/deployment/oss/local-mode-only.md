@@ -4,9 +4,9 @@ title: 'ローカルモードのみ'
 pagination_prev: null
 pagination_next: null
 sidebar_position: 5
-description: 'ローカルモードのみで ClickStack をデプロイ - ClickHouse Observability スタック'
+description: 'ローカルモードのみで ClickStack をデプロイ - ClickHouse オブザーバビリティ スタック'
 doc_type: 'ガイド'
-keywords: ['clickstack', 'デプロイメント', 'セットアップ', '構成', '可観測性']
+keywords: ['clickstack', 'デプロイメント', 'セットアップ', '構成', 'オブザーバビリティ']
 ---
 
 import Image from '@theme/IdealImage';
@@ -18,10 +18,11 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 
 * **ClickHouse**
 * **HyperDX**
-* **OpenTelemetry (OTel) collector**（ポート `4317` および `4318` で OTLP を公開）
-* **MongoDB**（アプリケーション状態の永続化用）
+* **OpenTelemetry (OTel) collector** (ポート `4317` および `4318` で OTLP を公開) 
+* **MongoDB** (アプリケーション状態の永続化用) 
 
 **ただし、この HyperDX のディストリビューションではユーザー認証は無効になっています**
+
 
 ### 適した用途 \{#suitable-for\}
 
@@ -48,7 +49,7 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 
   **このデプロイモードでは認証が有効になっていないため、ユーザー作成画面は表示されません。**
 
-  外部の ClickHouse クラスター（例: ClickHouse Cloud）に接続します。
+  外部の ClickHouse クラスター (例: ClickHouse Cloud) に接続します。
 
   <Image img={hyperdx_2} alt="ログイン情報を作成" size="md" />
 
@@ -58,9 +59,3 @@ import JSONSupport from '@site/i18n/jp/docusaurus-plugin-content-docs/current/us
 </VerticalStepper>
 
 <JSONSupport />
-
-ローカルモード専用イメージの場合は、`BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` パラメーターを設定するだけで十分です（例: 環境変数として設定）。
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest
-```

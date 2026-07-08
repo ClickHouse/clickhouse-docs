@@ -6,8 +6,6 @@ title: '比较函数'
 doc_type: 'reference'
 ---
 
-# 比较函数 \{#comparison-functions\}
-
 ## 比较规则 \{#comparison-rules\}
 
 下面的比较函数返回类型为 [UInt8](/sql-reference/data-types/int-uint) 的 `0` 或 `1`。只有同一组内的值可以进行比较 (例如 `UInt16` 和 `UInt64`) ，不同组之间的值不能相互比较 (例如 `UInt16` 和 `DateTime`) 。
@@ -514,9 +512,9 @@ SELECT
 
 ## isNotDistinctFrom \{#isNotDistinctFrom\}
 
-引入于：v25.10.0
+引入于：v23.8.0
 
-对两个值执行空值安全的“相等”比较。
+对两个值执行 NULL 安全的“相等”比较。
 如果两个值相等，则返回 `true`，包括两者都为 NULL 的情况。
 如果两个值不同，或者仅有一个为 NULL，则返回 `false`。
 

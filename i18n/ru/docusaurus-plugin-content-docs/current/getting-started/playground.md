@@ -1,13 +1,12 @@
 ---
-description: 'ClickHouse Playground позволяет экспериментировать с ClickHouse, мгновенно выполняя запросы без необходимости настраивать собственный сервер или кластер.'
-keywords: ['clickhouse', 'песочница', 'быстрый', 'старт', 'документация']
+description: 'Песочница ClickHouse позволяет экспериментировать с ClickHouse,
+  мгновенно выполняя запросы без необходимости развертывать собственный сервер или кластер.'
+keywords: ['clickhouse', 'песочница', 'начало работы', 'документация']
 sidebar_label: 'Песочница ClickHouse'
 slug: /getting-started/playground
 title: 'Песочница ClickHouse'
 doc_type: 'guide'
 ---
-
-# Песочница ClickHouse \{#clickhouse-playground\}
 
 [ClickHouse Playground](https://sql.clickhouse.com) позволяет экспериментировать с ClickHouse, мгновенно выполняя запросы без необходимости развертывать собственный сервер или кластер.
 В Playground доступно несколько примерных наборов данных.

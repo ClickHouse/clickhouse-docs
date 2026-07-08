@@ -35,7 +35,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 Этот формат менее эффективен, чем формат [Native](../Native.md), поскольку он построчный.
 :::
 
-### Формат передачи типов данных \{#data-types-wire-format\}
+## Формат передачи данных типов данных \{#data-types-wire-format\}
 
 :::tip
 Большинство запросов, приведённых в примерах, можно выполнить с помощью curl с выводом в файл.

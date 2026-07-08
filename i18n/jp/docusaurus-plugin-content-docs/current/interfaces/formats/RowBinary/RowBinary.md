@@ -34,7 +34,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 このフォーマットは行ベースであるため、[Native](../Native.md) フォーマットより効率が劣ります。
 :::
 
-### データ型のワイヤ形式 \{#data-types-wire-format\}
+## データ型のワイヤ形式 \{#data-types-wire-format\}
 
 :::tip
 例で示されているクエリのほとんどは、curl を使ってファイルに出力する形で実行できます。

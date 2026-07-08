@@ -28,5 +28,5 @@ import Image from '@theme/IdealImage';
 :::
 
 :::note
-Изменение расписания резервного копирования может привести к увеличению ежемесячных затрат на хранилище, поскольку некоторые резервные копии могут не входить в набор резервных копий по умолчанию для сервиса. См. раздел [&quot;Understanding backup cost&quot;](/cloud/manage/backups/overview#understanding-backup-cost) ниже.
+Изменение расписания резервного копирования может привести к увеличению ежемесячных затрат на хранилище, поскольку некоторые резервные копии могут не входить в набор резервных копий по умолчанию для сервиса. См. [&quot;Understanding backup cost&quot;](/cloud/manage/backups/overview#understanding-backup-cost).
 :::

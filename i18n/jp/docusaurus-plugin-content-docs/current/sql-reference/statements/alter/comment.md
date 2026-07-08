@@ -8,9 +8,9 @@ keywords: ['ALTER TABLE', 'MODIFY COMMENT']
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY COMMENT \{#alter-table-modify-comment\}
-
-テーブルコメントを、コメントが事前に設定されていたかどうかに関係なく追加、変更、または削除します。コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md) と `SHOW CREATE TABLE` クエリの両方に反映されます。
+以前に設定されていたかどうかにかかわらず、テーブルコメントを追加、変更、または削除します。
+コメントの変更は、[`system.tables`](../../../operations/system-tables/tables.md)
+と `SHOW CREATE TABLE` クエリの両方に反映されます。
 
 ## 構文 \{#syntax\}
 
@@ -22,7 +22,7 @@ ALTER TABLE [db].name [ON CLUSTER cluster] MODIFY COMMENT 'Comment'
 
 コメント付きテーブルを作成するには、次のようにします。
 
-```sql
+```sql title="Query"
 CREATE TABLE table_with_comment
 (
     `k` UInt64,
@@ -32,9 +32,9 @@ ENGINE = Memory()
 COMMENT 'The temporary table';
 ```
 
-テーブルのコメントを変更するには:
+テーブルコメントを変更するには:
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment 
 MODIFY COMMENT 'new comment on a table';
 ```
@@ -55,7 +55,7 @@ WHERE database = currentDatabase() AND name = 'table_with_comment';
 
 テーブルコメントを削除するには:
 
-```sql
+```sql title="Query"
 ALTER TABLE table_with_comment MODIFY COMMENT '';
 ```
 
@@ -82,5 +82,5 @@ Replicated テーブルの場合、コメントはレプリカごとに異なる
 
 ## 関連コンテンツ \{#related-content\}
 
-- [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 句
-- [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)
+* [`COMMENT`](/sql-reference/statements/create/table#comment-clause) 句
+* [`ALTER DATABASE ... MODIFY COMMENT`](./database-comment.md)

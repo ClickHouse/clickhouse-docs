@@ -10,17 +10,14 @@ keywords: ['Kafka', 'metrics', 'OTEL', 'ClickStack', 'JMX']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/kafka/import-kafka-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/kafka/kafka-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Kafka 指标 \{#kafka-metrics-clickstack\}
-
-:::note[TL;DR]
-借助 OTel JMX Metric Gatherer 在 ClickStack 中监控 Apache Kafka 性能指标。包括演示数据集和预置仪表板。
+:::note[摘要]
+使用 OTel JMX Metric Gatherer 在 ClickStack 中监控 Apache Kafka 性能指标。包含演示数据集和预置仪表盘。
 :::
 
 ## 集成现有 Kafka 部署 \{#existing-kafka\}
@@ -267,7 +264,7 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据的时间范围
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/kafka-metrics-dashboard.json'} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
 
 #### 导入预构建的仪表盘 \{#import-dashboard\}
 

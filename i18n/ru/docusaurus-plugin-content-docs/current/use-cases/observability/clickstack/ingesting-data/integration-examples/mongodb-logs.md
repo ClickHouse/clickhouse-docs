@@ -10,7 +10,6 @@ keywords: ['MongoDB', 'логи', 'OTEL', 'ClickStack', 'мониторинг б
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import log_view from '@site/static/images/clickstack/mongodb/log-view.png';
@@ -20,11 +19,8 @@ import finish_import from '@site/static/images/clickstack/mongodb/finish-import.
 import example_dashboard from '@site/static/images/clickstack/mongodb/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг логов MongoDB с ClickStack \{#mongodb-logs-clickstack\}
-
-:::note[Вкратце]
-Собирайте и визуализируйте логи сервера MongoDB (JSON-формат 4.4+) в ClickStack с помощью OTel-приёмника `filelog`. Включает демо-набор данных и готовую панель мониторинга.
+:::note[Кратко]
+Собирайте и визуализируйте логи сервера MongoDB (JSON-формат 4.4+) в ClickStack с помощью получателя OTel `filelog`. Включает демо-набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующей MongoDB \{#existing-mongodb\}
@@ -291,7 +287,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 ## Панели мониторинга и визуализации
 
 <VerticalStepper headerLevel="h4">
-  #### <TrackedLink href={useBaseUrl('/examples/mongodb-logs-dashboard.json')} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию панели мониторинга
+  #### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/mongodb-logs-dashboard.json'} download="mongodb-logs-dashboard.json" eventName="docs.mongodb_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию панели мониторинга
 
   #### Импорт готовой панели мониторинга
 

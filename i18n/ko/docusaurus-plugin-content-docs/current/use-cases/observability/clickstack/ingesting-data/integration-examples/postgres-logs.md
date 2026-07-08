@@ -10,7 +10,6 @@ keywords: ['PostgreSQL', 'Postgres', 'logs', 'OTel', 'ClickStack', '데이터베
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import logs_search_view from '@site/static/images/clickstack/postgres/postgres-logs-search-view.png';
 import log_view from '@site/static/images/clickstack/postgres/postgres-log-view.png';
@@ -18,11 +17,8 @@ import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-log
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack를 사용한 PostgreSQL 로그 모니터링 \{#postgres-logs-clickstack\}
-
-:::note[TL;DR]
-OTel `filelog` receiver를 사용해 ClickStack에서 PostgreSQL 서버 로그(CSV 형식)를 수집하고 시각화합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
+:::note[요약]
+OTel `filelog` 수신기를 사용해 ClickStack에서 PostgreSQL 서버 로그(CSV 형식)를 수집하고 시각화합니다. 데모 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 PostgreSQL과의 통합 \{#existing-postgres\}
@@ -306,7 +302,7 @@ ClickStack으로 PostgreSQL을 모니터링하기 시작하는 데 도움이 되
 
 <VerticalStepper headerLevel="h4">
 
-#### 대시보드 구성 파일을 <TrackedLink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">다운로드</TrackedLink> {#download}
+#### 대시보드 구성 파일을 <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/postgres-logs-dashboard.json'} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">다운로드</TrackedLink> {#download}
 
 #### 사전 구성된 대시보드 가져오기 \{#import-dashboard\}
 

@@ -1,5 +1,5 @@
 ---
-title: 'DataStore - pandas 호환 API'
+title: 'DataStore: SQL 최적화를 갖춘 pandas 호환 API'
 sidebar_label: '개요'
 slug: /chdb/datastore
 description: 'DataStore는 고성능 데이터 분석을 위해 SQL 최적화를 제공하는 pandas 호환 API를 제공합니다'
@@ -10,10 +10,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import data_store from '@site/static/images/chdb/datastore_architecture.png'
 
-
-# DataStore: SQL 최적화가 적용된 Pandas 호환 API \{#datastore-pandas-compatible-api-with-sql-optimization\}
-
-DataStore는 익숙한 pandas DataFrame 인터페이스에 SQL 쿼리 최적화 기능을 결합한 chDB의 pandas 호환 API로, pandas 스타일 코드로 작성하면서도 ClickHouse급 성능을 제공합니다.
+DataStore는 chDB의 pandas 호환 API로, 익숙한 pandas DataFrame 인터페이스와 강력한 SQL 쿼리 최적화를 결합해 pandas 스타일의 코드를 작성하면서도 ClickHouse 성능을 활용할 수 있게 합니다.
 
 ## 주요 기능 \{#key-features\}
 

@@ -1646,7 +1646,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-도입 버전: v25.10.0
+도입 버전: v25.11.0
 
 기하 객체의 x, y 좌표를 뒤바꿉니다. 이 연산은 위도와 경도를 서로 바꾸므로, 서로 다른 좌표계 간 변환이나 좌표 순서 교정에 유용합니다.
 
@@ -1871,12 +1871,13 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 **구문**
 
 ```sql
-formatReadableDecimalSize(x)
+formatReadableDecimalSize(value[, precision])
 ```
 
 **인수**
 
-* `x` — 바이트 단위 크기. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — 바이트 단위 크기. [`Int8`](/sql-reference/data-types/int-uint) or [`Int16`](/sql-reference/data-types/int-uint) or [`Int32`](/sql-reference/data-types/int-uint) or [`Int64`](/sql-reference/data-types/int-uint) or [`UInt8`](/sql-reference/data-types/int-uint) or [`UInt16`](/sql-reference/data-types/int-uint) or [`UInt32`](/sql-reference/data-types/int-uint) or [`UInt64`](/sql-reference/data-types/int-uint) or [`Float32`](/sql-reference/data-types/float) or [`Float64`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 선택 사항입니다. 소수점 이하 자릿수입니다. 기본값은 2입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -1901,24 +1902,39 @@ SELECT
 └────────────────┴────────────┘
 ```
 
+**정밀도를 명시적으로 지정**
+
+```sql title=Query
+SELECT
+    formatReadableDecimalSize(192851925, 0) AS no_decimals,
+    formatReadableDecimalSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals─┐
+│ 193 MB      │ 192.8519 MB   │
+└─────────────┴───────────────┘
+```
+
 ## formatReadableQuantity \{#formatReadableQuantity\}
 
 도입 버전: v20.10.0
 
-숫자를 입력하면 이 함수는 반올림된 숫자에 접미사(천, 백만, 십억 등)를 붙인 문자열을 반환합니다.
+숫자를 입력하면 이 FUNCTION은 반올림된 숫자에 접미사(천, 백만, 십억 등)를 붙인 문자열을 반환합니다.
 
-이 함수는 모든 숫자형 타입을 입력으로 받지만, 내부적으로는 `Float64`로 캐스팅합니다.
+이 FUNCTION은 모든 숫자형 타입을 입력으로 받지만, 내부적으로는 `Float64`로 캐스팅합니다.
 값이 매우 큰 경우 결과가 최적이 아닐 수 있습니다.
 
 **구문**
 
 ```sql
-formatReadableQuantity(x)
+formatReadableQuantity(value[, precision])
 ```
 
 **인수**
 
-* `x` — 형식을 지정할 숫자. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — 형식을 지정할 숫자. [`Int8`](/sql-reference/data-types/int-uint) 또는 [`Int16`](/sql-reference/data-types/int-uint) 또는 [`Int32`](/sql-reference/data-types/int-uint) 또는 [`Int64`](/sql-reference/data-types/int-uint) 또는 [`UInt8`](/sql-reference/data-types/int-uint) 또는 [`UInt16`](/sql-reference/data-types/int-uint) 또는 [`UInt32`](/sql-reference/data-types/int-uint) 또는 [`UInt64`](/sql-reference/data-types/int-uint) 또는 [`Float32`](/sql-reference/data-types/float) 또는 [`Float64`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 선택 사항입니다. 소수점 이하 자릿수입니다. 기본값은 2입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -1943,26 +1959,41 @@ SELECT
 └────────────────┴───────────────────┘
 ```
 
+**정밀도를 명시적으로 지정하기**
+
+```sql title=Query
+SELECT
+    formatReadableQuantity(98765432101234, 0) AS no_decimals,
+    formatReadableQuantity(98765432101234, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals──┬─four_decimals─────┐
+│ 99 trillion  │ 98.7654 trillion  │
+└──────────────┴───────────────────┘
+```
+
 ## formatReadableSize \{#formatReadableSize\}
 
 도입 버전: v1.1.0
 
-바이트 단위 크기를 입력하면, 이 함수는 접미사(KiB, MiB 등)가 포함된 사람이 읽기 쉬운 반올림된 크기를 문자열로 반환합니다.
+바이트 단위 크기를 입력하면, 이 FUNCTION은 접미사(KiB, MiB 등)가 포함된 사람이 읽기 쉬운 반올림된 크기를 문자열로 반환합니다.
 
-이 함수의 역 연산은 [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero), [`parseReadableSizeOrNull`](#parseReadableSizeOrNull)입니다.
-이 함수는 입력으로 임의의 숫자형 데이터 타입을 허용하지만, 내부적으로는 이를 `Float64`로 캐스팅합니다. 값이 매우 큰 경우 결과가 최적이 아닐 수 있습니다.
+이 FUNCTION의 역 연산은 [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero), [`parseReadableSizeOrNull`](#parseReadableSizeOrNull)입니다.
+이 FUNCTION은 입력으로 임의의 숫자형 데이터 타입을 허용하지만, 내부적으로는 이를 `Float64`로 캐스팅합니다. 값이 매우 큰 경우 결과가 최적이 아닐 수 있습니다.
 
-**Syntax**
+**구문**
 
 ```sql
-formatReadableSize(x)
+formatReadableSize(value[, precision])
 ```
 
 **별칭**: `FORMAT_BYTES`
 
 **인수**
 
-* `x` — 바이트 단위의 크기. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — 바이트 단위의 크기. [`Int8`](/sql-reference/data-types/int-uint) or [`Int16`](/sql-reference/data-types/int-uint) or [`Int32`](/sql-reference/data-types/int-uint) or [`Int64`](/sql-reference/data-types/int-uint) or [`UInt8`](/sql-reference/data-types/int-uint) or [`UInt16`](/sql-reference/data-types/int-uint) or [`UInt32`](/sql-reference/data-types/int-uint) or [`UInt64`](/sql-reference/data-types/int-uint) or [`Float32`](/sql-reference/data-types/float) or [`Float64`](/sql-reference/data-types/float) or [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — 선택 사항입니다. 소수점 이하 자릿수입니다. 기본값은 2입니다. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -1985,6 +2016,20 @@ SELECT
 │        1048576 │ 1.00 MiB   │
 │      192851925 │ 183.92 MiB │
 └────────────────┴────────────┘
+```
+
+**정밀도를 명시적으로 지정**
+
+```sql title=Query
+SELECT
+    formatReadableSize(192851925, 0) AS no_decimals,
+    formatReadableSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals──┐
+│ 184 MiB     │ 183.9179 MiB   │
+└─────────────┴────────────────┘
 ```
 
 ## formatReadableTimeDelta \{#formatReadableTimeDelta\}
@@ -2767,6 +2812,42 @@ SELECT hasThreadFuzzer()
 ┌─hasThreadFuzzer()─┐
 │                 0 │
 └───────────────────┘
+```
+
+## highlightQuery \{#highlightQuery\}
+
+도입 버전: v26.5.0
+
+ClickHouse SQL 쿼리 문자열을 파싱하여 구문 강조에 사용할 강조 범위 배열을 반환합니다.
+각 범위는 시작 포지션(바이트 단위), 끝 포지션, 강조 타입으로 구성된 named tuple입니다.
+강조 타입은 해당 부분의 구문적 역할(키워드, 식별자, 함수 등)을 나타내며
+UI에서 색상을 할당하는 데 사용할 수 있습니다. LIKE 및 REGEXP 문자열 패턴 내부에서는 메타문자와
+이스케이프 문자가 각각 별도로 강조됩니다.
+
+**구문**
+
+```sql
+highlightQuery(query)
+```
+
+**인수**
+
+* `query` — ClickHouse SQL 쿼리 문자열입니다. String.
+
+**반환값**
+
+강조 표시된 범위를 나타내는 `(begin UInt64, end UInt64, type Enum8(...))` 형식의 named tuple 배열입니다. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**예시**
+
+**간단한 예시**
+
+```sql title=Query
+SELECT highlightQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'keyword'),(7,8,'number')]
 ```
 
 ## hostName \{#hostName\}
@@ -3822,6 +3903,143 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 ┌─normalizedQueryHashKeepNames─┐
 │                            1 │
 └──────────────────────────────┘
+```
+
+## obfuscateQuery \{#obfuscateQuery\}
+
+도입 버전: v26.4.0
+
+식별자는 무작위 단어로, 리터럴은 무작위 값으로 바꿔 SQL 쿼리의 구조를 유지하면서 난독화합니다.
+
+이 함수는 디버깅을 위해 쿼리를 로깅하거나 공유하기 전에 익명화할 때 유용합니다.
+동일한 입력 쿼리라도 서로 다른 행에서는 서로 다른 난독화 결과가 생성되므로,
+여러 쿼리를 다룰 때 프라이버시를 유지하는 데 도움이 됩니다.
+
+선택 사항인 `tag` 매개변수는 동일한 함수 호출이 쿼리에서 여러 번
+사용될 때 공통 하위 표현식 제거가 일어나지 않도록 합니다. 이렇게 하면 각 호출에서 서로 다른 난독화 결과가 생성됩니다.
+
+기능:
+
+* 테이블 이름, 컬럼 이름, 별칭을 무작위 단어로 대체합니다
+* 숫자 및 문자열 리터럴을 무작위 값으로 대체합니다
+* 전체 쿼리 구조와 SQL 구문을 유지합니다
+* 서로 다른 행에 대해 서로 다른 결과를 생성합니다
+
+**구문**
+
+```sql
+obfuscateQuery(query[, tag])
+```
+
+**인수**
+
+* `query` — 난독화할 SQL 쿼리입니다. [`String`](/sql-reference/data-types/string)
+* `tag` — 선택 사항입니다. 동일한 함수 호출을 여러 번 사용할 때 공통 하위 표현식 제거를 방지하기 위한 값입니다.
+
+**반환값**
+
+원래 쿼리 구조는 유지하면서 식별자와 리터럴을 대체한 난독화된 쿼리입니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**사용 예시**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT name, age FROM users WHERE age > 30')
+```
+
+```response title=Response
+SELECT fruit, number FROM table WHERE number > 12
+```
+
+**공통 하위 표현식 제거를 방지하는 태그 포함**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT * FROM t', 1), obfuscateQuery('SELECT * FROM t', 2)
+```
+
+```response title=Response
+SELECT a FROM b, SELECT c FROM d
+```
+
+**행에 따라 결과가 달라집니다**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT 1') AS a, obfuscateQuery('SELECT 1') AS b
+```
+
+```response title=Response
+A B
+```
+
+## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
+
+도입 버전: v26.4.0
+
+지정된 시드를 사용해 SQL 쿼리를 난독화하며, 결정론적 결과를 제공합니다.
+
+`obfuscateQuery()`와 달리, 이 함수는 동일한 시드가 주어지면 항상 동일한 결과를 생성합니다.
+여러 번 실행해도 일관된 난독화가 필요하거나, 테스트 또는 디버깅 목적으로
+동일한 난독화된 쿼리를 재현해야 할 때 유용합니다.
+
+기능:
+
+* 제공된 시드를 기반으로 한 결정론적 난독화
+* 동일한 시드는 항상 동일한 난독화 결과를 생성합니다
+* 서로 다른 시드는 서로 다른 결과를 생성합니다
+* `obfuscateQuery()`와 같이 쿼리 구조를 유지합니다
+
+사용 사례:
+
+* 재현 가능한 테스트 케이스
+* 여러 번 실행해도 일관된 익명화
+* 일관된 난독화 쿼리를 사용한 디버깅
+
+**구문**
+
+```sql
+obfuscateQueryWithSeed(query, seed)
+```
+
+**인수**
+
+* `query` — 난독화할 SQL 쿼리입니다. [`String`](/sql-reference/data-types/string)
+* `seed` — 난독화에 사용할 시드입니다. 같은 시드를 사용하면 결정론적 결과가 생성됩니다. [`Integer`](/sql-reference/data-types/int-uint) 또는 [`String`](/sql-reference/data-types/string)
+
+**반환값**
+
+지정된 시드를 기반으로 결정론적으로 생성된 난독화 쿼리입니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**정수 시드를 사용한 결정론적 난독화**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT name FROM users', 42)
+```
+
+```response title=Response
+SELECT fruit FROM table
+```
+
+**문자열 시드 기반 결정론적 난독화**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT id, value FROM data', 'myseed')
+```
+
+```response title=Response
+SELECT a, b FROM c
+```
+
+**같은 시드는 같은 결과를 만듭니다**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT 1', 100) = obfuscateQueryWithSeed('SELECT 1', 100)
+```
+
+```response title=Response
+true
 ```
 
 ## parseReadableSize \{#parseReadableSize\}
@@ -4958,6 +5176,39 @@ SELECT toTypeName(123)
 ┌─toTypeName(123)─┐
 │ UInt8           │
 └─────────────────┘
+```
+
+## tokenizeQuery \{#tokenizeQuery\}
+
+도입 버전: v26.5.0
+
+ClickHouse SQL 쿼리 문자열을 토큰화하고 토큰 배열을 반환합니다.
+각 토큰은 시작 포지션(바이트 단위), 끝 포지션, 토큰 유형으로 구성된 named tuple입니다.
+
+**구문**
+
+```sql
+tokenizeQuery(query)
+```
+
+**인수**
+
+* `query` — ClickHouse SQL 쿼리 문자열입니다. String.
+
+**반환값**
+
+쿼리의 토큰을 나타내는 `named tuple` `(begin UInt64, end UInt64, type Enum8(...))` 배열입니다. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**예시**
+
+**간단한 예**
+
+```sql title=Query
+SELECT tokenizeQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'BareWord'),(6,7,'Whitespace'),(7,8,'Number')]
 ```
 
 ## transactionID \{#transactionID\}

@@ -1,12 +1,10 @@
 ---
-description: 'スキーマの自動作成とマイグレーションのために、ClickHouse で SQL 起動スクリプトを構成および利用するためのガイド'
+description: 'ClickHouse で SQL 起動スクリプトを設定して使用し、スキーマの自動作成とマイグレーションを行うためのガイド'
 sidebar_label: '起動スクリプト'
 slug: /operations/startup-scripts
 title: '起動スクリプト'
 doc_type: 'guide'
 ---
-
-# 起動スクリプト \{#startup-scripts\}
 
 ClickHouse は、起動時にサーバー設定に記述した任意の SQL クエリを実行できます。これは、マイグレーションやスキーマの自動作成などに役立ちます。
 

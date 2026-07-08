@@ -1,8 +1,8 @@
 ---
 slug: /cloud/billing/marketplace/aws-marketplace-committed-contract
-title: 'Контракт с обязательствами в AWS Marketplace'
-description: 'Оформление подписки на ClickHouse Cloud через AWS Marketplace (контракт с обязательствами)'
-keywords: ['aws', 'amazon', 'marketplace', 'биллинг', 'обязательства', 'контракт с обязательствами']
+title: 'Контракт с обязательством по расходам в AWS Marketplace'
+description: 'Оформление подписки на ClickHouse Cloud через AWS Marketplace (контракт с обязательством по расходам)'
+keywords: ['aws', 'amazon', 'marketplace', 'биллинг', 'обязательства', 'контракт с обязательством по расходам']
 doc_type: 'guide'
 ---
 
@@ -15,26 +15,22 @@ import mp_committed_spend_5 from '@site/static/images/cloud/reference/mp_committ
 import mp_committed_spend_6 from '@site/static/images/cloud/reference/mp_committed_spend_6.png'
 import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committed_spend_7.png'
 
-Начните работу с ClickHouse Cloud в [AWS Marketplace](https://aws.amazon.com/marketplace) по контракту с фиксированным объёмом потребления.
-Такой контракт, также известный как Private Offer, позволяет клиентам обязаться израсходовать определённую сумму на ClickHouse Cloud за установленный период времени.
+Начните работу с ClickHouse Cloud в [AWS Marketplace](https://aws.amazon.com/marketplace) по контракту с обязательством по расходам.
+Такой контракт, также известный как частное предложение, позволяет клиентам обязаться израсходовать определённую сумму на ClickHouse Cloud за установленный период времени.
 
 
 ## Предварительные требования \{#prerequisites\}
 
-- Частное (Private Offer) предложение от ClickHouse на основе конкретных условий контракта.
-- Чтобы подключить организацию ClickHouse к предложению с обязательством по расходам (committed spend offer), вы должны быть администратором этой организации.
-
-:::note
-Одна учетная запись AWS может подписаться только на одно частное предложение «ClickHouse Cloud - Committed Contract», которое может быть связано только с одной организацией ClickHouse.
-:::
+* Частное (Private Offer) предложение от ClickHouse на основе конкретных условий контракта.
+* Чтобы подключить организацию ClickHouse к предложению с обязательством по расходам (committed spend offer), вы должны быть администратором этой организации.
 
 Необходимые права доступа для просмотра и принятия вашего контракта с обязательством по расходам в AWS:
 
-- Если вы используете управляемые политики AWS, вам необходимы следующие разрешения:
-  - `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
-  - или `AWSMarketplaceFullAccess`
-- Если вы не используете управляемые политики AWS, вам необходимы следующие разрешения:
-  - действие IAM `aws-marketplace:ListPrivateListings` и `aws-marketplace:ViewSubscriptions`
+* Если вы используете управляемые политики AWS, вам необходимы следующие разрешения:
+  * `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
+  * или `AWSMarketplaceFullAccess`
+* Если вы не используете управляемые политики AWS, вам необходимы следующие разрешения:
+  * действие IAM `aws-marketplace:ListPrivateListings` и `aws-marketplace:ViewSubscriptions`
 
 ## Шаги для регистрации \{#steps-to-sign-up\}
 

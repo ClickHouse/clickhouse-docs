@@ -2,14 +2,12 @@
 title: 'pandas との主な違い'
 sidebar_label: '主な違い'
 slug: /chdb/guides/pandas-differences
-description: 'DataStore と pandas の主な相違点'
+description: 'DataStore と pandas の主な違い'
 keywords: ['chdb', 'datastore', 'pandas', 'differences', 'behavior']
 doc_type: 'guide'
 ---
 
-# pandas との主な違い \{#key-differences-from-pandas\}
-
-DataStore は pandas と非常に高い互換性がありますが、理解しておくべき重要な違いがいくつか存在します。
+DataStore は pandas と高い互換性がありますが、理解しておくべき重要な違いもあります。
 
 ## 概要表 \{#summary\}
 

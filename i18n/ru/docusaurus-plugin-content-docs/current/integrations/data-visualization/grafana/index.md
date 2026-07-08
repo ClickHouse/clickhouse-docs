@@ -3,7 +3,7 @@ sidebar_label: 'Быстрый старт'
 sidebar_position: 1
 slug: /integrations/grafana
 description: 'Введение в использование ClickHouse с Grafana'
-title: 'Плагин источника данных ClickHouse в Grafana'
+title: 'Плагин источника данных ClickHouse для Grafana'
 show_related_blogs: true
 doc_type: 'guide'
 integration:
@@ -22,24 +22,22 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# Плагин источника данных ClickHouse для Grafana \{#clickhouse-data-source-plugin-for-grafana\}
+В Grafana вы можете анализировать все свои данные и делиться ими с помощью дашбордов.
+Для подключения Grafana к ClickHouse требуется плагин, который можно легко установить через интерфейс Grafana.
 
-<ClickHouseSupportedBadge/>
-
-С помощью Grafana вы можете анализировать и визуализировать все свои данные в дашбордах и делиться ими.
-Для подключения Grafana к ClickHouse требуется плагин, который можно легко установить в пользовательском интерфейсе Grafana.
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/bRce9xWiqQM"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/bRce9xWiqQM"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## 1. Соберите сведения о подключении \{#1-gather-your-connection-details\}

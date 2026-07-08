@@ -1,14 +1,12 @@
 ---
-title: 'JSONのエクスポート'
+title: 'JSON のエクスポート'
 slug: /integrations/data-formats/json/exporting
-description: 'ClickHouseからJSONデータをエクスポートする方法'
-keywords: ['json', 'clickhouse', 'formats', 'exporting']
+description: 'ClickHouse から JSON データをエクスポートする方法'
+keywords: ['json', 'ClickHouse', 'フォーマット', 'エクスポート']
 doc_type: 'guide'
 ---
 
-# JSON のエクスポート \{#exporting-json\}
-
-インポートに使用可能なほとんどの JSON 形式は、エクスポートにも使用できます。最も一般的なのは [`JSONEachRow`](/interfaces/formats/JSONEachRow) です。
+インポートに使用可能なほとんどの JSON フォーマットは、エクスポートにも使用できます。最も一般的なのは [`JSONEachRow`](/interfaces/formats/JSONEachRow) です。
 
 ```sql
 SELECT * FROM sometable FORMAT JSONEachRow
@@ -20,7 +18,7 @@ SELECT * FROM sometable FORMAT JSONEachRow
 {"path":"Ahmadabad-e_Kalij-e_Sofla","month":"2017-01-01","hits":3}
 ```
 
-または、列名を出力せずにディスク使用量を節約するために、[`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow) を使用できます：
+または、カラム名を出力せずにディスク使用量を節約するために、[`JSONCompactEachRow`](/interfaces/formats/JSONCompactEachRow) を使用できます：
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompactEachRow
@@ -34,7 +32,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRow
 
 ## データ型を文字列として出力する \{#overriding-data-types-as-strings\}
 
-ClickHouse はデータ型を尊重し、標準に従って JSON をエクスポートします。ただし、すべての値を文字列としてエンコードする必要がある場合は、[JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow) 形式を使用できます。
+ClickHouse はデータ型を尊重し、標準に従って JSON をエクスポートします。ただし、すべての値を文字列としてエンコードする必要がある場合は、[JSONStringsEachRow](/interfaces/formats/JSONStringsEachRow) フォーマットを使用できます。
 
 ```sql
 SELECT * FROM sometable FORMAT JSONStringsEachRow
@@ -60,7 +58,7 @@ SELECT * FROM sometable FORMAT JSONCompactStringsEachRow
 
 ## データと一緒にメタデータをエクスポートする \{#exporting-metadata-together-with-data\}
 
-多くのアプリケーションで一般的に利用される [JSON](/interfaces/formats/JSON) 形式では、結果データだけでなく、列の型やクエリの統計情報もエクスポートされます。
+多くのアプリケーションで一般的に利用される [JSON](/interfaces/formats/JSON) フォーマットでは、結果データだけでなく、カラムの型やクエリの統計情報もエクスポートされます。
 
 ```sql
 SELECT * FROM sometable FORMAT JSON
@@ -98,7 +96,7 @@ SELECT * FROM sometable FORMAT JSON
 }
 ```
 
-[JSONCompact](/interfaces/formats/JSONCompact) フォーマットは同じメタデータを出力しますが、データ本体にはよりコンパクトな形式を使用します：
+[JSONCompact](/interfaces/formats/JSONCompact) フォーマットは同じメタデータを出力しますが、データ本体にはよりコンパクトなフォーマットを使用します：
 
 ```sql
 SELECT * FROM sometable FORMAT JSONCompact
@@ -151,7 +149,7 @@ SELECT * FROM sometable FORMAT JSONCompactEachRowWithNamesAndTypes
 ["Ahmadabad-e_Kalij-e_Sofla", "2017-01-01", 3]
 ```
 
-これは、先頭に列名と型を含む 2 行のヘッダー行を付加したコンパクトな JSON 形式を使用します。この形式は、その後、別の ClickHouse インスタンス（または他のアプリケーション）にデータを取り込むために使用できます。
+これは、先頭にカラム名と型を含む 2 行のヘッダー行を付加したコンパクトな JSON 形式を使用します。この形式は、その後、別の ClickHouse インスタンス (または他のアプリケーション) にデータを取り込むために使用できます。
 
 ## JSON をファイルにエクスポートする \{#exporting-json-to-a-file\}
 

@@ -1,13 +1,11 @@
 ---
-description: '같은 이름 아래에 그룹화된 설정 모음입니다.'
+description: '동일한 이름 아래에 묶인 설정들의 모음입니다.'
 sidebar_label: '설정 프로필'
 sidebar_position: 61
 slug: /operations/settings/settings-profiles
 title: '설정 프로필'
 doc_type: 'reference'
 ---
-
-# 설정 프로필 \{#settings-profiles\}
 
 설정 프로필은 동일한 이름 아래에 묶인 설정들의 모음입니다.
 

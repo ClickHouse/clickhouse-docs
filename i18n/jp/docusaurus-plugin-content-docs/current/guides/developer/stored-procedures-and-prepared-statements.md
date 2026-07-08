@@ -1,20 +1,18 @@
 ---
 sidebar_label: 'ストアドプロシージャとクエリパラメータ'
 sidebar_position: 19
-keywords: ['clickhouse', 'ストアドプロシージャ', 'プリペアドステートメント', 'クエリパラメータ', 'UDF', 'パラメータ化されたビュー']
+keywords: ['clickhouse', 'ストアドプロシージャ', 'プリペアドステートメント', 'クエリパラメータ', 'UDF', 'パラメーター化ビュー']
 description: 'ClickHouse におけるストアドプロシージャ、プリペアドステートメント、およびクエリパラメータに関するガイド'
 slug: /guides/developer/stored-procedures-and-prepared-statements
-title: 'ストアドプロシージャとクエリパラメータ'
+title: 'ClickHouse におけるストアドプロシージャとクエリパラメータ'
 doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# ClickHouse におけるストアドプロシージャとクエリパラメータ \{#stored-procedures-and-query-parameters-in-clickhouse\}
-
-従来のリレーショナルデータベースを使ってきた方は、ClickHouse にもストアドプロシージャやプリペアドステートメントがあるのか気になっているかもしれません。
-このガイドでは、これらの概念に対する ClickHouse の考え方を説明し、推奨される代替手段を紹介します。
+従来のリレーショナルデータベースを使ってきた方は、ClickHouse でもストアドプロシージャやプリペアドステートメントを探しているかもしれません。
+このガイドでは、こうした概念に対する ClickHouse の考え方を説明し、推奨される代替手段を紹介します。
 
 ## ClickHouse におけるストアドプロシージャの代替手段 \{#alternatives-to-stored-procedures\}
 

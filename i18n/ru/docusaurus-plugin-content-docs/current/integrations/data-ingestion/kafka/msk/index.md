@@ -13,22 +13,20 @@ integration:
 
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 
-
-# Интеграция Amazon MSK с ClickHouse \{#integrating-amazon-msk-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/6lKI_WlQ3-s"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/6lKI_WlQ3-s"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
-> Примечание: политика доступа, показанная в видео, является слишком разрешительной и предназначена только для быстрого начала работы. См. ниже рекомендации по настройке IAM по принципу наименьших привилегий.
+> Примечание: Политика, показанная в видео, носит разрешительный характер и предназначена только для Быстрого старта. Ниже см. рекомендации по IAM, основанные на принципе наименьших привилегий.
 
 ## Предварительные требования \{#prerequisites\}
 

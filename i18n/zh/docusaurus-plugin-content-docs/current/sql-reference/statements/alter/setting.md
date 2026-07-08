@@ -1,13 +1,11 @@
 ---
-description: '表 SETTING 配置操作文档'
+description: '表设置操作的文档'
 sidebar_label: 'SETTING'
 sidebar_position: 38
 slug: /sql-reference/statements/alter/setting
-title: '表 SETTING 配置操作'
+title: '表设置操作'
 doc_type: 'reference'
 ---
-
-# 表设置操作 \{#table-settings-manipulations\}
 
 有一组查询语句可用于更改表的设置。可以修改设置，或将其重置为默认值。单个查询可以同时更改多个设置。
 如果指定名称的设置不存在，则该查询会抛出异常。

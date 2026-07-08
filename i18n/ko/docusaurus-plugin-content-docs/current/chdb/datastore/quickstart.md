@@ -2,14 +2,12 @@
 title: 'DataStore 빠른 시작'
 sidebar_label: '빠른 시작'
 slug: /chdb/datastore/quickstart
-description: 'DataStore 시작하기 - 설치, pandas에서 한 줄로 마이그레이션, 기본 사용 방법'
+description: 'DataStore 시작하기 - 설치, pandas에서 한 줄로 마이그레이션, 사용법'
 keywords: ['chdb', 'datastore', 'quickstart', 'installation', 'pandas', 'migration']
 doc_type: 'guide'
 ---
 
-# DataStore 빠른 시작 \{#datastore-quickstart\}
-
-몇 분 만에 DataStore를 사용할 수 있습니다. 이 가이드에서는 설치 방법, pandas에서의 마이그레이션, 기본 사용 패턴을 설명합니다.
+몇 분이면 DataStore를 사용할 수 있습니다. 이 가이드에서는 설치, pandas에서의 마이그레이션, 그리고 사용법을 다룹니다.
 
 ## 설치 \{#installation\}
 
@@ -246,21 +244,18 @@ df = ds.to_pandas() # Same as to_df()
 
 ### 생성된 SQL 보기 \{#view-sql\}
 
-```python
+```python title="Query"
 # See what SQL DataStore will execute
 query = ds.filter(ds['age'] > 25).groupby('city').agg({'salary': 'mean'})
 print(query.to_sql())
 ```
 
-출력:
-
-```sql
+```sql title="Response"
 SELECT city, AVG(salary) AS mean
 FROM file('data.csv', 'CSVWithNames')
 WHERE age > 25
 GROUP BY city
 ```
-
 
 ## 여러 데이터 소스 다루기 \{#data-sources\}
 

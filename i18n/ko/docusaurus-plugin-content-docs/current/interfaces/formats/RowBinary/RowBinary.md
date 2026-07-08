@@ -35,7 +35,7 @@ import RowBinaryFormatSettings from './_snippets/common-row-binary-format-settin
 이 형식은 행 기반이므로 [Native](../Native.md) 형식보다 효율성이 떨어집니다.
 :::
 
-### 데이터 타입 와이어 형식 \{#data-types-wire-format\}
+## 데이터 타입 wire 형식 \{#data-types-wire-format\}
 
 :::tip
 예시에 있는 대부분의 쿼리는 curl을 사용해 파일로 출력되도록 실행할 수 있습니다.

@@ -1,13 +1,11 @@
 ---
-description: 'INSERT INTO ステートメントのリファレンス'
+description: 'INSERT INTO ステートメントのドキュメント'
 sidebar_label: 'INSERT INTO'
 sidebar_position: 33
 slug: /sql-reference/statements/insert-into
 title: 'INSERT INTO ステートメント'
 doc_type: 'reference'
 ---
-
-# INSERT INTO ステートメント \{#insert-into-statement\}
 
 テーブルにデータを挿入します。
 
@@ -17,7 +15,7 @@ doc_type: 'reference'
 INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] [SETTINGS ...] VALUES (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-`(c1, c2, c3)` を使用して挿入する列のリストを指定できます。列の[マッチャー](../../sql-reference/statements/select/index.md#asterisk)である `*` や、[APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier) などの[モディファイア](../../sql-reference/statements/select/index.md#select-modifiers)を用いた式を使うこともできます。
+`(c1, c2, c3)` を使用して挿入するカラムのリストを指定できます。カラムの[マッチャー](../../sql-reference/statements/select/index.md#asterisk)である `*` や、[APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier) などの[モディファイア](../../sql-reference/statements/select/index.md#select-modifiers)を用いた式を使うこともできます。
 
 たとえば、次のようなテーブルがあるとします。
 
@@ -40,7 +38,7 @@ ORDER BY a
 INSERT INTO insert_select_testtable (*) VALUES (1, 'a', 1) ;
 ```
 
-列 `b` を除くすべての列にデータを挿入したい場合は、`EXCEPT` キーワードを使用して実行できます。上記の構文を参考に、指定した列 (`(c1, c3)`) の数と同じ数だけ値 (`VALUES (v11, v13)`) を挿入するようにする必要があります。
+カラム `b` を除くすべてのカラムにデータを挿入したい場合は、`EXCEPT` キーワードを使用して実行できます。上記の構文を参考に、指定したカラム (`(c1, c3)`) の数と同じ数だけ値 (`VALUES (v11, v13)`) を挿入するようにする必要があります。
 
 ```sql
 INSERT INTO insert_select_testtable (* EXCEPT(b)) Values (2, 2);
@@ -59,13 +57,13 @@ SELECT * FROM insert_select_testtable;
 └───┴───┴───┘
 ```
 
-この例では、2 番目に挿入された行では `a` 列と `c` 列には指定した値が入り、`b` 列にはデフォルト値が入っていることがわかります。`DEFAULT` キーワードを使用してデフォルト値を挿入することもできます。
+この例では、2 番目に挿入された行では `a` カラムと `c` カラムには指定した値が入り、`b` カラムにはデフォルト値が入っていることがわかります。`DEFAULT` キーワードを使用してデフォルト値を挿入することもできます。
 
 ```sql
 INSERT INTO insert_select_testtable VALUES (1, DEFAULT, 1) ;
 ```
 
-列リストに既存のすべての列が含まれていない場合、残りの列には次の値が設定されます。
+カラムリストに既存のすべてのカラムが含まれていない場合、残りのカラムには次の値が設定されます。
 
 * テーブル定義で指定された `DEFAULT` 式から計算された値
 * `DEFAULT` 式が定義されていない場合はゼロおよび空文字列
@@ -82,7 +80,7 @@ INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT Values (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-ClickHouse は、データの前にあるすべての空白文字と（存在する場合は）1 つの改行を削除します。クエリを作成する際は、データがスペースで始まる場合に重要となるため、クエリ演算子の直後で改行し、その次の行にデータを配置することを推奨します。
+ClickHouse は、データの前にあるすべての空白文字と (存在する場合は) 1 つの改行を削除します。クエリを作成する際は、データがスペースで始まる場合に重要となるため、クエリ演算子の直後で改行し、その次の行にデータを配置することを推奨します。
 
 例:
 
@@ -103,10 +101,49 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 :::
 
-
 ## 制約 \{#constraints\}
 
 テーブルに[制約](../../sql-reference/statements/create/table.md#constraints)がある場合、それらの式は挿入されたデータの各行に対して評価されます。これらの制約のいずれかが満たされない場合、サーバーは制約名と式を含む例外をスローし、クエリの実行は中断されます。
+
+## データ型の検証 \{#data-type-validation\}
+
+ClickHouse では、許可されたデータ型 (`enable_time_time64_type`、`allow_suspicious_low_cardinality_types`、`allow_suspicious_fixed_string_types` などの設定で制御) は、`INSERT` 時ではなく、テーブル作成時 (`CREATE TABLE`) と schema の変更時 (`ALTER TABLE`) にのみ検証されます。
+
+つまり、許可されていないデータ型を持つテーブルがすでに存在する場合、対応する設定がサーバーで無効になっていても、そのテーブルにはデータを挿入できます。これは意図された動作です。テーブルが一度作成されると、型の作成を制御する設定によって挿入が妨げられるべきではありません。
+
+たとえば:
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE events
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id;
+
+SET enable_time_time64_type = 0;
+
+-- This works even though the setting is now disabled.
+-- The table already exists, so inserts are not blocked.
+INSERT INTO events VALUES (1, '14:30:25');
+
+-- But creating a new table with the Time type will fail.
+CREATE TABLE events_new
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id; -- ERR: TYPE_TIME_TIME64_IS_NOT_ENABLED
+```
+
+:::note
+そのため、対象テーブルに対応するカラム型がすでに存在していれば、設定がデフォルトで有効な新しいバージョンのクライアントから、設定が無効な古いバージョンのサーバーに対して、許可されていないデータ型のデータでも挿入できます。検証は DML レベルではなく、DDL レベルで行われます。
+:::
+
 
 ## SELECT の結果の挿入 \{#inserting-the-results-of-select\}
 
@@ -147,31 +184,28 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 圧縮されたファイルもサポートされます。圧縮形式はファイル名の拡張子から自動的に検出されます。また、`COMPRESSION` 句で明示的に指定することもできます。サポートされている形式は `'none'`, `'gzip'`, `'deflate'`, `'br'`, `'xz'`, `'zstd'`, `'lz4'`, `'bz2'` です。
 
-この機能は [command-line client](../../interfaces/cli.md) と [clickhouse-local](../../operations/utilities/clickhouse-local.md) で利用できます。
+この機能は [コマンドラインクライアント](../../interfaces/client.md) と [clickhouse-local](../../operations/utilities/clickhouse-local.md) で利用できます。
 
 **例**
 
 
 ### FROM INFILE を用いた単一ファイル \{#single-file-with-from-infile\}
 
-次のクエリを [command-line client](../../interfaces/cli.md) を使って実行します。
+次のクエリを [コマンドラインクライアント](../../interfaces/client.md) を使って実行します。
 
-```bash
+```bash title="Query"
 echo 1,A > input.csv ; echo 2,B >> input.csv
 clickhouse-client --query="CREATE TABLE table_from_file (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;"
 clickhouse-client --query="INSERT INTO table_from_file FROM INFILE 'input.csv' FORMAT CSV;"
 clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─id─┬─text─┐
 │  1 │ A    │
 │  2 │ B    │
 └────┴──────┘
 ```
-
 
 ### FROM INFILE でグロブを使用した複数ファイル \{#multiple-files-with-from-infile-using-globs\}
 
@@ -210,21 +244,18 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 
 以下のクエリでは、[remote](/sql-reference/table-functions/remote) テーブル関数を使用します。
 
-```sql
+```sql title="Query"
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
     VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌──id─┬─text──────────────────┐
 │ 100 │ inserted via remote() │
 └─────┴───────────────────────┘
 ```
-
 
 ## ClickHouse Cloud への挿入 \{#inserting-into-clickhouse-cloud\}
 

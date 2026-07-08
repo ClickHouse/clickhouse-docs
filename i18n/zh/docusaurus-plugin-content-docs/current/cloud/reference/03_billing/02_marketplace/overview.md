@@ -9,17 +9,16 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage/billing/marketplace/marketplace_signup_and_org_linking.png'
 
-您可以通过 AWS、GCP 和 Azure 的 Marketplace 订阅 ClickHouse Cloud。这样，您可以在现有云服务提供商的账单中统一支付 ClickHouse Cloud 的费用。
+您可以通过 AWS、GCP 和 Azure 的 Marketplace 订阅 ClickHouse Cloud。这样，您可以在现有云服务商的计费中统一支付 ClickHouse Cloud 的费用。
 
-您可以通过云 Marketplace 选择按需计费（PAYG），或签订 ClickHouse Cloud 的承诺用量合约。计费将由云服务提供商处理，您将收到一张涵盖所有云服务的统一发票。
+您可以通过云 Marketplace 选择按需计费 (PAYG) ，或签订 ClickHouse Cloud 的承诺用量合同。计费将由云服务商处理，您将收到一张涵盖所有云服务的统一发票。
 
-* [AWS Marketplace 按需计费（PAYG）](/cloud/billing/marketplace/aws-marketplace-payg)
-* [AWS Marketplace 承诺用量合约](/cloud/billing/marketplace/aws-marketplace-committed-contract)
-* [GCP Marketplace 按需计费（PAYG）](/cloud/billing/marketplace/gcp-marketplace-payg)
-* [GCP Marketplace 承诺用量合约](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
-* [Azure Marketplace 按需计费（PAYG）](/cloud/billing/marketplace/azure-marketplace-payg)
-* [Azure Marketplace 承诺用量合约](/cloud/billing/marketplace/azure-marketplace-committed-contract)
-
+* [AWS Marketplace 按需计费 (PAYG) ](/cloud/billing/marketplace/aws-marketplace-payg)
+* [AWS Marketplace 承诺用量合同](/cloud/billing/marketplace/aws-marketplace-committed-contract)
+* [GCP Marketplace 按需计费 (PAYG) ](/cloud/billing/marketplace/gcp-marketplace-payg)
+* [GCP Marketplace 承诺用量合同](/cloud/billing/marketplace/gcp-marketplace-committed-contract)
+* [Azure Marketplace 按需计费 (PAYG) ](/cloud/billing/marketplace/azure-marketplace-payg)
+* [Azure Marketplace 承诺用量合同](/cloud/billing/marketplace/azure-marketplace-committed-contract)
 
 ## 常见问题解答 \{#faqs\}
 
@@ -54,7 +53,7 @@ import marketplace_signup_and_org_linking from '@site/static/images/cloud/manage
 
 请注意，你可以直接停止使用 ClickHouse Cloud 并删除所有现有的 ClickHouse Cloud 服务。即使订阅仍然处于激活状态，由于 ClickHouse Cloud 没有任何固定的周期性费用，你也不会产生任何费用。
 
-如果你希望取消订阅，请前往云服务商控制台，在其中取消订阅续费。一旦订阅结束，所有现有服务将被停止，并会提示你添加信用卡。如果未添加信用卡，两周后所有现有服务将被删除。
+如果你希望取消订阅，请前往云服务商控制台，在其中取消订阅续费。
 
 ### 我作为 Marketplace 用户订阅了 ClickHouse Cloud，然后又取消了订阅。现在我想重新订阅，该如何操作？​ \{#i-subscribed-to-clickhouse-cloud-as-a-marketplace-user-and-then-unsubscribed-now-i-want-to-subscribe-back-what-is-the-process\}
 

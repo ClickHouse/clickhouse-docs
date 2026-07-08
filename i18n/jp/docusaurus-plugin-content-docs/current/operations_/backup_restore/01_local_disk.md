@@ -2,7 +2,7 @@
 description: 'ローカルディスクへのバックアップおよびローカルディスクからのリストアの詳細'
 sidebar_label: 'ローカルディスク / S3 ディスク'
 slug: /operations/backup/disk
-title: 'ClickHouse のバックアップとリストア'
+title: 'ディスクへの BACKUP / RESTORE'
 doc_type: 'guide'
 ---
 
@@ -10,9 +10,6 @@ import GenericSettings from '@site/i18n/jp/docusaurus-plugin-content-docs/curren
 import S3Settings from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_s3_settings.md';
 import ExampleSetup from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_example_setup.md';
 import Syntax from '@site/i18n/jp/docusaurus-plugin-content-docs/current/operations_/backup_restore/_snippets/_syntax.md';
-
-
-# ローカルディスクへのバックアップ／リストア \{#backup-to-a-local-disk\}
 
 ## 構文 \{#syntax\}
 
@@ -120,7 +117,7 @@ BACKUP TABLE test_db.test_table TO Disk('backups', '1.zip')
    └──────────────────────────────────────┴────────────────┘
 ```
 
-テーブルが空の場合は、次のコマンドでバックアップからテーブルを復元できます。
+テーブルが空の場合は、次のコマンドでバックアップからテーブルをリストアできます。
 
 ```sql title="Query"
 RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
@@ -135,21 +132,21 @@ RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 :::note
 上記の `RESTORE` は、テーブル `test.table` にデータが含まれている場合は失敗します。
 設定 `allow_non_empty_tables=true` を有効にすると、`RESTORE TABLE` がデータを
-空ではないテーブルに挿入できるようになります。これにより、テーブル内の既存データと、バックアップから復元されるデータが混在します。
+空ではないテーブルに挿入できるようになります。これにより、テーブル内の既存データと、バックアップからリストアされるデータが混在します。
 そのため、この設定はテーブル内のデータが重複する可能性があるため、注意して使用する必要があります。
 :::
 
-既にデータが入っているテーブルを復元するには、次を実行します。
+既にデータが入っているテーブルをリストアするには、次を実行します。
 
 ```sql
-RESTORE TABLE test_db.table_table FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table FROM Disk('backups', '1.zip')
 SETTINGS allow_non_empty_tables=true
 ```
 
 テーブルは新しい名前を指定してリストアまたはバックアップできます。
 
 ```sql
-RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
+RESTORE TABLE test_db.test_table AS test_db.test_table_renamed FROM Disk('backups', '1.zip')
 ```
 
 このバックアップ・アーカイブの構造は次のとおりです。
@@ -162,12 +159,11 @@ RESTORE TABLE test_db.table_table AS test_db.test_table_renamed FROM Disk('backu
 ```
 
 {/* TO DO: 
-  ここにバックアップ形式についての説明を追加すること。Issue 24a を参照。
+  バックアップのフォーマットに関する説明をここに記載します。Issue 24a を参照してください。
   https://github.com/ClickHouse/clickhouse-docs/issues/3968
   */ }
 
 zip 以外の形式も使用できます。詳細については、後述の [&quot;Backups as tar archives&quot;](#backups-as-tar-archives) を参照してください。
-
 
 ### ディスクへの増分バックアップ \{#incremental-backups\}
 

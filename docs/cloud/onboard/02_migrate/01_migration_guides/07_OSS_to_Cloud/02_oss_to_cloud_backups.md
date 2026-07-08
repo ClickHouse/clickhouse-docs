@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Using BACKUP and RESTORE'
 slug: /cloud/migration/oss-to-cloud-backup-restore
-title: 'Migrating between self-managed ClickHouse and ClickHouse Cloud with BACKUP/RESTORE'
+title: 'Migrating from self-managed ClickHouse to ClickHouse Cloud using backup commands'
 description: 'Page describing how to migrate between self-managed ClickHouse and ClickHouse Cloud using BACKUP and RESTORE commands'
 doc_type: 'guide'
 keywords: ['migration', 'ClickHouse Cloud', 'OSS', 'Migrate self-managed to Cloud', 'BACKUP', 'RESTORE']
@@ -17,8 +17,6 @@ import open_console from '@site/static/images/cloud/onboard/migrate/oss_to_cloud
 import service_role_id from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/service_role_id.png';
 import create_new_role from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/create_new_role.png';
 import backup_s3_bucket from '@site/static/images/cloud/onboard/migrate/oss_to_cloud_via_backup/backup_in_s3_bucket.png';
-
-# Migrating from self-managed ClickHouse to ClickHouse Cloud using backup commands
 
 ## Overview {#overview-migration-approaches}
 
@@ -75,12 +73,12 @@ From a new terminal window at the root of the folder run the following command t
 docker exec -it clickhouse-01 clickhouse-client
 ```
 
-### Create sample data {#create-sample-data}
+### From MergeTree table to ReplicatedMergeTree table {#mergetree-to-replicatedmergetree}
 
 ClickHouse Cloud works with [`SharedMergeTree`](/cloud/reference/shared-merge-tree).
 When restoring a backup, ClickHouse automatically converts tables with `ReplicatedMergeTree` to `SharedMergeTree` tables.
 
-It's likely your tables are already using the `ReplciatedMergeTree` engine if you're running a cluster.
+It's likely your tables are already using the `ReplicatedMergeTree` engine if you're running a cluster.
 If not, you will need to convert any `MergeTree` tables to `ReplicatedMergeTree` before backing them up.
 
 For the sake of demonstration of how to convert `MergeTree` tables to `ReplicatedMergeTree`, we will begin with a `MergeTree` table and convert it to `ReplicatedMergeTree` after wards.
@@ -92,7 +90,7 @@ Run the following commands to create a new database and insert data from an S3 b
 ```sql
 CREATE DATABASE nyc_taxi;
 
-CREATE TABLE nyc_taxi.trips_small (
+CREATE TABLE nyc_taxi.trips_small_adapted (
     trip_id             UInt32,
     pickup_datetime     DateTime,
     dropoff_datetime    DateTime,
@@ -116,7 +114,7 @@ PRIMARY KEY (pickup_datetime, dropoff_datetime);
 ```
 
 ```sql
-INSERT INTO nyc_taxi.trips_small
+INSERT INTO nyc_taxi.trips_small_adapted
 SELECT
     trip_id,
     pickup_datetime,
@@ -144,19 +142,19 @@ FROM s3(
 Run the following command to `DETACH` the table.
 
 ```sql
-DETACH TABLE nyc_taxi.trips_small;
+DETACH TABLE nyc_taxi.trips_small_adapted;
 ```
 
 Then attach it as replicated:
 
 ```sql
-ATTACH TABLE nyc_taxi.trips_small AS REPLICATED;
+ATTACH TABLE nyc_taxi.trips_small_adapted AS REPLICATED;
 ```
 
 Finally, restore the replica metadata:
 
 ```sql
-SYSTEM RESTORE REPLICA nyc_taxi.trips_small;
+SYSTEM RESTORE REPLICA nyc_taxi.trips_small_adapted;
 ```
 
 Check that it was converted to `ReplicatedMergeTree`:
@@ -164,8 +162,10 @@ Check that it was converted to `ReplicatedMergeTree`:
 ```sql
 SELECT engine
 FROM system.tables
-WHERE name = 'trips_small' AND database = 'nyc_taxi';
+WHERE name = 'trips_small_adapted' AND database = 'nyc_taxi';
+```
 
+```response
 ┌─engine──────────────┐
 │ ReplicatedMergeTree │
 └─────────────────────┘
@@ -173,6 +173,94 @@ WHERE name = 'trips_small' AND database = 'nyc_taxi';
 
 You're now ready to proceed with setting up your Cloud service in preparation for later
 restoring a backup from your S3 bucket.
+
+### Distributed tables with ReplicatedMergeTree {#distributed-tables}
+
+If your setup uses distributed tables across multiple shards, you'll need a local `ReplicatedMergeTree` table on each node and a `Distributed` table as the query entry point.
+
+Run the following command to create the local replicated table on all cluster nodes:
+
+```sql
+CREATE DATABASE IF NOT EXISTS nyc_taxi ON CLUSTER 'cluster_2S_2R';
+
+CREATE TABLE nyc_taxi.trips_small_dist_local ON CLUSTER 'cluster_2S_2R'
+(
+    trip_id             UInt32,
+    pickup_datetime     DateTime,
+    dropoff_datetime    DateTime,
+    pickup_longitude    Nullable(Float64),
+    pickup_latitude     Nullable(Float64),
+    dropoff_longitude   Nullable(Float64),
+    dropoff_latitude    Nullable(Float64),
+    passenger_count     UInt8,
+    trip_distance       Float32,
+    fare_amount         Float32,
+    extra               Float32,
+    tip_amount          Float32,
+    tolls_amount        Float32,
+    total_amount        Float32,
+    payment_type        Enum('CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4, 'UNK' = 5),
+    pickup_ntaname      LowCardinality(String),
+    dropoff_ntaname     LowCardinality(String)
+)
+ENGINE = ReplicatedMergeTree('/clickhouse/tables/{database}/{table}/{shard}', '{replica}')
+PRIMARY KEY (pickup_datetime, dropoff_datetime);
+```
+
+Then create the `Distributed` table on top:
+
+```sql
+
+CREATE TABLE nyc_taxi.trips_small_dist ON CLUSTER 'cluster_2S_2R'
+(
+    trip_id             UInt32,
+    pickup_datetime     DateTime,
+    dropoff_datetime    DateTime,
+    pickup_longitude    Nullable(Float64),
+    pickup_latitude     Nullable(Float64),
+    dropoff_longitude   Nullable(Float64),
+    dropoff_latitude    Nullable(Float64),
+    passenger_count     UInt8,
+    trip_distance       Float32,
+    fare_amount         Float32,
+    extra               Float32,
+    tip_amount          Float32,
+    tolls_amount        Float32,
+    total_amount        Float32,
+    payment_type        Enum('CSH' = 1, 'CRE' = 2, 'NOC' = 3, 'DIS' = 4, 'UNK' = 5),
+    pickup_ntaname      LowCardinality(String),
+    dropoff_ntaname     LowCardinality(String)
+)
+ENGINE = Distributed('cluster_2S_2R', 'nyc_taxi', 'trips_small_dist_local', rand());
+```
+
+Insert data through the distributed table:
+
+```sql
+INSERT INTO nyc_taxi.trips_small_dist
+SELECT
+    trip_id,
+    pickup_datetime,
+    dropoff_datetime,
+    pickup_longitude,
+    pickup_latitude,
+    dropoff_longitude,
+    dropoff_latitude,
+    passenger_count,
+    trip_distance,
+    fare_amount,
+    extra,
+    tip_amount,
+    tolls_amount,
+    total_amount,
+    payment_type,
+    pickup_ntaname,
+    dropoff_ntaname
+FROM s3(
+    'https://datasets-documentation.s3.eu-west-3.amazonaws.com/nyc-taxi/trips_{0..2}.gz',
+    'TabSeparatedWithNames'
+);
+```
 
 ## Cloud preparation {#cloud-setup}
 
@@ -245,21 +333,32 @@ The policy includes both ARNs:
 
 ## Taking the backup (on self-managed deployment) {#taking-a-backup-on-oss}
 
-To make a backup of a single database, run the following command from clickhouse-client
-connected to your OSS deployment:
+Each shard must be backed up independently. Connect to a node on each shard and run the
+backup command with a unique destination path per shard.
 
+Replace `BUCKET_URL`, `KEY_ID` and `SECRET_KEY` with your own AWS credentials.
+The guide ["How to create an S3 bucket and IAM role"](/integrations/s3/creating-iam-user-and-s3-bucket)
+shows you how to obtain these if you don't yet have them.
+
+**Shard 1:**
 ```sql
 BACKUP DATABASE nyc_taxi
 TO S3(
-  'BUCKET_URL',
+  'BUCKET_URL/backup_s1.zip',
   'KEY_ID',
   'SECRET_KEY'
 )
 ```
 
-Replace `BUCKET_URL`, `KEY_ID` and `SECRET_KEY` with your own AWS credentials.
-The guide ["How to create an S3 bucket and IAM role"](/integrations/s3/creating-iam-user-and-s3-bucket)
-shows you how to obtain these if you don't yet have them.
+**Shard 2:**
+```sql
+BACKUP DATABASE nyc_taxi
+TO S3(
+  'BUCKET_URL/backup_s2.zip',
+  'KEY_ID',
+  'SECRET_KEY'
+)
+```
 
 If everything is correctly configured you will see a response similar to the one below
 containing a unique id assigned to the backup and the status of the backup.
@@ -271,6 +370,19 @@ Query id: efcaf053-75ed-4924-aeb1-525547ea8d45
 │ e73b99ab-f2a9-443a-80b4-533efe2d40b3 │ BACKUP_CREATED │
 └──────────────────────────────────────┴────────────────┘
 ```
+
+:::note[Single-node deployments]
+If you are not using distributed tables, you can back up the entire database with a single command:
+
+```sql
+BACKUP DATABASE nyc_taxi
+TO S3(
+  'BUCKET_URL',
+  'KEY_ID',
+  'SECRET_KEY'
+)
+```
+:::
 
 If you check your previously empty S3 bucket you will now see some folders have appeared:
 
@@ -335,9 +447,32 @@ For more detail on backups in general, the reader is referred to the documentati
 
 ## Restore to ClickHouse Cloud {#restore-to-clickhouse-cloud}
 
-To restore a single database run the following query from your Cloud service, substituting your AWS credentials below,
-setting `ROLE_ARN` equal to the value which you obtained as output of the steps detailed
-in ["Accessing S3 data securely"](/cloud/data-sources/secure-s3)
+Restore each shard's backup one at a time into your Cloud service. Set `ROLE_ARN` to the
+value obtained from ["Accessing S3 data securely"](/cloud/data-sources/secure-s3).
+Use `SETTINGS allow_non_empty_tables=true` on the second (and any subsequent) restore so
+that shard data is appended to the already-restored tables rather than failing on a conflict:
+
+**Shard 1:**
+```sql
+RESTORE DATABASE nyc_taxi
+FROM S3(
+    'BUCKET_URL/backup_s1.zip',
+    extra_credentials(role_arn = 'ROLE_ARN')
+)
+```
+
+**Shard 2:**
+```sql
+RESTORE DATABASE nyc_taxi
+FROM S3(
+    'BUCKET_URL/backup_s2.zip',
+    extra_credentials(role_arn = 'ROLE_ARN')
+)
+SETTINGS allow_non_empty_tables=true;
+```
+
+:::note[non-distributed deployments]
+If you are not using distributed tables, restore the database with a single command:
 
 ```sql
 RESTORE DATABASE nyc_taxi
@@ -346,6 +481,7 @@ FROM S3(
     extra_credentials(role_arn = 'ROLE_ARN')
 )
 ```
+:::
 
 You can do a full service restore in a similar manner:
 
@@ -363,10 +499,26 @@ FROM S3(
 )
 ```
 
-If you now run the following query in Cloud you can see that the database and table have been
-successfully restored on Cloud:
+After the restore completes, you can verify the data is available in Cloud:
 
 ```sql
-SELECT count(*) FROM nyc_taxi.trips_small;
+-- ClickHouse Cloud restores everything in your local table
+SELECT count() from nyc_taxi.trips_small_dist_local;
+3000317
+```
+
+Since ClickHouse Cloud uses `SharedMergeTree` internally, the old distributed table is no longer needed. You can drop it and replace it with a view that preserves the original table name for your queries:
+
+```sql
+DROP TABLE drop table nyc_taxi.trips_small_dist;
+CREATE VIEW nyc_taxi.trips_small_dist AS SELECT * FROM nyc_taxi.trips_small_dist_local;
+SELECT count() from nyc_taxi.trips_small_dist;
+3000317
+```
+
+Non-distributed `ReplicatedMergeTree` tables will be restored as `SharedMergeTree`:
+
+```sql
+SELECT count() FROM nyc_taxi.trips_small_adapted;
 3000317
 ```

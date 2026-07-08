@@ -1,11 +1,10 @@
 ---
-description: 'IN 运算符（不包括 NOT IN、GLOBAL IN 和 GLOBAL NOT IN 运算符，这些在单独文档中说明）'
+description: '关于 IN 运算符的文档，不包括单独介绍的 NOT IN、GLOBAL IN 和 GLOBAL
+  NOT IN 运算符'
 slug: /sql-reference/operators/in
 title: 'IN 运算符'
 doc_type: 'reference'
 ---
-
-# IN 运算符 \{#in-operators\}
 
 `IN`、`NOT IN`、`GLOBAL IN` 和 `GLOBAL NOT IN` 运算符单独介绍，因为它们的功能较为丰富。
 
@@ -18,11 +17,48 @@ SELECT UserID IN (123, 456) FROM ...
 SELECT (CounterID, UserID) IN ((34, 123), (101500, 456)) FROM ...
 ```
 
-如果左侧是一个被索引的单个列，而右侧是一个常量集合，系统会使用该索引来处理查询。
+如果左侧是一个被索引的单个列，而右侧是一个常量 Set，系统会使用该索引来处理查询。
 
 不要显式列出过多的值 (例如数百万个) 。如果数据集很大，请将其放入一个临时表中 (例如，参见 [External data for query processing](../../engines/table-engines/special/external-data.md) 一节) ，然后再使用子查询。
 
-运算符的右侧可以是常量表达式的集合、由常量表达式构成的元组的集合 (如上面的示例所示) ，或者是一个数据库表名，或用括号括起来的 `SELECT` 子查询。
+运算符的右侧可以是常量表达式的 Set、由常量表达式构成的元组的 Set (如上面的示例所示) ，或者是一个数据库表名，或用括号括起来的 `SELECT` 子查询。
+
+出于历史兼容性考虑，当右侧是单个 `tuple` 表达式时，根据 `IN` 运算符左侧的情况，它既可以被解释为一个值的 Set，也可以被解释为一个 Tuple 值。如果左侧是一个标量值，ClickHouse 会将这个右侧单个 `tuple` 表达式的各元素视为独立的 `IN` 值：
+
+```sql title="Query"
+SELECT
+    1 IN (tuple(1, 2)) AS one_in_tuple,
+    2 IN (tuple(1, 2)) AS two_in_tuple,
+    3 IN (tuple(1, 2)) AS three_in_tuple;
+```
+
+```text title="Response"
+┌─one_in_tuple─┬─two_in_tuple─┬─three_in_tuple─┐
+│            1 │            1 │              0 │
+└──────────────┴──────────────┴────────────────┘
+```
+
+其行为类似于 `SELECT 1 IN (1, 2)`。如果左侧也是一个元组，则右侧会被解释为元组值的 Set：
+
+```sql title="Query"
+SELECT tuple(1, 2) IN (tuple(1, 2)) AS tuple_in_tuple;
+```
+
+```text title="Response"
+┌─tuple_in_tuple─┐
+│              1 │
+└────────────────┘
+```
+
+此特殊处理仅在右侧为单个 `tuple` 表达式时适用。标量左侧无法与包含多个元组值的右侧进行匹配：
+
+```sql title="Query"
+SELECT 1 IN (tuple(1, 2), tuple(3, 4));
+```
+
+```text title="Response"
+Code: 43. DB::Exception: Unsupported types for IN. First argument type UInt8. Second argument type Tuple(Tuple(UInt8, UInt8), Tuple(UInt8, UInt8)). (ILLEGAL_TYPE_OF_ARGUMENT)
+```
 
 ClickHouse 允许 `IN` 子查询左右两侧的类型不同。
 在这种情况下，它会将右侧的值转换为左侧的类型，
@@ -32,21 +68,17 @@ ClickHouse 允许 `IN` 子查询左右两侧的类型不同。
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT '1' IN (SELECT 1);
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─in('1', _subquery49)─┐
 │                    1 │
 └──────────────────────┘
 ```
 
-如果运算符右侧是表名 (例如 `UserID IN users`) ，这等价于子查询 `UserID IN (SELECT * FROM users)`。在处理随查询一同发送的外部数据时，可以使用这种方式。例如，可以将查询与一组用户 ID 一起发送，这些 ID 被加载到临时表 &#39;users&#39; 中，并需要对其进行过滤。
+如果运算符右侧是表名 (例如 `UserID IN users`) ，这等价于子查询 `UserID IN (SELECT * FROM users)`。在处理随查询一同发送的外部数据时，可以使用这种方式。例如，可以将查询与一组被加载到临时表 &#39;users&#39; 中并需要对其进行过滤的用户 ID Set 一起发送。
 
 如果运算符右侧是使用 Set 引擎 (始终驻留在 RAM 中的预先准备的数据集) 的表名，则不会在每次查询时重复创建该数据集。
 
@@ -54,7 +86,7 @@ SELECT '1' IN (SELECT 1);
 
 示例：
 
-```sql
+```sql title="Query"
 SELECT (CounterID, UserID) IN (SELECT CounterID, UserID FROM ...) FROM ...
 ```
 
@@ -63,7 +95,7 @@ SELECT (CounterID, UserID) IN (SELECT CounterID, UserID FROM ...) FROM ...
 `IN` 运算符和子查询可以出现在查询语句的任何部分，包括聚合函数和 lambda 函数中。
 示例：
 
-```sql
+```sql title="Query"
 SELECT
     EventDate,
     avg(UserID IN
@@ -77,7 +109,7 @@ GROUP BY EventDate
 ORDER BY EventDate ASC
 ```
 
-```text
+```text title="Response"
 ┌──EventDate─┬────ratio─┐
 │ 2014-03-17 │        1 │
 │ 2014-03-18 │ 0.807696 │
@@ -139,6 +171,8 @@ FROM t_null
 
 当使用 `GLOBAL IN` / `GLOBAL JOIN` 时，首先会执行所有 `GLOBAL IN` / `GLOBAL JOIN` 的子查询，并将结果收集到临时表中。然后，这些临时表被发送到每个远程服务器，在远程服务器上使用这些临时数据来执行查询。
 
+对于 `GLOBAL ... JOIN`，连接的哪一侧作为子查询进行计算取决于连接类型：对于 `LEFT` 和 `INNER` 连接，计算右表；对于 `RIGHT` 连接，则计算左表，因为右表是被保留的一侧，应从各分片中读取。
+
 对于非分布式查询，请使用普通的 `IN` / `JOIN`。
 
 在分布式查询处理时，在 `IN` / `JOIN` 子句中使用子查询要格外小心。
@@ -177,7 +211,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SEL
 
 换句话说，`IN` 子句中的数据集会在每台服务器上独立收集，只会基于该服务器本地存储的数据进行处理。
 
-如果你事先为这种情况做好准备，并且在集群服务器之间分布数据，使得单个 UserID 的数据完全存放在同一台服务器上，那么该机制会正确且高效地工作。在这种情况下，每台服务器上所需的数据都可以在本地获取。否则，结果将会不准确。我们将这种形式的查询称为 “local IN”。
+如果你事先为这种情况做好准备，并且在集群服务器之间分布数据，使得单个 UserID 的数据完全存放在同一台服务器上，那么该机制会正确且高效地工作。在这种情况下，每台服务器上所需的数据都可以在本地获取。否则，结果将会不准确。我们将这种形式的查询称为 &quot;local IN&quot;。
 
 当数据随机分布在集群服务器上时，为了修正查询的执行方式，你可以在子查询中指定 **distributed&#95;table**。查询将如下所示：
 
@@ -185,7 +219,7 @@ SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SEL
 SELECT uniq(UserID) FROM distributed_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
 ```
 
-该查询将以如下形式发送到所有远程服务器：
+此查询将以如下形式发送到所有远程服务器：
 
 ```sql
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID IN (SELECT UserID FROM distributed_table WHERE CounterID = 34)
@@ -217,11 +251,11 @@ SELECT UserID FROM distributed_table WHERE CounterID = 34
 SELECT uniq(UserID) FROM local_table WHERE CounterID = 101500 AND UserID GLOBAL IN _data1
 ```
 
-临时表 `_data1` 将随查询一起发送到每个远程服务器 (临时表的名称由具体实现决定) 。
+临时表 `_data1` 将随查询一起发送到每个远程服务器 (临时表的具体名称由实现决定) 。
 
-这比使用普通的 `IN` 更高效，但请注意以下几点：
+这种方式比使用普通的 `IN` 更高效。不过，请注意以下几点：
 
-1. 创建临时表时，数据不会自动去重。为了减少通过网络传输的数据量，请在子查询中使用 DISTINCT。 (对于普通的 `IN`，不需要这样做。) 
+1. 创建临时表时，数据不会自动去重。为了减少通过网络传输的数据量，请在子查询中使用 DISTINCT。 (对于普通的 `IN`，不需要这样做。)
 2. 临时表会被发送到所有远程服务器。传输时不会考虑网络拓扑结构。例如，如果有 10 台远程服务器位于距离发起请求的服务器很远的数据中心，则数据会通过与该远程数据中心的网络链路被发送 10 次。在使用 `GLOBAL IN` 时，尽量避免使用大型数据集。
 3. 向远程服务器传输数据时，无法对网络带宽限制进行配置，这可能会导致网络过载。
 4. 尽量将数据合理分布到各个服务器上，以避免经常需要使用 `GLOBAL IN`。

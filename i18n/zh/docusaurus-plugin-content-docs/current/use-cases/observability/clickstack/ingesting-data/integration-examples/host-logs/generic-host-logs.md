@@ -10,7 +10,6 @@ keywords: ['主机日志', 'systemd', 'syslog', 'OTEL', 'ClickStack', '系统监
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import log_view from '@site/static/images/clickstack/host-logs/log-view.png';
 import search_view from '@site/static/images/clickstack/host-logs/search-view.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
@@ -20,10 +19,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 使用 ClickStack 监控主机日志 \{#host-logs-clickstack\}
-
-:::note[摘要]
-使用 OTel `filelog` 接收器在 ClickStack 中收集并可视化主机系统日志 (syslog、auth 和 kernel) 。包含演示数据集和预置仪表板。
+:::note[TL;DR]
+使用 OTel `filelog` 接收器在 ClickStack 中收集并可视化主机系统日志 (syslog、auth、kernel) 。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有主机集成 \{#existing-hosts\}
@@ -366,7 +363,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/host-logs-dashboard.json'} download="host-logs-dashboard.json" eventName="docs.host_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
 
 #### 导入预构建的仪表板 \{#import-dashboard\}
 

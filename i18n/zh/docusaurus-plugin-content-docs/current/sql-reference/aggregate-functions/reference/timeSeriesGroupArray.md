@@ -9,7 +9,7 @@ doc_type: 'reference'
 
 ## timeSeriesGroupArray \{#timeSeriesGroupArray\}
 
-引入版本：v25.9.0
+引入版本：v25.8.0
 
 按时间戳升序对时间序列数据进行排序。
 

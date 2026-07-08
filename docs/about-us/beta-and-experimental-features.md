@@ -1,7 +1,7 @@
 ---
 sidebar_position: 1
-sidebar_label: 'Beta Features and Experimental'
-title: 'Beta and Experimental Features'
+sidebar_label: 'Beta and experimental features'
+title: 'Beta and experimental features'
 description: 'ClickHouse has beta and experimental features. This documentation page discusses definition.'
 slug: /beta-and-experimental-features
 doc_type: 'reference'
@@ -58,6 +58,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [parallel_replicas_custom_key_range_lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0` |
 | [parallel_replicas_custom_key_range_upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0` |
 | [parallel_replicas_filter_pushdown](/operations/settings/settings#parallel_replicas_filter_pushdown) | `0` |
+| [parallel_replicas_allow_view_over_mergetree](/operations/settings/settings#parallel_replicas_allow_view_over_mergetree) | `0` |
 | [allow_experimental_database_iceberg](/operations/settings/settings#allow_experimental_database_iceberg) | `0` |
 | [allow_experimental_database_unity_catalog](/operations/settings/settings#allow_experimental_database_unity_catalog) | `0` |
 | [allow_experimental_database_glue_catalog](/operations/settings/settings#allow_experimental_database_glue_catalog) | `0` |
@@ -72,6 +73,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 
 | Name | Default |
 |------|--------|
+| [allow_commit_order_projection](/operations/settings/merge-tree-settings#allow_commit_order_projection) | `0` |
 | [allow_experimental_replacing_merge_with_cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup) | `0` |
 | [allow_experimental_reverse_key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key) | `0` |
 | [allow_remote_fs_zero_copy_replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication) | `0` |
@@ -89,10 +91,13 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [remote_fs_zero_copy_zookeeper_path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path) | `/clickhouse/zero_copy` |
 | [remove_rolled_back_parts_immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately) | `1` |
 | [shared_merge_tree_virtual_parts_discovery_batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch) | `1` |
+| [query_plan_optimize_join_order_randomize](/operations/settings/settings#query_plan_optimize_join_order_randomize) | `0` |
+| [enable_join_transitive_predicates](/operations/settings/settings#enable_join_transitive_predicates) | `0` |
 | [ast_fuzzer_runs](/operations/settings/settings#ast_fuzzer_runs) | `0` |
 | [ast_fuzzer_any_query](/operations/settings/settings#ast_fuzzer_any_query) | `0` |
 | [allow_fuzz_query_functions](/operations/settings/settings#allow_fuzz_query_functions) | `0` |
 | [enable_materialized_cte](/operations/settings/settings#enable_materialized_cte) | `0` |
+| [analyzer_inline_views](/operations/settings/settings#analyzer_inline_views) | `0` |
 | [allow_experimental_kafka_offsets_storage_in_keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper) | `0` |
 | [allow_experimental_delta_lake_writes](/operations/settings/settings#allow_experimental_delta_lake_writes) | `0` |
 | [automatic_parallel_replicas_mode](/operations/settings/settings#automatic_parallel_replicas_mode) | `0` |
@@ -103,6 +108,8 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_nlp_functions](/operations/settings/settings#allow_experimental_nlp_functions) | `0` |
 | [allow_experimental_hash_functions](/operations/settings/settings#allow_experimental_hash_functions) | `0` |
 | [allow_experimental_time_series_table](/operations/settings/settings#allow_experimental_time_series_table) | `0` |
+| [unique_key_max_encoded_size](/operations/settings/settings#unique_key_max_encoded_size) | `256` |
+| [allow_experimental_unique_key](/operations/settings/settings#allow_experimental_unique_key) | `0` |
 | [allow_experimental_codecs](/operations/settings/settings#allow_experimental_codecs) | `0` |
 | [throw_on_unsupported_query_inside_transaction](/operations/settings/settings#throw_on_unsupported_query_inside_transaction) | `1` |
 | [wait_changes_become_visible_after_commit_mode](/operations/settings/settings#wait_changes_become_visible_after_commit_mode) | `wait_unknown` |
@@ -113,6 +120,8 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [join_to_sort_maximum_table_rows](/operations/settings/settings#join_to_sort_maximum_table_rows) | `10000` |
 | [allow_experimental_join_right_table_sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting) | `0` |
 | [allow_experimental_json_lazy_type_hints](/operations/settings/settings#allow_experimental_json_lazy_type_hints) | `0` |
+| [enable_streaming_queries](/operations/settings/settings#enable_streaming_queries) | `0` |
+| [allow_experimental_text_index_lazy_apply](/operations/settings/settings#allow_experimental_text_index_lazy_apply) | `0` |
 | [allow_experimental_window_view](/operations/settings/settings#allow_experimental_window_view) | `0` |
 | [window_view_clean_interval](/operations/settings/settings#window_view_clean_interval) | `60` |
 | [window_view_heartbeat_interval](/operations/settings/settings#window_view_heartbeat_interval) | `15` |
@@ -127,7 +136,10 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [allow_experimental_polyglot_dialect](/operations/settings/settings#allow_experimental_polyglot_dialect) | `0` |
 | [polyglot_dialect](/operations/settings/settings#polyglot_dialect) | `` |
 | [enable_adaptive_memory_spill_scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler) | `0` |
+| [allow_experimental_cleanup_old_data_files_compaction](/operations/settings/settings#allow_experimental_cleanup_old_data_files_compaction) | `0` |
 | [allow_experimental_iceberg_compaction](/operations/settings/settings#allow_experimental_iceberg_compaction) | `0` |
+| [allow_iceberg_remove_orphan_files](/operations/settings/settings#allow_iceberg_remove_orphan_files) | `0` |
+| [iceberg_orphan_files_older_than_seconds](/operations/settings/settings#iceberg_orphan_files_older_than_seconds) | `259200` |
 | [allow_experimental_expire_snapshots](/operations/settings/settings#allow_experimental_expire_snapshots) | `0` |
 | [write_full_path_in_iceberg_metadata](/operations/settings/settings#write_full_path_in_iceberg_metadata) | `0` |
 | [iceberg_metadata_compression_method](/operations/settings/settings#iceberg_metadata_compression_method) | `` |
@@ -137,6 +149,7 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [distributed_plan_default_reader_bucket_count](/operations/settings/settings#distributed_plan_default_reader_bucket_count) | `8` |
 | [distributed_plan_force_exchange_kind](/operations/settings/settings#distributed_plan_force_exchange_kind) | `` |
 | [distributed_plan_max_rows_to_broadcast](/operations/settings/settings#distributed_plan_max_rows_to_broadcast) | `20000` |
+| [distributed_plan_prefer_replicas_over_workers](/operations/settings/settings#distributed_plan_prefer_replicas_over_workers) | `0` |
 | [allow_experimental_ytsaurus_table_engine](/operations/settings/settings#allow_experimental_ytsaurus_table_engine) | `0` |
 | [allow_experimental_ytsaurus_table_function](/operations/settings/settings#allow_experimental_ytsaurus_table_function) | `0` |
 | [allow_experimental_ytsaurus_dictionary_source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source) | `0` |
@@ -152,7 +165,9 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [promql_database](/operations/settings/settings#promql_database) | `` |
 | [promql_table](/operations/settings/settings#promql_table) | `` |
 | [promql_evaluation_time](/operations/settings/settings#promql_evaluation_time) | `auto` |
-| [allow_experimental_alias_table_engine](/operations/settings/settings#allow_experimental_alias_table_engine) | `0` |
+| [allow_experimental_paimon_storage_engine](/operations/settings/settings#allow_experimental_paimon_storage_engine) | `0` |
+| [paimon_target_snapshot_id](/operations/settings/settings#paimon_target_snapshot_id) | `-1` |
+| [max_consume_snapshots](/operations/settings/settings#max_consume_snapshots) | `0` |
 | [use_paimon_partition_pruning](/operations/settings/settings#use_paimon_partition_pruning) | `0` |
 | [allow_experimental_object_storage_queue_hive_partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning) | `0` |
 | [query_plan_optimize_join_order_algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm) | `greedy` |
@@ -161,4 +176,14 @@ Please note: no additional experimental features are allowed to be enabled in Cl
 | [webassembly_udf_max_memory](/operations/settings/settings#webassembly_udf_max_memory) | `134217728` |
 | [webassembly_udf_max_input_block_size](/operations/settings/settings#webassembly_udf_max_input_block_size) | `0` |
 | [webassembly_udf_max_instances](/operations/settings/settings#webassembly_udf_max_instances) | `32` |
+| [allow_experimental_ai_functions](/operations/settings/settings#allow_experimental_ai_functions) | `0` |
+| [ai_function_request_timeout_sec](/operations/settings/settings#ai_function_request_timeout_sec) | `60` |
+| [ai_function_max_retries](/operations/settings/settings#ai_function_max_retries) | `0` |
+| [ai_function_retry_initial_delay_ms](/operations/settings/settings#ai_function_retry_initial_delay_ms) | `1000` |
+| [ai_function_throw_on_error](/operations/settings/settings#ai_function_throw_on_error) | `1` |
+| [ai_function_max_input_tokens_per_query](/operations/settings/settings#ai_function_max_input_tokens_per_query) | `1000000` |
+| [ai_function_max_output_tokens_per_query](/operations/settings/settings#ai_function_max_output_tokens_per_query) | `500000` |
+| [ai_function_max_api_calls_per_query](/operations/settings/settings#ai_function_max_api_calls_per_query) | `0` |
+| [ai_function_throw_on_quota_exceeded](/operations/settings/settings#ai_function_throw_on_quota_exceeded) | `1` |
+| [ai_function_embedding_max_batch_size](/operations/settings/settings#ai_function_embedding_max_batch_size) | `100` |
 <!--AUTOGENERATED_END-->

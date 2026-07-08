@@ -1,16 +1,15 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nodejs-traces
-title: '使用 ClickStack 监控 Node.js 跟踪'
-sidebar_label: 'Node.js 跟踪'
+title: '使用 ClickStack 监控 Node.js 链路追踪'
+sidebar_label: 'Node.js 链路追踪'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 监控 Node.js 应用跟踪'
+description: '使用 ClickStack 监控 Node.js 应用链路追踪'
 doc_type: 'guide'
-keywords: ['Node.js', '跟踪', 'OTel', 'ClickStack', '分布式追踪']
+keywords: ['Node.js', '链路追踪', 'OTel', 'ClickStack', '分布式链路追踪']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import search_view from '@site/static/images/clickstack/nodejs/traces-search-view.png';
@@ -19,10 +18,8 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Node.js Trace \{#nodejs-traces-clickstack\}
-
-:::note[TL;DR]
-使用 OpenTelemetry 自动埋点，在 ClickStack 中采集来自 Node.js 应用的分布式链路追踪。包含演示数据集和预置仪表板。
+:::note[简而言之]
+使用 OpenTelemetry 自动埋点将 Node.js 应用的分布式链路追踪采集到 ClickStack 中。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 Node.js 应用集成 \{#existing-nodejs\}
@@ -165,7 +162,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download-dashboard\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nodejs-traces-dashboard.json'} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download-dashboard\}
 
 #### 导入预构建仪表板 \{#import-dashboard\}
 

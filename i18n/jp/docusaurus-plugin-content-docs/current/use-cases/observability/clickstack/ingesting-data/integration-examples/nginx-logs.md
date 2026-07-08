@@ -9,7 +9,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-nginx-logs-import.png';
 import example_dashboard from '@site/static/images/clickstack/nginx-logs-dashboard.png';
@@ -17,11 +16,8 @@ import log_view from '@site/static/images/clickstack/log-view.png';
 import search_view from '@site/static/images/clickstack/nginx-logs-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack による Nginx ログの監視 \{#nginx-clickstack\}
-
-:::note[TL;DR]
-OTel `filelog` レシーバーを使用して、ClickStack で Nginx のアクセスログ（JSON 形式）を収集・可視化します。デモ用データセットと、あらかじめ用意されたダッシュボードが含まれます。
+:::note[要点]
+OTel の `filelog` レシーバーを使用して、Nginx アクセスログ (JSON フォーマット) を ClickStack で収集・可視化します。デモデータセットとあらかじめ用意されたダッシュボードが含まれています。
 :::
 
 ## 既存の Nginx との統合 \{#existing-nginx\}
@@ -272,7 +268,7 @@ ClickStack を使って nginx の監視をすぐに始められるように、Ng
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-logs-dashboard.json')} download="nginx-logs-dashboard.json" eventName="docs.nginx_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nginx-logs-dashboard.json'} download="nginx-logs-dashboard.json" eventName="docs.nginx_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
 
 #### あらかじめ用意されたダッシュボードをインポートする \{#import-dashboard\}
 1. HyperDX を開き、Dashboards セクションに移動します。

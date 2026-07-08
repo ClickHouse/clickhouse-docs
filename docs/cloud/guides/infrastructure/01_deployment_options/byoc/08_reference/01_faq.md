@@ -21,7 +21,7 @@ Yes. The infrastructure only needs to be provisioned once for every AWS account 
 <details>
 <summary>Which regions do you support for BYOC?</summary>
 
-All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions aren't supported.
+All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments.
 
 </details>
 
@@ -67,7 +67,7 @@ Contact support to schedule maintenance windows. Please expect a minimum of a we
 </details>
 
 <details>
-<summary>How does storage communication work between BYOC VPC and S3?</summary>
+<summary>How does network communication work between BYOC VPC and S3?</summary>
 
 Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. When using S3 VPC endpoints, this traffic remains within the AWS network and doesn't traverse the public internet.
 

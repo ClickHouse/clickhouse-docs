@@ -1,13 +1,11 @@
 ---
-description: 'Interval 특수 데이터 타입 문서'
-sidebar_label: 'Interval'
+description: '인터벌 특수 데이터 타입 문서'
+sidebar_label: '인터벌'
 sidebar_position: 61
 slug: /sql-reference/data-types/special-data-types/interval
-title: 'Interval'
+title: '인터벌'
 doc_type: 'reference'
 ---
-
-# Interval \{#interval\}
 
 시간 및 날짜 간격을 표현하는 데이터 타입 계열입니다. [INTERVAL](/sql-reference/operators#interval) 연산자의 결과 데이터 타입입니다.
 
@@ -41,7 +39,6 @@ SELECT toTypeName(INTERVAL 4 DAY)
 │ IntervalDay                  │
 └──────────────────────────────┘
 ```
-
 
 ## 사용 시 참고 사항 \{#usage-remarks\}
 
@@ -79,6 +76,50 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ┌─less(toIntervalMicrosecond(179999999), toIntervalMinute(3))─┐
 │                                                           1 │
 └─────────────────────────────────────────────────────────────┘
+```
+
+
+## 혼합형 인터벌 \{#mixed-type-intervals\}
+
+여러 시간과 여러 분처럼 여러 단위를 조합한 인터벌은 `INTERVAL 'value' <from_kind> TO <to_kind>` 구문으로 생성할 수 있습니다.
+결과는 2개 이상의 인터벌로 구성된 튜플입니다.
+
+지원되는 조합:
+
+| 구문                 | 문자열 형식    | 예시                                    |
+| ------------------ | --------- | ------------------------------------- |
+| `YEAR TO MONTH`    | `Y-M`     | `INTERVAL '2-6' YEAR TO MONTH`        |
+| `DAY TO HOUR`      | `D H`     | `INTERVAL '5 12' DAY TO HOUR`         |
+| `DAY TO MINUTE`    | `D H:M`   | `INTERVAL '5 12:30' DAY TO MINUTE`    |
+| `DAY TO SECOND`    | `D H:M:S` | `INTERVAL '5 12:30:45' DAY TO SECOND` |
+| `HOUR TO MINUTE`   | `H:M`     | `INTERVAL '1:30' HOUR TO MINUTE`      |
+| `HOUR TO SECOND`   | `H:M:S`   | `INTERVAL '1:30:45' HOUR TO SECOND`   |
+| `MINUTE TO SECOND` | `M:S`     | `INTERVAL '5:30' MINUTE TO SECOND`    |
+
+선행 필드를 제외한 나머지 필드는 SQL 표준에 따라 검증됩니다: `MONTH` 0-11, `HOUR` 0-23, `MINUTE` 0-59, `SECOND` 0-59.
+
+```sql
+SELECT INTERVAL '1:30' HOUR TO MINUTE;
+```
+
+```text
+┌─(toIntervalHour(1), toIntervalMinute(30))─┐
+│ (1,30)                                     │
+└────────────────────────────────────────────┘
+```
+
+앞에 오는 선택적 `+` 또는 `-` 부호는 모든 부분에 적용됩니다:
+
+```sql
+SELECT INTERVAL '+1:30' HOUR TO MINUTE;
+-- this is equivalent to:
+-- SELECT INTERVAL '1:30' HOUR TO MINUTE;
+```
+
+```text
+┌─(toIntervalHour(1), toIntervalMinute(30))─┐
+│ (1,30)                                     │
+└────────────────────────────────────────────┘
 ```
 
 

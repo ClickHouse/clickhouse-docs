@@ -1,13 +1,13 @@
 ---
 slug: /cloud/managed-postgres/migrations/peerdb
 sidebar_label: 'PeerDB'
-title: 'Перенос данных PostgreSQL с помощью PeerDB'
+title: 'Перенос в Managed Postgres с помощью PeerDB'
 description: 'Узнайте, как мигрировать данные PostgreSQL в ClickHouse Managed Postgres с помощью PeerDB'
 keywords: ['postgres', 'postgresql', 'logical replication', 'migration', 'data transfer', 'managed postgres', 'peerdb']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import sourcePeer from '@site/static/images/managed-postgres/peerdb/source-peer.png';
 import targetPeer from '@site/static/images/managed-postgres/peerdb/target-peer.png';
@@ -18,12 +18,9 @@ import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-loa
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
+Это руководство содержит пошаговые инструкции по миграции базы данных PostgreSQL в ClickHouse Managed Postgres с помощью PeerDB.
 
-# Миграция на Managed Postgres с помощью PeerDB \{#peerdb-migration\}
-
-В этом руководстве приведены пошаговые инструкции по миграции вашей базы данных PostgreSQL на ClickHouse Managed Postgres с помощью PeerDB.
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-peerdb" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-peerdb-beta" />
 
 ## Предварительные требования \{#migration-peerdb-prerequisites\}
 

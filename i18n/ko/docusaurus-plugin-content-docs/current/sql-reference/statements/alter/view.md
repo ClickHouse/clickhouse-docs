@@ -1,5 +1,5 @@
 ---
-description: 'ALTER TABLE ... MODIFY QUERY SQL 문에 대한 참고 문서'
+description: 'ALTER TABLE ... MODIFY QUERY SQL 문에 대한 문서'
 sidebar_label: 'VIEW'
 sidebar_position: 50
 slug: /sql-reference/statements/alter/view
@@ -7,13 +7,11 @@ title: 'ALTER TABLE ... MODIFY QUERY SQL 문'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY QUERY 문 \{#alter-table-modify-query-statement\}
-
 `ALTER TABLE ... MODIFY QUERY` 문을 사용하면 [materialized view](/sql-reference/statements/create/view#materialized-view)를 생성할 때 지정한 `SELECT` 쿼리를 수집 프로세스를 중단하지 않고 수정할 수 있습니다.
 
 이 명령은 `TO [db.]name` 절로 생성된 materialized view를 변경하도록 설계되었습니다. 이 명령은 내부 스토리지 테이블의 구조를 변경하지 않고, materialized view의 컬럼 정의도 변경하지 않습니다. 이러한 이유로 이 명령은 `TO [db.]name` 절 없이 생성된 materialized view에는 적용이 매우 제한적입니다.
 
-**TO 테이블을 사용하는 예**
+**TO 테이블을 사용하는 예시**
 
 ```sql
 CREATE TABLE events (ts DateTime, event_type String)
@@ -196,7 +194,37 @@ SELECT * FROM mv;
 └───┘
 ```
 
+## ALTER TABLE ... MODIFY REFRESH SQL 문 \{#alter-table--modify-refresh-statement\}
 
-## ALTER TABLE ... MODIFY REFRESH 문 \{#alter-table--modify-refresh-statement\}
+`ALTER TABLE ... MODIFY REFRESH`는 일정, 의존성, 무작위화, [갱신 설정](../create/view.md#refresh-settings)을 포함한 [갱신 가능 materialized view](../create/view.md#refreshable-materialized-view)의 갱신 매개변수를 수정합니다.
 
-`ALTER TABLE ... MODIFY REFRESH` 문은 [갱신 가능 구체화 뷰](../create/view.md#refreshable-materialized-view)의 갱신 매개변수를 변경합니다. 자세한 내용은 [갱신 매개변수 변경](../create/view.md#changing-refresh-parameters)을 참고하십시오.
+```sql
+ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
+```
+
+스케줄(`EVERY` 또는 `AFTER`)은 필수입니다. 이 문은 *모든* 갱신 매개변수를 한 번에 대체합니다. 지정하지 않은 절(`RANDOMIZE FOR`, `DEPENDS ON`, `SETTINGS`)은 제거되거나 기본값으로 재설정됩니다. 갱신 설정만 변경하려면 현재 스케줄을 다시 지정하십시오.
+
+```sql
+-- Change the schedule.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE;
+
+-- Change retry settings (schedule must be repeated).
+ALTER TABLE rmv MODIFY REFRESH EVERY 1 HOUR
+SETTINGS refresh_retries = 5,
+         refresh_retry_initial_backoff_ms = 500,
+         refresh_retry_max_backoff_ms = 60000;
+
+-- Add or keep a dependency.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR DEPENDS ON other_rmv;
+
+-- Drop the dependency by omitting `DEPENDS ON`.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR;
+```
+
+제한 사항:
+
+* `ALTER TABLE ... MODIFY SETTING`은 materialized view에서는 지원되지 않습니다. 갱신 설정은 `MODIFY REFRESH`를 통해서만 변경할 수 있습니다.
+* `APPEND`의 추가 또는 제거는 지원되지 않습니다.
+* `all_replicas` 갱신 설정은 뷰 생성 후에는 변경할 수 없습니다.
+
+갱신 설정의 전체 목록은 [Refresh Settings](../create/view.md#refresh-settings)에 설명되어 있습니다. 현재 적용된 설정을 포함한 갱신 상태는 [`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md)에서 확인할 수 있습니다.

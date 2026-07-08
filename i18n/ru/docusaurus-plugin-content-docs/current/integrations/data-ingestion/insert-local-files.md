@@ -1,15 +1,13 @@
 ---
-sidebar_label: 'Загрузка локальных файлов'
+sidebar_label: 'Вставка локальных файлов'
 sidebar_position: 2
-title: 'Загрузка локальных файлов'
+title: 'Вставка локальных файлов'
 slug: /integrations/data-ingestion/insert-local-files
-description: 'Узнайте, как загружать локальные файлы'
+description: 'Узнайте о вставке локальных файлов'
 show_related_blogs: true
 doc_type: 'guide'
-keywords: ['загрузка локальных файлов в ClickHouse', 'импорт локальных файлов в ClickHouse', 'загрузка файлов через clickhouse-client']
+keywords: ['вставка локальных файлов ClickHouse', 'импорт локальных файлов ClickHouse', 'загрузка файлов через clickhouse-client']
 ---
-
-# Вставка локальных файлов \{#insert-local-files\}
 
 Вы можете использовать `clickhouse-client` для потоковой загрузки локальных файлов в сервис ClickHouse. Это позволяет предварительно обрабатывать данные с помощью множества мощных и удобных функций ClickHouse. Рассмотрим пример...
 

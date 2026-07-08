@@ -7,9 +7,7 @@ title: 'fuzzQuery'
 doc_type: 'reference'
 ---
 
-# fuzzQuery 表函数 \{#fuzzquery-table-function\}
-
-对给定的查询字符串进行随机扰动，生成不同的变体。
+对给定的查询字符串进行随机变换。
 
 ## 语法 \{#syntax\}
 
@@ -19,11 +17,11 @@ fuzzQuery(query[, max_query_length[, random_seed]])
 
 ## 参数 \{#arguments\}
 
-| 参数               | 描述                                                                 |
-|--------------------|----------------------------------------------------------------------|
-| `query`            | (String) - 要执行模糊测试的源查询语句。                              |
-| `max_query_length` | (UInt64) - 查询语句在模糊测试过程中可能达到的最大长度。             |
-| `random_seed`      | (UInt64) - 用于生成稳定测试结果的随机种子。                         |
+| 参数                 | 描述                                |
+| ------------------ | --------------------------------- |
+| `query`            | (String) - 要执行模糊测试的源查询语句。         |
+| `max_query_length` | (UInt64) - 查询语句在模糊测试过程中可能达到的最大长度。 |
+| `random_seed`      | (UInt64) - 用于生成稳定测试结果的随机种子。       |
 
 ## 返回值 \{#returned_value\}
 

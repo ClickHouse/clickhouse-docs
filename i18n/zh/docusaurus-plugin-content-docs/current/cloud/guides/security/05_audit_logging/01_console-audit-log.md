@@ -12,10 +12,7 @@ import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png
 import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png';
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
-
-# 控制台审计日志 \{#console-audit-log\}
-
-控制台中的操作会记录到审计日志中。具有 Admin 或 Developer 组织角色的用户可以查看审计日志，并将其与日志系统集成。
+控制台活动会记录在审计日志中。如果您拥有 Admin 或 Developer 组织角色，则可以查看该日志，并将其集成到您的日志系统中。
 
 ## 通过用户界面访问控制台审计日志 \{#console-audit-log-ui\}
 

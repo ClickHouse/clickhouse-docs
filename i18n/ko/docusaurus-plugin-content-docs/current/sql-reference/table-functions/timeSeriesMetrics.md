@@ -1,5 +1,6 @@
 ---
-description: 'timeSeriesMetrics는 테이블 엔진이 TimeSeries 엔진인 `db_name.time_series_table` 테이블에서 사용하는 메트릭 테이블을 반환합니다.'
+description: 'timeSeriesMetrics는 테이블 엔진이 TimeSeries 엔진인 `db_name.time_series_table`
+  테이블에서 사용하는 metrics 테이블을 반환합니다.'
 sidebar_label: 'timeSeriesMetrics'
 sidebar_position: 145
 slug: /sql-reference/table-functions/timeSeriesMetrics
@@ -7,9 +8,7 @@ title: 'timeSeriesMetrics'
 doc_type: 'reference'
 ---
 
-# timeSeriesMetrics 테이블 FUNCTION \{#timeseriesmetrics-table-function\}
-
-`timeSeriesMetrics(db_name.time_series_table)` - 테이블 엔진이 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 엔진인 `db_name.time_series_table` 테이블에서 사용하는 [metrics](../../engines/table-engines/integrations/time-series.md#metrics-table) 테이블을 반환합니다.
+`timeSeriesMetrics(db_name.time_series_table)` - 테이블 엔진이 [TimeSeries](../../engines/table-engines/integrations/time-series.md) 엔진인 `db_name.time_series_table` 테이블에서 사용하는 [metrics](../../engines/table-engines/integrations/time-series.md#metrics-table) 테이블을 반환합니다:
 
 ```sql
 CREATE TABLE db_name.time_series_table ENGINE=TimeSeries METRICS metrics_table

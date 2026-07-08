@@ -8,12 +8,12 @@ doc_type: 'guide'
 
 在 ClickHouse 中有多种删除数据的方式，每种方式都有各自的优点和性能特征。应根据数据模型以及计划删除的数据量选择合适的方法。
 
-| 方法 | 语法 | 使用场景 |
-| --- | --- | --- |
-| [轻量级删除 (Lightweight delete) ](/guides/developer/lightweight-delete) | `DELETE FROM [table]` | 适用于只需删除少量数据的场景。被删除的行会在后续所有 SELECT 查询中立即被过滤掉，但最初仅在内部被标记为已删除，而不会立刻从磁盘上物理移除。 |
-| [删除变更 (Delete mutation) ](/sql-reference/statements/alter/delete) | `ALTER TABLE [table] DELETE` | 适用于必须立即从磁盘中删除数据的场景 (例如出于合规性要求) 。会对 SELECT 性能产生负面影响。 |
-| [截断表 (Truncate table) ](/sql-reference/statements/truncate) | `TRUNCATE TABLE [db.table]` | 高效移除表中的所有数据。 |
-| [删除分区 (Drop partition) ](/sql-reference/statements/alter/partition#drop-partitionpart) | `DROP PARTITION` | 高效移除某个分区中的所有数据。 |
+| 方法                                                                                     | 语法                           | 使用场景                                                                      |
+| -------------------------------------------------------------------------------------- | ---------------------------- | ------------------------------------------------------------------------- |
+| [轻量级删除 (Lightweight delete) ](/guides/developer/lightweight-delete)                    | `DELETE FROM [table]`        | 适用于只需删除少量数据的场景。被删除的行会在后续所有 SELECT 查询中立即被过滤掉，但最初仅在内部被标记为已删除，而不会立刻从磁盘上物理移除。 |
+| [删除变更 (Delete mutation) ](/sql-reference/statements/alter/delete)                      | `ALTER TABLE [table] DELETE` | 适用于必须立即从磁盘中删除数据的场景 (例如出于合规性要求) 。会对 SELECT 性能产生负面影响。                       |
+| [截断表 (Truncate table) ](/sql-reference/statements/truncate)                            | `TRUNCATE TABLE [db.table]`  | 高效移除表中的所有数据。                                                              |
+| [删除分区 (Drop partition) ](/sql-reference/statements/alter/partition#drop-partitionpart) | `DROP PARTITION`             | 高效移除某个分区中的所有数据。                                                           |
 
 以下是 ClickHouse 中不同数据删除方式的汇总：
 

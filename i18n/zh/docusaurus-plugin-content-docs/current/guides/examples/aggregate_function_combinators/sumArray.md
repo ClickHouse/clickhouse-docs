@@ -7,8 +7,6 @@ sidebar_label: 'sumArray'
 doc_type: 'reference'
 ---
 
-# sumArray \{#sumarray\}
-
 ## 描述 \{#description\}
 
 可以将 [`Array`](/sql-reference/aggregate-functions/combinators#-array) 组合器
@@ -47,7 +45,8 @@ GROUP BY date, category_sales;
 得到的结果相同。
 
 ## 另请参阅 \{#see-also\}
-- [`sum`](/sql-reference/aggregate-functions/reference/sum)
-- [`arraySum`](/sql-reference/functions/array-functions#arraySum)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`sumMap`](/examples/aggregate-function-combinators/sumMap)
+
+* [`sum`](/sql-reference/aggregate-functions/reference/sum)
+* [`arraySum`](/sql-reference/functions/array-functions#arraySum)
+* [`Array 组合器`](/sql-reference/aggregate-functions/combinators#-array)
+* [`sumMap`](/examples/aggregate-function-combinators/sumMap)

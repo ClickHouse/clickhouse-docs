@@ -1,12 +1,10 @@
 ---
-description: 'DataLakeCatalog 数据库引擎使您能够将 ClickHouse 连接到外部数据目录，并查询开放表格式数据'
+description: 'DataLakeCatalog 数据库引擎使您能够将 ClickHouse 连接到外部数据目录并查询开放表格式中的数据'
 sidebar_label: 'DataLakeCatalog'
 slug: /engines/database-engines/datalakecatalog
 title: 'DataLakeCatalog'
 doc_type: 'reference'
 ---
-
-# DataLakeCatalog \{#datalakecatalog\}
 
 `DataLakeCatalog` 数据库引擎使您能够将 ClickHouse 连接到外部数据目录，
 并在无需复制数据的情况下查询开放表格式中的数据。

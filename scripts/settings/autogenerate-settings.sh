@@ -325,6 +325,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
     echo "[$SCRIPT_NAME] Generating function documentation using consolidated SQL file..."
     # Define function categories to process
     FUNCTION_CATEGORIES=(
+      "AI"
       "Arithmetic"
       "Arrays"
       "Bit"
@@ -343,6 +344,7 @@ if [ -f "$FUNCTION_SQL_FILE" ]; then
       "IP Address"
       "JSON"
       "Logical"
+      "Machine Learning"
       "Mathematical"
       "Natural Language Processing"
       "Random Number"
@@ -389,6 +391,7 @@ else
 fi
     # --- Append content between tags for function files ---
     insert_src_files=(
+      "ai-functions.md"
       "arithmetic-functions.md"
       "arrays-functions.md"
       "bit-functions.md"
@@ -407,6 +410,7 @@ fi
       "ip_address-functions.md"
       "json-functions.md"
       "logical-functions.md"
+      "machine_learning-functions.md"
       "mathematical-functions.md"
       "natural_language_processing-functions.md"
       "random_number-functions.md"
@@ -427,6 +431,7 @@ fi
       "uuid-functions.md"
     )
     insert_dest_files=(
+        "docs/sql-reference/functions/ai-functions.md"
         "docs/sql-reference/functions/arithmetic-functions.md"
         "docs/sql-reference/functions/array-functions.md"
         "docs/sql-reference/functions/bit-functions.md"
@@ -445,6 +450,7 @@ fi
         "docs/sql-reference/functions/ip-address-functions.md"
         "docs/sql-reference/functions/json-functions.md"
         "docs/sql-reference/functions/logical-functions.md"
+        "docs/sql-reference/functions/machine-learning-functions.md"
         "docs/sql-reference/functions/math-functions.md"
         "docs/sql-reference/functions/nlp-functions.md"
         "docs/sql-reference/functions/random-functions.md"
@@ -500,11 +506,15 @@ echo "[$SCRIPT_NAME] Retrieving list of system tables from ClickHouse..."
 # Query to get all system tables
 SYSTEM_TABLES_QUERY="SELECT name FROM system.tables WHERE database = 'system' ORDER BY name FORMAT TSV"
 
-# Execute the query and store results in an array (macOS compatible)
+# Execute the query and store results in an array
+# Avoid process substitution (<(...)) — /dev/fd is unavailable on some build hosts (e.g. Vercel)
 SYSTEM_TABLES=()
+_sys_tables_tmp=$(mktemp)
+"$script_path" --query "$SYSTEM_TABLES_QUERY" 2>/dev/null > "$_sys_tables_tmp"
 while IFS= read -r line; do
     SYSTEM_TABLES+=("$line")
-done < <("$script_path" --query "$SYSTEM_TABLES_QUERY" 2>/dev/null)
+done < "$_sys_tables_tmp"
+rm -f "$_sys_tables_tmp"
 
 if [ ${#SYSTEM_TABLES[@]} -eq 0 ]; then
     echo "[$SCRIPT_NAME] Error: Failed to retrieve system tables list or no tables found."

@@ -275,24 +275,29 @@ SELECT base32Encode('Encoded')
 
 ## base58Decode \{#base58Decode\}
 
-自 v22.7.0 引入
+引入版本：v22.7.0
 
 对 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3) 字符串进行解码。
 如果字符串不是有效的 Base58 编码字符串，则会抛出异常。
+可以提供可选的第二个参数 `expected_size`，以选择优化的固定大小解码器。
+当前支持的值为 32 和 64。对于其他值，将使用通用解码器。
+当选择了优化解码器，但输入无法被解码为恰好对应字节数时，
+该函数会抛出异常 (对于 `tryBase58Decode`，则返回空字符串) 。
 
 **语法**
 
 ```sql
-base58Decode(encoded)
+base58Decode(encoded[, expected_size])
 ```
 
 **参数**
 
-* `encoded` — 要解码的字符串类型列或常量值。[`String`](/sql-reference/data-types/string)
+* `encoded` — 要解码的字符串列或常量。[`String`](/sql-reference/data-types/string)
+* `expected_size` — 可选。预期解码后的大小 (以字节为单位) 。当值为 32 或 64 时，使用优化解码器；对于其他值，使用通用解码器。[`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-返回一个包含参数解码结果的字符串。[`String`](/sql-reference/data-types/string)
+返回一个字符串，包含参数解码后的值。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -307,7 +312,6 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 │ Hello World              │
 └──────────────────────────┘
 ```
-
 
 ## base58Encode \{#base58Encode\}
 
@@ -1219,7 +1223,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-引入于：v25.9.0
+引入于：v25.10.0
 
 检查字符串的结尾是否为给定的不区分大小写的后缀。
 
@@ -1232,7 +1236,7 @@ endsWithCaseInsensitive(s, suffix)
 **参数**
 
 * `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
-* `suffix` — 要检查的后缀（不区分大小写）。[`String`](/sql-reference/data-types/string)
+* `suffix` — 要检查的后缀 (不区分大小写) 。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -1252,10 +1256,9 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 └─────────────────────────────────────────┘
 ```
 
-
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-引入于：v25.9.0
+引入于：v25.10.0
 
 返回字符串 `s` 是否以不区分大小写的 `suffix` 结尾。
 假定该字符串包含有效的 UTF-8 编码文本。
@@ -1289,7 +1292,6 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 │                                           1 │
 └─────────────────────────────────────────────┘
 ```
-
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
@@ -2035,7 +2037,7 @@ münchen
 
 ## naturalSortKey \{#naturalSortKey\}
 
-引入版本：v25.11.0
+引入版本：v26.3.0
 
 该函数用于自然排序。
 
@@ -2069,7 +2071,6 @@ SELECT s FROM t ORDER BY naturalSortKey(s)
 | a02 │
 └─────┘
 ```
-
 
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
 
@@ -2375,6 +2376,61 @@ SELECT
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
+
+## regexpPosition \{#regexpPosition\}
+
+引入版本：v26.5.0
+
+返回 `pattern` 在 `haystack` 中第 `occurrence` 次匹配的字节位置 (从 1 开始计数) ，并从字节位置 `position` 开始搜索。
+
+如果 `return_option` 为 0 (默认值) ，则返回匹配结果第一个字节的位置；如果为 1，则返回匹配结果之后第一个字节的位置。
+
+如果 `subexpression` 大于 0，则返回对应捕获组的位置，而不是整个匹配结果的位置。
+
+如果未找到匹配，或者请求的捕获组未参与匹配，则返回 0。
+
+此函数用于兼容 PostgreSQL 的 `regexp_instr` (也以该别名提供) 。请注意，这里的位置按字节计算，这与其他 ClickHouse 正则函数一致；而 PostgreSQL 的 `regexp_instr` 按字符计算。
+
+**语法**
+
+```sql
+regexpPosition(haystack, pattern[, position[, occurrence[, return_option[, flags[, subexpression]]]]])
+```
+
+**别名**: `regexpInstr`, `regexp_instr`
+
+**参数**
+
+* `haystack` — 要搜索的字符串。[`String`](/sql-reference/data-types/string)
+* `pattern` — 正则表达式模式。[`const String`](/sql-reference/data-types/string)
+* `position` — 可选。开始搜索时从 1 开始计数的字节位置。默认值：1。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `occurrence` — 可选。返回第几个匹配项。默认值：1。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `return_option` — 可选。0 返回匹配的起始位置，1 返回匹配结束后的紧接位置。默认值：0。[`(U)Int*`](/sql-reference/data-types/int-uint)
+* `flags` — 可选。正则标志。支持：`i` (不区分大小写) 、`c` (区分大小写) 、`m`/`n` (多行锚点) 、`s` (点号匹配换行符) 。默认值：空字符串。[`const String`](/sql-reference/data-types/string)
+* `subexpression` — 可选。要返回其位置的捕获组索引。0 表示整个匹配。默认值：0。[`(U)Int*`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+返回匹配的字节位置；如果未找到，则返回 0。[`UInt64`](/sql-reference/data-types/int-uint)
+
+**示例**
+
+**基本用法**
+
+```sql title=Query
+SELECT
+    regexpPosition('hello world', 'world'),
+    regexpPosition('aXbXcXd', 'X', 1, 2),
+    regexpPosition('aXbXcXd', 'X', 1, 2, 1),
+    regexpPosition('Hello WORLD', 'world', 1, 1, 0, 'i'),
+    regexpPosition('foo123bar456', '([a-z]+)([0-9]+)', 1, 2, 0, '', 2);
+```
+
+```response title=Response
+┌─...─┬─...─┬─...─┬─...─┬─...─┐
+│   7 │   4 │   5 │   7 │  10 │
+└─────┴─────┴─────┴─────┴─────┘
+```
 
 ## removeDiacriticsUTF8 \{#removeDiacriticsUTF8\}
 
@@ -2733,7 +2789,7 @@ SELECT space(3) AS res, length(res);
 
 自 v25.5.0 起引入
 
-查找给定字符串中所有长度至少为 `n` 的子串，
+查找给定字符串中所有长度至少为 `n` 的子字符串，
 其中子串边界处的 (n-1)-gram 的哈希值
 都严格大于该子串内部任意 (n-1)-gram 的哈希值。
 使用 `CRC32` 作为哈希函数。
@@ -2741,7 +2797,7 @@ SELECT space(3) AS res, length(res);
 **语法**
 
 ```sql
-sparseGrams(s[, min_ngram_length, max_ngram_length])
+sparseGrams(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **参数**
@@ -2768,7 +2824,6 @@ SELECT sparseGrams('alice', 3)
 │ ['ali','lic','lice','ice']         │
 └────────────────────────────────────┘
 ```
-
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
@@ -2862,7 +2917,7 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 **语法**
 
 ```sql
-sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
+sparseGramsUTF8(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **参数**
@@ -2874,7 +2929,7 @@ sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
 
 **返回值**
 
-返回选取的 UTF-8 子串数组。[`Array(String)`](/sql-reference/data-types/array)
+返回选取的 UTF-8 子字符串数组。[`Array(String)`](/sql-reference/data-types/array)
 
 **示例**
 
@@ -2889,7 +2944,6 @@ SELECT sparseGramsUTF8('алиса', 3)
 │ ['али','лис','иса']         │
 └─────────────────────────────┘
 ```
-
 
 ## startsWith \{#startsWith\}
 
@@ -2929,9 +2983,9 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-自 v25.9.0 引入
+自 v25.10.0 引入
 
-检查字符串是否以给定字符串（不区分大小写）开头。
+检查字符串是否以给定字符串 (不区分大小写) 开头。
 
 **语法**
 
@@ -2962,10 +3016,9 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 └─────────────────────────────────────────┘
 ```
 
-
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-引入版本：v25.9.0
+引入版本：v25.10.0
 
 检查字符串是否以给定的不区分大小写的前缀开头。
 假设字符串包含有效的 UTF-8 编码文本。
@@ -2980,7 +3033,7 @@ startsWithCaseInsensitiveUTF8(s, prefix)
 **参数**
 
 * `s` — 要检查的字符串。[`String`](/sql-reference/data-types/string)
-* `prefix` — 要检查的前缀（不区分大小写）。[`String`](/sql-reference/data-types/string)
+* `prefix` — 要检查的前缀 (不区分大小写) 。[`String`](/sql-reference/data-types/string)
 
 **返回值**
 
@@ -2999,7 +3052,6 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 │                        1 │
 └──────────────────────────┘
 ```
-
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 
@@ -3539,23 +3591,24 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 
 ## tryBase58Decode \{#tryBase58Decode\}
 
-自 v22.10.0 引入
+引入版本：v22.10.0
 
 类似于 [`base58Decode`](#base58Decode)，但在出错时返回空字符串。
 
 **语法**
 
 ```sql
-tryBase58Decode(encoded)
+tryBase58Decode(encoded[, expected_size])
 ```
 
 **参数**
 
 * `encoded` — 字符串列或常量。如果字符串不是有效的 Base58 编码，出错时返回空字符串。[`String`](/sql-reference/data-types/string)
+* `expected_size` — 可选。预期的解码后大小 (以字节为单位) 。当值为 32 或 64 时，使用优化的解码器；对于其他值，使用通用解码器。[`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **返回值**
 
-返回一个包含参数解码结果的字符串。[`String`](/sql-reference/data-types/string)
+返回一个字符串，包含参数解码后的值。[`String`](/sql-reference/data-types/string)
 
 **示例**
 
@@ -3570,7 +3623,6 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 │ Encoded │             │
 └─────────┴─────────────┘
 ```
-
 
 ## tryBase64Decode \{#tryBase64Decode\}
 

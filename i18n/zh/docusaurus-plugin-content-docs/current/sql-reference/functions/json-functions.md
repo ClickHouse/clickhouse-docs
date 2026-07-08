@@ -125,6 +125,46 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+## JSONAllValues \{#JSONAllValues\}
+
+引入版本：v26.4.0
+
+以字符串数组形式返回 JSON 列中每一行的所有值。
+这些值会按其文本表示进行序列化，并按路径名称排序。
+
+**语法**
+
+```sql
+JSONAllValues(json)
+```
+
+**参数**
+
+* `json` — JSON 列。[`JSON`](/sql-reference/data-types/newjson)
+
+**返回值**
+
+返回由 JSON 列中所有值组成的字符串数组。[`Array(String)`](/sql-reference/data-types/array)
+
+**示例**
+
+**使用示例**
+
+```sql title=Query
+CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
+INSERT INTO test FORMAT JSONEachRow {"json": {"a": 42}}, {"json": {"b": "Hello"}}, {"json": {"a": [1, 2, 3], "c": "2020-01-01"}}
+SELECT json, JSONAllValues(json) FROM test;
+```
+
+```response title=Response
+┌─json─────────────────────────────────┬─JSONAllValues(json)──────┐
+│ {"a":42}                             │ ['42']                   │
+│ {"b":"Hello"}                        │ ['Hello']                │
+│ {"a":[1,2,3],"c":"2020-01-01"}       │ ['[1,2,3]','2020-01-01'] │
+└──────────────────────────────────────┴──────────────────────────┘
+```
+
+
 ## JSONArrayLength \{#JSONArrayLength\}
 
 引入版本：v23.2.0
@@ -1635,6 +1675,54 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 0
 ```
 
+
+## prettyPrintJSON \{#prettyPrintJSON\}
+
+引入版本：v26.4.0
+
+返回 JSON 字符串经过格式化后的版本，包含换行和空格缩进。
+
+**语法**
+
+```sql
+prettyPrintJSON(json [, indent])
+```
+
+**参数**
+
+* `json` — 要进行格式化的有效 JSON 字符串。[`String`](/sql-reference/data-types/string)
+* `indent` — 每一级缩进的空格数。默认值：4。最大值：32 [`UInt*`](/sql-reference/data-types/int-uint)
+
+**返回值**
+
+格式化后的 JSON 字符串。[`String`](/sql-reference/data-types/string)
+
+**示例**
+
+**简单对象**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1,"b":"hello"}');
+```
+
+```response title=Response
+{
+    "a": 1,
+    "b": "hello"
+}
+```
+
+**自定义缩进**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1}', 8);
+```
+
+```response title=Response
+{
+        "a": 1
+}
+```
 
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 

@@ -8,7 +8,6 @@ doc_type: 'reference'
 keywords: ['updates', 'real-time']
 ---
 
-# Does ClickHouse support real-time updates?
 
 ClickHouse supports the UPDATE statement and is capable running real-time updates as fast as it runs INSERTs.
 

@@ -6,8 +6,6 @@ title: 'ALL 절'
 doc_type: 'reference'
 ---
 
-# ALL 절 \{#all-clause\}
-
 테이블에 일치하는 행이 여러 개 있는 경우 `ALL`은 해당 행을 모두 반환합니다. `SELECT ALL`은 `DISTINCT`가 없는 `SELECT`와 동일합니다. `ALL`과 `DISTINCT`를 모두 지정하면 예외가 발생합니다.
 
 `ALL`은 집계 함수 내부에 지정할 수 있지만, 쿼리 결과에는 실질적인 영향을 주지 않습니다.

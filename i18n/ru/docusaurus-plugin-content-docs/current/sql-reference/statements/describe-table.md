@@ -1,5 +1,5 @@
 ---
-description: 'Описание инструкции DESCRIBE TABLE'
+description: 'Документация по DESCRIBE TABLE'
 sidebar_label: 'DESCRIBE TABLE'
 sidebar_position: 42
 slug: /sql-reference/statements/describe-table
@@ -19,22 +19,20 @@ DESC|DESCRIBE TABLE [db.]table [INTO OUTFILE filename] [FORMAT format]
 
 * `name` — имя столбца.
 * `type` — тип столбца.
-* `default_type` — клауза, используемая в [выражении по умолчанию](/sql-reference/statements/create/table) столбца: `DEFAULT`, `MATERIALIZED` или `ALIAS`. Если выражение по умолчанию отсутствует, возвращается пустая строка.
-* `default_expression` — выражение, указанное после клаузы `DEFAULT`.
+* `default_type` — конструкция, используемая в [выражении по умолчанию](/sql-reference/statements/create/table) для столбца: `DEFAULT`, `MATERIALIZED` или `ALIAS`. Если выражение по умолчанию отсутствует, возвращается пустая строка.
+* `default_expression` — выражение, указанное после конструкции `DEFAULT`.
 * `comment` — [комментарий столбца](/sql-reference/statements/alter/column#comment-column).
 * `codec_expression` — [кодек](/sql-reference/statements/create/table#column_compression_codec), применяемый к столбцу.
 * `ttl_expression` — выражение [TTL](../../engines/table-engines/mergetree-family/mergetree.md#table_engine-mergetree-ttl).
-* `is_subcolumn` — флаг, равный `1` для внутренних подстолбцов. Включается в результат только в том случае, если описание подстолбцов включено настройкой [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
+* `is_subcolumn` — флаг, равный `1` для внутренних подстолбцов. Он включается в результат, только если описание подстолбцов включено настройкой [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
 
-Все столбцы в структурах данных [Nested](../../sql-reference/data-types/nested-data-structures/index.md) описываются отдельно. Имя каждого столбца предваряется именем родительского столбца и точкой.
+Все столбцы в структурах данных [Nested](../../sql-reference/data-types/nested-data-structures/index.md) описываются отдельно. Имя каждого столбца начинается с имени родительского столбца и точки.
 
-Чтобы показать внутренние подстолбцы других типов данных, используйте настройку [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
+Чтобы показать внутренние подстолбцы для других типов данных, используйте настройку [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
 
 **Пример**
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE describe_example (
     id UInt64, text String DEFAULT 'unknown' CODEC(ZSTD),
     user Tuple (name String, age UInt8)
@@ -44,9 +42,7 @@ DESCRIBE TABLE describe_example;
 DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─name─┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
 │ id   │ UInt64                        │              │                    │         │                  │                │
 │ text │ String                        │ DEFAULT      │ 'unknown'          │         │ ZSTD(1)          │                │
@@ -54,9 +50,9 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └──────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
 ```
 
-Второй запрос дополнительно показывает подстолбцы:
+Во втором запросе также показаны подстолбцы:
 
-```text
+```text title="Response"
 ┌─name──────┬─type──────────────────────────┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┬─is_subcolumn─┐
 │ id        │ UInt64                        │              │                    │         │                  │                │            0 │
 │ text      │ String                        │ DEFAULT      │ 'unknown'          │         │ ZSTD(1)          │                │            0 │
@@ -66,7 +62,7 @@ DESCRIBE TABLE describe_example SETTINGS describe_include_subcolumns=1;
 └───────────┴───────────────────────────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┴──────────────┘
 ```
 
-Оператор DESCRIBE можно также использовать с подзапросами и скалярными выражениями:
+Оператор DESCRIBE также можно использовать с подзапросами или скалярными выражениями:
 
 ```SQL
 DESCRIBE SELECT 1 FORMAT TSV;
@@ -78,14 +74,12 @@ DESCRIBE SELECT 1 FORMAT TSV;
 DESCRIBE (SELECT 1) FORMAT TSV;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 1       UInt8
 ```
 
-При таком использовании возвращаются метаданные о результирующих столбцах указанного запроса или подзапроса. Это полезно для понимания структуры сложных запросов до их выполнения.
+В этом случае возвращаются метаданные о результирующих столбцах указанного запроса или подзапроса. Это полезно для понимания структуры сложных запросов перед их выполнением.
 
 **См. также**
 
-* Параметр [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).
+* настройка [describe&#95;include&#95;subcolumns](../../operations/settings/settings.md#describe_include_subcolumns).

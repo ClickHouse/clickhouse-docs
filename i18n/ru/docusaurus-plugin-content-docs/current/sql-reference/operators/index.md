@@ -7,9 +7,7 @@ title: 'Операторы'
 doc_type: 'reference'
 ---
 
-# Операторы \{#operators\}
-
-ClickHouse преобразует операторы в соответствующие функции при разборе запроса в соответствии с их приоритетом, порядком вычисления и ассоциативностью.
+ClickHouse преобразует операторы в соответствующие им функции на этапе разбора запроса в соответствии с их приоритетом, порядком выполнения и ассоциативностью.
 
 ## Операторы доступа \{#access-operators\}
 
@@ -116,8 +114,6 @@ SELECT * FROM a AS a1 JOIN a AS a2 ON a1.x <=> a2.x;
 Он работает как обычный оператор равенства (`=`), но рассматривает значения `NULL` как сравнимые между собой.
 Два значения `NULL` считаются равными, а сравнение `NULL` с любым ненулевым (non-`NULL`) значением возвращает 0 (ложь), а не `NULL`.
 
-:::
-
 ```sql
 SELECT
   'ClickHouse' <=> NULL,
@@ -129,6 +125,15 @@ SELECT
 │                        0 │                        1 │
 └──────────────────────────┴──────────────────────────┘
 ```
+
+## Операторы для работы со строками \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - функция `overlay(string, replacement, offset)`.
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - функция `overlay(string, replacement, offset, length)`.
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - функция `overlayUTF8(string, replacement, offset)`.
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - функция `overlayUTF8(string, replacement, offset, length)`.
 
 ## Операторы для работы с наборами данных \{#operators-for-working-with-data-sets\}
 
@@ -152,7 +157,7 @@ SELECT
 
 ### функция in с подзапросом \{#in-subquery-function\}
 
-`a = ANY (subquery)` – Функция `in(a, subquery)`.  
+`a = ANY (subquery)` – Функция `in(a, subquery)`.
 
 ### функция notIn с подзапросом \{#notin-subquery-function\}
 
@@ -162,7 +167,7 @@ SELECT
 
 `a = ALL (subquery)` – Функция `a IN (SELECT singleValueOrNull(*) FROM subquery)`.
 
-### Функция подзапроса notIn \{#notin-subquery-function-1\}
+### функция notIn с подзапросом \{#notin-subquery-function-1\}
 
 `a != ALL (subquery)` – Функция `notIn(a, subquery)`.
 
@@ -170,13 +175,11 @@ SELECT
 
 Запрос с ALL:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -187,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 Запрос с использованием ANY:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │
@@ -358,6 +359,55 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) — тип данных
 * функции преобразования типов [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear)
 
+### Сложение даты и времени \{#date-time-addition\}
+
+К значению [Date](../../sql-reference/data-types/date.md) или [Date32](../../sql-reference/data-types/date32.md) можно прибавить значение [Time](../../sql-reference/data-types/time.md) или [Time64](../../sql-reference/data-types/time64.md) с помощью оператора `+`. В результате получается [DateTime](../../sql-reference/data-types/datetime.md) или [DateTime64](../../sql-reference/data-types/datetime64.md), представляющий дату с указанным временем суток. Операция коммутативна.
+
+Тип результата зависит от типов операндов:
+
+| Левый операнд | Правый операнд | Тип результата  |
+| ------------- | -------------- | --------------- |
+| `Date`        | `Time`         | `DateTime`      |
+| `Date`        | `Time64(s)`    | `DateTime64(s)` |
+| `Date32`      | `Time`         | `DateTime64(0)` |
+| `Date32`      | `Time64(s)`    | `DateTime64(s)` |
+
+:::note
+Для результата используется [часовой пояс сессии](../../operations/settings/settings.md#session_timezone) (или часовой пояс сервера по умолчанию, если часовой пояс сессии не задан). Настройка [`date_time_overflow_behavior`](../../operations/settings/settings-formats.md#date_time_overflow_behavior) определяет, что произойдет, если результат выходит за пределы представимого диапазона.
+:::
+
+Примеры:
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25 │ DateTime       │
+└─────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+┌─────────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+└────────────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toTime64('23:59:59.999', 3) + toDate32('2024-07-15') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 23:59:59.999 │ DateTime64(3)  │
+└─────────────────────────┴────────────────┘
+```
 
 ## Оператор логического AND \{#logical-and-operator\}
 
@@ -465,3 +515,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 Оптимизацию можно выполнить, включив настройку [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns). При `optimize_functions_to_subcolumns = 1` функция читает только подстолбец [null](../../sql-reference/data-types/nullable.md#finding-null) вместо чтения и обработки данных всего столбца. Запрос `SELECT n IS NOT NULL FROM table` преобразуется в `SELECT NOT n.null FROM table`.
+
+
+## Проверка логических значений \{#checking-boolean-values\}
+
+ClickHouse поддерживает операторы `IS TRUE`, `IS FALSE`, `IS UNKNOWN`, `IS NOT TRUE`, `IS NOT FALSE` и `IS NOT UNKNOWN`.
+Они используются с выражениями [Bool](../../sql-reference/data-types/boolean.md) и `Nullable(Bool)`.
+
+* `expr IS TRUE` возвращает `1`, только если `expr` равно `true`.
+* `expr IS FALSE` возвращает `1`, только если `expr` равно `false`.
+* `expr IS UNKNOWN` возвращает `1`, только если `expr` равно `NULL`.
+* `expr IS NOT TRUE` возвращает `1`, если `expr` равно `false` или `NULL`.
+* `expr IS NOT FALSE` возвращает `1`, если `expr` равно `true` или `NULL`.
+* `expr IS NOT UNKNOWN` возвращает `1`, если `expr` не равно `NULL`.
+
+Для логических выражений `IS UNKNOWN` эквивалентен `IS NULL`, а `IS NOT UNKNOWN` — `IS NOT NULL`.
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

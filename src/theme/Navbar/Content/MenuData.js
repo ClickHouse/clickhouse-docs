@@ -96,7 +96,7 @@ export const dropdownCategories = [
       },
       {
         type: "link",
-        label: <Translate id="sidebar.dropdownCategories.category.Cloud.Managed Postgres">Managed Postgres (Preview)</Translate>,
+        label: <Translate id="sidebar.dropdownCategories.category.Cloud.Managed Postgres">Managed Postgres (Beta)</Translate>,
         description: <Translate id="sidebar.dropdownCategories.category.Cloud.Managed Postgres.description">Managed PostgreSQL service</Translate>,
         href: "/cloud/managed-postgres"
       },
@@ -251,6 +251,12 @@ export const dropdownCategories = [
         label: <Translate id="sidebar.dropdownCategories.category.Integrations.Data sources">Data sources</Translate>,
         description: <Translate id="sidebar.dropdownCategories.category.Integrations.Data sources.description">Load data into ClickHouse from your prefered source</Translate>,
         href: "/integrations/data-sources/index"
+      },
+      {
+        type: "link",
+        label: <Translate id="sidebar.dropdownCategories.category.Integrations.Data lakes">Data lakes</Translate>,
+        description: <Translate id="sidebar.dropdownCategories.category.Integrations.Data lakes.description">Connect a data catalog for Iceberg or Delta tables</Translate>,
+        href: "/integrations/data-catalogs"
       },
       {
         type: "link",

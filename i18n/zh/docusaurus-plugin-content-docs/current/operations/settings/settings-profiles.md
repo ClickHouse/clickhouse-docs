@@ -1,13 +1,11 @@
 ---
-description: '在同一名称下分组的设置集合。'
-sidebar_label: '设置配置集'
+description: '按同一名称分组的一组设置。'
+sidebar_label: '设置配置文件'
 sidebar_position: 61
 slug: /operations/settings/settings-profiles
-title: '设置配置集'
+title: '设置配置文件'
 doc_type: 'reference'
 ---
-
-# 设置配置文件 \{#settings-profiles\}
 
 设置配置文件是按同一名称分组的一组设置。
 

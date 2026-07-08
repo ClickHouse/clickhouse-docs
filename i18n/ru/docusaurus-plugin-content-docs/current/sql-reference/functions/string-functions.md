@@ -275,20 +275,25 @@ SELECT base32Encode('Encoded')
 
 ## base58Decode \{#base58Decode\}
 
-Введена в версии: v22.7.0
+добавлена в версии: v22.7.0
 
 Декодирует строку в формате [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3).
 Если строка не является корректной строкой в кодировке Base58, генерируется исключение.
+Можно указать необязательный второй аргумент `expected_size`, чтобы использовать оптимизированный декодер фиксированного размера.
+В настоящее время поддерживаются значения 32 и 64. Для других значений используется универсальный декодер.
+Если выбран оптимизированный декодер, но входные данные не удаётся декодировать ровно в указанное количество байтов,
+функция генерирует исключение (или возвращает пустую строку для `tryBase58Decode`).
 
 **Синтаксис**
 
 ```sql
-base58Decode(encoded)
+base58Decode(encoded[, expected_size])
 ```
 
 **Аргументы**
 
 * `encoded` — строковый столбец (`String`) или константа для декодирования. [`String`](/sql-reference/data-types/string)
+* `expected_size` — необязательный. Ожидаемый размер декодированных данных в байтах. Если указано 32 или 64, используется оптимизированный декодер; для других значений используется универсальный декодер. [`UInt8, UInt16, UInt32 или UInt64`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -307,7 +312,6 @@ SELECT base58Decode('JxF12TrwUP45BMd');
 │ Hello World              │
 └──────────────────────────┘
 ```
-
 
 ## base58Encode \{#base58Encode\}
 
@@ -1219,7 +1223,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-Добавлено в версии: v25.9.0
+Добавлено в: v25.10.0
 
 Проверяет, оканчивается ли строка заданным суффиксом без учета регистра.
 
@@ -1252,10 +1256,9 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 └─────────────────────────────────────────┘
 ```
 
-
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-Впервые представлена в: v25.9.0
+Добавлено в: v25.10.0
 
 Возвращает, оканчивается ли строка `s` суффиксом `suffix` без учёта регистра.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -1289,7 +1292,6 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 │                                           1 │
 └─────────────────────────────────────────────┘
 ```
-
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
@@ -2015,7 +2017,7 @@ münchen
 
 ## naturalSortKey \{#naturalSortKey\}
 
-добавлена в версии: v25.11.0
+добавлена в версии: v26.3.0
 
 Функция используется для естественной сортировки.
 
@@ -2029,7 +2031,7 @@ naturalSortKey(s)
 
 **Аргументы**
 
-- `s` — Строка, которую требуется преобразовать в ключ естественной сортировки. [`String`](/sql-reference/data-types/string)
+* `s` — Строка, которую требуется преобразовать в ключ естественной сортировки. [`String`](/sql-reference/data-types/string)
 
 **Возвращаемое значение**
 
@@ -2354,6 +2356,61 @@ SELECT
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
+
+## regexpPosition \{#regexpPosition\}
+
+Добавленный в: v26.5.0
+
+Возвращает позицию в байтах (с отсчётом от 1) `occurrence`-го совпадения `pattern` в `haystack`, начиная поиск с байтовой позиции `position`.
+
+Если `return_option` равен 0 (по умолчанию), возвращается позиция первого байта совпадения. Если 1 — позиция первого байта *после* совпадения.
+
+Если `subexpression` больше 0, возвращается позиция соответствующей группы захвата, а не всего совпадения.
+
+Возвращает 0, если совпадение не найдено или если запрошенная группа захвата не участвовала в совпадении.
+
+Функция предоставляется для совместимости с `regexp_instr` в PostgreSQL (и также доступна под этим псевдонимом). Обратите внимание: позиции задаются в байтах, как и в других функциях ClickHouse для работы с регулярными выражениями; в PostgreSQL `regexp_instr` использует символьные, а не байтовые позиции.
+
+**Синтаксис**
+
+```sql
+regexpPosition(haystack, pattern[, position[, occurrence[, return_option[, flags[, subexpression]]]]])
+```
+
+**Псевдонимы**: `regexpInstr`, `regexp_instr`
+
+**Аргументы**
+
+* `haystack` — Строка, в которой выполняется поиск. [`String`](/sql-reference/data-types/string)
+* `pattern` — Шаблон регулярного выражения. [`const String`](/sql-reference/data-types/string)
+* `position` — Необязательный. Начальная позиция поиска в байтах, отсчитываемая с 1. Значение по умолчанию: 1. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `occurrence` — Необязательный. Какое по счету совпадение вернуть. Значение по умолчанию: 1. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `return_option` — Необязательный. 0 возвращает позицию начала совпадения, 1 — позицию сразу после совпадения. Значение по умолчанию: 0. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `flags` — Необязательный. Флаги регулярного выражения. Поддерживаются: `i` (регистронезависимый), `c` (с учетом регистра), `m`/`n` (якоря многострочного режима), `s` (точка соответствует символу новой строки). Значение по умолчанию: пустая строка. [`const String`](/sql-reference/data-types/string)
+* `subexpression` — Необязательный. Индекс группы захвата, позицию которой нужно вернуть. 0 означает полное совпадение. Значение по умолчанию: 0. [`(U)Int*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+Возвращает позицию совпадения в байтах или 0, если совпадение не найдено. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**Примеры**
+
+**Базовое использование**
+
+```sql title=Query
+SELECT
+    regexpPosition('hello world', 'world'),
+    regexpPosition('aXbXcXd', 'X', 1, 2),
+    regexpPosition('aXbXcXd', 'X', 1, 2, 1),
+    regexpPosition('Hello WORLD', 'world', 1, 1, 0, 'i'),
+    regexpPosition('foo123bar456', '([a-z]+)([0-9]+)', 1, 2, 0, '', 2);
+```
+
+```response title=Response
+┌─...─┬─...─┬─...─┬─...─┬─...─┐
+│   7 │   4 │   5 │   7 │  10 │
+└─────┴─────┴─────┴─────┴─────┘
+```
 
 ## removeDiacriticsUTF8 \{#removeDiacriticsUTF8\}
 
@@ -2711,7 +2768,7 @@ SELECT space(3) AS res, length(res);
 
 ## sparseGrams \{#sparseGrams\}
 
-Добавлена в версии: v25.5.0
+Добавлено в версии: v25.5.0
 
 Находит все подстроки заданной строки длиной не менее `n`,
 для которых хеши (n-1)-грамм на границах подстроки
@@ -2721,7 +2778,7 @@ SELECT space(3) AS res, length(res);
 **Синтаксис**
 
 ```sql
-sparseGrams(s[, min_ngram_length, max_ngram_length])
+sparseGrams(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **Аргументы**
@@ -2748,7 +2805,6 @@ SELECT sparseGrams('alice', 3)
 │ ['ali','lic','lice','ice']         │
 └────────────────────────────────────┘
 ```
-
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
@@ -2837,12 +2893,12 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 
 Находит все подстроки заданной строки в кодировке UTF-8 длиной не менее `n`, для которых значения хэшей (n-1)-грамм на границах подстроки строго больше, чем значения хэшей любых (n-1)-грамм внутри подстроки.
 Ожидает строку в кодировке UTF-8; при некорректной последовательности UTF-8 генерирует исключение.
-В качестве хэш-функции используется `CRC32`.
+В качестве хеш-функции используется `CRC32`.
 
 **Синтаксис**
 
 ```sql
-sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
+sparseGramsUTF8(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **Аргументы**
@@ -2869,7 +2925,6 @@ SELECT sparseGramsUTF8('алиса', 3)
 │ ['али','лис','иса']         │
 └─────────────────────────────┘
 ```
-
 
 ## startsWith \{#startsWith\}
 
@@ -2909,7 +2964,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-Добавлена в версии: v25.9.0
+Добавлена в версии: v25.10.0
 
 Проверяет, начинается ли строка с заданной подстроки без учета регистра.
 
@@ -2942,10 +2997,9 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 └─────────────────────────────────────────┘
 ```
 
-
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-Появилась в: v25.9.0
+Добавлено в: v25.10.0
 
 Проверяет, начинается ли строка с указанного префикса без учета регистра.
 Предполагается, что строка содержит корректный текст в кодировке UTF-8.
@@ -2979,7 +3033,6 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 │                        1 │
 └──────────────────────────┘
 ```
-
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 
@@ -3519,19 +3572,20 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 
 ## tryBase58Decode \{#tryBase58Decode\}
 
-Добавлена в версии v22.10.0
+добавлена в версии v22.10.0
 
 Аналогична [`base58Decode`](#base58Decode), но в случае ошибки возвращает пустую строку.
 
 **Синтаксис**
 
 ```sql
-tryBase58Decode(encoded)
+tryBase58Decode(encoded[, expected_size])
 ```
 
 **Аргументы**
 
 * `encoded` — строковый столбец или константа. Если строка не является корректной Base58-строкой, при ошибке возвращается пустая строка. [`String`](/sql-reference/data-types/string)
+* `expected_size` — необязательно. Ожидаемый размер декодированного значения в байтах. При значениях 32 или 64 используется оптимизированный декодер; для других значений используется универсальный декодер. [`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -3550,7 +3604,6 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 │ Encoded │             │
 └─────────┴─────────────┘
 ```
-
 
 ## tryBase64Decode \{#tryBase64Decode\}
 

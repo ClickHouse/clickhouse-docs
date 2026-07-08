@@ -779,14 +779,20 @@ GRANT CURRENT GRANTS(READ ON S3) TO alice
 
 **示例**
 
-- `GRANT TABLE ENGINE ON * TO john`
-- `GRANT TABLE ENGINE ON TinyLog TO john`
+* `GRANT TABLE ENGINE ON * TO john`
+* `GRANT TABLE ENGINE ON TinyLog TO john`
 
 :::note
 默认情况下，出于向后兼容的考虑，使用特定表引擎创建表时会忽略权限授权，
 但你可以通过在 config.xml 中将 [`table_engines_require_grant` 设置为 true](https://github.com/ClickHouse/ClickHouse/blob/df970ed64eaf472de1e7af44c21ec95956607ebb/programs/server/config.xml#L853-L855)
 来更改这一行为。
 :::
+
+某些带有外部源的表引擎可能还需要对相应源具有 `READ`/`WRITE` 权限。请参见[源](#sources)。
+
+例如，对于 AzureBlobStorage 表引擎，可能需要以下授权。
+
+* `GRANT READ, WRITE ON AZURE TO john`
 
 ### ALL \{#all\}
 

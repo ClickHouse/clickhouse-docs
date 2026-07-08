@@ -24,12 +24,9 @@ import metabase_07 from '@site/static/images/integrations/data-visualization/met
 import metabase_08 from '@site/static/images/integrations/data-visualization/metabase_08.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Metabase를 ClickHouse에 연결하기 \{#connecting-metabase-to-clickhouse\}
-
-<PartnerBadge/>
-
-Metabase는 데이터에 대해 질문을 만들고 실행할 수 있는 사용하기 쉬운 오픈 소스 UI 도구입니다. Metabase는 <a href="https://www.metabase.com/start/oss/jar" target="_blank">JAR 파일을 다운로드</a>한 후 `java -jar metabase.jar`로 실행하기만 하면 되는 Java 애플리케이션입니다. Metabase는 JDBC 드라이버를 통해 ClickHouse에 연결하며, 이 드라이버를 다운로드하여 `plugins` 폴더에 넣으면 됩니다:
+Metabase는 데이터에 대해 질문을 던지고 살펴볼 수 있는 사용하기 쉬운 오픈 소스 UI 도구입니다. Metabase는 Java 애플리케이션으로, <a href="https://www.metabase.com/start/oss/jar" target="_blank">JAR 파일을 다운로드</a>한 후 `java -jar metabase.jar`를 실행하면 간단히 사용할 수 있습니다. Metabase는 다운로드하여 `plugins` 폴더에 넣은 JDBC 드라이버를 통해 ClickHouse에 연결합니다:
 
 ## 목표 \{#goal\}
 

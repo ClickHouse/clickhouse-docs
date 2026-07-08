@@ -1,15 +1,13 @@
 ---
-title: 'Функции агрегации DataStore'
+title: 'Агрегатные функции DataStore'
 sidebar_label: 'Агрегация'
 slug: /chdb/datastore/aggregation
-description: 'Функции агрегации, оконные функции и пространство имен F в DataStore'
+description: 'Функции агрегации, оконные функции и пространство имён F в DataStore'
 keywords: ['chdb', 'datastore', 'aggregation', 'window', 'groupby', 'sum', 'mean', 'avg']
 doc_type: 'reference'
 ---
 
-# Агрегатные функции DataStore \{#datastore-aggregation-functions\}
-
-DataStore предоставляет широкие возможности агрегатных и оконных функций, используя мощные средства агрегирования SQL в ClickHouse.
+DataStore поддерживает широкий набор агрегатных и оконных функций, используя мощные возможности SQL-агрегации ClickHouse.
 
 ## Базовые агрегации \{#basic\}
 

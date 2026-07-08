@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/cloudflare-logs
-title: 'ClickStack で Cloudflare Logs を監視する'
-sidebar_label: 'Cloudflare Logs'
+title: 'ClickStackでCloudflare ログを監視する'
+sidebar_label: 'Cloudflare ログ'
 pagination_prev: null
 pagination_next: null
 description: 'S3 から継続的にログをインジェストするため、ClickPipes を使用して Cloudflare Logpush データを ClickStack に取り込む'
@@ -10,7 +10,6 @@ keywords: ['Cloudflare', 'logs', 'ClickStack', 'ClickPipes', 'S3', 'HTTP', 'Logp
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import clickpipe_s3 from '@site/static/images/clickstack/cloudflare/clickpipe-s3.png';
 import continuous_ingestion from '@site/static/images/clickstack/cloudflare/continuous-ingestion.png';
 import parse_information from '@site/static/images/clickstack/cloudflare/parse-information.png';
@@ -24,12 +23,10 @@ import finish_import from '@site/static/images/clickstack/cloudflare/finish-impo
 import example_dashboard from '@site/static/images/clickstack/cloudflare/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStackでCloudflareログを監視する \{#cloudflare-clickstack\}
+:::note[TL;DR]
+このガイドでは、ClickPipes を使用して Cloudflare ログを ClickStack に取り込む方法を説明します。Cloudflare Logpush はログを S3 に書き込み、ClickPipes は新しいファイルを継続的に ClickHouse に取り込みます。OpenTelemetry Collector を使用するほとんどの ClickStack 統合ガイドとは異なり、このガイドでは [ClickPipes](/integrations/clickpipes) を使用して S3 からデータを直接取り込みます。
 
-:::note[要点]
-このガイドでは、ClickPipesを使用してCloudflareログをClickStackに取り込む方法を説明します。Cloudflare LogpushはログをS3に書き込み、ClickPipesは新しいファイルを継続的にClickHouseに取り込みます。OpenTelemetry Collectorを使用する多くのClickStack統合ガイドとは異なり、このガイドでは、[ClickPipes](/integrations/clickpipes)を使用してS3からデータを直接取得します。
-
-本番環境向けのインジェストを設定する前にダッシュボードを確認したい場合は、デモデータセットを利用できます。
+本番向けのインジェストを設定する前にダッシュボードを確認したい場合は、デモ用データセットを利用できます。
 :::
 
 ## 概要 \{#overview\}
@@ -200,7 +197,7 @@ https://YOUR_CLICKHOUSE_HOST:8443/?query=INSERT+INTO+cloudflare_http_logs+FORMAT
 ## ダッシュボードと可視化 \{#dashboards\}
 
 <VerticalStepper headerLevel="h4">
-  #### <TrackedLink href={useBaseUrl('/examples/cloudflare-logs-dashboard.json')} download="cloudflare-logs-dashboard.json" eventName="docs.cloudflare_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> \{#download\}
+  #### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/cloudflare-logs-dashboard.json'} download="cloudflare-logs-dashboard.json" eventName="docs.cloudflare_logs_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> \{#download\}
 
   #### ダッシュボードをインポート \{#import-dashboard\}
 

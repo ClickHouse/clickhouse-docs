@@ -2,14 +2,12 @@
 title: 'DataStore 查询构建'
 sidebar_label: '查询构建'
 slug: /chdb/datastore/query-building
-description: '通过流式接口的链式调用在 DataStore 中构建类 SQL 查询'
+description: '通过方法链式调用在 DataStore 中构建 SQL 风格查询'
 keywords: ['chdb', 'datastore', '查询', 'select', 'filter', 'where', 'join', 'groupby']
 doc_type: 'reference'
 ---
 
-# DataStore 查询构建 \{#datastore-query-building\}
-
-DataStore 提供 SQL 风格的查询构建方法，这些方法会编译为优化后的 SQL 查询。所有操作在实际需要结果之前都会延迟执行。
+DataStore 提供 SQL 风格的查询构建方法，可编译为优化后的 SQL 查询。所有操作均为惰性执行，直到需要结果时才会计算。
 
 ## 查询方法概览 \{#overview\}
 

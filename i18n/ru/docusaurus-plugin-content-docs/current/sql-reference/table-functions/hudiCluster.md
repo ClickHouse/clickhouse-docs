@@ -1,13 +1,12 @@
 ---
-description: 'Расширение табличной функции hudi. Позволяет параллельно обрабатывать файлы из таблиц Apache Hudi в Amazon S3 на многих узлах заданного кластера.'
+description: 'Расширение табличной функции hudi. Позволяет параллельно обрабатывать
+  файлы из таблиц Apache Hudi в Amazon S3 на многих узлах заданного кластера.'
 sidebar_label: 'hudiCluster'
 sidebar_position: 86
 slug: /sql-reference/table-functions/hudiCluster
 title: 'Табличная функция hudiCluster'
 doc_type: 'reference'
 ---
-
-# Табличная функция hudiCluster \{#hudicluster-table-function\}
 
 Это расширение табличной функции [hudi](sql-reference/table-functions/hudi.md).
 

@@ -4,88 +4,148 @@ title: 'Event deltas with ClickStack'
 sidebar_label: 'Event deltas'
 pagination_prev: null
 pagination_next: null
-description: 'Event deltas with ClickStack'
+description: 'Analyze trace attribute distributions and compare outlier spans with Event deltas in ClickStack'
 doc_type: 'guide'
-keywords: ['clickstack', 'event deltas', 'change tracking', 'logs', 'observability']
+keywords: ['clickstack', 'event deltas', 'heatmap', 'attribute distribution', 'trace analysis', 'observability']
 ---
 
 import Image from '@theme/IdealImage';
-import event_deltas from '@site/static/images/use-cases/observability/hyperdx-demo/step_17.png';
-import event_deltas_no_selected from '@site/static/images/use-cases/observability/event_deltas_no_selected.png';
-import event_deltas_highlighted from '@site/static/images/use-cases/observability/event_deltas_highlighted.png';
-import event_deltas_selected from '@site/static/images/use-cases/observability/event_deltas_selected.png';
-import event_deltas_issue from '@site/static/images/use-cases/observability/event_deltas_issue.png';
-import event_deltas_outliers from '@site/static/images/use-cases/observability/event_deltas_outliers.png';
-import event_deltas_separation from '@site/static/images/use-cases/observability/event_deltas_separation.png';
-import event_deltas_customization from '@site/static/images/use-cases/observability/event_deltas_customization.png';
-import event_deltas_inappropriate from '@site/static/images/use-cases/observability/event_deltas_inappropriate.png';
+import event_deltas_overview from '@site/static/images/clickstack/event-deltas/overview.png';
+import event_deltas_before_after from '@site/static/images/clickstack/event-deltas/before-after.png';
+import event_deltas_slow_vs_fast from '@site/static/images/clickstack/event-deltas/slow-vs-fast.png';
+import event_deltas_drill_down from '@site/static/images/clickstack/event-deltas/drill-down.png';
+import settings_drawer from '@site/static/images/clickstack/event-deltas/settings-drawer.png';
 
-Event deltas in ClickStack are a trace-focused feature that automatically analyzes the properties of traces to uncover what changed when performance regresses. By comparing the latency distributions of normal versus slow traces within a corpus, ClickStack highlights which attributes are most correlated with the difference - whether that's a new deployment version, a specific endpoint, or a particular user ID.
+Event deltas pair a latency heatmap with automatic attribute analysis so you can see the shape of your trace data and find what makes the slow spans different, without writing queries. There are three ways to use it:
 
-Instead of manually sifting through trace data, event deltas surface the key properties driving differences in latency between two subsets of data, making it far easier to diagnose regressions and pinpoint root causes. This feature allows you to visualize raw traces and immediately see the factors influencing performance shifts, accelerating incident response, and reducing mean time to resolution.
+- **Distribution mode (always on)**: when no heatmap selection exists, every attribute's value distribution is shown for the current span population. Useful for spotting dominant or unusually rare values (cardinality outliers).
+- **Comparison mode**: drag a rectangle on the heatmap to compare the spans inside (Selection) against everything outside (Background). Useful for isolating deviations.
+- **Iterative drill-down**: click any bar to filter (or exclude) on that value. The heatmap re-renders against the filtered population, so you can keep narrowing until the cause is obvious.
 
-<Image img={event_deltas} alt="Event deltas" size="lg"/>
+<Image img={event_deltas_overview} alt="Event deltas overview on the payment service with the bright band climbing mid-window and no recovery in frame" size="lg"/>
 
-## Using Event deltas {#using-event-deltas}
+In the screenshot above, the right edge of the heatmap sits at roughly 10 ms, not back at the 1 ms baseline that held through the morning. The degradation is still in progress, so we are catching this mid-incident.
 
-Event deltas are available directly through the **Search** panel in ClickStack when selecting a source of type `Trace`.
+## Prerequisites {#prerequisites}
 
-From the top-left **Analysis Mode** selector, choose **Event deltas** (with a `Trace` source selected) to switch from the standard results table, which displays spans as rows.
+Event deltas require a **Trace** data source with a duration expression. Any OpenTelemetry-instrumented service producing span data works. Available in all ClickStack deployments (Managed, Open Source, ClickHouse Cloud).
 
-<Image img={event_deltas_no_selected} alt="Event deltas not selected" size="lg"/>
+## Getting started {#getting-started}
 
-This view renders the distribution of spans over time, showing how latency varies alongside volume. The vertical axis represents latency, while the coloring indicates the density of traces at a given point with brighter yellow areas corresponding to a higher concentration of traces. With this visualization, you can quickly see how spans are distributed across both latency and count, making it easier to identify shifts or anomalies in performance.
+1. From the **Data Source** dropdown, select a source that holds traces. Source names are arbitrary; what matters is that the source is configured as a Trace type. The **Event Deltas** tab is only enabled for such sources.
+2. In the **Analysis Mode** section, click the **Event Deltas** tab.
 
-<Image img={event_deltas_highlighted} alt="Event deltas highlighted" size="lg"/>
+Event deltas is a separate analysis mode alongside **Results Table** and **Event Patterns**. Switching to it swaps the view to a heatmap and an attribute analysis grid, but your search filters and time range are preserved and you can switch back at any time.
 
-You can then select an area of the visualization - ideally one with higher duration spans and sufficient density, followed by **Filter by Selection**. This designates the "outliers" for analysis. Event deltas will then identify the columns and key values most associated with those spans in this outlier subset compared to the rest of the dataset. By focusing on regions with meaningful outliers, ClickStack highlights the unique values that distinguish this subset from the overall corpus, surfacing the attributes most correlated with the observed performance differences.
+## The heatmap {#the-heatmap}
 
-<Image img={event_deltas_selected} alt="Event deltas selected" size="lg"/>
+The heatmap plots spans across two dimensions:
 
-For each column, ClickStack identifies values that are heavily biased toward the selected outlier subset. In other words, when a value appears in a column, if it occurs predominantly within the outliers rather than the overall dataset (the inliers), it is highlighted as significant. Columns with the strongest bias are listed first, surfacing the attributes most strongly associated with anomalous spans and distinguishing them from baseline behavior.
+- **X axis**: time
+- **Y axis**: a numeric value, defaulting to span duration in milliseconds (logarithmic scale)
 
-<Image img={event_deltas_outliers} alt="Event deltas outliers" size="lg"/>
+Color intensity indicates event count per bucket; brighter means more spans.
 
-Consider the example above where the `SpanAttributes.app.payment.card_type` column has been surfaced. Here, the Event deltas analysis shows that `29%` of the inliers use MasterCard, with `0%` among the outliers, while `100%` of the outliers use Visa, compared to `71%` of the inliers. This suggests that the Visa card type is strongly associated with the anomalous, higher-latency traces, whereas MasterCard appears only in the normal subset.
+You can read patterns straight off the heatmap: bimodal latency, latency spikes at specific times, a band of consistently slow spans, or a slow band that drifts upward over time (a creeping regression). To investigate a region, click and drag a rectangle on it. That becomes your **Selection** and switches the analysis below into comparison mode.
 
-<Image img={event_deltas_issue} alt="Event deltas issue" size="lg"/>
+## Distribution mode: cardinality outliers {#distribution-mode}
 
-Conversely, values exclusively associated with inliers can also be interesting. In the example above, the error `Visa Cash Full` appears exclusively in the inliers and is completely absent from the outlier spans. Where this occurs, latency is always less than approximately 50 milliseconds, suggesting this error is associated with low latencies.
+With no selection on the heatmap, the analysis panel shows one bar chart per attribute, computed across all matching spans. The legend reads **All spans** (visible in the overview screenshot above).
 
-## How Event deltas work {#how-event-deltas-work}
+Attributes are ranked by how concentrated their values are: those dominated by a few values appear first; uniform, high-entropy attributes are deprioritized.
 
-Event deltas work by issuing two queries: one for the selected outlier area and one for the inlier area. Each query is limited to the appropriate duration and time window. A sample of events from both result sets is then inspected, and columns for which a high concentration of values appears predominantly in the outliers are identified. Columns for which 100% of a value occurs only in the outlier subset are shown first, highlighting the attributes most responsible for the observed differences.
+Use distribution mode when you want to understand the **cardinality shape** of your data:
 
-## Customizing the graph {#customizing-the-graph}
+- **Highs**: which services, endpoints, status codes, or hosts dominate your span population? Often surfaces a single tenant, version, or route doing most of the traffic.
+- **Lows**: values that occur but rarely. A status code that appears in just `0.5%` of spans, or one host that barely shows up, can be the most interesting signal. The long tail is where regressions and bad actors hide.
 
-Above the graph, you'll find controls that let you customize how the heatmap is generated. As you adjust these fields, the heatmap updates in real time, allowing you to visualize and compare relationships between any measurable value and its frequency over time.
+Combine with the search bar to narrow the population first (e.g., only error spans, only client spans, only one endpoint), then read the distributions for that subset.
 
-**Default Configuration**
+## Comparison mode: deviations from normal {#comparison-mode}
 
-By default, the visualization uses:
+Click and drag a rectangle on the heatmap to enter comparison mode. The selected spans become the **Selection** (orange bars); everything outside becomes the **Background** (green bars). Each attribute chart then shows both populations side by side, sorted so the attributes with the largest divergence appear first. A value present almost exclusively in one side, or absent from one side, is the strongest candidate for what differs.
 
-- **Y Axis**: `Duration` — displays latency values vertically
-- **Color (Z Axis)**: `count()` — represents the number of requests over time (X axis)
+The shape of the rectangle you draw changes the question you're asking. The two common shapes are described below.
 
-This setup shows latency distribution across time, with color intensity indicating how many events fall within each range.
+### Use case 1: Before vs after a regression {#before-vs-after}
 
-**Adjusting Parameters**
+When the heatmap shows latency drifting upward over the timeline (the slow band thickens, the bright band climbs, or a clear inflection point separates a healthy period from a degraded one), drag a rectangle from the climb inflection to the right edge of the window. To sharpen the comparison, set the bottom of the rectangle at the healthy baseline rather than at the bottom of the axis: this isolates the spans that are genuinely slower than normal in the degraded window, instead of dragging in still-healthy fast spans that happen to fall in the same time range.
 
-You can modify these parameters to explore different dimensions of your data:
+<Image img={event_deltas_before_after} alt="Comparison mode on the payment service with the rectangle drawn from the climb inflection to the right edge, bottom resting on the 1 ms baseline" size="lg"/>
 
-- **Value**: Controls what is plotted on the Y axis. For example, replace `Duration` with metrics like error rate or response size.
-- **Count**: Controls the color mapping. You can switch from `count()` (number of events per bucket) to other aggregation functions such as `avg()`, `sum()`, `p95()`, or even custom expressions like `countDistinct(field)`.
+The attribute bars below the heatmap are sorted with the largest divergences first. In this example, the top-row charts surface the strongest signals: `SpanKind`, `SpanName`, and `ScopeName` each show a sharp orange-vs-green split between the slow Selection and the healthy Background. Read together, they fingerprint what changed at the inflection.
 
-<Image img={event_deltas_customization} alt="Event deltas customization" size="lg"/>
+This is the right shape when you want to ask "what changed?" A tighter variant uses the same workflow: when a small knot of slow spans sits in an otherwise quiet band (a brief burst on the right edge, a cluster in the middle of a steady period), draw a small box around just that cluster instead. The shape changes the question: a vertical strip asks _what changed in time_; a small focused box asks _what is special about this cluster_.
 
-## Recommendations {#recommendations}
+### Use case 2: Slow versus fast {#slow-vs-fast}
 
-Event deltas work best when the analysis is focused on a specific service. Latency across multiple services can vary widely, making it harder to identify the columns and values most responsible for outliers. Before enabling Event deltas, filter spans to a set where the distribution of latencies is expected to be similar. Target analyzing sets where wide latency variation is unexpected for the most useful insights, avoiding cases where it's the norm (e.g., two different services).
+When the heatmap shows two latency populations clearly separated on the duration axis, drag a wide rectangle that spans the entire time range but covers only the upper, cleanly-separated band. The slow population becomes the Selection; the fast bulk becomes the Background.
 
-When selecting an area, you should aim for subsets where there is a clear distribution of slower versus faster durations, allowing the higher-latency spans to be cleanly isolated for analysis. For example, note the selected area below clearly captures a set of slower spans for analysis.
+<Image img={event_deltas_slow_vs_fast} alt="Slow vs fast comparison on frontend-proxy with the rectangle covering only the cleanly-separated upper band, well clear of the dense bulk" size="lg"/>
 
-<Image img={event_deltas_separation} alt="Event deltas separation" size="lg"/>
+Draw the rectangle tightly around the upper band, with a visible horizontal gap between it and the dense bulk. A loose rectangle that bleeds into the fast population washes out the divergence.
 
-Conversely, the following dataset is hard to analyze in a useful way with Event deltas.
+The 100 s ceiling line is informative on its own: a constant horizontal line at a round number is the signature of a fixed timeout. If no span attribute differentiates the two populations cleanly, that's a useful result too: it points you to host- and runtime-level metrics (GC pauses, I/O contention, scheduler latency, cold-cache effects, noisy neighbors) rather than to span attributes.
 
-<Image img={event_deltas_inappropriate} alt="Event deltas poor seperation" size="lg"/>
+This is the right shape when you want to ask "what makes the slow spans different from the fast ones?" rather than chasing a specific anomaly. A divergent attribute points at a code-path or input cause; a flat comparison points at a systemic one.
+
+## Iterative drill-down {#drill-down}
+
+Comparison and distribution modes are most powerful when chained. Click any bar to open a popover with three actions:
+
+- **Filter**: keep only spans with this value
+- **Exclude**: remove spans with this value
+- **Copy**: copy the value to the clipboard
+
+<Image img={event_deltas_drill_down} alt="Click popover on a ScopeVersion bar showing Selection vs Background percentages and filter, exclude, copy actions" size="lg"/>
+
+After applying a filter or exclude, the heatmap selection is cleared, the heatmap re-renders against the new population, and distribution mode resumes against that filtered set. Watch how the heatmap reshapes; a successful filter visibly removes the slow band, collapses the bimodal split, or flattens the upward drift. Repeat: spot the next suspicious value, filter, look at the new heatmap, look at the new distributions. A few iterations usually narrow a regression to one or two attributes.
+
+:::note
+Aggregated **Other (N)** buckets that collapse low-frequency values aren't clickable. To filter for a specific value within that bucket, use the [search bar](/use-cases/observability/clickstack/search) directly.
+:::
+
+When the population is small enough, switch to the **Results Table** tab to inspect individual traces; your filters carry over.
+
+## Customize the heatmap {#customize}
+
+The gear icon in the top-right of the heatmap opens the **Display Settings** drawer.
+
+<Image img={settings_drawer} alt="Display Settings drawer with Scale, Value, and Count fields" size="lg"/>
+
+| Parameter | Default          | Description                                                                                                              |
+| --------- | ---------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Scale** | Log              | Log handles wide latency ranges; Linear is better for narrow, uniform distributions.                                     |
+| **Value** | `(Duration)/1e6` | Any numeric expression: response size, error rate, a custom span attribute.                                              |
+| **Count** | `count()`        | Aggregation for color. Switch to `avg()`, `sum()`, `p95()`, or expressions like `countDistinct(field)`.                  |
+
+Click **Apply** to update the heatmap; the attribute analysis below follows.
+
+:::tip Heatmap on dashboards
+The same heatmap is also available as a [dashboard tile](/use-cases/observability/clickstack/dashboards#create-a-tile-heatmap), which is useful when you want to monitor the distribution shape over time outside the Event Deltas drill-down flow.
+:::
+
+Common scenarios where you'd change these defaults:
+
+- **Switch Scale to Linear** when the latency band is narrow (for example, a service whose spans all run between 5 and 50 ms). Log scale wastes vertical range on the upper end where there is no data.
+- **Plot something other than duration on the Y axis.** Setting **Value** to `SpanAttributes.http.response.size` lets you investigate slow *large* responses; an expression like `if(StatusCode = 'Error', 1, 0)` plots error frequency over time across services.
+- **Color by something other than count.** Setting **Count** to `p95(Duration)` colors each bucket by tail latency rather than volume, surfacing rare-but-slow pockets that a count-based view washes out. `countDistinct(TraceId)` distinguishes trace volume from span volume when one trace produces many spans.
+
+## Tips for effective use {#tips}
+
+A few practices make Event deltas substantially more useful:
+
+- **Filter to a single service first.** Latency varies widely across services and mixing them obscures the signal. Use the search bar to narrow to one `ServiceName` (or one endpoint) before you start, so the heatmap and distributions reflect a comparable population.
+- **Pick selections with clear visual contrast.** Comparison mode works best when the Selection band is visibly distinct from the Background, for example a degraded period that begins at a recognizable moment, or a slow tail clearly separated from the bulk. Selections that overlap heavily with the rest of the data tend to surface noise rather than the actual deviation.
+- **Iterate filter, heatmap, filter.** A single selection rarely identifies the cause. Treat the first comparison as a hypothesis, filter on the most divergent value, and re-read the new heatmap and distributions. Two or three iterations usually narrow a regression to one or two attributes.
+- **Use distribution mode without a selection** when no contrast is yet visible (you know there is an issue but the heatmap looks uniform). Apply a hypothesis filter such as only error spans, only client spans, or only one endpoint, and let the attribute distributions point you at the highest-impact values before you draw any rectangle.
+
+## Troubleshooting {#troubleshooting}
+
+### Event Deltas tab isn't visible {#tab-not-visible}
+
+The **Event Deltas** tab under **Analysis Mode** only appears when a **Trace** source with a duration expression is selected. Verify that your data source is configured as a Trace type and has span data with duration information.
+
+### Attribute charts show few or no results {#few-results}
+
+If the sample is too small (fewer than a few dozen spans), distributions may not be statistically meaningful. Widen the time range or relax your search filters.

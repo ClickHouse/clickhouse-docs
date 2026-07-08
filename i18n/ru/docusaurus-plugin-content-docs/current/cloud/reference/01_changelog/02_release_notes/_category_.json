@@ -1,9 +1,9 @@
 {
-  "label": "Примечания к выпуску",
-  "collapsible": true,
   "collapsed": true,
+  "collapsible": true,
+  "label": "Примечания к выпуску",
   "link": {
-    "type": "Документ",
-    "id": "cloud/reference/changelog/release_notes/index"
+    "id": "cloud/reference/changelog/release_notes/index",
+    "type": "Документ"
   }
 }

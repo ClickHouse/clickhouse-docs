@@ -19,8 +19,6 @@ import mongo_atlas_restrict_access from '@site/static/images/integrations/data-i
 import Image from '@theme/IdealImage';
 
 
-# MongoDB Atlas ソースのセットアップガイド \{#mongodb-atlas-source-setup-guide\}
-
 ## oplog の保持期間を設定する \{#enable-oplog-retention\}
 
 レプリケーションには、最小 24 時間の oplog 保持期間が必要です。初回スナップショットが完了する前に oplog が切り詰められないようにするため、oplog の保持期間は 72 時間以上に設定することを推奨します。UI を使用して oplog の保持期間を設定するには、次の手順を実行します。

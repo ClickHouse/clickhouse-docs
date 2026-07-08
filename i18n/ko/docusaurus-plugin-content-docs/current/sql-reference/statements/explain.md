@@ -112,21 +112,19 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 이 과정은 쿼리를 파싱하고 쿼리 AST와 쿼리 트리를 구성한 뒤, 필요에 따라 쿼리 분석기와 최적화 패스를 실행하고, 이후 쿼리 트리를 다시 쿼리 AST로 변환하는 방식으로 수행됩니다.
 
-Settings:
+설정:
 
 * `oneline` – 쿼리를 한 줄로 출력합니다. 기본값: `0`.
 * `run_query_tree_passes` – 쿼리 트리를 덤프하기 전에 쿼리 트리 패스를 실행합니다. 기본값: `0`.
 * `query_tree_passes` – `run_query_tree_passes`가 설정된 경우 실행할 패스의 수를 지정합니다. `query_tree_passes`를 지정하지 않으면 모든 패스를 실행합니다.
 
-Examples:
+예시:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-출력 결과:
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -134,13 +132,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 `run_query_tree_passes` 사용 시:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-출력:
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -149,7 +145,6 @@ FROM system.numbers AS __table1
 ALL INNER JOIN system.numbers AS __table2 ON __table1.number = __table2.number
 ALL INNER JOIN system.numbers AS __table3 ON __table2.number = __table3.number
 ```
-
 
 ### EXPLAIN QUERY TREE \{#explain-query-tree\}
 
@@ -316,7 +311,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`indexes` = 1이면 `Indexes` 키가 추가됩니다. 이 키에는 사용된 인덱스 배열이 포함됩니다. 각 인덱스는 `Type` 키(문자열 `MinMax`, `Partition`, `PrimaryKey`, `Skip` 중 하나)와 다음과 같은 선택적 키를 갖는 JSON 객체로 표현됩니다:
+`indexes` = 1이면 `Indexes` 키가 추가됩니다. 이 키에는 사용된 인덱스 배열이 포함됩니다. 각 인덱스는 `Type` 키(문자열 `Partition Min-Max`, `Partition`, `Statistics`, `PrimaryKey`, `Skip` 중 하나)와 다음과 같은 선택적 키를 갖는 JSON 객체로 표현됩니다:
 
 * `Name` — 인덱스 이름(현재는 `Skip` 인덱스에만 사용됨).
 * `Keys` — 인덱스에 사용되는 컬럼 배열.
@@ -332,7 +327,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,
@@ -488,9 +483,9 @@ Skip merging: 0
   ReadFromSystemNumbers
 ```
 
-`distributed` = 1인 경우 출력에는 로컬 쿼리 플랜뿐만 아니라 원격 노드에서 실행될 쿌리 플랜도 포함됩니다. 이는 분산 쿼리를 분석하고 디버깅하는 데 유용합니다.
+`distributed` = 1인 경우 출력에는 로컬 쿼리 플랜뿐만 아니라 원격 노드에서 실행될 쿼리 플랜도 포함됩니다. 이는 분산 쿼리를 분석하고 디버깅하는 데 유용합니다.
 
-분산 테이블을 사용한 예:
+분산 테이블을 사용한 예시:
 
 ```sql
 EXPLAIN distributed=1 SELECT * FROM remote('127.0.0.{1,2}', numbers(2)) WHERE number = 1;
@@ -508,7 +503,7 @@ Union
           ReadFromSystemNumbers
 ```
 
-병렬 레플리카 예제:
+병렬 레플리카 예시:
 
 ```sql
 SET enable_parallel_replicas = 2, max_parallel_replicas = 2, cluster_for_parallel_replicas = 'default';
@@ -532,8 +527,36 @@ Expression ((Project names + Projection))
 
 두 예제 모두에서 쿼리 플랜은 로컬 및 원격 단계를 포함한 전체 실행 흐름을 보여줍니다.
 
-`pretty` = 1인 경우, 플랜 트리는 들여쓰기 대신 선으로 된 문자로 표시됩니다:
+`pretty` = 1인 경우, 플랜 트리는 들여쓰기 대신 선으로 된 문자로 표시되며, 주요 단계에 대한 추가 정보도 함께 표시됩니다:
 
+* **쿼리 출력 컬럼**은 계획 맨 위에 표시됩니다.
+* 필터, 집계 키, 정렬 설명, 윈도 함수의 **표현식**은 사람이 읽기 쉬운 SQL 유사 표기법으로 표시됩니다(예: `greater(plus(a, 1), 5)` 대신 `a + 1 > 5`). 명확성을 위해 내부 컬럼 식별자 접두사(`__table1.` 등)는 제거됩니다.
+* **소스 단계**(`ReadFromMergeTree` 등)는 해당 단계의 출력 컬럼을 표시합니다.
+* **필터 단계**는 SQL 표기법으로 필터 조건을 표시합니다. 런타임 조인 필터가 있는 경우 별도로 표시됩니다.
+* **집계 단계**는 키와 집계 함수 및 해당 인수(예: `sum(c)`, `count()`)를 표시합니다.
+* 튜플 리터럴의 **IN 세트**는 값(큰 세트의 경우 잘려서 표시됨)을 보여주고, 서브쿼리 기반 세트는 `subquery1`, `subquery2` 등의 레이블로 표시되며, `Set` 엔진 테이블의 세트는 테이블 이름을 표시합니다.
+* **조인 단계**는 수학 표기법을 사용한 조인 관계, 예상 결과 행 수,
+  그리고 어떤 출력 컬럼이 왼쪽과 오른쪽 중 어느 쪽에서 오는지를 표시합니다. 다음 기호는
+  서로 다른 조인 유형을 나타냅니다:
+
+| 기호                     | 조인 유형     |
+| ---------------------- | --------- |
+| `⋈`                    | 내부 조인     |
+| `⟕`                    | 왼쪽 조인     |
+| `⟖`                    | 오른쪽 조인    |
+| `⟗`                    | 전체 조인     |
+| `⋉`                    | 왼쪽 세미 조인  |
+| `⋊`                    | 오른쪽 세미 조인 |
+| `⋉` with strikethrough | 왼쪽 안티 조인  |
+| `⋊` with strikethrough | 오른쪽 안티 조인 |
+| `×`                    | 크로스 조인    |
+
+예를 들어, `t1 ⟕ t2`는 테이블 `t1`과 `t2` 간의 왼쪽 조인을 의미합니다.
+테이블 이름 뒤 대괄호 안의 숫자(예: `t1[100]`)는 테이블 통계를 사용할 수 있는 경우
+예상 행 수를 나타냅니다.
+
+`pretty` 옵션은 `compact = 1`과 함께 사용하면 효과적이며, `Expression` 단계와
+상세 작업 정보가 숨겨져 계획을 더 쉽게 읽을 수 있습니다.
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -546,6 +569,38 @@ Expression ((Project names + Projection))
       └──ReadFromSystemNumbers
 ```
 
+조인이 포함된 더 자세한 예시:
+
+```sql
+CREATE TABLE t1 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+CREATE TABLE t2 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+INSERT INTO t1 SELECT number, toString(number) FROM numbers(100);
+INSERT INTO t2 SELECT number, toString(number) FROM numbers(100);
+
+EXPLAIN actions = 1, compact = 1, pretty = 1
+SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.id FORMAT Raw;
+```
+
+```text
+Output: id, value, t2.id, t2.value
+
+Join (JOIN FillRightFirst)
+│  t1[100] ⋈ t2[100]
+│  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
+│  Result rows: 100
+│  Output:
+│    Left:  id, value
+│    Right: id, value
+│  Join conditions: id = id
+├──ReadFromMergeTree (default.t1)
+│     Read type: Default
+│     Parts: 1 | Granules: 1
+│     Output: id, value
+└──ReadFromMergeTree (default.t2)
+      Read type: Default
+      Parts: 1 | Granules: 1
+      Output: id, value
+```
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 
@@ -554,10 +609,18 @@ Expression ((Project names + Projection))
 * `header` — 각 출력 포트에 대한 헤더를 출력합니다. 기본값: 0.
 * `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 그래프 설명 언어 형식으로 그래프를 출력합니다. 기본값: 0.
 * `compact` — `graph` 설정이 활성화된 경우 그래프를 compact 모드로 출력합니다. 기본값: 1.
+* `compact_repeated_processor_chains` — 텍스트 출력에서 인접하게 반복되는 프로세서 체인을 반복 횟수와 함께 체인 하나만 표시하도록 압축합니다. 예를 들어 조인처럼 동일한 체인이 여러 번 나타나는 경우 병렬 파이프라인을 더 쉽게 읽을 수 있습니다. 그래프 출력에는 영향을 주지 않습니다. 기본값: 0.
+
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
 
 `compact=0`이고 `graph=1`인 경우 프로세서 이름에 고유한 프로세서 식별자가 접미사로 추가됩니다.
 
-예:
+예시:
 
 ```sql
 EXPLAIN PIPELINE SELECT sum(number) FROM numbers_mt(100000) GROUP BY number % 4;
@@ -579,7 +642,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 
 쿼리를 처리하는 동안 테이블에서 읽게 될 행, 마크, 파트의 예상 개수를 보여줍니다. [MergeTree](/engines/table-engines/mergetree-family/mergetree) 패밀리의 테이블에서 동작합니다.
@@ -588,26 +650,21 @@ ExpressionTransform
 
 테이블 생성:
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-쿼리:
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
 ```
-
 
 ### EXPLAIN TABLE OVERRIDE \{#explain-table-override\}
 
@@ -618,21 +675,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 원격 MySQL 테이블이 다음과 같다고 가정합니다.
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

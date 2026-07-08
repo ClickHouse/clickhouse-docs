@@ -11,8 +11,6 @@ doc_type: 'reference'
 import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
-# HTTP Interface
-
 ## Prerequisites {#prerequisites}
 
 For the examples in this article you will need:
@@ -611,7 +609,7 @@ __exception__
 
 ## Queries with parameters {#cli-queries-with-parameters}
 
-You can create a query with parameters and pass values for them from the corresponding HTTP request parameters. For more information, see [Queries with Parameters for CLI](../../interfaces/cli.md#cli-queries-with-parameters).
+You can create a query with parameters and pass values for them from the corresponding HTTP request parameters. For more information, see [Queries with Parameters for CLI](/interfaces/client#cli-queries-with-parameters).
 
 ### Example {#example-3}
 

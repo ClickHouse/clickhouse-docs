@@ -1,14 +1,14 @@
 ---
 slug: /guides/developer/deduplicating-inserts-on-retries
-title: '재시도 시 Insert 중복 제거'
-description: 'Insert 작업 재시도 시 중복 데이터를 방지'
+title: '재시도 시 삽입 중복 제거'
+description: '삽입 작업 재시도 시 중복 데이터를 방지'
 keywords: ['deduplication', 'deduplicate', 'insert retries', 'inserts']
 doc_type: 'guide'
 ---
 
-Insert 작업은 타임아웃과 같은 오류로 인해 실패할 수 있습니다. Insert가 실패한 경우, 데이터가 성공적으로 삽입되었는지는 확실하지 않을 수 있습니다. 이 가이드는 Insert 재시도 시 중복 제거를 활성화하여 동일한 데이터가 두 번 이상 삽입되지 않도록 하는 방법을 설명합니다.
+삽입 작업은 타임아웃과 같은 오류로 인해 실패할 수 있습니다. 삽입이 실패한 경우, 데이터가 성공적으로 삽입되었는지는 확실하지 않을 수 있습니다. 이 가이드는 삽입 재시도 시 중복 제거를 활성화하여 동일한 데이터가 두 번 이상 삽입되지 않도록 하는 방법을 설명합니다.
 
-Insert가 재시도되면 ClickHouse는 해당 데이터가 이미 성공적으로 삽입되었는지 판단하려고 합니다. 삽입된 데이터가 중복으로 식별되면 ClickHouse는 이를 대상 테이블에 삽입하지 않습니다. 그러나 사용자는 데이터가 정상적으로 삽입된 것과 마찬가지로 작업 성공 상태를 받게 됩니다.
+삽입이 재시도되면 ClickHouse는 해당 데이터가 이미 성공적으로 삽입되었는지 판단하려고 합니다. 삽입된 데이터가 중복으로 식별되면 ClickHouse는 이를 대상 테이블에 삽입하지 않습니다. 그러나 사용자는 데이터가 정상적으로 삽입된 것과 마찬가지로 작업 성공 상태를 받게 됩니다.
 
 ## 제한 사항 \{#limitations\}
 
@@ -119,7 +119,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
 │   2 │ B     │ all_1_1_0 │
@@ -134,7 +136,9 @@ SELECT
     _part
 FROM mv_dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
 │   0 │ B     │ all_1_1_0 │
@@ -154,18 +158,24 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
 │   2 │ B     │ all_1_1_0 │
 └─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
 │   0 │ B     │ all_1_1_0 │
@@ -173,7 +183,6 @@ ORDER by all;
 ```
 
 여기서는 삽입을 다시 시도했을 때 모든 데이터가 중복 제거되는 것을 확인할 수 있습니다. 중복 제거는 `dst` 테이블과 `mv_dst` 테이블 모두에 적용됩니다.
-
 
 ### 삽입 시 동일 블록 \{#identical-blocks-on-insertion\}
 
@@ -206,14 +215,15 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
 ```
 
 위와 같은 설정에서는 `select` 결과로 두 개의 블록이 생성되므로, 테이블 `dst`에는 두 개의 블록이 삽입되어야 합니다. 그러나 실제로는 테이블 `dst`에 하나의 블록만 삽입된 것을 확인할 수 있습니다. 이는 두 번째 블록이 중복 제거되었기 때문입니다. 두 블록은 동일한 데이터와, 삽입된 데이터로부터 해시로 계산되는 중복 제거 키 `block_id`를 공유합니다. 이러한 동작은 예상했던 것과 다릅니다. 이런 경우는 드물지만, 이론적으로는 발생할 수 있습니다. 이러한 경우를 올바르게 처리하려면, 사용자가 `insert_deduplication_token` 값을 지정해야 합니다. 다음 예제를 통해 이를 수정해 보겠습니다:
-
 
 ### 삽입 시 `insert_deduplication_token`을 사용한 동일 블록 처리 \{#identical-blocks-in-insertion-with-insert_deduplication_token\}
 
@@ -232,7 +242,7 @@ SET min_insert_block_size_rows=0;
 SET min_insert_block_size_bytes=0;
 ```
 
-데이터 삽입:
+삽입:
 
 ```sql
 INSERT INTO dst SELECT
@@ -247,7 +257,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -271,7 +283,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -295,7 +309,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -303,7 +319,6 @@ ORDER BY all;
 ```
 
 해당 삽입 작업은 삽입된 데이터가 서로 다르더라도 역시 중복 제거됩니다. `insert_deduplication_token`이 설정된 경우에는 이 값이 우선 적용된다는 점에 유의하십시오. 이때 ClickHouse는 데이터의 해시 합계를 사용하지 않습니다.
-
 
 ### materialized view의 기본 테이블에서 변환이 이뤄진 후에는 서로 다른 insert 작업도 동일한 데이터를 생성합니다 \{#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view\}
 
@@ -342,22 +357,30 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 └───────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 select 'second attempt';
 
 INSERT INTO dst VALUES (2, 'A');
@@ -368,19 +391,25 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 │ from dst   │   2 │ A     │ all_1_1_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
@@ -388,7 +417,6 @@ ORDER by all;
 ```
 
 매번 서로 다른 데이터를 삽입하지만 `mv_dst` 테이블에는 동일한 데이터가 삽입됩니다. 소스 데이터가 서로 달랐기 때문에 데이터는 중복 제거되지 않습니다.
-
 
 ### 여러 materialized view가 동일한 데이터를 하나의 기본 테이블에 삽입하는 경우 \{#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data\}
 
@@ -437,18 +465,24 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
@@ -468,18 +502,24 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │

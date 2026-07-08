@@ -1,14 +1,12 @@
 ---
-description: '在 macOS 系统上从源代码构建 ClickHouse 的指南'
+description: '在 macOS 系统上从源码构建 ClickHouse 的指南'
 sidebar_label: '在 macOS 上为 macOS 构建'
 sidebar_position: 15
 slug: /development/build-osx
 title: '在 macOS 上为 macOS 构建'
-keywords: ['MacOS', 'Mac', '构建']
+keywords: ['MacOS', 'Mac', 'build']
 doc_type: 'guide'
 ---
-
-# 如何在 macOS 上为 macOS 构建 ClickHouse \{#how-to-build-clickhouse-on-macos-for-macos\}
 
 :::info 本构建指南适用于修改 ClickHouse 本身的贡献者。
 如果你不更改 ClickHouse 源代码，则可以按照 [Quick Start](https://clickhouse.com/docs/get-started/quick-start) 中的说明安装预编译的 ClickHouse。

@@ -1,24 +1,25 @@
 ---
 slug: /cloud/managed-postgres/clickhouse-integration
-sidebar_label: 'ClickHouse integration'
-title: 'ClickHouse integration'
+sidebar_label: 'Sync to ClickHouse'
+title: 'Sync to ClickHouse'
 description: 'Replicate your Postgres data to ClickHouse using built-in CDC capabilities'
 keywords: ['postgres', 'clickhouse integration', 'cdc', 'replication', 'clickpipes', 'data sync']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
+import integrationReplicationSettings from '@site/static/images/managed-postgres/integration-replication-settings.png';
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.clickhouse-integration-beta" />
 
 Every Managed Postgres instance comes with built-in CDC capabilities to any of your ClickHouse services. This allows you to move some or all of the data on your Postgres instance to ClickHouse and have changes in data on Postgres be reflected on ClickHouse continuous and nearly real-time. This is powered by [ClickPipes](/integrations/clickpipes) under the hood.
 
-To access this, click on **ClickHouse Integration** in the sidebar of your Postgres instance.
+To access this, click on **Sync to ClickHouse** in the sidebar of your Postgres instance.
 
 <Image img={chIntegrationIntro} alt="ClickHouse integration landing page showing the integration option in the sidebar" size="md" border/>
 
@@ -43,6 +44,20 @@ Fill in the replication settings:
   - **CDC only**: Skip the initial snapshot and only capture new changes going forward
 
 <Image img={replicationServiceStep} alt="Replication service configuration showing integration name, destination service, and replication method options" size="md" border/>
+
+Click **Next** to proceed.
+
+## Configure replication settings {#replication-settings}
+
+Fine-tune how data is replicated:
+
+- **Sync interval (seconds)**: How often changes are pulled from Postgres (default: 60)
+- **Parallel threads for initial load**: Number of threads used during the initial snapshot (default: 4)
+- **Pull batch size**: Number of rows fetched per batch during replication (default: 100000)
+- **Snapshot number of rows per partition**: Rows per partition during the initial snapshot (default: 100000)
+- **Snapshot number of tables in parallel**: How many tables are snapshotted concurrently (default: 1)
+
+<Image img={integrationReplicationSettings} alt="Replication settings step showing sync interval, parallel threads, pull batch size, and snapshot configuration options" size="md" border/>
 
 Click **Next** to proceed.
 

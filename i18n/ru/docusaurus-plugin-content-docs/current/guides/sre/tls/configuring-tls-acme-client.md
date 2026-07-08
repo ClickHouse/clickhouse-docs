@@ -1,10 +1,10 @@
 ---
 slug: /guides/sre/configuring-tls-acme-client
-sidebar_label: 'Настройка автоматического получения сертификатов TLS через ACME'
+sidebar_label: 'Настройка автоматической выдачи TLS-сертификатов через ACME'
 sidebar_position: 20
-title: 'Настройка клиента ACME'
-description: 'В этом руководстве приведены простые и минимально необходимые настройки, позволяющие настроить ClickHouse на использование сертификатов OpenSSL для проверки подключений.'
-keywords: ['настройка ACME', 'настройка TLS', 'сертификаты OpenSSL', 'защищённые подключения', 'руководство для SRE', 'Let`s Encrypt']
+title: 'Настройка автоматической выдачи TLS-сертификатов через ACME'
+description: 'В этом руководстве приведены простые и минимально необходимые настройки, чтобы настроить ClickHouse на использование сертификатов OpenSSL для проверки соединений.'
+keywords: ['Конфигурация ACME', 'Настройка TLS', 'Сертификаты OpenSSL', 'Защищенные соединения', 'Руководство для SRE', 'Let`s Encrypt']
 doc_type: 'guide'
 ---
 
@@ -13,15 +13,12 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# Настройка автоматической выдачи TLS-сертификатов через ACME \{#configuring-automatic-tls-provisioning-via-acme\}
-
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SelfManaged />
 
 В этом руководстве описывается, как настроить ClickHouse для использования протокола [ACME](https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment) (описанного в [RFC8555](https://www.rfc-editor.org/rfc/rfc8555)).
-При наличии поддержки ACME ClickHouse может автоматически получать и продлевать сертификаты у провайдеров, таких как [Let's Encrypt](https://letsencrypt.org/) или [ZeroSSL](https://zerossl.com/).
+При наличии поддержки ACME ClickHouse может автоматически получать и продлевать сертификаты у провайдеров, таких как [Let&#39;s Encrypt](https://letsencrypt.org/) или [ZeroSSL](https://zerossl.com/).
 Шифрование TLS защищает данные, передаваемые между клиентами и серверами ClickHouse, предотвращая перехват конфиденциальных запросов и результатов.
 
 ## Обзор \{#overview\}

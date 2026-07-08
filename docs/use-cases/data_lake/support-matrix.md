@@ -170,11 +170,12 @@ The following catalogs are currently supported. Refer to each catalog's referenc
 
 | Catalog | Formats | Read | Create table | INSERT | Reference guide |
 |---------|---------|:-:|:-:|:-:|---------|
-| [AWS Glue](/use-cases/data-lake/glue-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [Glue catalog guide](/use-cases/data-lake/glue-catalog) |
-| [Databricks Unity](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ Experimental | ❌ | ❌ | [Unity catalog guide](/use-cases/data-lake/unity-catalog) |
+| [AWS Glue Catalog](/use-cases/data-lake/glue-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [Glue catalog guide](/use-cases/data-lake/glue-catalog) |
+| [BigLake Metastore](/use-cases/data-lake/biglake-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [BigLake Metastore guide](/use-cases/data-lake/biglake-catalog) |
+| [Databricks Unity Catalog](/use-cases/data-lake/unity-catalog) | Delta, Iceberg | ✅ Beta | ✅ Beta | ✅ Beta | [Unity Catalog guide](/use-cases/data-lake/unity-catalog) |
 | [Iceberg REST](/use-cases/data-lake/rest-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [REST catalog guide](/use-cases/data-lake/rest-catalog) |
-| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) | Iceberg | ✅ Experimental | ❌ | ❌ | [Lakekeeper catalog guide](/use-cases/data-lake/lakekeeper-catalog) |
+| [Lakekeeper](/use-cases/data-lake/lakekeeper-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [Lakekeeper catalog guide](/use-cases/data-lake/lakekeeper-catalog) |
 | [Project Nessie](/use-cases/data-lake/nessie-catalog) | Iceberg | ✅ Experimental | ❌ | ❌ | [Nessie catalog guide](/use-cases/data-lake/nessie-catalog) |
-| [Microsoft OneLake](/use-cases/data-lake/onelake-catalog) | Iceberg | ✅ Beta | ❌ | ❌ | [OneLake catalog guide](/use-cases/data-lake/onelake-catalog) |
+| [Microsoft OneLake](/use-cases/data-lake/onelake-catalog) | Iceberg | ✅ Beta | ✅ Beta | ✅ Beta | [OneLake catalog guide](/use-cases/data-lake/onelake-catalog) |
 
-All catalog integrations currently require an experimental or beta setting to be enabled and expose **read-only** access — tables can be queried but not created or written to through the catalog connection. To load data from a catalog into ClickHouse for faster analytics, use `INSERT INTO SELECT` as described in the [accelerating analytics guide](/use-cases/data-lake/getting-started/accelerating-analytics). To write data back to open table formats, create standalone Iceberg tables as described in the [writing data guide](/use-cases/data-lake/getting-started/writing-data).
+All catalog integrations currently require an experimental or beta setting to be enabled. With the exception of Microsoft OneLake and Databricks Unity Catalog, all catalogs expose **read-only** access — tables can be queried but not created or written to through the catalog connection. To load data from a catalog into ClickHouse for faster analytics, use `INSERT INTO SELECT` as described in the [accelerating analytics guide](/use-cases/data-lake/getting-started/accelerating-analytics). To write data back to open table formats, create standalone Iceberg tables as described in the [writing data guide](/use-cases/data-lake/getting-started/writing-data).

@@ -10,7 +10,6 @@ keywords: ['systemd', 'journald', 'journal', 'OTEL', 'ClickStack', 'system logs'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/systemd/finish-import-systemd.png';
@@ -19,11 +18,8 @@ import search_view from '@site/static/images/clickstack/systemd/systemd-search-v
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack による systemd ログの監視 \{#systemd-logs-clickstack\}
-
 :::note[TL;DR]
-OpenTelemetry コレクターの journald receiver を使用して、ClickStack で systemd ジャーナルログを収集・可視化します。デモ用データセットと事前構築済みダッシュボードが含まれています。
+OpenTelemetry Collector の journald receiver を使用して、ClickStack で systemd のジャーナルログを収集・可視化します。デモ用データセットと構築済みダッシュボードが含まれています。
 :::
 
 ## 既存システムとの統合 \{#existing-systems\}
@@ -287,7 +283,7 @@ ClickStack で systemd ログの監視をスムーズに開始できるように
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/systemd-logs-dashboard.json')} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">ダウンロード</TrackedLink> ダッシュボード設定 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/systemd-logs-dashboard.json'} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">ダウンロード</TrackedLink> ダッシュボード設定 \{#download\}
 
 #### 事前構成済みダッシュボードをインポートする \{#import-dashboard\}
 

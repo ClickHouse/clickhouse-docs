@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/unity-catalog
-sidebar_label: 'Unity catalog'
-title: 'Unity catalog'
+sidebar_label: 'Unity Catalog'
+title: 'Unity Catalog'
 pagination_prev: null
 pagination_next: null
 description: 'In this guide, we will walk you through the steps to query
@@ -69,7 +69,9 @@ Now that the connection is in place, you can start querying via the Unity catalo
 USE unity;
 
 SHOW TABLES;
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ clickbench.delta_hits                              │
 │ demo.fake_user                                     │
@@ -107,7 +109,9 @@ SHOW TABLES;
 
 ```sql
 SHOW TABLES
+```
 
+```response
 ┌─name───────────────┐
 │ uniform.delta_hits │
 └────────────────────┘

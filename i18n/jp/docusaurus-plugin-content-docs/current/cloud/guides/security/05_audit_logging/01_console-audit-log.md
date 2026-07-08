@@ -12,10 +12,7 @@ import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png
 import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png';
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
-
-# コンソール監査ログ \{#console-audit-log\}
-
-コンソール上での操作は監査ログに記録されます。Admin または Developer の組織ロールを持つユーザーは、監査ログを確認したり、ログ収集システムと連携したりできます。
+コンソールでのアクティビティは監査ログに記録されます。組織ロールがAdminまたはDeveloperであれば、このログを確認し、お使いのログシステムと統合できます。
 
 ## ユーザーインターフェースからコンソール監査ログにアクセスする \{#console-audit-log-ui\}
 

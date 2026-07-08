@@ -1,13 +1,11 @@
 ---
-description: '详细介绍 ClickHouse 查询分析器的页面'
+description: '介绍 ClickHouse 查询分析器的页面'
 keywords: ['分析器']
 sidebar_label: '分析器'
 slug: /operations/analyzer
 title: '分析器'
 doc_type: 'reference'
 ---
-
-# 分析器 \{#analyzer\}
 
 在 ClickHouse `24.3` 版本中，新的查询分析器默认启用。
 您可以在[此处](/guides/developer/understanding-query-execution-with-the-analyzer#analyzer)阅读其工作原理的更多细节。

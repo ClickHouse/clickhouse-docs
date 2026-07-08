@@ -2,7 +2,7 @@
 sidebar_label: 'Review and restore backups'
 sidebar_position: 0
 slug: /cloud/manage/backups/overview
-title: 'Overview'
+title: 'Review and restore backups'
 keywords: ['backups', 'cloud backups', 'restore']
 description: 'Provides an overview of backups in ClickHouse Cloud'
 doc_type: 'guide'
@@ -16,8 +16,6 @@ import backup_status_list from '@site/static/images/cloud/manage/backup-status-l
 import backup_usage from '@site/static/images/cloud/manage/backup-usage.png';
 import backup_restore from '@site/static/images/cloud/manage/backup-restore.png';
 import backup_service_provisioning from '@site/static/images/cloud/manage/backup-service-provisioning.png';
-
-# Review and restore backups
 
 This guide covers how backups work in ClickHouse Cloud, what options you have to configure backups for your service, and how to restore from a backup.
 
@@ -38,10 +36,10 @@ To understand the backup cost, you can view the backup cost per service from the
 
 <Image img={backup_usage} size="md" alt="Backup usage chart in ClickHouse Cloud" border/>
 
-Estimating the total cost for your backups requires you to set a schedule. We're also working on updating our [pricing calculator](https://clickhouse.com/pricing), so you can get a monthly cost estimate before setting a schedule. You will need to provide the following inputs in order to estimate the cost:
+Estimating the total cost for your backups requires you to set a schedule. Before setting a schedule, you can use the [pricing calculator](https://clickhouse.com/pricing) to obtain a monthly cost estimate by providing the following inputs:
 - Size of the full and incremental backups
-- Desired frequency
-- Desired retention
+- Desired backup frequency
+- Desired backup retention
 - Cloud provider and region
 
 :::note

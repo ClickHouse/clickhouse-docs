@@ -1,20 +1,18 @@
 ---
-sidebar_label: '存储过程与查询参数'
+sidebar_label: '存储过程和查询参数'
 sidebar_position: 19
-keywords: ['clickhouse', '存储过程', '预编译语句', '查询参数', 'UDF', '参数化视图']
-description: '关于 ClickHouse 中存储过程、预编译语句和查询参数的指南'
+keywords: ['clickhouse', '存储过程', '预处理语句', '查询参数', 'UDF', '参数化视图']
+description: '关于 ClickHouse 中存储过程、预处理语句和查询参数的指南'
 slug: /guides/developer/stored-procedures-and-prepared-statements
-title: '存储过程与查询参数'
+title: 'ClickHouse 中的存储过程和查询参数'
 doc_type: 'guide'
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# ClickHouse 中的存储过程和查询参数 \{#stored-procedures-and-query-parameters-in-clickhouse\}
-
-如果你之前使用的是传统关系型数据库，可能会在 ClickHouse 中寻找存储过程和预处理语句（prepared statements）。
-本指南将解释 ClickHouse 对这些概念的处理方式，并提供推荐的替代方案。
+如果您习惯使用传统的关系型数据库，可能会想在 ClickHouse 中寻找存储过程和预处理语句。
+本指南将说明 ClickHouse 如何处理这些概念，并提供推荐的替代方案。
 
 ## ClickHouse 中存储过程的替代方案 \{#alternatives-to-stored-procedures\}
 

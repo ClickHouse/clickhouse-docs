@@ -2,7 +2,7 @@
 sidebar_label: 'LDAP 구성'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: '인증 및 역할 매핑에 LDAP를 사용하도록 ClickHouse 구성하기'
+title: '인증 및 역할 매핑을 위해 ClickHouse에서 LDAP 구성하기'
 description: '인증 및 역할 매핑에 LDAP를 사용하도록 ClickHouse를 구성하는 방법을 설명합니다'
 keywords: ['LDAP 구성', 'LDAP 인증', '역할 매핑', '사용자 관리', 'SRE 가이드']
 doc_type: 'guide'
@@ -10,12 +10,9 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# 인증 및 역할 매핑을 위해 ClickHouse에서 LDAP 구성하기 \{#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping\}
-
 <SelfManaged />
 
-ClickHouse는 LDAP를 사용하여 ClickHouse 데이터베이스 사용자를 인증하도록 구성할 수 있습니다. 이 가이드는 공개적으로 사용 가능한 디렉터리에 대해 인증을 수행하는 LDAP 시스템과 ClickHouse를 통합하는 간단한 예시를 제공합니다.
+ClickHouse는 LDAP를 사용하여 ClickHouse 데이터베이스 사용자를 인증하도록 구성할 수 있습니다. 이 가이드에서는 공개적으로 사용 가능한 디렉터리에 대해 인증하는 LDAP 시스템과 ClickHouse를 통합하는 간단한 예시를 제공합니다.
 
 <VerticalStepper headerLevel="h2">
   ## ClickHouse에서 LDAP 연결 설정 구성

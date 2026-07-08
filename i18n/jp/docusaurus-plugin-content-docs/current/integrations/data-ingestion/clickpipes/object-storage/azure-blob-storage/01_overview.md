@@ -1,18 +1,18 @@
 ---
-sidebar_label: '概要'
-description: 'オブジェクトストレージを ClickHouse Cloud とシームレスに接続します。'
+sidebar_label: "概要"
+description: "オブジェクトストレージを ClickHouse Cloud とシームレスに接続します。"
 slug: /integrations/clickpipes/object-storage/abs/overview
 sidebar_position: 1
-title: 'Azure Blob Storage と ClickHouse Cloud の統合'
-doc_type: 'guide'
+title: "Azure Blob Storage と ClickHouse Cloud の統合"
+doc_type: "guide"
 ---
 
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import Image from '@theme/IdealImage';
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import Image from "@theme/IdealImage"
 
-ABS ClickPipe は、Azure Blob Storage から ClickHouse Cloud へデータを取り込むための、フルマネージドで高い耐障害性を備えた手段を提供します。**ワンタイム インジェスト**と**継続的インジェスト**の両方を、厳密な 1 回限りのセマンティクスでサポートします。
+ABS ClickPipe は、Azure Blob Storage から ClickHouse Cloud へデータを取り込むための、フルマネージドで高い耐障害性を備えた手段を提供します。**ワンタイム インジェスト**と**継続的インジェスト**の両方を、exactly-once セマンティクスでサポートします。
 
-ABS ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) や [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) を使用してプログラムから管理することもできます。
+ABS ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムから管理することもできます。
 
 ## 対応フォーマット \{#supported-formats\}
 
@@ -152,7 +152,7 @@ ClickPipes は、ほとんどのユースケースの要件を満たす適切な
 
 ### スケーリング \{#scaling\}
 
-Object Storage ClickPipes は、[設定済みの垂直オートスケーリング設定](/manage/scaling#configuring-vertical-auto-scaling)によって決定される ClickHouse サービスの最小サイズを基準にスケールされます。ClickPipe のサイズは、パイプを作成した時点で決まります。その後に ClickHouse サービスの設定を変更しても、ClickPipe のサイズは変わりません。
+Object Storage ClickPipes は、[設定済みの垂直オートスケーリング設定](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)によって決定される ClickHouse サービスの最小サイズを基準にスケールされます。ClickPipe のサイズは、パイプを作成した時点で決まります。その後に ClickHouse サービスの設定を変更しても、ClickPipe のサイズは変わりません。
 
 大規模な取り込みジョブのスループットを高めるには、ClickPipe を作成する前に ClickHouse サービスをスケールアップしておくことを推奨します。
 

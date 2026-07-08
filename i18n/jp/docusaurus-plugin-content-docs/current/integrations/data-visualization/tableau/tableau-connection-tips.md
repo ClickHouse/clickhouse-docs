@@ -14,10 +14,7 @@ integration:
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-
-# 接続のヒント \{#connection-tips\}
-
-<ClickHouseSupportedBadge/>
+<ClickHouseSupportedBadge />
 
 ## Initial SQL タブ \{#initial-sql-tab\}
 

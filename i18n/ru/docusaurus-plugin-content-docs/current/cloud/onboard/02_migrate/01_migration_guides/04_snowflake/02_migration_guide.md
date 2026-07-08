@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'Руководство по миграции'
 slug: /migrations/snowflake
-description: 'Миграция с Snowflake на ClickHouse'
+description: 'Миграция из Snowflake в ClickHouse'
 keywords: ['Snowflake']
-title: 'Миграция с Snowflake на ClickHouse'
+title: 'Миграция из Snowflake в ClickHouse'
 show_related_blogs: false
 doc_type: 'guide'
 ---
@@ -11,14 +11,11 @@ doc_type: 'guide'
 import migrate_snowflake_clickhouse from '@site/static/images/migrations/migrate_snowflake_clickhouse.png';
 import Image from '@theme/IdealImage';
 
-
-# Миграция из Snowflake в ClickHouse \{#migrate-from-snowflake-to-clickhouse\}
-
 > В этом руководстве описывается, как перенести данные из Snowflake в ClickHouse.
 
 Для миграции данных между Snowflake и ClickHouse необходимо использовать объектное хранилище,
-например S3, в качестве промежуточного хранилища для передачи данных. Процесс миграции также 
-предполагает использование команд `COPY INTO` в Snowflake и `INSERT INTO SELECT` 
+например S3, в качестве промежуточного хранилища для передачи данных. Процесс миграции также
+предполагает использование команд `COPY INTO` в Snowflake и `INSERT INTO SELECT`
 в ClickHouse.
 
 <VerticalStepper headerLevel="h2">

@@ -3,12 +3,8 @@ description: 'DISTINCT 절 문서'
 sidebar_label: 'DISTINCT'
 slug: /sql-reference/statements/select/distinct
 title: 'DISTINCT 절'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-
-
-# DISTINCT 절 \{#distinct-clause\}
 
 `SELECT DISTINCT`를 지정하면 쿼리 결과에는 중복되지 않는 행만 남습니다. 따라서 결과에서 서로 완전히 동일한 행들의 각 집합마다 단일 행만 남게 됩니다.
 
@@ -55,7 +51,6 @@ SELECT DISTINCT ON (a,b) * FROM t1;
 │ 1 │ 2 │ 2 │
 └───┴───┴───┘
 ```
-
 
 ## DISTINCT와 ORDER BY \{#distinct-and-order-by\}
 
@@ -104,17 +99,14 @@ SELECT DISTINCT a FROM t1 ORDER BY b DESC;
 
 쿼리를 작성할 때 이러한 구현상의 특성을 고려하십시오.
 
-
 ## Null 처리 \{#null-processing\}
 
 `DISTINCT`는 [NULL](/sql-reference/syntax#null)을 하나의 특정 값으로 간주하여 `NULL==NULL`인 것처럼 동작합니다. 즉, `DISTINCT` 결과에서는 `NULL`이 포함된 서로 다른 조합이 각각 한 번씩만 나타납니다. 이는 대부분의 다른 문맥에서의 `NULL` 처리와는 다릅니다.
-
-
 
 ## 대안 \{#alternatives\}
 
 `SELECT` 절에 지정된 것과 동일한 값 집합에 대해 [GROUP BY](/sql-reference/statements/select/group-by)를 적용하고, 어떤 집계 함수도 사용하지 않아도 동일한 결과를 얻을 수 있습니다. 그러나 `GROUP BY` 방식과는 몇 가지 차이점이 있습니다.
 
-- `DISTINCT`는 `GROUP BY`와 함께 적용할 수 있습니다.
-- [ORDER BY](../../../sql-reference/statements/select/order-by.md)가 생략되고 [LIMIT](../../../sql-reference/statements/select/limit.md)이 정의된 경우, 필요한 개수의 서로 다른 행이 읽히는 즉시 쿼리 실행이 중지됩니다.
-- 전체 쿼리 실행이 끝날 때까지 기다리지 않고, 데이터 블록이 처리되는 대로 출력됩니다.
+* `DISTINCT`는 `GROUP BY`와 함께 적용할 수 있습니다.
+* [ORDER BY](../../../sql-reference/statements/select/order-by.md)가 생략되고 [LIMIT](../../../sql-reference/statements/select/limit.md)이 정의된 경우, 필요한 개수의 서로 다른 행이 읽히는 즉시 쿼리 실행이 중지됩니다.
+* 전체 쿼리 실행이 끝날 때까지 기다리지 않고, 데이터 블록이 처리되는 대로 출력됩니다.

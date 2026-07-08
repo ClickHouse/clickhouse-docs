@@ -7,8 +7,6 @@ sidebar_label: 'countIf'
 doc_type: 'reference'
 ---
 
-# countIf \{#countif\}
-
 ## 설명 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) 조합자는 [`count`](/sql-reference/aggregate-functions/reference/count)

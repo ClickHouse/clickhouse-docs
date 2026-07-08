@@ -7,7 +7,6 @@ keywords: ['production readiness', 'enterprise', 'saml', 'sso', 'terraform', 'mo
 doc_type: 'guide'
 ---
 
-# ClickHouse Cloud Production Readiness Guide {#production-readiness}
 
 For organizations who have completed the quick start guide and have an active service with data flowing
 
@@ -89,7 +88,7 @@ Configure quotas, limits, and settings profiles to manage resource usage for dif
 
 ### User lifecycle management limitations {#user-lifecycle-management}
 
-ClickHouse Cloud doesn't currently support SCIM or automated provisioning/deprovisioning via identity providers. Users must be manually removed from the ClickHouse Cloud console after being removed from your IdP. Plan for manual user management processes until these features become available.
+ClickHouse Cloud supports [SCIM provisioning](/cloud/security/scim-setup) in private preview, with support for Okta. SCIM automates user and group lifecycle management, so users are created and removed automatically as you assign or unassign them in your identity provider. If you aren't using SCIM, users must be manually removed from the ClickHouse Cloud console after being removed from your IdP — plan for manual user management processes in that case.
 
 Learn more about [Cloud Access Management](/cloud/security/cloud_access_management) and [SAML SSO setup](/cloud/security/saml-setup).
 
@@ -171,7 +170,7 @@ Establishing backup validation procedures and support integration ensures your C
 
 ### Backup strategy assessment {#backup-strategy}
 
-ClickHouse Cloud provides automatic backups with configurable retention periods. Assess your current backup configuration against compliance and recovery requirements. Enterprise customers with specific compliance requirements around backup location or encryption can configure ClickHouse Cloud to store backups in their own cloud storage buckets (BYOB). Contact ClickHouse support for BYOB configuration.
+ClickHouse Cloud provides automatic backups with configurable retention periods. Assess your current backup configuration against compliance and recovery requirements. If you have specific compliance requirements around backup location or encryption, you can configure ClickHouse Cloud to store backups in your own cloud storage buckets (BYOB). Contact ClickHouse support for BYOB configuration.
 
 ### Validate and test recovery procedures {#validate-test-recovery}
 

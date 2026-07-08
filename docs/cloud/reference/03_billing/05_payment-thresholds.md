@@ -13,11 +13,10 @@ import billing_2 from '@site/static/images/cloud/reference/billing_payment_thres
 
 ## Payment thresholds {#threshholds}
 
-If you are a pay as you go customer and your amount due in a billing period for ClickHouse Cloud reaches $10,000 USD or the equivalent value, your payment method configured to your organization will be automatically charged. 
+If you are a pay as you go customer and your amount due in a billing period for ClickHouse Cloud reaches $1,000 USD or the equivalent value, your payment method configured to your organization will be automatically charged.
 
 :::tip
-This default payment threshold amount can be adjusted below $10,000.
-If you wish to do so, [contact support](mailto:support@clickhouse.com).
+Upon the first successful invoice payment, the threshold is raised to \$5,000 USD. A second successful invoice payment raises the threshold to \$10,000 USD. If you wish to adjust your payment threshold amount, [contact support](mailto:support@clickhouse.com). 
 :::
 
 A failed charge will result in the suspension of your services after a 14 day grace period.
@@ -32,7 +31,7 @@ In the example below, the Billing UI in cloud console is shown:
 
 <Image img={billing_2} size="lg" alt="Bill"/>
 
-As you can see from the above example - there was a threshold invoice sent during the Feb 28-March 31 billing period and then there is another invoice sent during the same billing period for the remaining usage over $10,000.
+As you can see from the above example - there was a threshold invoice sent during the Feb 28-March 31 billing period and then there is another invoice sent during the same billing period for the remaining usage over $1,000.
 
 ## Payment threshold notifications {#threshholds-notifications}
 
@@ -40,5 +39,5 @@ If your organization reaches 90% of the payment threshold and is on-track to exc
 You will also receive an email notification as well as an invoice when you exceed the payment threshold.
 
 :::note
-Payment threshold notifications are not currently supported for PAYG orgs
+Payment threshold notifications are currently only supported for orgs being billed in arrears (PAYG)
 :::

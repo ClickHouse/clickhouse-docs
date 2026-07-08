@@ -2,7 +2,7 @@
 sidebar_label: 'Amazon RDS Postgres'
 description: '将 Amazon RDS Postgres 设置为 ClickPipes 的数据源'
 slug: /integrations/clickpipes/postgres/source/rds
-title: 'RDS Postgres 源设置指南'
+title: 'RDS Postgres 源配置指南'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
 integration:
@@ -12,15 +12,11 @@ integration:
 
 import parameter_group_in_blade from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/parameter_group_in_blade.png';
 import change_rds_logical_replication from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_rds_logical_replication.png';
-import change_wal_sender_timeout from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/change_wal_sender_timeout.png';
 import modify_parameter_group from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/modify_parameter_group.png';
 import reboot_rds from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/reboot_rds.png';
 import security_group_in_rds_postgres from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/security_group_in_rds_postgres.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
-
-
-# RDS Postgres 源配置指南 \{#rds-postgres-source-setup-guide\}
 
 ## 支持的 Postgres 版本 \{#supported-postgres-versions\}
 
@@ -31,9 +27,8 @@ ClickPipes 支持 Postgres 12 及更高版本。
 如果您的 RDS 实例已经配置了以下设置，可以跳过本节：
 
 * `rds.logical_replication = 1`
-* `wal_sender_timeout = 0`
 
-如果您之前已经使用过其他数据复制工具，这些设置通常已经预先配置好。
+如果您之前已经使用过其他数据复制工具，此设置通常已经预先配置好。
 
 ```text
 postgres=> SHOW rds.logical_replication ;
@@ -41,25 +36,16 @@ postgres=> SHOW rds.logical_replication ;
 -------------------------
  on
 (1 row)
-
-postgres=> SHOW wal_sender_timeout ;
- wal_sender_timeout
---------------------
- 0
-(1 row)
 ```
 
 如果尚未完成配置，请按照以下步骤操作：
 
 1. 针对您的 Postgres 版本创建一个新的参数组，并配置以下必需参数：
    * 将 `rds.logical_replication` 设置为 1
-   * 将 `wal_sender_timeout` 设置为 0
 
 <Image img={parameter_group_in_blade} alt="在 RDS 中在哪里找到参数组？" size="lg" border />
 
 <Image img={change_rds_logical_replication} alt="修改 rds.logical_replication" size="lg" border />
-
-<Image img={change_wal_sender_timeout} alt="修改 wal_sender_timeout" size="lg" border />
 
 2. 将新的参数组应用到您的 RDS Postgres 数据库
 
@@ -68,7 +54,6 @@ postgres=> SHOW wal_sender_timeout ;
 3. 重启您的 RDS 实例以应用更改
 
 <Image img={reboot_rds} alt="重启 RDS Postgres" size="lg" border />
-
 
 ## 配置数据库用户 \{#configure-database-user\}
 

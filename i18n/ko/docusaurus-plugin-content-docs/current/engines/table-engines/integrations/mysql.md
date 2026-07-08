@@ -7,8 +7,6 @@ title: 'MySQL 테이블 엔진'
 doc_type: 'reference'
 ---
 
-# MySQL 테이블 엔진 \{#mysql-table-engine\}
-
 MySQL 엔진을 사용하면 원격 MySQL 서버에 저장된 데이터에 대해 `SELECT` 및 `INSERT` 쿼리를 실행할 수 있습니다.
 
 ## 테이블 생성 \{#creating-a-table\}

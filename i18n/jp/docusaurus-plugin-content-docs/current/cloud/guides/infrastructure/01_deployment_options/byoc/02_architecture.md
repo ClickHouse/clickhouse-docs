@@ -9,31 +9,50 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 import byoc1 from '@site/static/images/cloud/reference/byoc-1.png';
+import BYOCOrgHierarchy from '@site/static/images/cloud/reference/byoc-organization-hierarchy.svg';
 
 
-## 用語集 \{#glossary\}
+## 主要な概念 \{#key-concepts\}
 
-- **ClickHouse VPC:** ClickHouse Cloud が所有する VPC。
-- **Customer BYOC VPC:** 顧客のクラウドアカウントが所有する VPC で、ClickHouse Cloud によってプロビジョニングおよび管理され、ClickHouse Cloud の BYOC デプロイメント専用となるもの。
-- **Customer VPC:** 顧客のクラウドアカウントが所有する VPC のうち、Customer BYOC VPC への接続が必要なアプリケーションで使用されるその他の VPC。
+以下の図は、ClickHouse Cloud の Organization、クラウドアカウント、BYOC インフラストラクチャ の相互関係を示しています。
 
-## アーキテクチャ \{#architecture\}
-
-BYOC は、ClickHouse VPC 内で動作する **ClickHouse コントロールプレーン** と、利用者のクラウドアカウント内でのみ動作する **データプレーン** を分離します。ClickHouse VPC には、ClickHouse Cloud Console、認証およびユーザー管理、API、課金機能に加えて、BYOC コントローラーやアラート／インシデント管理ツールなどのインフラストラクチャ管理コンポーネントがホストされます。これらのサービスはデプロイメントをオーケストレーションおよび監視しますが、データそのものを保存することはありません。
-
-**Customer BYOC VPC** 内では、ClickHouse は ClickHouse データプレーンを実行する Kubernetes クラスター（例: Amazon EKS）をプロビジョニングします。図に示すように、ここには ClickHouse クラスター本体、ClickHouse Operator、イングレス、DNS、証明書管理、state exporter および scraper といった補助サービスが含まれます。専用のモニタリングスタック（Prometheus、Grafana、Alertmanager、Thanos）も VPC 内で動作し、メトリクスおよびアラートが利用者の環境内から発生し、その中にとどまることを保証します。
+<BYOCOrgHierarchy style={{width: '100%', maxWidth: '960px'}} title="Organization、クラウドアカウント、region、BYOC インフラストラクチャ の関係を示す BYOC organization の階層" />
 
 <br />
 
-<Image img={byoc1} size="lg" alt="BYOC アーキテクチャ" background='black'/>
+* **ClickHouse Cloud organization:** ユーザー、請求、および BYOC 以外の ClickHouse サービスを管理する ClickHouse Cloud の最上位エンティティです。1 つの Organization に属するユーザーは、標準の Cloud サービスと BYOC サービスの両方にアクセスできます。
+* **ClickHouse BYOC organization:** BYOC デプロイメントの管理専用の別個の Organization です。Cloud Organization とユーザーを共有しますが、BYOC インフラストラクチャ のデプロイ先となる 1 つ以上の クラウドアカウント に関連付けられています。
+* **Cloud account / project:** BYOC インフラストラクチャ がプロビジョニングされる、顧客所有の AWS account または GCP project です。各 account または project では、1 つ以上の region で BYOC デプロイメントをホストできます。分離のため、BYOC デプロイメントごとに専用の account または project を使用することを推奨します。
+* **BYOC infrastructure:** クラウドアカウント 内の特定の region にデプロイされるクラウドリソース一式で、VPC、Kubernetes クラスター (EKS/GKE)、storage bucket、IAM ロール、および関連サービスが含まれます。1 つの クラウドアカウント に、異なる region にまたがる複数の BYOC インフラストラクチャ を含めることができます。
+* **ClickHouse Service:** BYOC インフラストラクチャ 内で稼働する個別の ClickHouse クラスターです。同じ BYOC インフラストラクチャ 内で複数の service を実行できます。
+
+:::note
+同じ organization 配下で AWS accounts と GCP projects を混在させられるのは、[cloud service provider marketplace](/cloud/marketplace/marketplace-billing) 経由でセットアップされていない顧客に限られます。
+:::"
+
+## 用語集 \{#glossary\}
+
+* **ClickHouse VPC:** ClickHouse Cloud が所有する VPC。
+* **Customer BYOC VPC:** 顧客のクラウドアカウントが所有する VPC で、ClickHouse Cloud によってプロビジョニングおよび管理され、ClickHouse Cloud の BYOC デプロイメント専用となるもの。
+* **Customer VPC:** 顧客のクラウドアカウントが所有する VPC のうち、Customer BYOC VPC への接続が必要なアプリケーションで使用されるその他の VPC。
+
+## 技術アーキテクチャ \{#architecture\}
+
+BYOC は、ClickHouse VPC 内で動作する **ClickHouse コントロールプレーン** と、利用者のクラウドアカウント内でのみ動作する **データプレーン** を分離します。ClickHouse VPC には、ClickHouse Cloud Console、認証およびユーザー管理、API、課金機能に加えて、BYOC コントローラーやアラート／インシデント管理ツールなどのインフラストラクチャ管理コンポーネントがホストされます。これらのサービスはデプロイメントをオーケストレーションおよび監視しますが、データそのものを保存することはありません。
+
+**Customer BYOC VPC** 内では、ClickHouse は ClickHouse データプレーンを実行する Kubernetes クラスター (例: Amazon EKS) をプロビジョニングします。図に示すように、ここには ClickHouse クラスター本体、ClickHouse オペレーター、イングレス、DNS、証明書管理、state exporter および scraper といった補助サービスが含まれます。専用のモニタリングスタック (Prometheus、Grafana、Alertmanager、Thanos) も VPC 内で動作し、メトリクスおよびアラートが利用者の環境内から発生し、その中にとどまることを保証します。
+
+<br />
+
+<Image img={byoc1} size="lg" alt="BYOC アーキテクチャ" background="black" />
 
 <br />
 
 ClickHouse Cloud がアカウント内にデプロイする主なクラウドリソースは次のとおりです:
 
-* **VPC:** ClickHouse デプロイメント専用の Virtual Private Cloud です。これは ClickHouse または利用者（顧客）のいずれかが管理でき、通常はアプリケーション VPC とピアリングされます。
+* **VPC:** ClickHouse デプロイメント専用の Virtual Private Cloud です。これは ClickHouse または利用者 (顧客) のいずれかが管理でき、通常はアプリケーション VPC とピアリングされます。
 * **IAM ロールとポリシー:** Kubernetes、ClickHouse サービス、およびモニタリングスタックに必要なロールと権限です。これらは ClickHouse がプロビジョニングすることも、顧客側で用意することもできます。
-* **ストレージバケット:** パーツ、バックアップ、そして（任意で）長期保存用のメトリクスおよびログアーカイブを保存するために使用されます。
+* **ストレージバケット:** パーツ、バックアップ、そして (任意で) 長期保存用のメトリクスおよびログアーカイブを保存するために使用されます。
 * **Kubernetes クラスター:** クラウドプロバイダーに応じて、Amazon EKS、Google GKE、または Azure AKS となり、アーキテクチャ図に示されている ClickHouse サーバーおよび補助サービスをホストします。
 
 デフォルトでは、ClickHouse Cloud は新しい専用 VPC をプロビジョニングし、Kubernetes サービスの安全な運用を保証するために必要な IAM ロールを設定します。高度なネットワーキングまたはセキュリティ要件を持つ組織向けには、VPC と IAM ロールを独自に管理するオプションも用意されています。このアプローチにより、ネットワーク構成をより柔軟にカスタマイズでき、権限をより厳密に制御できます。ただし、これらのリソースを自前で管理することを選択した場合、運用上の責任は増大します。
@@ -44,7 +63,7 @@ ClickHouse Cloud がアカウント内にデプロイする主なクラウドリ
 
 ### コントロールプレーン通信 \{#control-plane-communication\}
 
-ClickHouse VPC は、構成変更、ヘルスチェック、デプロイメントコマンドなどのサービス管理操作のために、HTTPS（ポート 443）経由でユーザーの BYOC VPC と通信します。このトラフィックには、オーケストレーション用のコントロールプレーンデータのみが含まれます。重要なテレメトリおよびアラートは、リソース使用状況および健全性の監視を行うために、ユーザーの BYOC VPC から ClickHouse VPC へ送信されます。
+ClickHouse VPC は、構成変更、ヘルスチェック、デプロイメントコマンドなどのサービス管理操作のために、HTTPS (ポート 443) 経由でユーザーの BYOC VPC と通信します。このトラフィックには、オーケストレーション用のコントロールプレーンデータのみが含まれます。重要なテレメトリおよびアラートは、リソース使用状況および健全性の監視を行うために、ユーザーの BYOC VPC から ClickHouse VPC へ送信されます。
 
 ## BYOC の主な要件 \{#key-requirements\}
 
@@ -54,13 +73,13 @@ BYOC デプロイメントモデルでは、信頼性の高い運用、保守の
 
 ClickHouse Cloud は、お客様のクラウドアカウント内でリソースをプロビジョニングおよび管理するために、アカウント間の IAM 権限を必要とします。これにより ClickHouse は次のことが可能になります。
 
-- **インフラストラクチャのプロビジョニング**: VPC、サブネット、セキュリティグループ、その他のネットワークコンポーネントを作成および構成
-- **Kubernetes クラスターの管理**: EKS/GKE クラスター、ノードグループ、およびクラスターコンポーネントをデプロイおよび管理
-- **ストレージリソースの作成**: データおよびバックアップ用の S3 バケットまたは同等のオブジェクトストレージをプロビジョニング
-- **IAM ロールの管理**: Kubernetes のサービスアカウントおよび周辺サービス用の IAM ロールを作成および構成
-- **周辺サービスの運用**: 監視スタック、イングレスコントローラー、およびその他のインフラストラクチャコンポーネントをデプロイおよび管理
+* **インフラストラクチャのプロビジョニング**: VPC、サブネット、セキュリティグループ、その他のネットワークコンポーネントを作成および構成
+* **Kubernetes クラスターの管理**: EKS/GKE クラスター、ノードグループ、およびクラスターコンポーネントをデプロイおよび管理
+* **ストレージリソースの作成**: データおよびバックアップ用の S3 バケットまたは同等のオブジェクトストレージをプロビジョニング
+* **IAM ロールの管理**: Kubernetes のサービスアカウントおよび周辺サービス用の IAM ロールを作成および構成
+* **周辺サービスの運用**: モニタリングスタック、イングレスコントローラー、およびその他のインフラストラクチャコンポーネントをデプロイおよび管理
 
-これらの権限は、初回のオンボーディングプロセス中に作成するアカウント間 IAM ロール（AWS）またはサービスアカウント（GCP）を通じて付与されます。このロールは最小権限の原則に従い、BYOC の運用に必要な範囲にのみ権限が付与されます。
+これらの権限は、初回のオンボーディングプロセス中に作成するアカウント間 IAM ロール (AWS) またはサービスアカウント (GCP) を通じて付与されます。このロールは最小権限の原則に従い、BYOC の運用に必要な範囲にのみ権限が付与されます。
 
 必要となる具体的な権限の詳細については、[BYOC 権限リファレンス](/cloud/reference/byoc/reference/privilege)を参照してください。
 

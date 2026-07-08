@@ -1,20 +1,18 @@
 ---
-sidebar_label: '정규식과 Template'
+sidebar_label: 'Regex와 Template'
 sidebar_position: 3
 slug: /integrations/data-formats/templates-regexp
-title: 'ClickHouse에서 Template과 Regex를 사용하여 사용자 정의 텍스트 데이터 가져오기 및 내보내기'
-description: 'ClickHouse에서 Template과 정규식(Regex)을 사용하여 사용자 정의 텍스트 데이터를 가져오고 내보내는 방법을 설명하는 페이지'
+title: 'ClickHouse에서 Template과 Regex를 사용하여 사용자 지정 텍스트 데이터 가져오기 및 내보내기'
+description: 'ClickHouse에서 Template과 Regex를 사용하여 사용자 지정 텍스트 데이터를 가져오고 내보내는 방법을 설명하는 페이지'
 doc_type: 'guide'
-keywords: ['데이터 포맷', 'Template', '정규식(Regex)', '사용자 정의 포맷', '파싱']
+keywords: ['데이터 형식', 'Template', 'Regex', '사용자 지정 형식', '파싱']
 ---
 
-# ClickHouse에서 Template과 Regex를 사용하여 사용자 지정 텍스트 데이터 가져오기 및 내보내기 \{#importing-and-exporting-custom-text-data-using-templates-and-regex-in-clickhouse\}
-
-사용자 지정 텍스트 형식의 데이터를 다뤄야 하는 경우가 자주 있습니다. 비표준 형식이거나, 잘못된 JSON, 손상된 CSV일 수도 있습니다. 이러한 경우 CSV 또는 JSON과 같은 표준 파서만으로는 모두 처리할 수 없습니다. 하지만 ClickHouse에는 강력한 Template 및 Regex 형식이 있어 이러한 상황에서도 데이터를 문제없이 처리할 수 있습니다.
+사용자 지정 텍스트 형식의 데이터를 처리해야 하는 경우가 자주 있습니다. 비표준 형식일 수도 있고, 잘못된 JSON이거나 손상된 CSV일 수도 있습니다. 이런 경우에는 CSV나 JSON 같은 표준 parser로는 모두 처리할 수 없습니다. 하지만 ClickHouse는 강력한 Template 및 Regex 형식을 통해 이러한 상황을 지원합니다.
 
 ## Template 기반으로 가져오기 \{#importing-based-on-a-template\}
 
-다음 [로그 파일](assets/error.log)에서 데이터를 가져온다고 가정해 보겠습니다.
+다음 [로그 파일](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log)에서 데이터를 가져온다고 가정해 보겠습니다.
 
 ```bash
 head error.log
@@ -47,7 +45,7 @@ ENGINE = MergeTree
 ORDER BY (host, request, time)
 ```
 
-지정된 Template를 사용하여 데이터를 가져오려면 Template 문자열을 파일에 저장해야 합니다. 여기서는 [row.template](assets/row.template) 파일에 저장합니다.
+지정된 Template를 사용하여 데이터를 가져오려면 Template 문자열을 파일에 저장해야 합니다. 여기서는 [row.template](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/row.template) 파일에 저장합니다.
 
 ```response
 ${time:Escaped} [error]  client: ${ip:CSV}, server: ${host:CSV} ${request:JSON}
@@ -99,7 +97,7 @@ TemplateIgnoreSpaces    -->  "p1:${p1:CSV}, p2:${p2:CSV}"
 
 Template 포맷을 사용하면 데이터를 임의의 텍스트 형식으로도 내보낼 수 있습니다. 이 경우 두 개의 파일을 생성해야 합니다:
 
-전체 결과 집합의 구조를 정의하는 [결과 세트 템플릿](assets/output.results):
+전체 결과 집합의 구조를 정의하는 [결과 세트 템플릿](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.results):
 
 ```response
 == Top 10 IPs ==
@@ -107,7 +105,7 @@ ${data}
 --- ${rows_read:XML} rows read in ${time:XML} ---
 ```
 
-여기서 `rows_read`와 `time`은 각 요청마다 사용할 수 있는 시스템 메트릭입니다. `data`는 생성된 행을 나타내며(이 파일에서 `${data}`는 항상 첫 번째 플레이스홀더로 배치되어야 합니다), [**row template file**](assets/output.rows)에 정의된 템플릿을 기반으로 합니다:
+여기서 `rows_read`와 `time`은 각 요청마다 사용할 수 있는 시스템 메트릭입니다. `data`는 생성된 행을 나타내며(이 파일에서 `${data}`는 항상 첫 번째 플레이스홀더로 배치되어야 합니다), [**row template file**](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/output.rows)에 정의된 템플릿을 기반으로 합니다:
 
 ```response
 ${ip:Escaped} generated ${total:Escaped} requests
@@ -142,7 +140,7 @@ FORMAT Template SETTINGS format_template_resultset = 'output.results',
 
 ### HTML 파일로 내보내기 \{#exporting-to-html-files\}
 
-Template을 기반으로 한 결과는 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 절을 사용하여 파일로도 내보낼 수 있습니다. 주어진 [resultset](assets/html.results) 및 [row](assets/html.row) 형식을 사용해 HTML 파일을 생성해 보겠습니다:
+Template을 기반으로 한 결과는 [`INTO OUTFILE`](/sql-reference/statements/select/into-outfile.md) 절을 사용하여 파일로도 내보낼 수 있습니다. 주어진 [resultset](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.results) 및 [row](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/html.row) 형식을 사용해 HTML 파일을 생성해 보겠습니다:
 
 ```sql
 SELECT
@@ -204,7 +202,7 @@ FORMAT XML
 
 ## 정규식을 기반으로 데이터 가져오기 \{#importing-data-based-on-regular-expressions\}
 
-[Regexp](/interfaces/formats/Regexp) 포맷은 입력 데이터를 더 복잡한 방식으로 파싱해야 하는 보다 정교한 경우에 사용됩니다. 이번에는 [error.log](assets/error.log) 예제 파일을 파싱하되, 파일 이름과 프로토콜을 추출하여 별도 컬럼으로 저장해 보겠습니다. 먼저 이를 위한 새 테이블을 준비합니다:
+[Regexp](/interfaces/formats/Regexp) 포맷은 입력 데이터를 더 복잡한 방식으로 파싱해야 하는 보다 정교한 경우에 사용됩니다. 이번에는 [error.log](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/error.log) 예제 파일을 파싱하되, 파일 이름과 프로토콜을 추출하여 별도 컬럼으로 저장해 보겠습니다. 먼저 이를 위한 새 테이블을 준비합니다:
 
 ```sql
 CREATE TABLE error_log

@@ -1,5 +1,5 @@
 ---
-title: 'DataStore のプロファイリング'
+title: 'DataStore プロファイリング'
 sidebar_label: 'プロファイリング'
 slug: /chdb/debugging/profiling
 description: '内蔵プロファイラで DataStore のパフォーマンスを測定する'
@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'profiling', 'performance', 'timing', 'benchmark
 doc_type: 'guide'
 ---
 
-# DataStore プロファイリング \{#datastore-profiling\}
-
-DataStore プロファイラを使用すると、実行時間を測定し、パフォーマンス上のボトルネックを特定するのに役立ちます。
+DataStore プロファイラを使用すると、実行時間を測定し、パフォーマンスのボトルネックを特定できます。
 
 ## クイックスタート \{#quick-start\}
 

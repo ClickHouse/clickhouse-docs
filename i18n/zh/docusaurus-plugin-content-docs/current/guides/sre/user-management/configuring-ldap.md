@@ -2,7 +2,7 @@
 sidebar_label: '配置 LDAP'
 sidebar_position: 2
 slug: /guides/sre/configuring-ldap
-title: '将 ClickHouse 配置为使用 LDAP 进行身份验证和角色映射'
+title: '配置 ClickHouse 使用 LDAP 进行身份验证和角色映射'
 description: '描述如何将 ClickHouse 配置为使用 LDAP 进行身份验证和角色映射'
 keywords: ['LDAP 配置', 'LDAP 身份验证', '角色映射', '用户管理', 'SRE 指南']
 doc_type: 'guide'
@@ -10,12 +10,9 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
-
-# 配置 ClickHouse 使用 LDAP 进行身份验证和角色映射 \{#configuring-clickhouse-to-use-ldap-for-authentication-and-role-mapping\}
-
 <SelfManaged />
 
-可以将 ClickHouse 配置为使用 LDAP 来对 ClickHouse 数据库用户进行身份验证。本指南提供了一个简单示例，演示如何将 ClickHouse 与 LDAP 系统集成，并对一个公开可访问的目录进行身份验证。
+可以将 ClickHouse 配置为使用 LDAP 对 ClickHouse 数据库用户进行身份验证。本指南提供了一个简单示例，演示如何将 ClickHouse 与 LDAP 系统集成，并对一个公开可用的目录进行身份验证。
 
 <VerticalStepper headerLevel="h2">
 

@@ -1,25 +1,24 @@
 ---
-sidebar_label: '概要'
-description: 'オブジェクトストレージを ClickHouse Cloud とシームレスに接続します。'
+sidebar_label: "概要"
+description: "オブジェクトストレージを ClickHouse Cloud とシームレスに接続します。"
 slug: /integrations/clickpipes/object-storage/s3/overview
 sidebar_position: 1
-title: 'Amazon S3 と ClickHouse Cloud の統合'
-doc_type: 'guide'
+title: "Amazon S3 と ClickHouse Cloud の統合"
+doc_type: "guide"
 ---
 
-import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
-import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
-import OVHpng from '@site/static/images/integrations/logos/ovh.png';
-import R2svg from '@site/static/images/integrations/logos/cloudflare.svg';
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
-import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_credentials.png';
-import Image from '@theme/IdealImage';
+import S3svg from "@site/static/images/integrations/logos/amazon_s3_logo.svg"
+import DOsvg from "@site/static/images/integrations/logos/digitalocean.svg"
+import OVHpng from "@site/static/images/integrations/logos/ovh.png"
+import R2svg from "@site/static/images/integrations/logos/cloudflare.svg"
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import cp_iam from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png"
+import cp_credentials from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_credentials.png"
+import Image from "@theme/IdealImage"
 
-S3 ClickPipe は、Amazon S3 および S3 互換オブジェクトストアから ClickHouse Cloud へデータを取り込むための、フルマネージドで高い耐障害性を備えた手段を提供します。**1 回限り**と**継続的なインジェスト**の両方を、exactly-once セマンティクスでサポートします。
+S3 ClickPipe は、Amazon S3 および S3 互換オブジェクトストアから ClickHouse Cloud へデータを取り込むための、フルマネージドで高い耐障害性を備えた手段を提供します。**1 回限り**と**継続的インジェスト**の両方を、exactly-once セマンティクスでサポートします。
 
-S3 ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) や [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) を使用してプログラムから作成および管理することもできます。
-
+S3 ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムから作成および管理することもできます。
 
 ## サポートされているデータソース \{#supported-data-sources\}
 
@@ -207,7 +206,7 @@ ClickPipes には、ほとんどのユースケースの要件を満たす妥当
 
 ### スケーリング \{#scaling\}
 
-Object Storage ClickPipes は、[vertical autoscaling 設定](/manage/scaling#configuring-vertical-auto-scaling) で決定される最小の ClickHouse サービスサイズに基づいてスケールされます。ClickPipe のサイズはパイプ作成時に決定され、その後に ClickHouse サービス設定を変更しても、ClickPipe のサイズには影響しません。
+Object Storage 用 ClickPipes は、[vertical autoscaling 設定](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling) で決定される最小の ClickHouse サービスサイズに基づいてスケールされます。ClickPipe のサイズはパイプ作成時に決定され、その後に ClickHouse サービス設定を変更しても、ClickPipe のサイズには影響しません。
 
 大規模な取り込みジョブのスループットを向上させるには、ClickPipe を作成する前に ClickHouse サービスをスケールアップしておくことを推奨します。
 

@@ -22,8 +22,6 @@ import valid_ds from '@site/static/images/integrations/data-visualization/grafan
 import Image from '@theme/IdealImage';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# ClickHouse data source plugin for Grafana
-
 <ClickHouseSupportedBadge/>
 
 With Grafana you can explore and share all of your data through dashboards.

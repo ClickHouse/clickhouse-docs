@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
-title: 'Monitoring Temporal Cloud with ClickStack'
+title: 'Monitoring Temporal Cloud metrics with ClickStack'
 sidebar_label: 'Temporal Cloud metrics'
 pagination_prev: null
 pagination_next: null
@@ -10,7 +10,6 @@ keywords: ['Temporal', 'metrics', 'OTEL', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import temporal_metrics from '@site/static/images/clickstack/temporal/temporal-metrics.png';
 import finish_import from '@site/static/images/clickstack/temporal/import-temporal-metrics-dashboard.png';
@@ -22,8 +21,6 @@ OpenMetrics support in the Temporal platform is available in [Public Preview](ht
 :::
 
 Temporal offers an abstraction for building simple, sophisticated, resilient applications.
-
-# Monitoring Temporal Cloud metrics with ClickStack {#temporal-metrics-clickstack}
 
 :::note[TL;DR]
 Monitor Temporal Cloud metrics in ClickStack using the OTel Prometheus receiver. Includes a pre-built dashboard.
@@ -163,7 +160,7 @@ To help you get started monitoring Temporal Cloud with ClickStack, we provide so
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/temporal-metrics-dashboard.json'} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 

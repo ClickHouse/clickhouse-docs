@@ -8,9 +8,9 @@ doc_type: 'reference'
 
 import SystemTableCloud from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_system_table_cloud.md';
 
-# system.warnings \{#systemwarnings\}
-
 <SystemTableCloud />
+
+## 설명 \{#description\}
 
 이 테이블은 ClickHouse 서버에 대한 경고를 표시합니다.
 동일한 유형의 경고는 하나의 경고로 합쳐집니다.
@@ -29,22 +29,18 @@ import SystemTableCloud from '@site/i18n/ko/docusaurus-plugin-content-docs/curre
 * [max&#95;named&#95;collection&#95;num&#95;to&#95;warn](../server-configuration-parameters/settings.md#max_named_collection_num_to_warn)
 * [resource&#95;overload&#95;warnings](/operations/settings/server-overload#resource-overload-warnings)
 
-컬럼:
+## 컬럼 \{#columns\}
 
 * `message` ([String](../../sql-reference/data-types/string.md)) — 경고 메시지입니다.
 * `message_format_string` ([LowCardinality(String)](../../sql-reference/data-types/string.md)) — 메시지를 포맷할 때 사용되는 포맷 문자열입니다.
 
-**예시**
+## 예시 \{#example\}
 
-쿼리:
-
-```sql
+```sql title="Query"
  SELECT * FROM system.warnings LIMIT 2 \G;
 ```
 
-결과:
-
-```text
+```text title="Response"
 Row 1:
 ──────
 message:               The number of active parts is more than 10.

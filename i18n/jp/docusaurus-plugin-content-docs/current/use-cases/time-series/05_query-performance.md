@@ -1,18 +1,16 @@
 ---
-title: 'クエリパフォーマンス - 時系列データ'
+title: 'クエリパフォーマンス - 時系列'
 sidebar_label: 'クエリパフォーマンス'
-description: '時系列クエリのパフォーマンス向上'
+description: '時系列クエリパフォーマンスの向上'
 slug: /use-cases/time-series/query-performance
 keywords: ['time-series', 'query performance', 'optimization', 'indexing', 'partitioning', 'query tuning', 'performance']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 時系列クエリのパフォーマンス \{#time-series-query-performance\}
-
-ストレージの最適化が完了したら、次のステップはクエリパフォーマンスの向上です。
-このセクションでは、`ORDER BY` キーの最適化とマテリアライズドビューの活用という 2 つの主要な手法を解説します。
-これらのアプローチによって、クエリ時間を秒単位からミリ秒単位まで短縮できることを見ていきます。
+ストレージの最適化に続く次のステップは、クエリパフォーマンスの向上です。
+このセクションでは、2 つの重要な手法、`ORDER BY` キーの最適化と materialized view の使用を取り上げます。
+これらの手法により、クエリ時間を数秒から数ミリ秒まで短縮できることを見ていきます。
 
 ## `ORDER BY` キーの最適化 \{#time-series-optimize-order-by\}
 
@@ -112,7 +110,6 @@ ORDER BY (project, subproject, time);
   </tbody>
 </table>
 
-
 ## マテリアライズドビュー \{#time-series-materialized-views\}
 
 別の方法として、マテリアライズドビューを使用して、よく実行されるクエリの結果を集計・保存することができます。以降は、元のテーブルではなく、これらの結果に対してクエリを実行します。ここでは、次のクエリがかなり頻繁に実行されるケースを想定します。
@@ -144,7 +141,6 @@ LIMIT 10
 Peak memory usage: 1.50 GiB.
 ```
 
-
 ### マテリアライズドビューを作成する \{#time-series-create-materialized-view\}
 
 次のマテリアライズドビューを作成します。
@@ -172,12 +168,11 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-
 ### 宛先テーブルのバックフィル \{#time-series-backfill-destination-table\}
 
 この宛先テーブルは `wikistat` テーブルに新しいレコードが挿入されたときにのみデータが投入されるため、[バックフィル](/docs/data-modeling/backfilling)を行う必要があります。
 
-これを行う最も簡単な方法は、[`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) ステートメントを使用し、ビューの `SELECT` クエリ（変換処理）を[利用して](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query)、マテリアライズドビューのターゲットテーブルに直接挿入することです。
+これを行う最も簡単な方法は、[`INSERT INTO SELECT`](/docs/sql-reference/statements/insert-into#inserting-the-results-of-select) ステートメントを使用し、ビューの `SELECT` クエリ (変換処理) を[利用して](https://github.com/ClickHouse/examples/tree/main/ClickHouse_vs_ElasticSearch/DataAnalytics#variant-1---directly-inserting-into-the-target-table-by-using-the-materialized-views-transformation-query)、マテリアライズドビューのターゲットテーブルに直接挿入することです。
 
 ```sql
 INSERT INTO wikistat_top
@@ -189,14 +184,14 @@ FROM wikistat
 GROUP BY path, month;
 ```
 
-生データセットのカーディナリティによっては（ここでは 10 億行あります！）、この方法はメモリを多く消費する可能性があります。代わりに、必要なメモリを最小限に抑えられる別の手法を使うこともできます。
+生データセットのカーディナリティによっては (ここでは 10 億行あります！) 、この方法はメモリを多く消費する可能性があります。代わりに、必要なメモリを最小限に抑えられる別の手法を使うこともできます。
 
 * Null テーブルエンジンを持つ一時テーブルを作成する
 * 通常使用しているマテリアライズドビューのコピーをその一時テーブルに接続する
 * `INSERT INTO SELECT` クエリを使用して、生データセットからすべてのデータをその一時テーブルにコピーする
 * 一時テーブルと一時マテリアライズドビューを削除する。
 
-この方法では、生データセットの行がブロック単位で一時テーブル（これらの行は一切保存されません）にコピーされ、各行ブロックごとに部分状態が計算されてターゲットテーブルに書き込まれます。ターゲットテーブルでは、これらの状態がバックグラウンドでインクリメンタルにマージされます。
+この方法では、生データセットの行がブロック単位で一時テーブル (これらの行は一切保存されません) にコピーされ、各行ブロックごとに部分状態が計算されてターゲットテーブルに書き込まれます。ターゲットテーブルでは、これらの状態がバックグラウンドでインクリメンタルにマージされます。
 
 ```sql
 CREATE TABLE wikistat_backfill

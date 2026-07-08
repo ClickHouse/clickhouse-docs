@@ -1,9 +1,9 @@
 ---
-sidebar_label: 'Sink-коннектор Kafka на платформе Confluent'
+sidebar_label: 'Sink-коннектор Kafka на Confluent Platform'
 sidebar_position: 3
 slug: /integrations/kafka/cloud/confluent/custom-connector
-description: 'Использование sink-коннектора ClickHouse с Kafka Connect и ClickHouse'
-title: 'Интеграция Confluent Cloud с ClickHouse'
+description: 'Использование ClickHouse Connector Sink с Kafka Connect и ClickHouse'
+title: 'Интеграция Confluent Platform с ClickHouse'
 keywords: ['Интеграция Confluent с ClickHouse', 'коннектор Kafka ClickHouse', 'Kafka Connect ClickHouse sink', 'Confluent Platform ClickHouse', 'пользовательский коннектор Confluent']
 doc_type: 'guide'
 ---
@@ -12,19 +12,17 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import AddCustomConnectorPlugin from '@site/static/images/integrations/data-ingestion/kafka/confluent/AddCustomConnectorPlugin.png';
 
-
-# Интеграция платформы Confluent с ClickHouse \{#integrating-confluent-platform-with-clickhouse\}
-
-<div class='vimeo-container'>
-  <iframe src="//www.youtube.com/embed/SQAiPVbd3gg"
+<div class="vimeo-container">
+  <iframe
+    src="//www.youtube.com/embed/SQAiPVbd3gg"
     width="640"
     height="360"
     frameborder="0"
     allow="autoplay;
-    fullscreen;
-    picture-in-picture"
-    allowfullscreen>
-  </iframe>
+fullscreen;
+picture-in-picture"
+    allowfullscreen
+  />
 </div>
 
 ## Предварительные требования \{#prerequisites\}

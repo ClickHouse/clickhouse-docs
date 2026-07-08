@@ -48,7 +48,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   ClickHouse 클러스터를 설정합니다. 이 설정은 별도의 로컬 머신, 가상 머신 또는 Cloud 인스턴스에서도
   작동하도록 수정할 수 있습니다.
 
-  다음 명령을 실행하여 이 예제의 디렉터리 구조를 설정하세요:
+  다음 명령어를 실행하여 이 예시의 디렉터리 구조를 설정하세요:
 
   ```bash
   mkdir cluster_2S_1R
@@ -65,7 +65,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   done
   ```
 
-  `clickhouse-cluster` 디렉터리에 다음 `docker-compose.yml` 파일을 추가하세요:
+  `cluster_2S_1R` 디렉터리에 다음 `docker-compose.yml` 파일을 추가하세요:
 
   ```yaml title="docker-compose.yml"
   version: '3.8'
@@ -239,13 +239,13 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
 
-  위 구성 파일의 각 섹션에 대한 자세한 설명은 다음과 같습니다.
+  위 설정 파일의 각 섹션에 대한 자세한 설명은 다음과 같습니다.
 
   #### 네트워킹 및 로깅
 
   <ListenHost />
 
-  로깅은 `<logger>` 블록에서 정의됩니다. 이 예제 구성은 1000M 크기에 도달할 때마다 롤오버되는 디버그 로그를 제공하며, 총 3회 롤오버됩니다:
+  로깅은 `<logger>` 블록에서 정의됩니다. 이 예시 구성은 1000M 크기에 도달할 때마다 롤오버되는 디버그 로그를 제공하며, 총 3회 롤오버됩니다:
 
   ```xml
   <logger>
@@ -257,7 +257,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   </logger>
   ```
 
-  로깅 구성에 대한 자세한 내용은 기본 ClickHouse [구성 파일](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)에 포함된 주석을 참조하세요.
+  로깅 구성에 대한 자세한 내용은 기본 ClickHouse [설정 파일](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)에 포함된 주석을 참조하세요.
 
   #### 클러스터 구성
 
@@ -266,7 +266,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
 
   `<cluster_2S_1R></cluster_2S_1R>` 블록은 `<shard></shard>` 및 `<replica></replica>` 설정을 사용하여 클러스터의 레이아웃을 정의하며, `ON CLUSTER` 절을 사용하여 클러스터 전체에서 실행되는 쿼리인 분산 DDL 쿼리의 템플릿 역할을 합니다. 기본적으로 분산 DDL 쿼리가 허용되지만, `allow_distributed_ddl_queries` 설정을 통해 비활성화할 수도 있습니다.
 
-  세그먼트당 레플리카가 하나만 존재하므로 `internal_replication`은 기본적으로 false로 설정되어 있습니다.
+  샤드당 레플리카가 하나만 존재하므로 `internal_replication`은 기본적으로 false로 설정되어 있습니다.
 
   ```xml
   <remote_servers>
@@ -315,11 +315,11 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   ```
 
   :::note
-  ClickHouse Keeper를 ClickHouse Server와 동일한 서버에서 실행할 수 있지만,
+  ClickHouse Keeper를 ClickHouse 서버와 동일한 서버에서 실행할 수 있지만,
   프로덕션 환경에서는 ClickHouse Keeper를 전용 호스트에서 실행하실 것을 강력히 권장합니다.
   :::
 
-  #### 매크로 설정
+  #### 매크로 구성
 
   또한 `<macros>` 섹션은 복제된 테이블(Replicated Table)에 대한 매개변수 치환을 정의하는 데 사용됩니다. 이러한 매개변수는 `system.macros`에 나열되며, 쿼리에서 `{shard}`(세그먼트)와 `{replica}`(레플리카) 같은 치환을 사용할 수 있습니다.
 
@@ -378,16 +378,16 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | 디렉터리                                                     | 파일                                                                                                                                                                            |
+  | 디렉터리                                                     | File                                                                                                                                                                          |
   | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-01/etc/clickhouse-server/users.d/users.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/users.d` | [`users.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-02/etc/clickhouse-server/users.d/users.xml) |
 
-  이 예제에서는 편의상 기본 사용자를 비밀번호 없이 구성합니다.
+  이 예시에서는 편의상 기본 사용자를 비밀번호 없이 구성합니다.
   실제 환경에서는 이 방식을 권장하지 않습니다.
 
   :::note
-  이 예제에서는 클러스터의 모든 노드에서 각 `users.xml` 파일이 동일합니다.
+  이 예시에서는 클러스터의 모든 노드에서 각 `users.xml` 파일이 동일합니다.
   :::
 
   ## ClickHouse Keeper 구성하기
@@ -396,7 +396,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
 
   <KeeperConfig />
 
-  | 디렉토리                                                    | 파일                                                                                                                                                                                           |
+  | 디렉터리                                                    | 파일                                                                                                                                                                                           |
   | ------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-keeper-01/etc/clickhouse-keeper/keeper_config.xml) |
   | `fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper` | [`keeper_config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_1R/fs/volumes/clickhouse-keeper-02/etc/clickhouse-keeper/keeper_config.xml) |
@@ -409,7 +409,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   ## 설정 테스트하기
 
   Docker가 머신에서 실행 중인지 확인하세요.
-  `cluster_2S_1R` 디렉터리의 루트에서 `docker-compose up` 명령을 사용하여 클러스터를 시작하세요:
+  `cluster_2S_1R` 디렉터리의 루트에서 `docker-compose up` 명령어를 사용하여 클러스터를 시작하세요:
 
   ```bash
   docker-compose up -d
@@ -428,7 +428,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
    ✔ Container clickhouse-02         Started
   ```
 
-  클러스터가 실행 중인지 확인하려면 `clickhouse-01` 또는 `clickhouse-02`에 연결한 후 다음 쿼리를 실행하세요. 첫 번째 노드에 연결하는 명령은 다음과 같습니다:
+  클러스터가 실행 중인지 확인하려면 `clickhouse-01` 또는 `clickhouse-02`에 연결한 후 다음 쿼리를 실행하세요. 첫 번째 노드에 연결하는 명령어는 다음과 같습니다:
 
   ```bash
   # Connect to any node
@@ -480,15 +480,15 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
 
   <VerifyKeeperStatus />
 
-  이로써 단일 세그먼트와 두 개의 레플리카로 구성된 ClickHouse 클러스터 설정을 완료했습니다.
-  다음 단계에서는 클러스터에 테이블을 생성하세요.
+  이로써 두 개의 세그먼트와 세그먼트당 하나의 레플리카로 구성된 ClickHouse 클러스터 설정을 완료했습니다.
+  다음 단계에서는 클러스터에 테이블을 생성합니다.
 
   ## 데이터베이스 생성하기
 
   클러스터가 올바르게 설정되어 실행 중임을 확인했으므로, [UK property prices](/getting-started/example-datasets/uk-price-paid)
   예제 데이터셋 튜토리얼에서 사용된 것과 동일한 테이블을 재생성하게 됩니다. 이 데이터셋은 1995년 이후 영국 잉글랜드와 웨일스의 부동산 거래 가격에 대한 약 3천만 개의 행으로 구성되어 있습니다.
 
-  각 호스트의 클라이언트에 연결하려면 별도의 터미널 탭 또는 창에서 다음 명령을 각각 실행하세요:
+  각 호스트의 클라이언트에 연결하려면 별도의 터미널 탭 또는 창에서 다음 명령어를 각각 실행하세요:
 
   ```bash
   docker exec -it clickhouse-01 clickhouse-client
@@ -537,7 +537,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
      └────────────────────┘
   ```
 
-  ## 클러스터에 테이블 생성
+  ## 클러스터에 테이블 생성하기
 
   데이터베이스가 생성되었으므로 테이블을 생성합니다.
   호스트 클라이언트 중 하나에서 다음 쿼리를 실행하세요:
@@ -570,7 +570,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   원본 `CREATE` 문에서 사용된 쿼리와 동일하며,
   `ON CLUSTER` 절을 제외하고는 같습니다.
 
-  `ON CLUSTER` 절은 `CREATE`, `DROP`, `ALTER`, `RENAME`과 같은 DDL(Data Definition Language, 데이터 정의 언어) 쿼리를 분산 실행하기 위해 설계되었으며, 클러스터의 모든 노드에 스키마 변경 사항이 적용되도록 보장합니다.
+  `ON CLUSTER` 절은 `CREATE`, `DROP`, `ALTER`, `RENAME`과 같은 DDL(Data Definition Language, 데이터 정의 언어) 쿼리를 분산 실행하기 위해 설계되었으며, 클러스터의 모든 노드에 스키마(schema) 변경 사항이 적용되도록 보장합니다.
 
   각 호스트의 클라이언트에서 아래 쿼리를 실행하여 클러스터 전체에 테이블이 생성되었는지 확인하십시오:
 
@@ -629,7 +629,7 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
 
   `ReplicatedMergeTree` 테이블과 달리, 해당 특정 호스트의 테이블에 삽입된 행만 반환되며 두 행이 모두 반환되지는 않습니다.
 
-  두 샤드에 걸쳐 데이터를 읽으려면 모든 샤드에서 쿼리를 처리할 수 있는 인터페이스가 필요합니다. 이 인터페이스는 select 쿼리 실행 시 두 샤드의 데이터를 결합하고, insert 쿼리 실행 시 두 샤드에 데이터를 삽입합니다.
+  두 세그먼트에 걸쳐 데이터를 읽으려면 모든 세그먼트에서 쿼리를 처리할 수 있는 인터페이스가 필요합니다. 이 인터페이스는 select 쿼리 실행 시 두 세그먼트의 데이터를 결합하고, insert 쿼리 실행 시 두 세그먼트에 데이터를 삽입합니다.
 
   ClickHouse에서 이 인터페이스를 **분산 테이블**이라고 하며, [`Distributed`](/engines/table-engines/special/distributed) 테이블 엔진을 사용하여 생성합니다. 작동 방식을 살펴보겠습니다.
 
@@ -642,17 +642,17 @@ import CloudTip from '@site/i18n/ko/docusaurus-plugin-content-docs/current/deplo
   ENGINE = Distributed('cluster_2S_1R', 'test', 'test_table', rand())
   ```
 
-  이 예제에서는 `rand()` 함수를 샤딩 키로 선택하여
+  이 예시에서는 `rand()` 함수를 세그먼트 분할 키로 선택하여
   삽입 작업이 세그먼트 전체에 무작위로 분산됩니다.
 
-  이제 어느 호스트에서든 분산 테이블을 쿼리하면 이전 예제와 달리
+  이제 어느 호스트에서든 분산 테이블을 쿼리하면 이전 예시와 달리
   두 호스트에 삽입된 두 개의 행이 모두 반환됩니다:
 
   ```sql
   SELECT * FROM test.test_table_dist;
   ```
 
-  ```sql
+  ```response
      ┌─id─┬─name───────────────┐
   1. │  1 │ Alexey Milovidov   │
   2. │  1 │ Clicky McClickface │

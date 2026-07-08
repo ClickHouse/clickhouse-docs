@@ -1,5 +1,6 @@
 ---
-description: 'Набор данных, состоящий из двух таблиц с анонимизированными данными веб-аналитики о хитах и визитах'
+description: 'Набор данных, состоящий из двух таблиц, содержащих анонимизированные данные
+  веб-аналитики с хитами и визитами'
 sidebar_label: 'Анонимизированная веб-аналитика'
 slug: /getting-started/example-datasets/metrica
 keywords: ['данные веб-аналитики', 'анонимизированные данные', 'данные о трафике веб-сайта', 'пример набора данных', 'начало работы']
@@ -7,23 +8,20 @@ title: 'Анонимизированная веб-аналитика'
 doc_type: 'guide'
 ---
 
-# Анонимизированные данные веб-аналитики \{#anonymized-web-analytics-data\}
-
 Этот набор данных состоит из двух таблиц, содержащих анонимизированные данные веб-аналитики: хиты (`hits_v1`) и визиты (`visits_v1`).
 
-Таблицы можно скачать в виде сжатых файлов `tsv.xz`. В дополнение к выборке, используемой в этом документе, расширенная (7,5 ГБ) версия таблицы `hits`, содержащая 100 миллионов строк, доступна в формате TSV по адресу [https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz).
+Таблицы можно скачать в виде сжатых файлов `tsv.xz`. В дополнение к выборке, используемой в этом документе, расширенная (7,5 ГБ) версия таблицы `hits`, содержащая 100 миллионов строк, доступна в формате TSV по адресу [https://datasets.clickhouse.com/hits/tsv/hits&#95;100m&#95;obfuscated&#95;v1.tsv.xz](https://datasets.clickhouse.com/hits/tsv/hits_100m_obfuscated_v1.tsv.xz).
 
 ## Скачать данные и выполнить их приём \{#download-and-ingest-the-data\}
 
 ### Скачайте сжатый файл hits в формате TSV \{#download-the-hits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | unxz --threads=`nproc` > hits_v1.tsv
+curl -L https://datasets.clickhouse.com/hits/tsv/hits_v1.tsv.xz | xz -d > hits_v1.tsv
 # Validate the checksum
 md5sum hits_v1.tsv
 # Checksum should be equal to: f3631b6295bf06989c1437491f7592cb
 ```
-
 
 ### Создайте базу данных и таблицу \{#create-the-database-and-table\}
 
@@ -62,15 +60,14 @@ clickhouse-client --query "SELECT COUNT(*) FROM datasets.hits_v1"
 ```
 
 
-### Скачайте сжатый TSV-файл visits \{#download-the-visits-compressed-tsv-file\}
+### Скачайте сжатый файл в формате TSV visits \{#download-the-visits-compressed-tsv-file\}
 
 ```bash
-curl https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | unxz --threads=`nproc` > visits_v1.tsv
+curl -L https://datasets.clickhouse.com/visits/tsv/visits_v1.tsv.xz | xz -d > visits_v1.tsv
 # Validate the checksum
 md5sum visits_v1.tsv
 # Checksum should be equal to: 6dafe1a0f24e59e3fc2d0fed85601de6
 ```
-
 
 ### Создайте таблицу visits \{#create-the-visits-table\}
 

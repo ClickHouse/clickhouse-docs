@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/AI/MCP/librechat
 sidebar_label: 'Интеграция LibreChat'
-title: 'Настройка сервера ClickHouse MCP для LibreChat и ClickHouse Cloud'
+title: 'Использование MCP server ClickHouse с LibreChat'
 pagination_prev: null
 pagination_next: null
-description: 'В этом руководстве показано, как настроить LibreChat с сервером ClickHouse MCP, используя Docker.'
+description: 'В этом руководстве объясняться, как настроить LibreChat с MCP server ClickHouse, используя Docker.'
 keywords: ['AI', 'Librechat', 'MCP']
 show_related_blogs: true
 doc_type: 'guide'
@@ -15,10 +15,8 @@ import Link from '@docusaurus/Link';
 import Image from '@theme/IdealImage';
 import LibreInterface from '@site/static/images/use-cases/AI_ML/MCP/librechat.png';
 
-# Использование MCP-сервера ClickHouse с LibreChat \{#using-clickhouse-mcp-server-with-librechat\}
-
-> В этом руководстве объясняется, как настроить LibreChat с MCP-сервером ClickHouse с использованием Docker
-> и подключить его к примерным наборам данных ClickHouse.
+> В этом руководстве объясняться, как настроить LibreChat с MCP server ClickHouse, используя Docker
+> и подключить его к примерам наборов данных ClickHouse.
 
 <VerticalStepper headerLevel="h2">
   ## Установка Docker \{#install-docker\}

@@ -1,12 +1,10 @@
 ---
 slug: /cloud/billing/marketplace/migrate
-title: '클라우드 마켓플레이스에서 종량제(PAYG) 과금에서 약정 지출 계약으로 전환하기'
-description: '종량제 과금에서 약정 지출 계약으로 전환합니다.'
-keywords: ['marketplace', 'billing', 'PAYG', 'pay-as-you-go', 'committed spend contract']
+title: 'Cloud 마켓플레이스에서 종량제(pay-as-you-go, PAYG)에서 약정 사용량 계약으로 결제 방식 마이그레이션'
+description: '종량제에서 약정 사용량 계약으로 마이그레이션합니다.'
+keywords: ['마켓플레이스', '결제', 'PAYG', 'pay-as-you-go', '약정 사용량 계약']
 doc_type: 'guide'
 ---
-
-# Cloud 마켓플레이스에서 종량제(pay-as-you-go, PAYG)에서 약정 사용량 계약으로 결제 방식 마이그레이션 \{#migrate-payg-to-committed\}
 
 현재 ClickHouse 조직이 활성화된 Cloud 마켓플레이스 종량제(pay-as-you-go, PAYG) 구독(또는 주문)을 통해 과금되고 있으며, 동일한 Cloud 마켓플레이스를 통해 약정 사용량 계약 기반 과금으로 전환하려는 경우, 새 오퍼를 수락한 후 사용하는 Cloud 서비스 제공업체에 따라 아래 단계를 따르십시오.
 

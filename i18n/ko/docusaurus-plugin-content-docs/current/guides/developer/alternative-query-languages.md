@@ -31,7 +31,7 @@ SET dialect = 'clickhouse'
 
 <ExperimentalBadge />
 
-PRQL을 활성화하려면 다음을 수행합니다:
+PRQL을 활성화하려면:
 
 ```sql
 SET allow_experimental_prql_dialect = 1; -- this SET statement is required only for ClickHouse versions >= v25.1

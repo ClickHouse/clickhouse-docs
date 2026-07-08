@@ -11,11 +11,11 @@ keywords: ['пример набора данных', 'nypd', 'данные о п
 
 Работая по этому руководству, вы:
 
-- **Исследуете** структуру и содержимое файла TSV с помощью запросов.
-- **Определите целевую схему ClickHouse**: выберите подходящие типы данных и сопоставите имеющиеся данные с этими типами.
-- **Создадите таблицу ClickHouse**.
-- **Предобработаете и организуете потоковую загрузку данных** в ClickHouse.
-- **Выполните несколько запросов** к ClickHouse.
+* **Исследуете** структуру и содержимое файла TSV с помощью запросов.
+* **Определите целевую схему ClickHouse**: выберите подходящие типы данных и сопоставите имеющиеся данные с этими типами.
+* **Создадите таблицу ClickHouse**.
+* **Предобработаете и организуете потоковую загрузку данных** в ClickHouse.
+* **Выполните несколько запросов** к ClickHouse.
 
 Набор данных, используемый в этом руководстве, предоставлен командой NYC Open Data и содержит данные обо «всех действительных преступлениях категорий felony, misdemeanor и violation, о которых было сообщено в Департамент полиции города Нью-Йорка (NYPD)». На момент написания размер файла данных составлял 166 МБ, но он регулярно обновляется.
 
@@ -46,7 +46,7 @@ keywords: ['пример набора данных', 'nypd', 'данные о п
 
 Это пример команды для выполнения запроса к TSV-файлу, но пока не выполняйте её.
 
-```sh
+```sh title="Query"
 clickhouse-local --query \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
@@ -69,15 +69,13 @@ CMPLNT_FR_TM                Nullable(String)
 
 Выполните эту команду в командной строке. Вы будете использовать `clickhouse-local`, чтобы выполнять запросы к данным в загруженном TSV-файле.
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 CMPLNT_NUM        Nullable(String)
 ADDR_PCT_CD       Nullable(Float64)
 BORO_NM           Nullable(String)
@@ -118,12 +116,11 @@ New Georeferenced Column Nullable(String)
 
 На этом этапе вам следует проверить, что столбцы в файле TSV совпадают по именам и типам с указанными в разделе **Columns in this Dataset** на [веб‑странице набора данных](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243). Типы данных заданы не очень строго: все числовые поля имеют тип `Nullable(Float64)`, а все остальные поля — `Nullable(String)`. При создании таблицы ClickHouse для хранения данных вы можете указать более подходящие и эффективные типы.
 
-
 ### Определите подходящую схему \{#determine-the-proper-schema\}
 
 Чтобы определить, какие типы данных следует использовать для полей, необходимо понимать, как выглядят сами данные. Например, поле `JURISDICTION_CODE` является числовым: должно ли оно быть `UInt8`, или `Enum`, или же больше подходит `Float64`?
 
-```sql
+```sql title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select JURISDICTION_CODE, count() FROM
@@ -133,9 +130,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─JURISDICTION_CODE─┬─count()─┐
 │                 0 │  188875 │
 │                 1 │    4799 │
@@ -163,7 +158,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 Например, поле `PARKS_NM` описывается как «Name of NYC park, playground or greenspace of occurrence, if applicable (state parks are not included)». Названия парков Нью-Йорка могут быть хорошим кандидатом для хранения в типе `LowCardinality(String)`:
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select count(distinct PARKS_NM) FROM
@@ -171,9 +166,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─uniqExact(PARKS_NM)─┐
 │                 319 │
 └─────────────────────┘
@@ -181,7 +174,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 Посмотрите на некоторые примеры названий парков:
 
-```sql
+```sql title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select distinct PARKS_NM FROM
@@ -190,9 +183,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─PARKS_NM───────────────────┐
 │ (null)                     │
 │ ASSER LEVY PARK            │
@@ -209,12 +200,11 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 В наборе данных, используемом на момент написания, содержится лишь несколько сотен различных парков и детских площадок в столбце `PARK_NM`. Это небольшое количество по сравнению с рекомендацией для [LowCardinality](/sql-reference/data-types/lowcardinality#description) — иметь менее 10 000 различных строковых значений в поле `LowCardinality(String)`.
 
-
 ### Поля DateTime \{#datetime-fields\}
 
 Судя по разделу **Columns in this Dataset** на [веб‑странице набора данных](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243), в наборе данных есть поля даты и времени для начала и окончания зарегистрированного события. Просмотр минимальных и максимальных значений полей `CMPLNT_FR_DT` и `CMPLT_TO_DT` даёт представление о том, всегда ли эти поля заполняются:
 
-```sh title="CMPLNT_FR_DT"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_FR_DT), max(CMPLNT_FR_DT) FROM
@@ -222,15 +212,13 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─min(CMPLNT_FR_DT)─┬─max(CMPLNT_FR_DT)─┐
 │ 01/01/1973        │ 12/31/2021        │
 └───────────────────┴───────────────────┘
 ```
 
-```sh title="CMPLNT_TO_DT"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_TO_DT), max(CMPLNT_TO_DT) FROM
@@ -238,15 +226,13 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─min(CMPLNT_TO_DT)─┬─max(CMPLNT_TO_DT)─┐
 │                   │ 12/31/2021        │
 └───────────────────┴───────────────────┘
 ```
 
-```sh title="CMPLNT_FR_TM"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_FR_TM), max(CMPLNT_FR_TM) FROM
@@ -254,15 +240,13 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─min(CMPLNT_FR_TM)─┬─max(CMPLNT_FR_TM)─┐
 │ 00:00:00          │ 23:59:00          │
 └───────────────────┴───────────────────┘
 ```
 
-```sh title="CMPLNT_TO_TM"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_TO_TM), max(CMPLNT_TO_TM) FROM
@@ -270,14 +254,11 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─min(CMPLNT_TO_TM)─┬─max(CMPLNT_TO_TM)─┐
 │ (null)            │ 23:59:00          │
 └───────────────────┴───────────────────┘
 ```
-
 
 ## Составьте план \{#make-a-plan\}
 
@@ -301,7 +282,7 @@ FORMAT PrettyCompact"
 
 Чтобы объединить поля даты и времени `CMPLNT_FR_DT` и `CMPLNT_FR_TM` в одну строку (`String`), которую затем можно привести к типу `DateTime`, выберите эти два поля, соединённые оператором конкатенации: `CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM`. Поля `CMPLNT_TO_DT` и `CMPLNT_TO_TM` обрабатываются аналогичным образом.
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM AS complaint_begin FROM
@@ -310,9 +291,7 @@ LIMIT 10
 FORMAT PrettyCompact"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─complaint_begin─────┐
 │ 07/29/2010 00:01:00 │
 │ 12/01/2011 12:00:00 │
@@ -327,12 +306,11 @@ FORMAT PrettyCompact"
 └─────────────────────┘
 ```
 
-
 ## Преобразование строки с датой и временем в тип DateTime64 \{#convert-the-date-and-time-string-to-a-datetime64-type\}
 
 Ранее в руководстве мы обнаружили, что в TSV-файле есть даты до 1 января 1970 года, поэтому для них нам нужен 64-битный тип DateTime64. Даты также необходимо преобразовать из формата `MM/DD/YYYY` в `YYYY/MM/DD`. Оба этих действия можно выполнить с помощью [`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort).
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS CMPLNT_START,
@@ -347,10 +325,7 @@ FORMAT PrettyCompact"
 
 Строки 2 и 3 выше содержат результат конкатенации из предыдущего шага, а строки 4 и 5 выше преобразуют строки в `DateTime64`. Поскольку время окончания обращения может отсутствовать, используется `parseDateTime64BestEffortOrNull`.
 
-Результат:
-
-
-```response
+```response title="Response"
 ┌─────────complaint_begin─┬───────────complaint_end─┐
 │ 1925-01-01 10:00:00.000 │ 2021-02-12 09:30:00.000 │
 │ 1925-01-01 11:37:00.000 │ 2022-01-16 11:49:00.000 │
@@ -384,7 +359,6 @@ FORMAT PrettyCompact"
 Даты, показанные выше как `1925`, являются результатом ошибок в данных. В исходных данных есть несколько записей с датами в годах `1019`–`1022`, которые на самом деле должны быть `2019`–`2022`. Они сохраняются как 1 января 1925 года, поскольку это самая ранняя дата, представимая 64-битным типом DateTime.
 :::
 
-
 ## Создание таблицы \{#create-a-table\}
 
 Принятые выше решения о типах данных, используемых для столбцов, отражены в схеме таблицы, приведённой ниже. Нам также необходимо выбрать `ORDER BY` и `PRIMARY KEY`, которые будут использоваться для таблицы. Должна быть указана как минимум одна из директив: `ORDER BY` или `PRIMARY KEY`. Ниже приведены некоторые рекомендации по выбору столбцов, которые следует включить в `ORDER BY`. Дополнительная информация приведена в разделе *Next Steps* в конце этого документа.
@@ -410,7 +384,7 @@ FORMAT PrettyCompact"
 
 Выполним запрос к TSV‑файлу, чтобы определить кардинальность трёх кандидатных столбцов:
 
-```bash
+```bash title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select formatReadableQuantity(uniq(OFNS_DESC)) as cardinality_OFNS_DESC,
@@ -421,9 +395,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
   FORMAT PrettyCompact"
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─cardinality_OFNS_DESC─┬─cardinality_RPT_DT─┬─cardinality_BORO_NM─┐
 │ 60.00                 │ 306.00             │ 6.00                │
 └───────────────────────┴────────────────────┴─────────────────────┘
@@ -483,7 +455,6 @@ CREATE TABLE NYPD_Complaint (
 ) ENGINE = MergeTree
   ORDER BY ( borough, offense_description, date_reported )
 ```
-
 
 ### Поиск первичного ключа таблицы \{#finding-the-primary-key-of-a-table\}
 
@@ -577,16 +548,12 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
 Набор данных меняется один или несколько раз в год, поэтому полученные вами значения (подсчёты) могут не совпадать с приведёнными в этом документе.
 :::
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT count()
 FROM NYPD_Complaint
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─count()─┐
 │  208993 │
 └─────────┘
@@ -596,30 +563,23 @@ FROM NYPD_Complaint
 
 Размер набора данных в ClickHouse составляет всего 12 % от исходного TSV-файла. Сравните размер исходного TSV-файла с размером таблицы:
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT formatReadableSize(total_bytes)
 FROM system.tables
 WHERE name = 'NYPD_Complaint'
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─formatReadableSize(total_bytes)─┐
 │ 8.63 MiB                        │
 └─────────────────────────────────┘
 ```
 
-
 ## Выполнение нескольких запросов \{#run-queries\}
 
 ### Запрос 1. Сравнение количества жалоб по месяцам \{#query-1-compare-the-number-of-complaints-by-month\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     dateName('month', date_reported) AS month,
     count() AS complaints,
@@ -629,9 +589,7 @@ GROUP BY month
 ORDER BY complaints DESC
 ```
 
-Результат:
-
-```response
+```response title="Response"
 Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
 ┌─month─────┬─complaints─┬─bar(count(), 0, 50000, 80)───────────────────────────────┐
@@ -652,12 +610,9 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
 ```
 
+### Запрос 2. Сравнение общего количества жалоб по боро \{#query-2-compare-total-number-of-complaints-by-borough\}
 
-### Запрос 2. Сравнение общего количества жалоб по районам \{#query-2-compare-total-number-of-complaints-by-borough\}
-
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     borough,
     count() AS complaints,
@@ -667,9 +622,7 @@ GROUP BY borough
 ORDER BY complaints DESC
 ```
 
-Результат:
-
-```response
+```response title="Response"
 Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
 ┌─borough───────┬─complaints─┬─bar(count(), 0, 125000, 60)──┐
@@ -683,7 +636,6 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
 6 rows in set. Elapsed: 0.008 sec. Processed 208.99 thousand rows, 209.43 KB (27.14 million rows/s., 27.20 MB/s.)
 ```
-
 
 ## Дальнейшие шаги \{#next-steps\}
 

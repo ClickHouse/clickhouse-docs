@@ -1,13 +1,11 @@
 ---
-description: 'Документация об оконной функции last_value'
+description: 'Документация по оконной функции last_value'
 sidebar_label: 'last_value'
 sidebar_position: 4
 slug: /sql-reference/window-functions/last_value
 title: 'last_value'
 doc_type: 'reference'
 ---
-
-# last&#95;value \{#last&#95;value\}
 
 Возвращает последнее значение, вычисленное в его упорядоченном окне. По умолчанию аргументы со значением NULL пропускаются, однако модификатор `RESPECT NULLS` можно использовать для изменения этого поведения.
 
@@ -40,9 +38,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 В этом примере функция `last_value` используется для поиска футболиста с наименьшей заработной платой в вымышленном наборе данных о зарплатах игроков Премьер-лиги.
 
-Запрос:
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS salaries;
 CREATE TABLE salaries
 (
@@ -63,15 +59,13 @@ INSERT INTO salaries FORMAT VALUES
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        last_value(player) OVER (ORDER BY salary DESC RANGE BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS lowest_paid_player
 FROM salaries;
 ```
 
-Результат:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬─lowest_paid_player─┐
 1. │ Gary Chen       │ 196000 │ Michael Stanley    │
 2. │ Robert George   │ 195000 │ Michael Stanley    │

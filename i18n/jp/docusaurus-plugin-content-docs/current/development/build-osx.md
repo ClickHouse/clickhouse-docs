@@ -1,14 +1,12 @@
 ---
-description: 'macOS システム上で ClickHouse をソースからビルドするためのガイド'
-sidebar_label: 'macOS 上での macOS 向けビルド'
+description: 'macOS システムでソースから ClickHouse をビルドするためのガイド'
+sidebar_label: 'macOS 上で macOS 向けにビルド'
 sidebar_position: 15
 slug: /development/build-osx
-title: 'macOS 上での macOS 向けビルド'
-keywords: ['macOS', 'Mac', 'ビルド']
+title: 'macOS 上で macOS 向けにビルド'
+keywords: ['MacOS', 'Mac', 'build']
 doc_type: 'guide'
 ---
-
-# macOS 上での macOS 向け ClickHouse をビルドする方法 \{#how-to-build-clickhouse-on-macos-for-macos\}
 
 :::info このビルドガイドは、ClickHouse 自体を変更するコントリビューター向けです。
 ClickHouse のソースコードを変更しない場合は、[Quick Start](https://clickhouse.com/docs/get-started/quick-start) に記載されている手順に従って、事前にビルド済みの ClickHouse をインストールできます。

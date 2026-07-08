@@ -1,23 +1,21 @@
 ---
 slug: /cloud/guides/data-masking
 sidebar_label: '数据脱敏'
-title: 'ClickHouse 中的数据脱敏'
-description: 'ClickHouse 中数据脱敏指南'
+title: '在 ClickHouse 中进行数据脱敏'
+description: '在 ClickHouse 中进行数据脱敏的指南'
 keywords: ['数据脱敏']
 doc_type: 'guide'
 ---
 
-# 在 ClickHouse 中进行数据脱敏 \{#data-masking-in-clickhouse\}
-
-数据脱敏是一种用于数据保护的技术，它通过将原始数据替换为在格式和结构上保持不变、但移除了任何可识别个人身份的信息（PII）或其他敏感信息的数据版本来实现保护。
+数据脱敏是一种用于数据保护的技术，它通过将原始数据替换为在格式和结构上保持不变、但移除了任何可识别个人身份的信息 (PII) 或其他敏感信息的数据版本来实现保护。
 
 本指南将演示如何在 ClickHouse 中通过多种方式进行数据脱敏：
 
-- **Masking policies** (ClickHouse Cloud, 25.12+)：在查询时针对特定用户/角色应用的原生动态脱敏策略
-- **String replacement functions**：使用内置字符串替换函数进行基本脱敏处理
-- **Masked views**：创建带有转换逻辑的视图
-- **Materialized columns**：与原始数据一同存储脱敏后的数据版本
-- **Query masking rules**：在日志中对敏感数据进行脱敏（ClickHouse OSS）
+* **脱敏策略** (ClickHouse Cloud, 25.12+)：在查询时针对特定用户/角色应用的原生动态脱敏策略
+* **String replacement functions**：使用内置字符串替换函数进行基本脱敏处理
+* **Masked views**：创建带有转换逻辑的视图
+* **Materialized columns**：与原始数据一同存储脱敏后的数据版本
+* **Query masking rules**：在日志中对敏感数据进行脱敏 (ClickHouse OSS)
 
 ## 使用 Masking Policy（ClickHouse Cloud） \{#masking-policies\}
 

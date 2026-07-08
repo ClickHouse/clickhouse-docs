@@ -1,18 +1,16 @@
 ---
-description: '辞書操作用の関数に関するドキュメント'
-sidebar_label: '辞書'
+description: 'Dictionaryを扱う関数のドキュメント'
+sidebar_label: 'Dictionary'
 slug: /sql-reference/functions/ext-dict-functions
-title: '辞書操作用の関数'
+title: 'Dictionaryを扱う関数'
 doc_type: 'reference'
 ---
 
-# 辞書を扱う関数 \{#functions-for-working-with-dictionaries\}
-
 :::note
-[DDL クエリ](../statements/create/dictionary/overview.md)で作成された辞書の場合、`dict_name` パラメーターは `<database>.<dict_name>` のように完全修飾名で指定する必要があります。省略した場合は、現在のデータベースが使用されます。
+[DDL クエリ](../statements/create/dictionary/overview.md)で作成されたDictionaryの場合、`dict_name` パラメーターは `<database>.<dict_name>` のように完全修飾名で指定する必要があります。省略した場合は、現在のデータベースが使用されます。
 :::
 
-辞書の接続と設定の方法については、[辞書](../statements/create/dictionary/overview.md)を参照してください。
+Dictionaryの接続と設定の方法については、[Dictionary](../statements/create/dictionary/overview.md)を参照してください。
 
 ## 例となる辞書 \{#example-dictionary\}
 

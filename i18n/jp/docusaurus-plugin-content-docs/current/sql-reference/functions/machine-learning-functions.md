@@ -6,8 +6,6 @@ title: '機械学習関数'
 doc_type: 'reference'
 ---
 
-# 機械学習関数 \{#machine-learning-functions\}
-
 ## evalMLMethod \{#evalmlmethod\}
 
 学習済みの回帰モデルを用いた予測には `evalMLMethod` 関数を使用します。詳細は `linearRegression` を参照してください。
@@ -32,14 +30,14 @@ naiveBayesClassifier(model_name, input_text);
 
 **引数**
 
-* `model_name` — 事前構成済みモデルの名前。[String](../data-types/string.md)\
-  モデルは ClickHouse の設定ファイル内で定義されている必要があります（下記参照）。
-* `input_text` — 分類対象のテキスト。[String](../data-types/string.md)\
-  入力は指定されたとおりにそのまま処理されます（大文字小文字や句読点は保持されます）。
+* `model_name` — 事前構成済みモデルの名前。[String](../data-types/string.md)
+  モデルは ClickHouse の設定ファイル内で定義されている必要があります (下記参照) 。
+* `input_text` — 分類対象のテキスト。[String](../data-types/string.md)
+  入力は指定されたとおりにそのまま処理されます (大文字小文字や句読点は保持されます) 。
 
 **戻り値**
 
-* 予測されたクラス ID を表す符号なし整数。[UInt32](../data-types/int-uint.md)\
+* 予測されたクラス ID を表す符号なし整数。[UInt32](../data-types/int-uint.md)
   クラス ID は、モデル構築時に定義されたカテゴリに対応します。
 
 **例**
@@ -63,15 +61,15 @@ SELECT naiveBayesClassifier('language', 'How are you?');
 ### 実装の詳細 \{#implementation-details\}
 
 **アルゴリズム**
-Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱うために [Laplace smoothing](https://en.wikipedia.org/wiki/Additive_smoothing) を用います。n-gram の確率は [この資料](https://web.stanford.edu/~jurafsky/slp3/4.pdf) に基づきます。
+Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱うために [ラプラス平滑化](https://en.wikipedia.org/wiki/Additive_smoothing) を用います。n-gram の確率は [この資料](https://web.stanford.edu/~jurafsky/slp3/4.pdf) に基づきます。
 
 **主な特徴**
 
 * 任意の長さの n-gram をサポート
-* 3 種類のトークナイズモード:
+* 3 種類のトークン化モード:
   * `byte`: 生のバイト列を対象とします。各バイトが 1 トークンになります。
   * `codepoint`: UTF‑8 からデコードされた Unicode スカラ値を対象とします。各コードポイントが 1 トークンになります。
-  * `token`: Unicode 空白文字の連続（正規表現 \s+）で分割します。トークンは非空白部分文字列であり、隣接している場合は句読点もトークンの一部になります（例: 「you?」は 1 トークン）。
+  * `token`: Unicode 空白文字の連続 (正規表現 \s+) で分割します。トークンは非空白部分文字列であり、隣接している場合は句読点もトークンの一部になります (例: 「you?」は 1 トークン) 。
 
 ***
 
@@ -109,19 +107,19 @@ Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱う
 
 **設定パラメータ**
 
-| Parameter  | Description                                                                                    | Example                                                  | Default |
-| ---------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------- | ------- |
-| **name**   | 一意のモデル識別子                                                                                      | `language_detection`                                     | *必須*    |
-| **path**   | モデルバイナリへのフルパス                                                                                  | `/etc/clickhouse-server/config.d/language_detection.bin` | *必須*    |
-| **mode**   | トークン化方式:<br />- `byte`: バイト列<br />- `codepoint`: Unicode 文字<br />- `token`: 単語トークン             | `token`                                                  | *必須*    |
-| **n**      | N-グラムサイズ（`token` モード）:<br />- `1` = 単語 1 個<br />- `2` = 単語 2 個の組み合わせ<br />- `3` = 単語 3 個の組み合わせ | `2`                                                      | *必須*    |
-| **alpha**  | 分類時にモデルに存在しない N-グラムに対処するために使用されるラプラス平滑化係数                                                      | `0.5`                                                    | `1.0`   |
-| **priors** | クラスの事前確率（各クラスに属するドキュメントの割合）                                                                    | クラス 0 が 60%、クラス 1 が 40%                                  | 一様分布    |
+| Parameter  | Description                                                                                      | Example                                                  | Default |
+| ---------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------- | ------- |
+| **name**   | 一意のモデル識別子                                                                                        | `language_detection`                                     | *必須*    |
+| **path**   | モデルバイナリへのフルパス                                                                                    | `/etc/clickhouse-server/config.d/language_detection.bin` | *必須*    |
+| **mode**   | トークン化方式:<br />- `byte`: バイト列<br />- `codepoint`: Unicode 文字<br />- `token`: 単語トークン               | `token`                                                  | *必須*    |
+| **n**      | N-グラムサイズ (`token` モード) :<br />- `1` = 単語 1 個<br />- `2` = 単語 2 個の組み合わせ<br />- `3` = 単語 3 個の組み合わせ | `2`                                                      | *必須*    |
+| **alpha**  | 分類時にモデルに存在しない N-gram に対処するために使用されるラプラス平滑化係数                                                        | `0.5`                                                    | `1.0`   |
+| **priors** | クラスの事前確率 (各クラスに属するドキュメントの割合)                                                                     | クラス 0 が 60%、クラス 1 が 40%                                  | 一様分布    |
 
 **モデル学習ガイド**
 
 **ファイル形式**
-人間が読みやすい形式の出力では、`n=1` で `token` モードの場合、モデルは次のような形になります：
+人が読める形式では、`n=1` かつ `token` モードの場合、モデルは次のようになります:
 
 ```text
 <class_id> <n-gram> <count>
@@ -129,7 +127,7 @@ Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱う
 1 refund 28
 ```
 
-`n=3` で `codepoint` モードの場合は、次のようになります。
+`n=3` で `codepoint` モードの場合、次のようになります：
 
 ```text
 <class_id> <n-gram> <count>
@@ -137,39 +135,39 @@ Naive Bayes 分類アルゴリズムを使用し、未出現の n-gram を扱う
 1 ref 28
 ```
 
-人間が読める形式は ClickHouse によって直接は使用されず、後述のバイナリ形式に変換する必要があります。
+人間が読みやすい形式は ClickHouse では直接使用されず、以下で説明するバイナリ形式に変換する必要があります。
 
 **バイナリ形式の詳細**
-各 n-gram は次のように格納されます:
+各 n-gram は次の形式で格納されます：
 
-1. 4 バイトの `class_id`（UInt, リトルエンディアン）
-2. 4 バイトの `n-gram` のバイト長（UInt, リトルエンディアン）
+1. 4 バイトの `class_id` (UInt、little-endian)
+2. 4 バイトの `n-gram` のバイト長 (UInt、little-endian)
 3. 生の `n-gram` バイト列
-4. 4 バイトの `count`（UInt, リトルエンディアン）
+4. 4 バイトの `count` (UInt、little-endian)
 
 **前処理の要件**
-ドキュメントコーパスからモデルを作成する前に、文書は指定された `mode` と `n` に従って n-gram を抽出できるように前処理しておく必要があります。前処理の手順は次のとおりです。
+ドキュメントコーパスからモデルを作成する前に、指定された `mode` と `n` に従って n-gram を抽出できるよう、ドキュメントを前処理する必要があります。以下の手順で前処理を行います：
 
-1. **トークナイズモードに基づき、各ドキュメントの先頭と末尾に境界マーカーを追加します:**
+1. **トークン化モードに応じて、各ドキュメントの先頭と末尾に境界マーカーを追加します：**
 
-   * **Byte**: `0x01`（開始）、`0xFF`（終了）
-   * **Codepoint**: `U+10FFFE`（開始）、`U+10FFFF`（終了）
-   * **Token**: `<s>`（開始）、`</s>`（終了）
+   * **Byte**: `0x01` (開始) 、`0xFF` (終了)
+   * **Codepoint**: `U+10FFFE` (開始) 、`U+10FFFF` (終了)
+   * **Token**: `<s>` (開始) 、`</s>` (終了)
 
-   *注:* ドキュメントの先頭と末尾の両方に `(n - 1)` 個のトークンを追加します。
+   *注:* ドキュメントの先頭と末尾の両方に `(n - 1)` 個のトークンが追加されます。
 
-2. **`token` モードにおける `n=3` の例:**
+2. **`token` モードで `n=3` の例：**
 
-   * **Document:** `"ClickHouse is fast"`
-   * **Processed as:** `<s> <s> ClickHouse is fast </s> </s>`
-   * **Generated trigrams:**
+   * **ドキュメント:** `"ClickHouse is fast"`
+   * **処理結果:** `<s> <s> ClickHouse is fast </s> </s>`
+   * **生成される trigram:**
      * `<s> <s> ClickHouse`
      * `<s> ClickHouse is`
      * `ClickHouse is fast`
      * `is fast </s>`
      * `fast </s> </s>`
 
-`byte` モードおよび `codepoint` モードでのモデル作成を簡略化するために、まずドキュメントをトークン（`byte` モードでは `byte` のリスト、`codepoint` モードでは `codepoint` のリスト）にトークナイズすると便利な場合があります。その後、ドキュメントの先頭に `n - 1` 個の開始トークンを、末尾に `n - 1` 個の終了トークンを追加します。最後に、n-gram を生成し、それらをシリアライズされたファイルに書き込みます。
+`byte` モードおよび `codepoint` モードでのモデル作成を簡略化するために、まずドキュメントをトークン (`byte` モードでは `byte` のリスト、`codepoint` モードでは `codepoint` のリスト) にトークナイズすると便利な場合があります。その後、ドキュメントの先頭に `n - 1` 個の開始トークンを、末尾に `n - 1` 個の終了トークンを追加します。最後に、n-gram を生成し、それらをシリアライズされたファイルに書き込みます。
 
 ***
 

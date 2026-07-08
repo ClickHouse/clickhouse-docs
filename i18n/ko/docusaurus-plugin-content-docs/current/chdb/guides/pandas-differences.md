@@ -2,14 +2,12 @@
 title: 'pandas와의 주요 차이점'
 sidebar_label: '주요 차이점'
 slug: /chdb/guides/pandas-differences
-description: 'DataStore와 pandas의 주요 차이점'
+description: 'DataStore와 pandas의 중요한 차이점'
 keywords: ['chdb', 'datastore', 'pandas', 'differences', 'behavior']
 doc_type: 'guide'
 ---
 
-# pandas와의 주요 차이점 \{#key-differences-from-pandas\}
-
-DataStore는 pandas와 높은 호환성을 제공하지만, 알아두어야 할 중요한 차이점이 있습니다.
+DataStore는 pandas와 높은 호환성을 제공하지만, 이해해 두어야 할 중요한 차이점이 있습니다.
 
 ## 요약 표 \{#summary\}
 

@@ -1,5 +1,6 @@
 ---
-description: 'MySQL クライアントから ClickHouse へ接続するための MySQL プロトコルインターフェイスに関するドキュメント'
+description: 'ClickHouse の MySQL プロトコルインターフェイスに関するドキュメント。MySQL
+  クライアントが ClickHouse に接続できるようにします'
 sidebar_label: 'MySQL インターフェイス'
 sidebar_position: 25
 slug: /interfaces/mysql
@@ -13,27 +14,24 @@ import mysql1 from '@site/static/images/interfaces/mysql1.png';
 import mysql2 from '@site/static/images/interfaces/mysql2.png';
 import mysql3 from '@site/static/images/interfaces/mysql3.png';
 
-
-# MySQL インターフェイス \{#mysql-interface\}
-
 ClickHouse は MySQL ワイヤプロトコルをサポートしています。これにより、ネイティブな ClickHouse コネクタを持たない一部のクライアントが代わりに MySQL プロトコルを利用できるようになり、以下の BI ツールで動作検証されています:
 
-- [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
-- [Tableau Online](../integrations/tableau-online)
-- [QuickSight](../integrations/quicksight)
+* [Looker Studio](../data-visualization/looker-studio-and-clickhouse.md)
+* [Tableau Online](../integrations/tableau-online)
+* [QuickSight](../integrations/quicksight)
 
 他の未検証のクライアントやインテグレーションを試す場合、以下のような制限がある可能性があることに注意してください:
 
-- SSL 実装が完全に互換性がない可能性があり、[TLS SNI](https://www.cloudflare.com/learning/ssl/what-is-sni/) に関する問題が発生する場合があります。
-- 特定のツールが、まだ実装されていない方言機能 (例: MySQL 固有の関数や設定) を必要とする場合があります。
+* SSL 実装が完全には互換性がなく、[TLS SNI](https://www.cloudflare.com/learning/ssl/what-is-sni/) に関する問題が発生する可能性があります。
+* 特定のツールで、まだ実装されていない方言機能 (例: MySQL 固有の関数や設定) が必要になる場合があります。
 
-ネイティブドライバが利用可能な場合 (例: [DBeaver](../integrations/dbeaver)) は、常に MySQL インターフェイスではなくネイティブドライバを使用することを推奨します。さらに、ほとんどの MySQL 言語クライアントは問題なく動作するはずですが、MySQL インターフェイスが、既存の MySQL クエリを用いたコードベースに対する完全な代替となることは保証されていません。
+ネイティブドライバーが利用可能な場合 (例: [DBeaver](../integrations/dbeaver)) は、常に MySQL インターフェイスではなくネイティブドライバーを使用することを推奨します。さらに、ほとんどの MySQL 言語クライアントは問題なく動作するはずですが、MySQL インターフェイスが、既存の MySQL クエリを用いたコードベースにそのまま置き換え可能な完全な代替となることは保証されていません。
 
-ネイティブな ClickHouse ドライバを持たない特定のツールを対象とするユースケースで、そのツールを MySQL インターフェイス経由で利用したいにもかかわらず、何らかの非互換性を発見した場合は、ClickHouse リポジトリで[Issue を作成](https://github.com/ClickHouse/ClickHouse/issues)してください。
+ネイティブな ClickHouse ドライバーを持たない特定のツールを対象とするユースケースで、そのツールを MySQL インターフェイス経由で利用したく、何らかの非互換性を発見した場合は、ClickHouse リポジトリで [issue を作成](https://github.com/ClickHouse/ClickHouse/issues) してください。
 
 ::::note
-上記の BI ツールの SQL 方言をより良くサポートするため、ClickHouse の MySQL インターフェイスは、暗黙的に設定 [prefer_column_name_to_alias = 1](/operations/settings/settings#prefer_column_name_to_alias) を付与して SELECT クエリを実行します。
-これは無効化できず、そのため一部のレアケースでは、通常の ClickHouse クエリインターフェイスと MySQL クエリインターフェイスに送信されたクエリの挙動が異なる場合があります。
+上記の BI ツールの SQL 方言をより良くサポートするため、ClickHouse の MySQL インターフェイスは、暗黙的に設定 [prefer&#95;column&#95;name&#95;to&#95;alias = 1](/operations/settings/settings#prefer_column_name_to_alias) を付与して SELECT クエリを実行します。
+これは無効化できず、そのためまれなエッジケースでは、通常の ClickHouse クエリインターフェイスと MySQL クエリインターフェイスに送信されたクエリの挙動が異なる場合があります。
 ::::
 
 ## ClickHouse Cloud で MySQL インターフェイスを有効化する \{#enabling-the-mysql-interface-on-clickhouse-cloud\}

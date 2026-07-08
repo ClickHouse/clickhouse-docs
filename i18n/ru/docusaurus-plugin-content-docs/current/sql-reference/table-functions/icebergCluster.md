@@ -1,14 +1,12 @@
 ---
-description: 'Расширение табличной функции iceberg, позволяющее обрабатывать файлы
-  из Apache Iceberg параллельно на многих узлах в заданном кластере.'
+description: 'Расширение табличной функции iceberg, которое позволяет параллельно
+  обрабатывать файлы из Apache Iceberg на многих узлах в заданном кластере.'
 sidebar_label: 'icebergCluster'
 sidebar_position: 91
 slug: /sql-reference/table-functions/icebergCluster
 title: 'icebergCluster'
 doc_type: 'reference'
 ---
-
-# icebergCluster Table Function \{#icebergcluster-table-function\}
 
 Это расширение табличной функции [iceberg](/sql-reference/table-functions/iceberg.md).
 

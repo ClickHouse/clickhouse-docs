@@ -7,12 +7,12 @@ keywords: ['postgres scaling', 'vertical scaling', 'vm types', 'nvme scaling', '
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import instanceTypes from '@site/static/images/managed-postgres/instance-types.png';
 import scalingSettings from '@site/static/images/managed-postgres/scaling-settings.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="scaling" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.scaling-beta" />
 
 Managed Postgres provides flexible scaling options to match your workload requirements. With 50+ NVMe-backed instance types to choose from, you can independently scale CPU, memory, and storage to optimize performance and cost for your specific use case.
 
@@ -35,6 +35,10 @@ Different workloads benefit from different resource configurations:
 | **Compute optimized**                             | High   | Medium | Medium  | Compute-optimized (high vCPU count)         |
 | **Memory optimized** (large working set)          | Medium | High   | Medium  | Memory-optimized (high memory-to-CPU ratio) |
 | **Storage optimized** (large datasets, heavy I/O) | Medium | Medium | High    | Storage-optimized (high NVMe capacity)      |
+
+:::tip
+For safety reasons, you may not be able to switch to instance types whose storage is close to your current used storage capacity. Always opt for instance types with headroom over your current used capacity to avoid any issues.
+:::
 
 ## How scaling works {#how-scaling-works}
 
@@ -129,11 +133,9 @@ If you're replicating data to ClickHouse using [ClickPipes](/cloud/managed-postg
 
 This allows you to optimize the replication throughput separately from your Postgres instance resources.
 
-## Autoscaling (roadmap) {#autoscaling}
+## Autoscaling {#autoscaling}
 
-:::note[Coming soon]
-Automatic storage scaling is on the roadmap for Managed Postgres. This feature will automatically increase instance size as your database grows, eliminating the need for manual intervention.
-:::
+At 90% disk usage your instance type will be adjusted to a larger instance type.
 
 ## Additional resources {#resources}
 

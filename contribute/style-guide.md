@@ -35,6 +35,22 @@ checks on front-matter:
 
 For implementation details see [plugins/frontmatter-validation](https://github.com/ClickHouse/clickhouse-docs/tree/main/plugins/frontmatter-validation)
 
+## Sentence casing for titles and headings
+
+Use sentence case for document titles, headings, and UI labels in docs content.
+
+- Capitalize the first word and proper nouns only.
+- Keep official product and brand capitalization when names are intentionally styled (for example, `ClickHouse`, `clickhouse-local`, `GitHub`).
+- Use the same sentence case style in front matter (`title`, `sidebar_label`) and in-page headings (`##`, `###`, etc.).
+
+Examples:
+
+- ✅ `title: 'Install ClickHouse on Debian/Ubuntu'`
+- ✅ `## Configure backups for self-managed ClickHouse`
+- ❌ `## Configure Backups For Self-Managed ClickHouse`
+
+Reference: [Google developer documentation style guide: Headings and titles](https://developers.google.com/style/headings) and [Product names](https://developers.google.com/style/product-names).
+
 ## Explicit header tags
 
 Due to the way our translation system works, it is necessary to add an explicit

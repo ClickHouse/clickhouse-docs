@@ -13,7 +13,7 @@ integration:
 import snapshot_params from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/snapshot_params.png'
 import Image from '@theme/IdealImage';
 
-이 문서는 Postgres ClickPipe에서 스냅샷/초기 로드가 어떻게 병렬로 수행되는지 설명하며, 이를 제어하기 위해 사용할 수 있는 스냅샷 매개변수에 대해 다룹니다.
+이 문서는 Postgres ClickPipe에서 병렬 스냅샷/초기 로드가 어떻게 수행되는지 설명하며, 이를 제어하기 위해 사용할 수 있는 스냅샷 매개변수에 대해 다룹니다.
 
 
 ## 개요 \{#overview-pg-snapshot\}

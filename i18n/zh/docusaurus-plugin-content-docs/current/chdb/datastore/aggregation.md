@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'aggregation', 'window', 'groupby', 'sum', 'mean
 doc_type: 'reference'
 ---
 
-# DataStore 聚合函数 \{#datastore-aggregation-functions\}
-
-DataStore 提供了完整的聚合函数和窗口函数支持，充分利用 ClickHouse 强大的 SQL 聚合能力。
+DataStore 提供全面的聚合函数和窗口函数支持，并充分利用 ClickHouse 强大的 SQL 聚合能力。
 
 ## 基本聚合 \{#basic\}
 

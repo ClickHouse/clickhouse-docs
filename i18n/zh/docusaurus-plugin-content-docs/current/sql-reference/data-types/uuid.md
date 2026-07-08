@@ -1,5 +1,5 @@
 ---
-description: 'ClickHouse 中 UUID 数据类型文档'
+description: 'ClickHouse 中 UUID 数据类型的文档'
 sidebar_label: 'UUID'
 sidebar_position: 24
 slug: /sql-reference/data-types/uuid
@@ -7,11 +7,9 @@ title: 'UUID'
 doc_type: 'reference'
 ---
 
-# UUID \{#uuid\}
+通用唯一标识符 (UUID) 是一种用于标识记录的 16 字节值。有关 UUID 的详细信息，请参阅 [维基百科](https://en.wikipedia.org/wiki/Universally_unique_identifier)。
 
-通用唯一标识符（UUID）是一种用于标识记录的 16 字节值。有关 UUID 的详细信息，请参阅 [维基百科](https://en.wikipedia.org/wiki/Universally_unique_identifier)。
-
-尽管存在不同的 UUID 变体，例如 UUIDv4 和 UUIDv7（参见[此处](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)），ClickHouse 并不会校验插入的 UUID 是否符合某个特定变体。
+尽管存在不同的 UUID 变体，例如 UUIDv4 和 UUIDv7 (参见[此处](https://datatracker.ietf.org/doc/html/draft-ietf-uuidrev-rfc4122bis)) ，ClickHouse 并不会校验插入的 UUID 是否符合某个特定变体。
 在 SQL 层面，UUID 在内部被视为由 16 个随机字节组成的序列，并采用 [8-4-4-4-12 的表示形式](https://en.wikipedia.org/wiki/Universally_unique_identifier#Textual_representation)。
 
 UUID 值示例：
@@ -29,52 +27,75 @@ UUID 值示例：
 :::warning
 因历史原因，UUID 在排序时是依据其后半部分进行排序的。
 
-对于 UUIDv4 值这没有问题，但在主键索引定义中使用 UUIDv7 列时，这可能会降低性能（在排序键或分区键中的使用是可以的）。
+对于 UUIDv4 值这没有问题，但在主键索引定义中使用 UUIDv7 列时，这可能会降低性能 (在排序键或分区键中的使用是可以的) 。
 更具体地说，UUIDv7 值的前半部分由时间戳组成，后半部分由计数器组成。
-因此，在稀疏主键索引中（即每个索引粒度的首个值），UUIDv7 的排序将依据计数器字段进行。
-如果假设 UUID 是按照前半部分（时间戳）排序的，那么在查询开始时的主键索引分析步骤预期可以在除一个分区片段外的所有分区片段中裁剪掉所有标记。
-然而，由于按后半部分（计数器）排序，预期每个分区片段都至少会返回一个标记，从而导致不必要的磁盘访问。
+因此，在稀疏主键索引中 (即每个索引粒度的首个值) ，UUIDv7 的排序将依据计数器字段进行。
+如果假设 UUID 是按照前半部分 (时间戳) 排序的，那么在查询开始时的主键索引分析步骤预期可以在除一个分区片段外的所有分区片段中裁剪掉所有标记。
+然而，由于按后半部分 (计数器) 排序，预期每个分区片段都至少会返回一个标记，从而导致不必要的磁盘访问。
 :::
 
 示例：
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (uuid);
 
-INSERT INTO tab SELECT generateUUIDv7() FROM numbers(50);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
 SELECT * FROM tab;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─uuid─────────────────────────────────┐
-│ 36a0b67c-b74a-4640-803b-e44bb4547e3c │
-│ 3a00aeb8-2605-4eec-8215-08c0ecb51112 │
-│ 3fda7c49-282e-421a-85ab-c5684ef1d350 │
-│ 16ab55a7-45f6-44a8-873c-7a0b44346b3e │
-│ e3776711-6359-4f22-878d-bf290d052c85 │
-│                [...]                 │
-│ 9eceda2f-6946-40e3-b725-16f2709ca41a │
-│ 03644f74-47ba-4020-b865-be5fd4c8c7ff │
-│ ce3bc93d-ab19-4c74-b8cc-737cb9212099 │
-│ b7ad6c91-23d6-4b5e-b8e4-a52297490b56 │
-│ 06892f64-cc2d-45f3-bf86-f5c5af5768a9 │
+│ 019d2555-7874-7e9d-a284-9b45a0b2f165 │
+│ 019d2555-7874-7e9d-a284-9b46c3353be7 │
+│ 019d2555-7878-77fc-a36f-4081aa58ec2b │
+│ 019d2555-7878-77fc-a36f-40826555fb9b │
+│ 019d2555-7870-7432-ba62-5250ac595328 │
+│ 019d2555-7870-7432-ba62-5251da22bd19 │
+│ 019d2555-786c-73e9-a031-4a7936df7d56 │
+│ 019d2555-786c-73e9-a031-4a7a35a9544f │
+│ 019d2555-7868-7333-89d1-2bd1639899c3 │
+│ 019d2555-7868-7333-89d1-2bd297eb7d42 │
 └──────────────────────────────────────┘
+
 ```
 
 作为一种变通方案，可以将 UUID 转换为由其后半部分提取出的时间戳：
 
-```sql
+```sql title="Query"
 CREATE TABLE tab (uuid UUID) ENGINE = MergeTree PRIMARY KEY (UUIDv7ToDateTime(uuid));
 -- Or alternatively:                      [...] PRIMARY KEY (toStartOfHour(UUIDv7ToDateTime(uuid)));
 
-INSERT INTO tab SELECT generateUUIDv7() FROM numbers(50);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
+INSERT INTO tab SELECT generateUUIDv7() FROM numbers(2);
 SELECT * FROM tab;
 ```
 
-ORDER BY (UUIDv7ToDateTime(uuid), uuid)
+结果 (假设插入的是相同的数据) ：
 
+```text title="Response"
+┌─uuid─────────────────────────────────┐
+│ 019d2555-7868-7333-89d1-2bd1639899c3 │
+│ 019d2555-7868-7333-89d1-2bd297eb7d42 │
+│ 019d2555-786c-73e9-a031-4a7936df7d56 │
+│ 019d2555-786c-73e9-a031-4a7a35a9544f │
+│ 019d2555-7870-7432-ba62-5250ac595328 │
+│ 019d2555-7870-7432-ba62-5251da22bd19 │
+│ 019d2555-7874-7e9d-a284-9b45a0b2f165 │
+│ 019d2555-7874-7e9d-a284-9b46c3353be7 │
+│ 019d2555-7878-77fc-a36f-4081aa58ec2b │
+│ 019d2555-7878-77fc-a36f-40826555fb9b │
+└──────────────────────────────────────┘
+
+```
+
+ORDER BY (UUIDv7ToDateTime(uuid), uuid)
 
 ## 生成 UUID \{#generating-uuids\}
 
@@ -86,7 +107,7 @@ ClickHouse 提供了 [generateUUIDv4](../../sql-reference/functions/uuid-functio
 
 此示例演示如何创建一个带有 UUID 列的表，并向该表插入一个值。
 
-```sql
+```sql title="Query"
 CREATE TABLE t_uuid (x UUID, y String) ENGINE=TinyLog
 
 INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
@@ -94,9 +115,7 @@ INSERT INTO t_uuid SELECT generateUUIDv4(), 'Example 1'
 SELECT * FROM t_uuid
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌────────────────────────────────────x─┬─y─────────┐
 │ 417ddc5d-e556-4d27-95dd-a34d84e46a50 │ Example 1 │
 └──────────────────────────────────────┴───────────┘
@@ -118,7 +137,6 @@ SELECT * FROM t_uuid
 │ 00000000-0000-0000-0000-000000000000 │ Example 2 │
 └──────────────────────────────────────┴───────────┘
 ```
-
 
 ## 限制 \{#restrictions\}
 

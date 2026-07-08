@@ -13,14 +13,13 @@ integration:
 import secures3_arn from '@site/static/images/cloud/security/secures3_arn.png';
 import Image from '@theme/IdealImage';
 
-이 문서에서는 ClickPipes 고객이 역할 기반 액세스를 활용하여 Amazon Aurora 및 RDS에 대해 인증을 수행하고 데이터베이스에 안전하게 연결하는 방법을 설명합니다.
+이 문서에서는 ClickPipes 고객이 역할 기반 액세스를 활용하여 Amazon Aurora 및 RDS에 대해 인증을 수행하고 데이터베이스에 안전하게 액세스하는 방법을 설명합니다.
 
 :::warning
-AWS RDS Postgres 및 Aurora Postgres의 경우 AWS IAM DB Authentication의 제한 사항으로 인해 `Initial Load Only` ClickPipes만 실행할 수 있습니다.
+AWS RDS Postgres 및 Aurora Postgres의 경우 AWS IAM DB 인증의 제한 사항으로 인해 `Initial Load Only` ClickPipes만 실행할 수 있습니다.
 
 MySQL 및 MariaDB에는 이 제한 사항이 적용되지 않으며, `Initial Load Only`와 `CDC` ClickPipes를 모두 실행할 수 있습니다.
 :::
-
 
 ## 설정 \{#setup\}
 

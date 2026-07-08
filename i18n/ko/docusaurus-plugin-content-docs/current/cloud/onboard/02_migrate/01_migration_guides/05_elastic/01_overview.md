@@ -8,6 +8,4 @@ show_related_blogs: true
 doc_type: 'landing-page'
 ---
 
-# Elasticsearch에서 ClickHouse로 마이그레이션 \{#elasticsearch-to-clickhouse-migration\}
-
-관측성 관련 사용 사례는 [Elasticsearch에서 ClickStack으로 마이그레이션](/use-cases/observability/clickstack/migration/elastic) 문서를 참고하십시오.
+관측성 사용 사례에 대해서는 [Elasticsearch에서 ClickStack으로](/use-cases/observability/clickstack/migration/elastic) 마이그레이션 문서를 참조하십시오.

@@ -7,8 +7,6 @@ sidebar_label: 'argMaxIf'
 doc_type: 'reference'
 ---
 
-# argMaxIf \{#argmaxif\}
-
 ## Описание \{#description\}
 
 Комбинатор [`If`](/sql-reference/aggregate-functions/combinators#-if) может быть применён к функции [`argMax`](/sql-reference/aggregate-functions/reference/argmax),
@@ -54,7 +52,8 @@ FROM product_sales;
 ```
 
 ## См. также \{#see-also\}
-- [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
-- [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
-- [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
-- [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`argMax`](/sql-reference/aggregate-functions/reference/argmax)
+* [`argMin`](/sql-reference/aggregate-functions/reference/argmin)
+* [`argMinIf`](/examples/aggregate-function-combinators/argMinIf)
+* [`комбинатор If`](/sql-reference/aggregate-functions/combinators#-if)

@@ -1,17 +1,14 @@
 ---
-sidebar_label: 'Kafka Connect JDBC 커넥터'
+sidebar_label: 'Kafka Connect JDBC Connector'
 sidebar_position: 4
 slug: /integrations/kafka/kafka-connect-jdbc
-description: 'Kafka Connect와 ClickHouse에서 JDBC Sink 커넥터를 사용하는 방법'
-title: 'JDBC 커넥터'
+description: 'Kafka Connect 및 ClickHouse에서 JDBC Connector Sink 사용하기'
+title: 'JDBC connector'
 doc_type: 'guide'
-keywords: ['kafka', 'kafka connect', 'jdbc', 'integration', 'data pipeline']
+keywords: ['kafka', 'kafka connect', 'jdbc', '통합', '데이터 파이프라인']
 ---
 
 import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
-
-
-# JDBC connector \{#jdbc-connector\}
 
 :::note
 이 커넥터는 데이터가 단순하며 int와 같은 기본 자료형으로만 구성된 경우에만 사용해야 합니다. 맵과 같은 ClickHouse 고유 타입은 지원되지 않습니다.
@@ -21,7 +18,7 @@ import ConnectionDetails from '@site/i18n/ko/docusaurus-plugin-content-docs/curr
 
 아래에서는 단일 Kafka 토픽에서 메시지를 가져와 ClickHouse 테이블에 행을 삽입하는 간단한 구성 방법을 설명합니다. Kafka 환경이 없는 사용자를 위해 넉넉한 무료 티어를 제공하는 Confluent Cloud 사용을 권장합니다.
 
-JDBC Connector에는 스키마가 필요합니다(JDBC connector에서는 일반 JSON 또는 CSV만으로는 사용할 수 없습니다). 스키마를 각 메시지에 인코딩할 수도 있지만, 관련 오버헤드를 피하기 위해 [Confluent schema registry를 사용하는 것이 강력히 권장됩니다](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas). 제공된 삽입 스크립트는 메시지에서 스키마를 자동으로 추론하여 레지스트리에 삽입하므로, 이 스크립트는 다른 데이터셋에도 재사용할 수 있습니다. Kafka의 키는 String이라고 가정합니다. Kafka 스키마에 대한 자세한 내용은 [여기](https://docs.confluent.io/platform/current/schema-registry/index.html)에서 확인할 수 있습니다.
+JDBC 커넥터에는 스키마가 필요합니다(JDBC connector에서는 일반 JSON 또는 CSV만으로는 사용할 수 없습니다). 스키마를 각 메시지에 인코딩할 수도 있지만, 관련 오버헤드를 피하기 위해 [Confluent 스키마 레지스트리를 사용하는 것이 강력히 권장됩니다](https://www.confluent.io/blog/kafka-connect-deep-dive-converters-serialization-explained/#json-schemas). 제공된 삽입 스크립트는 메시지에서 스키마를 자동으로 추론하여 레지스트리에 삽입하므로, 이 스크립트는 다른 데이터셋에도 재사용할 수 있습니다. Kafka의 키는 String이라고 가정합니다. Kafka 스키마에 대한 자세한 내용은 [여기](https://docs.confluent.io/platform/current/schema-registry/index.html)에서 확인할 수 있습니다.
 
 ### 라이선스 \{#license\}
 

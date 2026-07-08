@@ -20,6 +20,7 @@ keywords: ['managing ClickStack', 'performance', 'materialized views', 'admin co
 | [本番運用への移行](/use-cases/observability/clickstack/production)                   | ClickStack を本番環境で稼働させる前に推奨される手順とベストプラクティス。               |
 | [Materialized views](/use-cases/observability/clickstack/materialized_views) | ClickStack で materialized view を使用してクエリ性能を向上させるための詳細ガイド。 |
 | [パフォーマンスチューニング](/use-cases/observability/clickstack/performance_tuning)      | 大規模ワークロード向けに ClickStack をチューニングするための包括的なガイド。             |
+| [RBAC](/use-cases/observability/clickstack/rbac)                             | ダッシュボード、保存済み検索、ソースに対するチームの権限を管理するための RBAC を設定します。        |
 
 ## Core ClickHouse concepts \{#core-concepts\}
 

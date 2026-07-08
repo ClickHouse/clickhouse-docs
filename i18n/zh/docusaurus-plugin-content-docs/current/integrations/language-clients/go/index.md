@@ -14,8 +14,6 @@ integration:
 import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_native.md';
 
 
-# ClickHouse Go \{#clickhouse-go\}
-
 ## 快速开始 \{#quick-start\}
 
 让我们从一个简单示例开始。这将连接到 ClickHouse，并从 `system` 数据库中执行查询。要开始操作，您需要准备好连接信息。

@@ -12,8 +12,6 @@ import activity_log_1 from '@site/static/images/cloud/security/activity_log1.png
 import activity_log_2 from '@site/static/images/cloud/security/activity_log2.png';
 import activity_log_3 from '@site/static/images/cloud/security/activity_log3.png';
 
-# Console audit log {#console-audit-log}
-
 Console activities are recorded in the audit log. If you have the Admin or Developer organization role, you can review the log and integrate it with your logging systems.
 
 ## Access the console log via the user interface {#console-audit-log-ui}

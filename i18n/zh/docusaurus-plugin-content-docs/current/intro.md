@@ -92,7 +92,7 @@ ClickHouse 会自适应地选择 join 算法：它首先使用快速的哈希 jo
 ## 卓越的查询性能 \{#superior-query-performance\}
 
 ClickHouse 以其极快的查询性能而闻名。
-要了解 ClickHouse 为何如此之快，请参阅 [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast.mdx) 指南。
+要了解 ClickHouse 为何如此之快，请参阅 [Why is ClickHouse fast?](/concepts/why-clickhouse-is-so-fast) 指南。
 
 {/*
   ## What is OLAP?                
@@ -113,7 +113,7 @@ ClickHouse 以其极快的查询性能而闻名。
 
   看出差异了吗？
 
-  本文的其余部分将解释为什么列式数据库在这些场景中表现良好，以及为什么 ClickHouse 在这一类别中尤其[表现出色](/concepts/why-clickhouse-is-so-fast/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-and-selects-are-isolated)。
+  本文的其余部分将解释为什么列式数据库在这些场景中表现良好，以及为什么 ClickHouse 在这一类别中尤其[表现出色](/concepts/why-clickhouse-is-so-fast#storage-layer-concurrent-inserts-and-selects-are-isolated)。
 
   ## Why is ClickHouse so fast?                             
 

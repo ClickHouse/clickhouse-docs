@@ -4,7 +4,7 @@ sidebar_position: 131
 slug: /integrations/lightdash
 keywords: ['clickhouse', 'lightdash', 'データ可視化', 'BI', 'セマンティックレイヤー', 'dbt', 'セルフサービス分析', '接続']
 description: 'Lightdash は dbt 上に構築されたモダンなオープンソース BI ツールであり、セマンティックレイヤーを通じてチームが ClickHouse 上のデータを探索および可視化できるようにします。このガイドでは、dbt を活用した高速でガバナンスの効いたアナリティクスを実現するために、Lightdash を ClickHouse に接続する方法を説明します。'
-title: 'Lightdash を ClickHouse に接続する'
+title: 'Lightdash'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
@@ -21,16 +21,13 @@ import ConnectionDetails from '@site/i18n/jp/docusaurus-plugin-content-docs/curr
 import Image from '@theme/IdealImage';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
+<PartnerBadge />
 
-# Lightdash \{#lightdash\}
+Lightdash は、dbt のオープン性と ClickHouse の高いパフォーマンスを組み合わせた、モダンなデータチーム向けの **AI ファーストの BI プラットフォーム**です。ClickHouse を Lightdash に接続することで、チームは dbt のセマンティックレイヤーを基盤とした **AI を活用したセルフサービス分析体験**を実現でき、あらゆる問いに対して、ガバナンスの効いた一貫性のあるメトリクスで答えられるようになります。
 
-<PartnerBadge/>
+開発者が Lightdash を支持する理由は、オープンなアーキテクチャ、バージョン管理された YAML モデル、そして GitHub から IDE まで、ワークフローにそのまま組み込める各種連携にあります。
 
-Lightdash は、dbt のオープン性と ClickHouse のパフォーマンスを兼ね備えた、モダンなデータチーム向けの **AI ファーストの BI プラットフォーム** です。ClickHouse を Lightdash に接続すると、dbt のセマンティックレイヤーに基づいた **AI を活用したセルフサービス型の分析エクスペリエンス** を実現でき、すべての質問に対してガバナンスされた一貫性のあるメトリクスで回答できます。
-
-開発者は、オープンなアーキテクチャ、バージョン管理された YAML モデル、GitHub から IDE までワークフローに直接組み込める各種インテグレーションにより、Lightdash を高く評価しています。
-
-このパートナーシップにより、**ClickHouse の高速性** と **Lightdash の開発者エクスペリエンス** が組み合わさり、AI を活用してインサイトを探索・可視化・自動化することがこれまでになく容易になります。
+このパートナーシップにより、**ClickHouse のスピード**と **Lightdash の開発者体験**が結び付けられ、AI を活用したインサイトの探索、可視化、自動化がこれまでになく容易になります。
 
 ## Lightdash と ClickHouse でインタラクティブなダッシュボードを構築する \{#build-an-interactive-dashboard\}
 

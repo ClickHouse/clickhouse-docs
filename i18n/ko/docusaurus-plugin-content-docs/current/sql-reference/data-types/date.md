@@ -1,13 +1,11 @@
 ---
-description: "ClickHouse의 Date 데이터 타입에 대한 문서입니다"
+description: 'ClickHouse의 Date 데이터 타입 문서'
 sidebar_label: 'Date'
 sidebar_position: 12
 slug: /sql-reference/data-types/date
 title: 'Date'
 doc_type: 'reference'
 ---
-
-# Date \{#date\}
 
 날짜형입니다. 1970-01-01 이후 경과한 일 수를 나타내는 2바이트 부호 없는 정수로 저장됩니다. Unix Epoch 시작 직후부터 컴파일 단계에서 상수로 정의된 상한까지 값을 저장할 수 있습니다(현재는 2149년까지 저장 가능하지만, 완전히 지원되는 마지막 연도는 2148년입니다).
 

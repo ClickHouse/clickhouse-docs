@@ -10,7 +10,6 @@ keywords: ['Kafka', 'лог', 'OTEL', 'ClickStack', 'мониторинг бро
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import log_view from '@site/static/images/clickstack/kafka/logs/log-view.png';
@@ -19,9 +18,6 @@ import finish_import from '@site/static/images/clickstack/kafka/logs/finish-impo
 import example_dashboard from '@site/static/images/clickstack/kafka/logs/example-dashboard.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-
-# Мониторинг логов Kafka с помощью ClickStack \{#kafka-logs-clickstack\}
 
 :::note[Кратко]
 Собирайте и визуализируйте логи брокера Kafka (в формате Log4j) в ClickStack с помощью приёмника OTel `filelog`. Включает демо-набор данных и готовую панель мониторинга.
@@ -268,7 +264,7 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/kafka-logs-dashboard.json')} download="kafka-logs-dashboard.json" eventName="docs.kafka_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию панели мониторинга \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/kafka-logs-dashboard.json'} download="kafka-logs-dashboard.json" eventName="docs.kafka_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию панели мониторинга \{#download\}
 
 #### Импортируйте готовую панель мониторинга \{#import-dashboard\}
 

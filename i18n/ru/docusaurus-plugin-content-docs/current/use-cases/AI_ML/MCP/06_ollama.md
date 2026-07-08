@@ -10,13 +10,7 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-import {CardHorizontal} from '@clickhouse/click-ui/bundled'
-import Link from '@docusaurus/Link';
-import Image from '@theme/IdealImage';
-
-# Использование сервера ClickHouse MCP с Ollama \{#using-clickhouse-mcp-server-with-ollama\}
-
-> В этом руководстве описано, как использовать сервер ClickHouse MCP с Ollama.
+> В этом руководстве объясняется, как использовать MCP-сервер ClickHouse с Ollama.
 
 <VerticalStepper headerLevel="h2">
   ## Установите Ollama \{#install-ollama\}
@@ -35,7 +29,7 @@ import Image from '@theme/IdealImage';
   ollama pull qwen3:8b
   ```
 
-  Это загрузит модель на локальную машину, если она ещё не установлена.
+  Это загрузит модель на локальную машину, если она ещё не загружена.
   После загрузки вы можете запустить модель следующим образом:
 
   ```bash
@@ -137,7 +131,7 @@ import Image from '@theme/IdealImage';
   Этот параметр используется для указания типа транспорта, используемого MCP-сервером.
 
   * `local` → транспорт stdio
-  * `remote` → транспорт с потоковой передачей данных
+  * `remote` → потоковый транспорт
   * `builtin` → внутрипроцессный транспорт
 
   Нам также потребуется настроить следующие переменные окружения:
@@ -195,7 +189,7 @@ import Image from '@theme/IdealImage';
 
   ```text
     ┃                                                                                      ┃
-    ┃  ## Configured MCP Servers                                                           ┃
+    ┃  ## Configured MCP servers                                                           ┃
     ┃                                                                                      ┃
     ┃  1. mcp-ch                                                                           ┃
     ┃   MCPHost System (10:00)                                                             ┃

@@ -1,13 +1,11 @@
 ---
-description: '同じ名前でグループ化された設定の集合。'
+description: '同じ名前でグループ化された設定の集合です。'
 sidebar_label: '設定プロファイル'
 sidebar_position: 61
 slug: /operations/settings/settings-profiles
 title: '設定プロファイル'
 doc_type: 'reference'
 ---
-
-# 設定プロファイル \{#settings-profiles\}
 
 設定プロファイルとは、同じ名前でグループ化された設定の集合です。
 

@@ -1,92 +1,151 @@
 ---
 slug: /use-cases/observability/clickstack/event_deltas
-title: '使用 ClickStack 的事件增量'
+title: 'ClickStack 中的事件增量'
 sidebar_label: '事件增量'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 的事件增量'
+description: '分析 trace 属性分布，并使用 ClickStack 的事件增量比较异常 span'
 doc_type: 'guide'
-keywords: ['clickstack', '事件增量', '变更跟踪', '日志', '可观测性']
+keywords: ['ClickStack', '事件增量', '热力图', '属性分布', 'trace 分析', '可观测性']
 ---
 
 import Image from '@theme/IdealImage';
-import event_deltas from '@site/static/images/use-cases/observability/hyperdx-demo/step_17.png';
-import event_deltas_no_selected from '@site/static/images/use-cases/observability/event_deltas_no_selected.png';
-import event_deltas_highlighted from '@site/static/images/use-cases/observability/event_deltas_highlighted.png';
-import event_deltas_selected from '@site/static/images/use-cases/observability/event_deltas_selected.png';
-import event_deltas_issue from '@site/static/images/use-cases/observability/event_deltas_issue.png';
-import event_deltas_outliers from '@site/static/images/use-cases/observability/event_deltas_outliers.png';
-import event_deltas_separation from '@site/static/images/use-cases/observability/event_deltas_separation.png';
-import event_deltas_customization from '@site/static/images/use-cases/observability/event_deltas_customization.png';
-import event_deltas_inappropriate from '@site/static/images/use-cases/observability/event_deltas_inappropriate.png';
+import event_deltas_overview from '@site/static/images/clickstack/event-deltas/overview.png';
+import event_deltas_before_after from '@site/static/images/clickstack/event-deltas/before-after.png';
+import event_deltas_slow_vs_fast from '@site/static/images/clickstack/event-deltas/slow-vs-fast.png';
+import event_deltas_drill_down from '@site/static/images/clickstack/event-deltas/drill-down.png';
+import settings_drawer from '@site/static/images/clickstack/event-deltas/settings-drawer.png';
 
-ClickStack 中的 Event Deltas 是一项以 trace 为中心的功能，会自动分析 trace 的属性，以发现性能回归时发生了哪些变化。通过比较同一数据集中正常 trace 与慢 trace 的延迟分布，ClickStack 会突出显示与差异最为关联的属性——无论是新的部署版本、特定的 endpoint，还是某个特定的用户 ID。
+事件增量将延迟热力图与自动属性分析结合起来，让您无需编写查询，即可查看追踪数据的形态，并找出慢 span 的不同之处。其用法有三种：
 
-无需手动筛查 trace 数据，Event Deltas 会直接呈现导致两个数据子集之间延迟差异的关键属性，使诊断性能回归和定位根本原因变得更加容易。该功能允许你直观查看原始 trace，并立即看到影响性能变化的因素，从而加速故障响应并缩短平均解决时间。
+* **分布模式 (始终开启)&#x20;**&#x20;— 当热力图上没有选区时，会显示当前 span 集合中每个属性的值分布。适合用来发现占主导地位或异常稀有的值 (基数异常值) 。
+* **对比模式** — 在热力图上拖出一个矩形，将其中的 spans (Selection) 与外部的所有 spans (Background) 进行比较。适合用于定位偏差。
+* **迭代式下钻** — 点击任意条形即可按该值筛选 (或排除) 。热力图会基于筛选后的结果重新渲染，因此您可以不断缩小范围，直到原因变得明显。
 
-<Image img={event_deltas} alt="Event Deltas" size="lg" />
+<Image img={event_deltas_overview} alt="payment service 上的事件增量概览，亮带在窗口中部向上爬升，且在窗口帧内没有恢复" size="lg" />
 
+在上面的截图中，热力图右侧边缘大约位于 10 ms，而不是回到整个上午一直维持的 1 ms 基线。性能劣化仍在持续，因此我们是在这次事件尚未结束时捕捉到这一情况。
 
-## 使用 Event Deltas \{#using-event-deltas\}
+## 先决条件 \{#prerequisites\}
 
-在 ClickStack 的 **Search** 面板中，当选择 `Trace` 类型的来源（source）时，可以直接使用 Event Deltas。
+事件增量需要一个带有耗时表达式的 **Trace** 数据源。任何通过 OpenTelemetry 进行埋点并生成 span 数据的服务都可以。所有 ClickStack 部署 (托管版、开源版、ClickHouse Cloud) 均提供此功能。
 
-在左上角的 **Analysis Mode** 选择器中，在已选择 `Trace` 来源的情况下，选择 **Event Deltas**，即可从以 span 为行显示的标准结果表切换到该视图。
+## 入门 \{#getting-started\}
 
-<Image img={event_deltas_no_selected} alt="未选择 Event Deltas" size="lg"/>
+1. 在 **数据源** 下拉菜单中，选择一个包含链路追踪的数据源。源名称可以任意设置，关键在于该数据源配置为 Trace 类型。**事件增量** 选项卡仅对此类数据源启用。
+2. 在 **分析模式** 部分中，点击 **事件增量** 选项卡。
 
-该视图会展示一段时间内 span 的分布情况，显示延迟如何随数量变化。纵轴表示延迟，颜色则表示在给定时间点 trace 的密度，更明亮的黄色区域对应更高的 trace 聚集度。借助该可视化，用户可以快速查看 span 在延迟与数量两个维度上的分布，更容易发现性能中的变化或异常。
+事件增量是与 **结果表** 和 **事件模式** 并列的一种独立分析模式。切换到该模式后，视图会变为热力图和属性分析网格，但您的搜索筛选器和时间范围会保持不变，且您可以随时切换回来。
 
-<Image img={event_deltas_highlighted} alt="高亮显示的 Event Deltas" size="lg"/>
+## 热力图 \{#the-heatmap\}
 
-接下来，用户可以在可视化中选取某个区域——理想情况下应包含持续时间更长的 span 且具有足够的密度——然后点击 **Filter by Selection**。这会将该部分指定为用于分析的“离群点”。Event Deltas 随后会在整个数据集中，对比该离群子集与其余数据，找出与这些 span 最相关的列及其关键取值。通过聚焦于具有有意义离群点的区域，ClickStack 会突出显示将该子集与整体数据集区分开来的独特取值，从而呈现与观察到的性能差异最相关联的属性。
+热力图按两个维度绘制 span：
 
-<Image img={event_deltas_selected} alt="已选择 Event Deltas" size="lg"/>
+* **X 轴**: 时间
+* **Y 轴**: 数值，默认为 span 的耗时 (以毫秒计，对数刻度)
 
-对于每一列，ClickStack 会识别出在选定离群子集中明显偏向出现的取值。换言之，当某个取值出现在某列中时，如果它主要出现在离群点中，而不是整个数据集中的正常样本（内群点），则会被标记为显著。偏向程度最强的列会排在最前面，从而凸显出与异常 span 关系最密切的属性，并将其与基线行为区分开来。
+颜色强度表示每个分桶中的事件数；越亮表示 span 越多。
 
-<Image img={event_deltas_outliers} alt="Event Deltas 离群点" size="lg"/>
+您可以直接从热力图中看出一些模式：双峰延迟、特定时间点的延迟峰值、持续偏慢的 span 带状分布，或随时间逐渐上移的慢速带状分布 (逐步恶化的性能回退) 。要查看某个区域，请在其上单击并拖动框选一个矩形。这会成为您的 **Selection**，并将下方分析切换为比较模式。
 
-以上方示例中被突出显示的 `SpanAttributes.app.payment.card_type` 列为例。此处，Event Deltas 分析显示：在内群点中有 `29%` 使用 MasterCard，而在离群点中为 `0%`；同时，`100%` 的离群点使用 Visa，对比内群点中为 `71%`。这表明 Visa 卡类型与异常的高延迟 trace 有很强的关联，而 MasterCard 仅出现在正常子集中。
+## 分布模式：基数异常值 \{#distribution-mode\}
 
-<Image img={event_deltas_issue} alt="Event Deltas 问题" size="lg"/>
+在热力图上未选择任何内容时，分析面板会为每个属性显示一个条形图，基于所有匹配的 span 计算得出。图例显示为 **所有 span** (可见于上方的概览截图中) 。
 
-相反，仅与内群点相关联的取值同样可能具有分析价值。在上方示例中，错误 `Visa Cash Full` 只出现在内群点中，在离群 span 中完全不存在。在这种情况下，延迟始终小于约 50 毫秒，这表明该错误与较低延迟相关联。
+属性会按其值的集中程度排序：由少数几个值主导的属性会排在前面；分布均匀、熵较高的属性则会靠后。
 
-## Event Deltas 的工作原理 \{#how-event-deltas-work\}
+当你想了解数据的**基数形态**时，请使用分布模式：
 
-Event Deltas 通过执行两个查询来工作：一个针对选定的离群区域，另一个针对内群区域。每个查询都限制在相应的持续时间和时间窗口内。随后会对两个结果集中事件的样本进行检查，并识别出那些其取值高度集中出现在离群结果中的列。对于某个取值 100% 仅出现在离群子集中的列会优先显示，以突出最可能导致观测差异的属性。
+* **高值**：哪些服务、端点、状态码或主机主导了你的 span 总体？这通常会暴露出某个租户、版本或路由承载了大部分流量。
+* **低值**：那些确实出现但很少见的值。某个状态码只出现在 `0.5%` 的 span 中，或者某台主机几乎不出现，都可能是最值得关注的信号。长尾部分往往隐藏着回归问题和异常行为。
 
-## 自定义图表 \{#customizing-the-graph\}
+先结合搜索栏缩小总体范围 (例如，仅查看 error spans、仅查看 client spans，或仅查看某一个端点) ，然后再查看该子集的分布情况。
 
-在图表上方，你会看到一些控件，用于自定义热力图的生成方式。随着你调整这些参数，热力图会实时更新，帮助你可视化并比较任意可度量数值与其随时间变化的频率之间的关系。
+## 对比模式：与常态的偏差 \{#comparison-mode\}
 
-**默认配置**
+在热力图上拖出一个矩形即可进入对比模式。选中的 spans 会成为 **Selection** (橙色条形) ；其余部分会成为 **Background** (绿色条形) 。随后，每个属性图表都会并排显示这两组数据，并按差异程度排序，因此偏差最大的属性会排在最前面。某个值如果几乎只出现在其中一侧，或只在其中一侧缺失，往往就是造成差异的最强线索。
 
-默认情况下，此可视化配置为：
+你画出的矩形形态会改变你想要回答的问题。下面介绍两种常见的形态。
 
-- **Y 轴**：`Duration` —— 纵向显示延迟值
-- **颜色（Z 轴）**：`count()` —— 表示随时间（X 轴）变化的请求数量
+### 用例 1：回归前后对比 \{#before-vs-after\}
 
-此配置展示了延迟随时间的分布情况，其中颜色强度表示每个区间内事件的数量。
+当热力图显示延迟随时间线逐渐上升时 (慢速带变厚、亮色带上移，或出现一个明显的拐点，将健康时段与性能退化时段分隔开) ，从上升拐点开始拖出一个矩形框，一直拉到窗口右边缘。为了让对比更清晰，应将矩形框的底边设在健康基线上，而不是坐标轴底部：这样可以只圈出退化窗口中确实比正常情况更慢的 spans，而不会把恰好落在同一时间范围内、但其实仍然健康且较快的 spans 一并纳入。
 
-**调整参数**
+<Image img={event_deltas_before_after} alt="payment service 上的比较模式，矩形框从上升拐点绘制到右边缘，底边位于 1 ms 基线上" size="lg" />
 
-你可以修改这些参数，以探索数据的不同维度：
+热力图下方的属性条会按差异最大的项优先排序。在这个示例中，顶行图表呈现出最强的信号：`SpanKind`、`SpanName` 和 `ScopeName` 都清楚地显示出慢速 Selection 与健康 Background 之间明显的橙绿分化。综合来看，它们勾勒出了拐点处发生变化的特征。
 
-- **Value**：控制在 Y 轴上绘制的内容。例如，将 `Duration` 替换为错误率或响应大小等指标。
-- **Count**：控制颜色映射。你可以从 `count()`（每个分桶中的事件数量）切换为其他聚合函数，如 `avg()`、`sum()`、`p95()`，甚至自定义表达式，例如 `countDistinct(field)`。
+当你想问“发生了什么变化？”时，这就是合适的形态。还有一个更紧凑的变体，工作流程相同：当一小团慢速 spans 出现在原本平静的带状区域中时 (例如右边缘的短暂突发，或稳定时段中部的一簇) ，改为只围绕那一簇画一个小框即可。形态会改变问题本身：竖向条带问的是&#95;时间上发生了什么变化&#95;；小而聚焦的框问的是&#95;这个簇有什么特别之处&#95;。
 
-<Image img={event_deltas_customization} alt="事件差值自定义" size="lg"/>
+### 用例 2：慢与快 \{#slow-vs-fast\}
 
-## 建议 \{#recommendations\}
+当热力图在耗时轴上清晰显示出两个彼此分离的延迟群体时，拖出一个较宽的矩形，使其横跨整个时间范围，但只覆盖上方清楚分离出来的带状区域。较慢的群体会成为 Selection；较快的主体部分则成为 Background。
 
-当分析聚焦在某个特定服务时，Event Deltas 的效果最佳。多个服务之间的延迟可能差异很大，从而更难识别对离群值影响最大的列和取值。在启用 Event Deltas 之前，请先将 spans 过滤到一组预期延迟分布相近的数据上。优先分析那些在业务上不应出现大幅延迟差异的数据集，以获取更有价值的洞察，避免在延迟高度可变（例如两个不同服务）的场景下使用。
+<Image img={event_deltas_slow_vs_fast} alt="frontend-proxy 上的慢速与快速对比，矩形仅覆盖清楚分离的上方带状区域，并与下方密集主体明显分开" size="lg" />
 
-在选择分析区域时，你应尽量选取在持续时间上存在明显“较慢”和“较快”区分的子集，这样可以将高延迟的 spans 清晰地分离出来进行分析。例如，下图中选定的区域就清晰地捕获了一组较慢的 spans 供分析使用。
+将矩形紧贴上方带状区域绘制，并确保它与下方密集主体之间留有明显的水平间隔。如果矩形画得过松、侵入快速群体，差异就会被冲淡。
 
-<Image img={event_deltas_separation} alt="Event Deltas 分离效果" size="lg"/>
+100 s 的上限线本身就很有参考价值：在一个整数值上出现恒定的水平线，通常就是固定超时的典型特征。如果没有任何 span 属性能够清晰地区分这两个群体，这同样是一个有用的结果：它会提示你去查看主机和运行时层面的指标 (GC 停顿、I/O 争用、调度器延迟、冷缓存效应、噪声邻居) ，而不是继续看 span 属性。
 
-相反，下面这个数据集就很难通过 Event Deltas 得到有用的分析结果。
+当你想问“慢 span 与快 span 到底有什么不同？”而不是追查某个特定异常时，这就是合适的形态。出现明显差异的属性通常指向某条代码路径或某类输入原因；而对比结果平淡，则通常指向系统性原因。
 
-<Image img={event_deltas_inappropriate} alt="Event Deltas 分离效果较差" size="lg"/>
+## 迭代式下钻 \{#drill-down\}
+
+比较模式和分布模式在串联使用时效果最佳。单击任意条形图，即可打开一个包含三个操作的弹出框：
+
+* **Filter**: 仅保留具有该值的 spans
+* **Exclude**: 排除具有该值的 spans
+* **Copy**: 将该值复制到剪贴板
+
+<Image img={event_deltas_drill_down} alt="单击 ScopeVersion 条形图上的弹出框，显示 Selection 与 Background 百分比以及 filter、exclude、copy 操作" size="lg" />
+
+应用 filter 或 exclude 后，热力图中的选择会被清除，热力图会基于新的总体重新渲染，分布模式也会基于该筛选后的集合继续显示。观察热力图如何改变形态——成功的筛选会明显消除慢速带、收拢双峰分化，或拉平向上漂移。重复这一过程：找出下一个可疑值，筛选，查看新的热力图，再查看新的分布。经过几轮迭代，通常就能将回归范围缩小到一两个属性。
+
+:::note
+将低频值聚合后的 **Other (N)** 分桶不可点击。若要筛选该分桶中的特定值，请直接使用[搜索栏](/use-cases/observability/clickstack/search)。
+:::
+
+当总体足够小时，切换到 **结果表** 选项卡以检查单个链路追踪；你的筛选条件会被保留。
+
+## 自定义热力图 \{#customize\}
+
+热力图右上角的齿轮图标会打开 **Display Settings** 抽屉。
+
+<Image img={settings_drawer} alt="Display Settings 抽屉，包含 Scale、Value 和 Count 字段" size="lg" />
+
+| 参数        | 默认值              | 说明                                                                          |
+| --------- | ---------------- | --------------------------------------------------------------------------- |
+| **Scale** | Log              | Log 适用于跨度较大的延迟范围；Linear 更适合范围较窄且分布均匀的场景。                                    |
+| **Value** | `(Duration)/1e6` | 任何数值表达式：响应大小、错误率或自定义 span 属性。                                               |
+| **Count** | `count()`        | 用于颜色映射的聚合方式。可切换为 `avg()`、`sum()`、`p95()`，或使用 `countDistinct(field)` 之类的表达式。 |
+
+点击 **Apply** 更新热力图；下方的属性分析也会随之更新。
+
+:::tip 仪表板中的热力图
+同一个热力图也可作为[仪表板卡片](/use-cases/observability/clickstack/dashboards#create-a-tile-heatmap)使用，当你希望在事件增量下钻流程之外监控分布形态随时间的变化时，这会很有用。
+:::
+
+以下是你可能会调整这些默认值的常见场景：
+
+* 当延迟区间较窄时，将 **Scale** 切换为 Linear (例如某个服务的 spans 都在 5 到 50 毫秒之间) 。Log 标度会把没有数据的高值区间浪费掉垂直空间。
+* **在 Y 轴上绘制耗时以外的指标。** 将 **Value** 设置为 `SpanAttributes.http.response.size`，可帮助你排查缓慢且*体积大*的响应；像 `if(StatusCode = 'Error', 1, 0)` 这样的表达式则可按时间展示各服务的错误频率。
+* **按 count 以外的指标着色。** 将 **Count** 设置为 `p95(Duration)` 后，每个 bucket 会按尾延迟而非数量着色，从而突出那些在基于 count 的视图中容易被淹没的少见高延迟区段。`countDistinct(TraceId)` 则可在单个 trace 产生许多 spans 时，区分 trace 数量与 span 数量。
+
+## 有效使用技巧 \{#tips\}
+
+以下做法能让 Event deltas 发挥更大作用：
+
+* **先筛选到单个服务。** 不同服务之间的延迟差异可能很大，混在一起会掩盖信号。开始前，先用搜索栏将范围缩小到一个 `ServiceName` (或一个端点) ，这样热力图和分布反映的才是可比较的同类数据。
+* **选择具有清晰视觉对比的区域。** 比较模式在 Selection 带与 Background 有明显区别时效果最佳，例如从某个容易识别的时刻开始出现劣化的时间段，或与主体部分明显分离的慢尾。若所选区域与其余数据高度重叠，往往看到的是噪声，而不是真正的偏差。
+* **按“过滤、热力图、再过滤”的方式迭代。** 单次选择很少能直接定位原因。将第一次比较视为一个假设，对差异最大的值添加过滤器，然后重新查看新的热力图和分布。经过两到三轮迭代，通常就能将回归范围缩小到一两个属性。
+* **在没有选区时使用分布模式**，适用于暂时还看不出明显对比的情况 (你知道存在问题，但热力图看起来很均匀) 。先应用一个假设性过滤器，例如仅看错误 span、仅看客户端 span，或仅看某一个端点，然后在进行任何矩形框选之前，让属性分布先帮你找出影响最大的值。
+
+## 故障排查 \{#troubleshooting\}
+
+### “事件增量”选项卡不可见 \{#tab-not-visible\}
+
+仅当在 **分析模式** 下选择了带有耗时表达式的 **Trace** 数据源时，才会显示 **事件增量** 选项卡。请确认您的数据源已配置为 Trace 类型，并且包含带有耗时信息的 span 数据。
+
+### 属性图表显示的结果很少或没有结果 \{#few-results\}
+
+如果样本过小 (少于几十个 span) ，这些分布在统计上可能意义不大。请扩大时间范围或放宽搜索筛选器。

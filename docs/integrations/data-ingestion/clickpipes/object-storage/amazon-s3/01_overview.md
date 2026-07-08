@@ -18,7 +18,7 @@ import Image from '@theme/IdealImage';
 
 The S3 ClickPipe provides a fully-managed and resilient way to ingest data from Amazon S3 and S3-compatible object stores into ClickHouse Cloud. It supports both **one-time** and **continuous ingestion** with exactly-once semantics.
 
-S3 ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) and [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe).
+S3 ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Supported data sources {#supported-data-sources}
 
@@ -55,7 +55,7 @@ When continuous ingestion is enabled, ClickPipes continuously ingests data from 
 
 By default, the S3 ClickPipe assumes files are added to a bucket in lexicographical order, and relies on this implicit order to ingest files sequentially. This means that any new file **must** be lexically greater than the last ingested file. For example, files named `file1`, `file2`, and `file3` will be ingested sequentially, but if a new `file 0` is added to the bucket, it will be **ignored** because the file name isn't lexically greater than the last ingested file.
 
-In this mode, the S3 ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the specified path.
+In this mode, the S3 ClickPipe does an initial load of **all files** in the specified path, and then polls for new files at a configurable interval (by default, 30 seconds). To begin continuous ingestion after a specific file, configure **Start after**. ClickPipes will skip files that are lexicographically less than or equal to the configured value and continue ingesting newer files from that point.
 
 #### Any order {#continuous-ingestion-any-order}
 
@@ -69,13 +69,13 @@ It's possible to configure an S3 ClickPipe to ingest files that don't have an im
 Unordered mode is **only** supported for Amazon S3 and is **not** supported for public buckets or S3-compatible services. It requires setting up an [Amazon SQS](https://aws.amazon.com/sqs/) queue connected to the bucket, optionally using [Amazon EventBridge](https://aws.amazon.com/eventbridge/) as an event router.
 :::
 
-In this mode, the S3 ClickPipe does an initial load of **all files** in the selected path, and then listens for `ObjectCreated:*` events in the queue that match the specified path. Any message for a previously seen file, file not matching the path, or event of a different type will be **ignored**.
+In this mode, the S3 ClickPipe does an initial load of **all files** in the selected path, and then listens for `ObjectCreated:*` events in the queue that match the specified path. Any message for a previously seen file, file not matching the path, or event of a different type will be **ignored**. To ingest only files delivered through the queue, enable **Skip initial load**. When enabled, ClickPipes skips the initial scan of existing files in the selected path and processes only files delivered through the SQS queue.
 
 :::note
 Setting a prefix/postfix for events is optional. If you do, make sure it matches the path set for the clickpipe. S3 doesn't allow multiple overlapping notification rules for the same event types.
 :::
 
-Files are ingested once the threshold configured in `max insert bytes` or `max file count` is reached, or after a configurable interval (by default, 30 seconds). It is **not possible** to start ingestion from a specific file or point in time — ClickPipes will always load all files in the selected path. If a DLQ is configured, failed messages will be reenqueued and reprocessed up to the number of times configured in the DLQ `maxReceiveCount` parameter.
+Files are ingested once the threshold configured in `max insert bytes` or `max file count` is reached, or after a configurable interval (by default, 30 seconds). If a DLQ is configured, failed messages will be reenqueued and reprocessed up to the number of times configured in the DLQ `maxReceiveCount` parameter.
 
 :::tip
 We strongly recommend configuring a **Dead-Letter-Queue (DLQ)** for the SQS queue, so it's easier to debug and retry failed messages.
@@ -198,6 +198,8 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 | `Min insert block size bytes`      | 1GB           | [Minimum size of bytes in the block](/operations/settings/settings#min_insert_block_size_bytes) which can be inserted into a table. |
 | `Max download threads`             | 4             | [Maximum number of concurrent download threads](/operations/settings/settings#max_download_threads). |
 | `Object storage polling interval`  | 30s           | Configures the maximum wait period before inserting data into the ClickHouse cluster. |
+| `Start after`                      | None          | For ordered continuous ingestion, skips files that are lexicographically less than or equal to the configured filename or path. |
+| `Skip initial load`                | false         | For unordered continuous ingestion, skips the initial scan of existing files and processes only object notifications from the configured SQS queue. |
 | `Parallel distributed insert select` | 2           | [Parallel distributed insert select setting](/operations/settings/settings#parallel_distributed_insert_select). |
 | `Parallel view processing`         | false         | Whether to enable pushing to attached views [concurrently instead of sequentially](/operations/settings/settings#parallel_view_processing). |
 | `Use cluster function`             | true          | Whether to process files in parallel across multiple nodes. |
@@ -206,7 +208,7 @@ ClickPipes provides sensible defaults that cover the requirements of most use ca
 
 ### Scaling {#scaling}
 
-Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/manage/scaling#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings won't affect the ClickPipe size.
+Object Storage ClickPipes are scaled based on the minimum ClickHouse service size determined by the [configured vertical autoscaling settings](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling). The size of the ClickPipe is determined when the pipe is created. Subsequent changes to the ClickHouse service settings won't affect the ClickPipe size.
 
 To increase the throughput on large ingest jobs, we recommend scaling the ClickHouse service before creating the ClickPipe.
 

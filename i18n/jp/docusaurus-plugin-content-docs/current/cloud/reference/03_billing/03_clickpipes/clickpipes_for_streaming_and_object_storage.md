@@ -1,18 +1,15 @@
 ---
 sidebar_label: 'ストリーミングとオブジェクトストレージ'
 slug: /cloud/reference/billing/clickpipes/streaming-and-object-storage
-title: 'ストリーミングとオブジェクトストレージ向け ClickPipes'
-description: 'ストリーミングおよびオブジェクトストレージ向け ClickPipes の課金の概要'
+title: 'ストリーミングと Object Storage 用 ClickPipes'
+description: 'ストリーミングおよび Object Storage 用 ClickPipes の課金の概要'
 doc_type: 'reference'
 keywords: ['課金', 'ClickPipes', 'ストリーミング料金', 'コスト', '料金']
 ---
 
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
-
-# ストリーミングおよびオブジェクトストレージ向け ClickPipes \{#clickpipes-for-streaming-object-storage\}
-
-このセクションでは、ストリーミングおよびオブジェクトストレージ向け ClickPipes の料金モデルについて説明します。
+このセクションでは、ストリーミングおよび Object Storage 用 ClickPipes の料金体系について説明します。
 
 ## ClickPipes の料金体系はどのようになっていますか？ \{#what-does-the-clickpipes-pricing-structure-look-like\}
 

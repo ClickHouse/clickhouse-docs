@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'UI를 사용하여 백업 또는 복원'
 slug: /cloud/manage/backups/backup-restore-via-ui
-title: 'UI에서 백업 생성 또는 복원'
+title: 'UI를 통한 백업 / 복원'
 description: '사용자 버킷을 사용해 UI에서 백업을 생성하거나 복원하는 방법을 설명하는 페이지입니다.'
 sidebar_position: 2
 doc_type: 'guide'
@@ -21,8 +21,9 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
-
-# 사용자 인터페이스(UI)를 통한 백업 및 복원 \{#ui-experience\}
+:::note
+외부 버킷으로의 자동 백업은 24시간마다 &quot;전체&quot; 백업으로 실행되도록 설정되어 있으며, 실행 주기는 변경할 수 없습니다.
+:::
 
 ## AWS \{#AWS\}
 

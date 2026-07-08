@@ -32,16 +32,12 @@ DETACH TABLE|VIEW|DICTIONARY|DATABASE [IF EXISTS] [db.]name [ON CLUSTER cluster]
 
 Создание таблицы:
 
-Запрос:
-
-```sql
+```sql title="Query"
 CREATE TABLE test ENGINE = MergeTree ORDER BY () AS SELECT * FROM numbers(10);
 SELECT * FROM test;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─number─┐
 │      0 │
 │      1 │
@@ -58,16 +54,12 @@ SELECT * FROM test;
 
 Отсоединение таблицы:
 
-Запрос:
-
-```sql
+```sql title="Query"
 DETACH TABLE test;
 SELECT * FROM test;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 Received exception from server (version 21.4.1):
 Code: 60. DB::Exception: Received from localhost:9000. DB::Exception: Table default.test does not exist.
 ```

@@ -1,14 +1,12 @@
 ---
-description: 'Документация по LIMIT'
+description: 'Документация по предложению LIMIT'
 sidebar_label: 'LIMIT'
 slug: /sql-reference/statements/select/limit
-title: 'LIMIT'
+title: 'Предложение LIMIT'
 doc_type: 'reference'
 ---
 
-# Оператор LIMIT \{#limit-clause\}
-
-Оператор `LIMIT` управляет количеством строк, возвращаемых в результатах запроса.
+Секция `LIMIT` определяет, сколько строк будет возвращено в результатах запроса.
 
 ## Базовый синтаксис \{#basic-syntax\}
 
@@ -121,11 +119,31 @@ SELECT * FROM (
 
 Строка 6 включена, потому что она имеет то же значение (`2`), что и строка 5.
 
+То же самое происходит, когда смещение указано с помощью ключевого слова `OFFSET`:
+
+```sql
+SELECT * FROM (
+    SELECT number % 50 AS n FROM numbers(100)
+) ORDER BY n LIMIT 3 OFFSET 2 WITH TIES
+```
+
+```response
+┌─n─┐
+│ 1 │
+│ 1 │
+│ 2 │
+│ 2 │
+└───┘
+```
+
+При пропуске первых 2 строк и выборке 3 обычно возвращаются `1, 1, 2`, но в выборку также попадает вторая `2`, потому что у неё то же значение, что и у последней строки.
+
 :::note
 `WITH TIES` не поддерживается при использовании отрицательных значений `LIMIT`.
 :::
 
 Этот модификатор можно комбинировать с модификатором [`ORDER BY ... WITH FILL`](/sql-reference/statements/select/order-by#order-by-expr-with-fill-modifier).
+
 
 ## Особенности \{#considerations\}
 

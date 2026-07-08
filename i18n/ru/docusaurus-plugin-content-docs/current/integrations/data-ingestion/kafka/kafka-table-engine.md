@@ -1,11 +1,11 @@
 ---
-sidebar_label: 'Табличный движок Kafka'
+sidebar_label: 'Движок таблицы Kafka'
 sidebar_position: 5
 slug: /integrations/kafka/kafka-table-engine
-description: 'Использование табличного движка Kafka'
-title: 'Использование табличного движка Kafka'
+description: 'Использование движка таблицы Kafka'
+title: 'Использование движка таблицы Kafka'
 doc_type: 'guide'
-keywords: ['kafka', 'табличный движок', 'потоковая обработка', 'реальное время', 'очередь сообщений']
+keywords: ['kafka', 'движок таблицы', 'потоковая обработка', 'реальное время', 'очередь сообщений']
 ---
 
 import Image from '@theme/IdealImage';
@@ -14,10 +14,7 @@ import kafka_02 from '@site/static/images/integrations/data-ingestion/kafka/kafk
 import kafka_03 from '@site/static/images/integrations/data-ingestion/kafka/kafka_03.png';
 import kafka_04 from '@site/static/images/integrations/data-ingestion/kafka/kafka_04.png';
 
-
-# Использование движка таблиц Kafka \{#using-the-kafka-table-engine\}
-
-Движок таблиц Kafka можно использовать для [**чтения** данных из](#kafka-to-clickhouse) и [**записи** данных в](#clickhouse-to-kafka) Apache Kafka и другие брокеры, совместимые с Kafka API (например, Redpanda, Amazon MSK).
+Движок таблицы Kafka можно использовать для [**чтения** данных из](#kafka-to-clickhouse) и [**записи** данных в](#clickhouse-to-kafka) Apache Kafka и других брокеров, совместимых с Kafka API (например, Redpanda, Amazon MSK).
 
 ### Kafka → ClickHouse \{#kafka-to-clickhouse\}
 

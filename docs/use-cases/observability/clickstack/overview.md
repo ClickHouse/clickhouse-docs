@@ -22,7 +22,7 @@ import TabItem from '@theme/TabItem';
 
 At the core of ClickStack is a simple but powerful idea: all observability data should be ingested as wide, rich events. These events are stored in ClickHouse tables by data type - logs, traces, metrics, and sessions - but remain fully queryable and cross-correlatable at the database level.
 
-ClickStack is built to handle high-cardinality workloads efficiently by leveraging ClickHouse's column-oriented architecture, native JSON support, and fully parallelized execution engine. This enables sub-second queries across massive datasets, fast aggregations over wide time ranges, and deep inspection of individual traces. JSON is stored in a compressed, columnar format, allowing schema evolution without manual intervention or upfront definitions.
+ClickStack is built to handle high-cardinality workloads efficiently by leveraging ClickHouse's column-oriented architecture, flexible schema for high-cardinality attributes, and fully parallelized execution engine. This enables sub-second queries across massive datasets, fast aggregations over wide time ranges, and deep inspection of individual traces.
 
 ## Features {#features}
 

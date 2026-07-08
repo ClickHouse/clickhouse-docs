@@ -2,13 +2,9 @@
 sidebar_label: '백업 내보내기'
 slug: /cloud/manage/backups/export-backups-to-own-cloud-account
 title: '자체 Cloud 계정으로 백업 내보내기'
-description: '소유한 Cloud 계정으로 백업을 내보내는 방법을 설명합니다'
+description: '자체 Cloud 계정으로 백업을 내보내는 방법을 설명합니다'
 doc_type: 'guide'
 ---
-
-import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
-
-<EnterprisePlanFeatureBadge />
 
 ClickHouse Cloud는 자체 클라우드 서비스 제공자(CSP) 계정(AWS S3, Google Cloud Storage, Azure Blob Storage)에 백업을 저장하도록 지원합니다.
 「전체(Full)」 백업과 「증분(Incremental)」 백업을 포함하여 ClickHouse Cloud 백업이 어떻게 동작하는지에 대한 자세한 내용은 [backups](/cloud/manage/backups/overview) 문서를 참조하십시오.
@@ -16,9 +12,10 @@ ClickHouse Cloud는 자체 클라우드 서비스 제공자(CSP) 계정(AWS S3, 
 이 가이드에서는 AWS, GCP, Azure 객체 스토리지로 전체 백업 및 증분 백업을 수행하는 방법과 해당 백업으로부터 복원하는 방법의 예시를 보여줍니다.
 
 :::note
-백업을 동일한 클라우드 제공자 내의 다른 리전으로 내보내는 경우에는 [data transfer](/cloud/manage/network-data-transfer) 요금이 발생합니다. 현재 클라우드 간(cross cloud) 백업은 지원하지 않습니다.
-:::
+백업을 동일한 클라우드 제공자 내의 다른 리전으로 내보내는 경우에는 [data transfer](/cloud/manage/network-data-transfer) 요금이 발생합니다.
 
+클라우드 간(Cross-Cloud) 백업은 이 페이지에 설명된 backup/restore 명령을 통해서만 지원되며, UI를 통해서는 지원되지 않습니다.
+:::
 
 ## Requirements \{#requirements\}
 
@@ -67,7 +64,7 @@ ClickHouse Cloud는 자체 클라우드 서비스 제공자(CSP) 계정(AWS S3, 
 
 <hr/>
 
-# 백업 / 복구 \{#backup-restore\}
+## 백업 / 복원 \{#backup-restore\}
 
 ## AWS S3 버킷을 통한 백업/복원 \{#backup--restore-to-aws-s3-bucket\}
 

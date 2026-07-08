@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'configuration', 'config', 'settings']
 doc_type: 'reference'
 ---
 
-# DataStore Configuration
 
 DataStore provides comprehensive configuration options for execution engine selection, compatibility mode, logging, caching, profiling, and dtype correction.
 

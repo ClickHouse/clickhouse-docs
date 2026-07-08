@@ -1,9 +1,9 @@
 ---
 sidebar_label: 'HTTP 인터페이스 사용'
 slug: /integrations/azure-data-factory/http-interface
-description: 'Azure Data Factory에서 ClickHouse로 데이터를 가져오기 위해 ClickHouse의 HTTP 인터페이스를 사용하는 방법'
+description: 'Azure Data Factory에서 ClickHouse로 데이터를 전송하기 위해 ClickHouse의 HTTP 인터페이스를 사용하는 방법'
 keywords: ['azure data factory', 'azure', 'microsoft', 'data', 'http interface']
-title: 'ClickHouse HTTP 인터페이스를 사용하여 Azure Data Factory 데이터를 ClickHouse로 가져오기'
+title: 'Azure Data Factory에서 ClickHouse HTTP 인터페이스 사용'
 doc_type: 'guide'
 integration:
    - support_level: 'core'
@@ -38,15 +38,12 @@ import adfCopyDataSource                        from '@site/static/images/integr
 import adfCopyDataSinkSelectPost                from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-sink-select-post.png';
 import adfCopyDataDebugSuccess                  from '@site/static/images/integrations/data-ingestion/azure-data-factory/adf-copy-data-debug-success.png';
 
+[`azureBlobStorage` 테이블 함수](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)는
+Azure Blob Storage에서 ClickHouse로 데이터를 적재하는 빠르고 편리한 방법입니다.
+하지만 다음과 같은 이유로 항상 적합한 것은 아닙니다:
 
-# Azure Data Factory에서 ClickHouse HTTP 인터페이스 사용하기 \{#using-clickhouse-http-interface-in-azure-data-factory\}
-
-[`azureBlobStorage` Table Function](https://clickhouse.com/docs/sql-reference/table-functions/azureBlobStorage)은
-Azure Blob Storage에 있는 데이터를 ClickHouse로 수집하는 빠르고 편리한 방법입니다.
-그러나 다음과 같은 이유로 항상 적합한 것은 아닙니다:
-
-- 데이터가 Azure Blob Storage에 저장되어 있지 않을 수 있습니다. 예를 들어 Azure SQL Database, Microsoft SQL Server 또는 Cosmos DB에 있을 수 있습니다.
-- 스토리지 계정이 퍼블릭 엔드포인트 없이 잠겨 있는 경우처럼, 보안 정책 때문에 Blob Storage에 대한 외부 접근이 전혀 허용되지 않을 수 있습니다.
+* 데이터가 Azure Blob Storage에 저장되어 있지 않을 수 있습니다. 예를 들어 Azure SQL Database, Microsoft SQL Server 또는 Cosmos DB에 있을 수 있습니다.
+* 스토리지 계정이 퍼블릭 엔드포인트 없이 잠겨 있는 경우처럼, 보안 정책 때문에 Blob Storage에 대한 외부 접근이 전혀 허용되지 않을 수 있습니다.
 
 이러한 경우에는 Azure Data Factory와
 [ClickHouse HTTP 인터페이스](https://clickhouse.com/docs/interfaces/http)를 함께 사용하여

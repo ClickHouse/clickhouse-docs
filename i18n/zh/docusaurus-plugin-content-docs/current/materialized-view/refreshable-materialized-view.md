@@ -28,9 +28,9 @@ ClickHouse 增量物化视图功能极其强大，通常比可刷新物化视图
 
 >  可刷新物化视图可以运行批处理过程来执行诸如反规范化之类的任务。可以在可刷新物化视图之间创建依赖关系，使一个视图依赖另一个视图的结果，并仅在其完成后才执行。这可以替代预定的工作流或简单的有向无环图（DAG），例如 [dbt](https://www.getdbt.com/) 任务。要了解更多关于如何在可刷新物化视图之间设置依赖关系的信息，请参阅 [CREATE VIEW](/sql-reference/statements/create/view#refresh-dependencies) 中的 `Dependencies` 部分。
 
-## 如何刷新可刷新物化视图？ \{#how-do-you-refresh-a-refreshable-materialized-view\}
+## 如何刷新可刷新materialized view？ \{#how-do-you-refresh-a-refreshable-materialized-view\}
 
-可刷新物化视图会按照创建时定义的时间间隔自动刷新。
+可刷新materialized view会按照创建时定义的时间间隔自动刷新。
 例如，下面的物化视图每分钟刷新一次：
 
 ```sql
@@ -46,7 +46,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 ```
 
 你还可以取消、停止或启动视图。
-有关更多信息，请参阅[管理可刷新的物化视图](/sql-reference/statements/system#refreshable-materialized-views)文档。
+有关更多信息，请参阅[管理可刷新的materialized view](/sql-reference/statements/system#managing-refreshable-materialized-views)文档。
 
 
 ## 可刷新物化视图最近一次刷新是什么时候？ \{#when-was-a-refreshable-materialized-view-last-refreshed\}
@@ -95,7 +95,9 @@ MODIFY REFRESH EVERY 30 SECONDS;
 SELECT *
 FROM events
 LIMIT 10
+```
 
+```response
 Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
 
 ┌──────────────────ts─┬─uuid─┬─count─┐
@@ -122,7 +124,9 @@ FROM events
 GROUP BY ALL
 ORDER BY count DESC
 LIMIT 10
+```
 
+```response
 ┌─uuid─┬───count─┐
 │ c6f  │ 5676468 │
 │ 951  │ 5669731 │
@@ -164,14 +168,15 @@ GROUP BY ALL;
 
 然后我们可以查询 `events_snapshot`，以获取特定 `uuid` 随时间变化的计数：
 
-
 ```sql
 SELECT *
 FROM events_snapshot
 WHERE uuid = 'fff'
 ORDER BY ts ASC
 FORMAT PrettyCompactMonoBlock
+```
 
+```response
 ┌──────────────────ts─┬─uuid─┬───count─┐
 │ 2024-10-01 16:12:56 │ fff  │ 5424711 │
 │ 2024-10-01 16:13:00 │ fff  │ 5424711 │
@@ -183,7 +188,6 @@ FORMAT PrettyCompactMonoBlock
 │ 2024-10-01 16:14:00 │ fff  │ 6501695 │
 └─────────────────────┴──────┴─────────┘
 ```
-
 
 ## 示例 \{#examples\}
 

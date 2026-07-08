@@ -2,7 +2,7 @@
 sidebar_label: '汎用 Postgres'
 description: '任意の Postgres インスタンスを ClickPipes のソースとして利用できるようにセットアップする'
 slug: /integrations/clickpipes/postgres/source/generic
-title: '汎用 Postgres ソースセットアップガイド'
+title: '汎用的な Postgres ソースセットアップガイド'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 integration:
@@ -10,11 +10,9 @@ integration:
    - category: 'clickpipes'
 ---
 
-# 汎用的な Postgres ソースセットアップガイド \{#generic-postgres-source-setup-guide\}
-
 :::info
 
-サイドバーに表示されているサポート対象プロバイダーのいずれかを使用している場合は、そのプロバイダー専用ガイドを参照してください。
+サポート対象のプロバイダー (サイドバーに記載) のいずれかを使用している場合は、そのプロバイダー向けのガイドを参照してください。
 
 :::
 

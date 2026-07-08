@@ -1,15 +1,13 @@
 ---
-description: 'Движок основан на движке Atomic. Он поддерживает репликацию метаданных
-  посредством DDL-журнала, который записывается в ZooKeeper и исполняется на всех репликах
-  данной базы данных.'
+description: 'Движок основан на движке Atomic. Он поддерживает репликацию
+  метаданных по журналу DDL, который записывается в ZooKeeper и выполняется на
+  всех репликах заданной базы данных.'
 sidebar_label: 'Replicated'
 sidebar_position: 30
 slug: /engines/database-engines/replicated
 title: 'Replicated'
-doc_type: 'reference'
+doc_type: 'справочник'
 ---
-
-# Replicated \{#replicated\}
 
 Движок основан на движке [Atomic](../../engines/database-engines/atomic.md). Он поддерживает репликацию метаданных по журналу DDL, который записывается в ZooKeeper и выполняется на всех репликах заданной базы данных.
 

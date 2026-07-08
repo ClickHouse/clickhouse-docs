@@ -1,15 +1,13 @@
 ---
-title: 'Pandas Cookbook'
-sidebar_label: 'Pandas Cookbook'
+title: 'Pandas 활용 예제집'
+sidebar_label: 'Pandas 활용 예제집'
 slug: /chdb/guides/pandas-cookbook
-description: '일반적인 pandas 패턴과 이에 해당하는 DataStore 표현'
+description: '일반적인 pandas 패턴과 이에 상응하는 DataStore 연산'
 keywords: ['chdb', 'datastore', 'pandas', 'cookbook', 'patterns', 'examples']
 doc_type: 'guide'
 ---
 
-# Pandas 활용 예제집 \{#pandas-cookbook\}
-
-일반적인 pandas 패턴과 이에 상응하는 DataStore 연산을 정리합니다. 대부분의 코드는 수정 없이 그대로 동작합니다.
+일반적인 pandas 패턴과 이에 상응하는 DataStore 연산을 소개합니다. 대부분의 코드는 수정 없이 그대로 사용할 수 있습니다!
 
 ## 데이터 불러오기 \{#loading\}
 

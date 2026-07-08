@@ -10,7 +10,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# How to build an AI Agent with CrewAI and the ClickHouse MCP server
 
 In this guide you'll learn how to build a [mcp-agent](https://github.com/lastmile-ai/mcp-agent) AI agent that can interact with 
 [ClickHouse's SQL playground](https://sql.clickhouse.com/) using [ClickHouse's MCP server](https://github.com/ClickHouse/mcp-clickhouse).

@@ -2,7 +2,7 @@
 sidebar_label: 'DynamoDB'
 sidebar_position: 10
 slug: /integrations/dynamodb
-description: 'ClickPipes позволяют подключить ClickHouse к DynamoDB.'
+description: 'С помощью ClickPipes можно подключить ClickHouse к DynamoDB.'
 keywords: ['DynamoDB']
 title: 'CDC из DynamoDB в ClickHouse'
 show_related_blogs: true
@@ -15,11 +15,9 @@ import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
-# CDC из DynamoDB в ClickHouse \{#cdc-from-dynamodb-to-clickhouse\}
-
 На этой странице описано, как настроить CDC (фиксацию изменений данных) из DynamoDB в ClickHouse с использованием ClickPipes. Эта интеграция состоит из двух компонентов:
 
-1. Начальный снимок данных через S3 ClickPipes  
+1. Начальный снимок данных через S3 ClickPipes
 2. Обновления в режиме реального времени через Kinesis ClickPipes
 
 Данные будут приниматься в таблицу на `ReplacingMergeTree`. Этот движок таблицы обычно используется в сценариях CDC, чтобы можно было применять операции обновления. Подробнее об этом подходе можно узнать в следующих статьях блога:

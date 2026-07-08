@@ -19,12 +19,9 @@ import dbt_06 from '@site/static/images/integrations/data-ingestion/etl-tools/db
 import dbt_07 from '@site/static/images/integrations/data-ingestion/etl-tools/dbt/dbt_07.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 가이드 \{#guides\}
-
-<ClickHouseSupportedBadge/>
-
-이 섹션에서는 dbt 및 ClickHouse 어댑터 설정 방법과 공개 IMDB 데이터셋을 사용하여 ClickHouse에서 dbt를 활용하는 예제를 제공합니다. 이 예제에서는 다음 단계를 다룹니다.
+이 섹션에서는 dbt와 ClickHouse 어댑터를 설정하는 가이드와 함께, 공개적으로 이용 가능한 IMDB 데이터셋을 사용해 ClickHouse에서 dbt를 사용하는 예시를 제공합니다. 이 예시에서는 다음 단계를 다룹니다:
 
 1. dbt 프로젝트를 생성하고 ClickHouse 어댑터를 설정합니다.
 2. 모델을 정의합니다.
@@ -33,9 +30,9 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 5. 스냅샷 모델을 생성합니다.
 6. materialized view를 사용합니다.
 
-이 가이드는 나머지 [문서](/integrations/dbt), [기능 및 설정](/integrations/dbt/features-and-configurations), [materializations 레퍼런스](/integrations/dbt/materializations)와 함께 사용되도록 설계되었습니다.
+이 가이드는 [문서](/integrations/dbt), [기능 및 구성](/integrations/dbt/features-and-configurations), [materializations 참고](/integrations/dbt/materializations)와 함께 사용하도록 설계되었습니다.
 
-<TOCInline toc={toc}  maxHeadingLevel={2} />
+<TOCInline toc={toc} maxHeadingLevel={2} />
 
 ## 설정 \{#setup\}
 

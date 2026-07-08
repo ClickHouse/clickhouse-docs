@@ -7,7 +7,6 @@ keywords: ['CSV format', 'TSV format', 'comma separated values', 'tab separated 
 doc_type: 'guide'
 ---
 
-# Working with CSV and TSV data in ClickHouse
 
 ClickHouse supports importing data from and exporting to CSV. Since CSV files can come with different format specifics, including header rows, custom delimiters, and escape symbols, ClickHouse provides formats and settings to address each case efficiently.
 
@@ -26,7 +25,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-To import data from the [CSV file](assets/data_small.csv) to the `sometable` table, we can pipe our file directly to the clickhouse-client:
+To import data from the [CSV file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.csv) to the `sometable` table, we can pipe our file directly to the clickhouse-client:
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT CSV" < data_small.csv
@@ -49,7 +48,7 @@ In that case, ClickHouse will automatically detect format based on file extensio
 
 ### CSV files with headers {#csv-files-with-headers}
 
-Suppose our [CSV file has headers](assets/data_small_headers.csv) in it:
+Suppose our [CSV file has headers](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small_headers.csv) in it:
 
 ```bash
 head data-small-headers.csv
@@ -101,7 +100,7 @@ SELECT count(*) FROM file('data-small.csv', CSV)
 └─────────┘
 ```
 
-The [file](assets/data_small.csv) has 1k rows, but ClickHouse loaded only 990 since we've asked to skip the first 10.
+The [file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.csv) has 1k rows, but ClickHouse loaded only 990 since we've asked to skip the first 10.
 
 :::tip
 When using the `file()` function, with ClickHouse Cloud you will need to run the commands in `clickhouse client` on the machine where the file resides. Another option is to use [`clickhouse-local`](/operations/utilities/clickhouse-local.md) to explore files locally.
@@ -154,7 +153,7 @@ SELECT * FROM file('nulls.csv')
 
 ## TSV (tab-separated) files {#tsv-tab-separated-files}
 
-Tab-separated data format is widely used as a data interchange format. To load data from a [TSV file](assets/data_small.tsv) to ClickHouse, the [TabSeparated](/interfaces/formats/TabSeparated) format is used:
+Tab-separated data format is widely used as a data interchange format. To load data from a [TSV file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small.tsv) to ClickHouse, the [TabSeparated](/interfaces/formats/TabSeparated) format is used:
 
 ```bash
 clickhouse-client -q "INSERT INTO sometable FORMAT TabSeparated" < data_small.tsv
@@ -292,7 +291,7 @@ FORMAT CSVWithNamesAndTypes
 "2016_Greater_Western_Sydney_Giants_season","2017-05-01",86
 ```
 
-This format will include two header rows - one with column names and the other with column types. This will allow ClickHouse (and other apps) to identify column types when loading data from [such files](assets/data_csv_types.csv):
+This format will include two header rows - one with column names and the other with column types. This will allow ClickHouse (and other apps) to identify column types when loading data from [such files](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_csv_types.csv):
 
 ```sql
 DESCRIBE file('data_csv_types.csv', CSVWithNamesAndTypes)
@@ -327,7 +326,7 @@ SET format_custom_row_between_delimiter = ',';
 SET format_custom_escaping_rule = 'Quoted';
 ```
 
-Now we can load data from our custom formatted [file](assets/data_small_custom.txt):
+Now we can load data from our custom formatted [file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data_small_custom.txt):
 
 ```sql
 SELECT *

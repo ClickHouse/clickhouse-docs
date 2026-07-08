@@ -6,7 +6,7 @@ pagination_prev: null
 pagination_next: null
 description: 'В этом руководстве мы пошагово разберём, как выполнять запросы
 к данным в S3-бакетах с помощью ClickHouse и Unity Catalog.'
-keywords: ['Unity', 'Озеро данных']
+keywords: ['Unity', 'озера данных']
 show_related_blogs: true
 doc_type: 'guide'
 ---
@@ -63,15 +63,17 @@ oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', 
 ```
 
 
-## Выполнение запросов к таблицам каталога Unity из ClickHouse \{#querying-unity-catalog-tables-using-clickhouse\}
+## Выполнение запросов к таблицам каталога Unity Catalog из ClickHouse \{#querying-unity-catalog-tables-using-clickhouse\}
 
-Теперь, когда соединение установлено, вы можете начинать выполнять запросы через каталог Unity. Например:
+Теперь, когда соединение установлено, вы можете начинать выполнять запросы через Unity Catalog. Например:
 
 ```sql
 USE unity;
 
 SHOW TABLES;
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ clickbench.delta_hits                              │
 │ demo.fake_user                                     │
@@ -109,7 +111,9 @@ SHOW TABLES;
 
 ```sql
 SHOW TABLES
+```
 
+```response
 ┌─name───────────────┐
 │ uniform.delta_hits │
 └────────────────────┘
@@ -150,7 +154,6 @@ CREATE TABLE unity_uniform.`uniform.delta_hits`
 ENGINE = Iceberg('s3://<path>);
 
 ```
-
 
 ## Загрузка данных из озера данных в ClickHouse \{#loading-data-from-your-data-lake-into-clickhouse\}
 

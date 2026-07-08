@@ -1,13 +1,11 @@
 ---
-description: 'cume_dist ウィンドウ関数に関するドキュメント'
+description: 'cume_dist ウィンドウ関数のドキュメント'
 sidebar_label: 'cume_dist'
 sidebar_position: 11
 slug: /sql-reference/window-functions/cume_dist
 title: 'cume_dist'
 doc_type: 'reference'
 ---
-
-# cume&#95;dist \{#cume&#95;dist\}
 
 値のグループ内におけるある値の累積分布を計算します。つまり、現在の行の値以下の値を持つ行の割合を返します。パーティション内での値の相対的な位置を判断するために使用できます。
 
@@ -33,9 +31,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 次の例では、チーム内の給与の累積分布を計算します。
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -55,15 +51,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        cume_dist() OVER (ORDER BY salary DESC) AS cume_dist
 FROM salaries;
 ```
 
-結果：
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬───────────cume_dist─┐
 1. │ Robert George   │ 195000 │  0.2857142857142857 │
 2. │ Gary Chen       │ 195000 │  0.2857142857142857 │
@@ -83,4 +77,4 @@ FROM salaries;
 cume_dist = (number of rows ≤ current row value) / (total number of rows in partition)
 ```
 
-同じ値を持つ行（ピア）には同一の累積分布値が割り当てられ、その値はピアグループ内での最大の順位に対応します。
+同じ値を持つ行 (ピア) には同一の累積分布値が割り当てられ、その値はピアグループ内での最大の順位に対応します。

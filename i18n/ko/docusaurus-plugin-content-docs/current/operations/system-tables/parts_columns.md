@@ -6,57 +6,75 @@ title: 'system.parts_columns'
 doc_type: 'reference'
 ---
 
-# system.parts_columns \{#systemparts_columns\}
+## 설명 \{#description\}
 
 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 테이블의 파트와 컬럼에 대한 정보를 포함합니다.
 각 행은 하나의 데이터 파트를 나타냅니다.
 
-| Column                                  | Type     | Description                                                                                                                                       |
-| --------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `partition`                             | String   | 파티션 이름입니다. 형식: 월별 자동 파티션인 경우 `YYYYMM`, 수동 파티션인 경우 `any_string`입니다.                                                                                |
-| `name`                                  | String   | 데이터 파트의 이름입니다.                                                                                                                                    |
-| `part_type`                             | String   | 데이터 파트의 저장 형식입니다. 값: `Wide`(각 컬럼이 별도 파일로 저장) 또는 `Compact`(모든 컬럼이 하나의 파일에 저장)입니다. `min_bytes_for_wide_part` 및 `min_rows_for_wide_part` 설정으로 제어됩니다. |
-| `active`                                | UInt8    | 데이터 파트가 활성 상태인지 나타내는 플래그입니다. 활성 파트는 테이블에서 사용되고, 비활성 파트는 삭제되거나 머지 후에도 남을 수 있습니다.                                                                   |
-| `marks`                                 | UInt64   | 마크의 개수입니다. 인덱스 그라뉼러리티(일반적으로 8192)를 곱해 대략적인 행 수를 구할 수 있습니다.                                                                                        |
-| `rows`                                  | UInt64   | 행의 개수입니다.                                                                                                                                         |
-| `bytes_on_disk`                         | UInt64   | 모든 데이터 파트 파일의 총 크기(바이트)입니다.                                                                                                                       |
-| `data_compressed_bytes`                 | UInt64   | 데이터 파트 내 압축된 데이터의 총 크기입니다(마크와 같은 보조 파일은 제외).                                                                                                      |
-| `data_uncompressed_bytes`               | UInt64   | 데이터 파트 내 압축이 해제된 데이터의 총 크기입니다(마크와 같은 보조 파일은 제외).                                                                                                  |
-| `marks_bytes`                           | UInt64   | 마크 파일의 크기입니다.                                                                                                                                     |
-| `modification_time`                     | DateTime | 데이터 파트가 있는 디렉터리가 수정된 시간입니다(일반적으로 생성 시간에 해당).                                                                                                      |
-| `remove_time`                           | DateTime | 데이터 파트가 비활성 상태가 된 시간입니다.                                                                                                                          |
-| `refcount`                              | UInt32   | 데이터 파트가 사용되는 위치 수입니다. 값이 2보다 크면 쿼리 또는 머지에 사용 중임을 나타냅니다.                                                                                           |
-| `min_date`                              | Date     | 데이터 파트에 있는 날짜 키의 최소값입니다.                                                                                                                          |
-| `max_date`                              | Date     | 데이터 파트에 있는 날짜 키의 최대값입니다.                                                                                                                          |
-| `partition_id`                          | String   | 파티션 ID입니다.                                                                                                                                        |
-| `min_block_number`                      | UInt64   | 머지 결과인 현재 파트를 구성하는 데이터 파트의 최소 번호입니다.                                                                                                              |
-| `max_block_number`                      | UInt64   | 머지 결과인 현재 파트를 구성하는 데이터 파트의 최대 번호입니다.                                                                                                              |
-| `level`                                 | UInt32   | 머지 트리의 깊이입니다. 0이면 머지가 아니라 INSERT로 생성되었음을 의미합니다.                                                                                                   |
-| `data_version`                          | UInt64   | 어떤 뮤테이션을 적용해야 하는지 결정하는 데 사용하는 번호입니다(`data_version`보다 큰 버전의 뮤테이션이 대상이 됩니다).                                                                        |
-| `primary_key_bytes_in_memory`           | UInt64   | 프라이머리 키 값에 사용되는 메모리 양(바이트)입니다.                                                                                                                    |
-| `primary_key_bytes_in_memory_allocated` | UInt64   | 프라이머리 키 값을 위해 예약된 메모리 양(바이트)입니다.                                                                                                                  |
-| `database`                              | String   | 데이터베이스 이름입니다.                                                                                                                                     |
-| `table`                                 | String   | 테이블 이름입니다.                                                                                                                                        |
-| `engine`                                | String   | 파라미터를 제외한 테이블 엔진 이름입니다.                                                                                                                           |
-| `disk_name`                             | String   | 데이터 파트를 저장하는 디스크의 이름입니다.                                                                                                                          |
-| `path`                                  | String   | 데이터 파트 파일이 있는 폴더의 절대 경로입니다.                                                                                                                       |
-| `column`                                | String   | 컬럼 이름입니다.                                                                                                                                         |
-| `type`                                  | String   | 컬럼 타입입니다.                                                                                                                                         |
-| `statistics`                            | String   | 해당 컬럼에 대해 생성된 통계입니다.                                                                                                                              |
-| `estimates.min`                         | String   | 컬럼의 예상 최소값입니다.                                                                                                                                    |
-| `estimates.max`                         | String   | 컬럼의 예상 최대값입니다.                                                                                                                                    |
-| `estimates.cardinality`                 | String   | 컬럼의 예상 카디널리티입니다.                                                                                                                                  |
-| `column_position`                       | UInt64   | 테이블에서 컬럼의 순서(1부터 시작)입니다.                                                                                                                          |
-| `default_kind`                          | String   | 기본값에 대한 표현식 타입입니다(`DEFAULT`, `MATERIALIZED`, `ALIAS`), 정의되지 않은 경우 빈 문자열입니다.                                                                       |
-| `default_expression`                    | String   | 기본값에 대한 표현식입니다. 정의되지 않은 경우 빈 문자열입니다.                                                                                                              |
-| `column_bytes_on_disk`                  | UInt64   | 컬럼의 총 크기(바이트)입니다.                                                                                                                                 |
-| `column_data_compressed_bytes`          | UInt64   | 컬럼 내 압축된 데이터의 총 크기(바이트)입니다. 참고: `Compact` 파트에 대해서는 계산되지 않습니다.                                                                                     |
-| `column_data_uncompressed_bytes`        | UInt64   | 컬럼 내 압축이 해제된 데이터의 총 크기(바이트)입니다. 참고: `Compact` 파트에 대해서는 계산되지 않습니다.                                                                                 |
-| `column_marks_bytes`                    | UInt64   | 컬럼 내 마크의 크기(바이트)입니다.                                                                                                                              |
-| `bytes`                                 | UInt64   | `bytes_on_disk`의 별칭입니다.                                                                                                                           |
-| `marks_size`                            | UInt64   | `marks_bytes`의 별칭입니다.                                                                                                                             |
+## 컬럼 \{#columns\}
 
-**예시**
+{/*AUTOGENERATED_START*/ }
+
+* `partition` ([String](../../sql-reference/data-types/)) — 파티션 이름입니다.
+* `name` ([String](../../sql-reference/data-types/)) — 데이터 파트의 이름입니다.
+* `uuid` ([UUID](../../sql-reference/data-types/)) — 파트의 UUID입니다.
+* `part_type` ([String](../../sql-reference/data-types/)) — 데이터 파트의 저장 포맷입니다. 가능한 값: Wide — 각 컬럼이 파일 시스템의 별도 파일에 저장됩니다. Compact — 모든 컬럼이 파일 시스템의 단일 파일에 저장됩니다.
+* `active` ([UInt8](../../sql-reference/data-types/)) — 데이터 파트가 활성 상태인지 나타내는 플래그입니다. 데이터 파트가 활성 상태이면 테이블에서 사용되며, 그렇지 않으면 삭제됩니다. 비활성 데이터 파트는 병합 후에도 남아 있습니다.
+* `marks` ([UInt64](../../sql-reference/data-types/)) — 마크의 개수입니다. 데이터 파트의 대략적인 행 수를 구하려면 `marks` 값에 인덱스 granularity(보통 8192)를 곱하십시오(이 방법은 adaptive granularity에는 적용되지 않습니다).
+* `rows` ([UInt64](../../sql-reference/data-types/)) — 행의 개수입니다.
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — 모든 데이터 파트 파일의 전체 크기(바이트)입니다.
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 데이터 파트에 저장된 압축 데이터의 전체 크기입니다. 모든 보조 파일(예: 마크 파일)은 포함되지 않습니다.
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 데이터 파트의 비압축 데이터 총 크기입니다. 마크 파일과 같은 모든 보조 파일은 포함되지 않습니다.
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/)) — 마크 파일의 크기입니다.
+* `modification_time` ([DateTime](../../sql-reference/data-types/)) — 데이터 파트가 들어 있는 디렉터리가 수정된 시간입니다. 일반적으로 데이터 파트가 생성된 시점과 일치합니다.
+* `remove_time` ([DateTime](../../sql-reference/data-types/)) — 데이터 파트가 비활성화된 시각입니다.
+* `refcount` ([UInt32](../../sql-reference/data-types/)) — 데이터 파트가 사용되는 위치의 개수입니다. 값이 2보다 크면 해당 데이터 파트가 쿼리 또는 병합 작업에서 사용되고 있음을 의미합니다.
+* `min_date` ([Date](../../sql-reference/data-types/)) — 파티션 키에 Date 컬럼이 포함된 경우 해당 컬럼의 최소값입니다.
+* `max_date` ([Date](../../sql-reference/data-types/)) — 파티션 키에 해당 Date 컬럼이 포함된 경우의 최댓값입니다.
+* `min_time` ([DateTime](../../sql-reference/data-types/)) — 파티션 키에 이 컬럼이 포함된 경우 DateTime 컬럼의 최솟값입니다.
+* `max_time` ([DateTime](../../sql-reference/data-types/)) — 파티션 키에 포함된 경우 DateTime 컬럼의 최대값입니다.
+* `partition_id` ([String](../../sql-reference/data-types/)) — 파티션 ID입니다.
+* `min_block_number` ([Int64](../../sql-reference/data-types/)) — 병합 후 현재 파트를 이루는 데이터 파트들의 최소 번호입니다.
+* `max_block_number` ([Int64](../../sql-reference/data-types/)) — 병합 후 현재 파트를 구성하게 되는 데이터 파트의 최대 개수입니다.
+* `level` ([UInt32](../../sql-reference/data-types/)) — MergeTree의 깊이입니다. 0은 현재 파트가 다른 파트들을 병합해 생성된 것이 아니라 삽입으로 생성되었음을 의미합니다.
+* `data_version` ([UInt64](../../sql-reference/data-types/)) — 데이터 파트에 어떤 뮤테이션을 적용할지 결정하는 데 사용되는 숫자입니다(`data_version`보다 버전이 높은 뮤테이션).
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 기본 키 값이 사용하는 메모리 크기(바이트)입니다.
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 기본 키 값에 대해 예약된 메모리 양(바이트 단위)입니다.
+* `database` ([String](../../sql-reference/data-types/)) — 데이터베이스 이름입니다.
+* `table` ([String](../../sql-reference/data-types/)) — 테이블 이름입니다.
+* `engine` ([String](../../sql-reference/data-types/)) — 매개변수 없이 지정된 테이블 엔진의 이름입니다.
+* `disk_name` ([String](../../sql-reference/data-types/)) — 데이터 파트가 저장된 디스크의 이름입니다.
+* `path` ([String](../../sql-reference/data-types/)) — 데이터 파트 파일이 저장된 폴더의 절대 경로입니다.
+* `column` ([String](../../sql-reference/data-types/)) — 컬럼 이름입니다.
+* `type` ([String](../../sql-reference/data-types/)) — 컬럼 유형입니다.
+* `column_position` ([UInt64](../../sql-reference/data-types/)) — 테이블에서 1부터 시작하는 컬럼의 순서 위치입니다.
+* `default_kind` ([String](../../sql-reference/data-types/)) — 기본값에 대한 표현식 유형(DEFAULT, MATERIALIZED, ALIAS)이며, 정의되지 않은 경우 빈 문자열입니다.
+* `default_expression` ([String](../../sql-reference/data-types/)) — 기본값 표현식이며, 정의되지 않은 경우 빈 문자열입니다.
+* `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — 컬럼의 총 크기(바이트 단위)입니다.
+* `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 컬럼의 압축된 데이터 총 크기(바이트)입니다.
+* `column_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 컬럼에서 압축 해제된 데이터의 총 크기(바이트)입니다.
+* `column_marks_bytes` ([UInt64](../../sql-reference/data-types/)) — 컬럼 마크의 크기(바이트)입니다.
+* `column_modification_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 컬럼이 마지막으로 수정된 시각입니다.
+* `column_ttl_min` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 컬럼에 대해 계산된 TTL 표현식의 최솟값입니다.
+* `column_ttl_max` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 컬럼에 대해 계산된 TTL 표현식의 최댓값입니다.
+* `statistics` ([Array(String)](../../sql-reference/data-types/)) — 해당 컬럼의 통계입니다.
+* `estimates.min` ([Nullable(String)](../../sql-reference/data-types/)) — 컬럼의 추정된 최소값입니다.
+* `estimates.max` ([Nullable(String)](../../sql-reference/data-types/)) — 컬럼의 예상 최대값입니다.
+* `estimates.cardinality` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 컬럼의 카디널리티 추정값.
+* `serialization_kind` ([String](../../sql-reference/data-types/)) — 컬럼 시리얼라이제이션의 종류
+* `substreams` ([Array(String)](../../sql-reference/data-types/)) — 컬럼이 직렬화되는 하위 스트림의 이름
+* `filenames` ([Array(String)](../../sql-reference/data-types/)) — 각 컬럼의 각 하위 스트림별 파일 이름
+* `subcolumns.names` ([Array(String)](../../sql-reference/data-types/)) — 컬럼의 서브컬럼 이름
+* `subcolumns.types` ([Array(String)](../../sql-reference/data-types/)) — 컬럼의 서브컬럼 타입
+* `subcolumns.serializations` ([Array(String)](../../sql-reference/data-types/)) — 컬럼 서브컬럼의 시리얼라이제이션 종류
+* `subcolumns.bytes_on_disk` ([Array(UInt64)](../../sql-reference/data-types/)) — 각 서브컬럼의 크기(바이트)
+* `subcolumns.data_compressed_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — 각 서브컬럼에 대한 압축 데이터의 크기(바이트)
+* `subcolumns.data_uncompressed_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — 각 서브컬럼의 압축 해제된 데이터 크기(바이트 단위)
+* `subcolumns.marks_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — 컬럼의 각 서브컬럼에 대한 마크 크기(바이트 단위)
+
+{/*AUTOGENERATED_END*/ }
+
+## 예시 \{#example\}
 
 ```sql
 SELECT * FROM system.parts_columns LIMIT 1 FORMAT Vertical;
@@ -103,7 +121,7 @@ column_data_uncompressed_bytes:        2
 column_marks_bytes:                    48
 ```
 
-**추가 참고**
+## 추가 참고 \{#see-also\}
 
 * [MergeTree 계열](../../engines/table-engines/mergetree-family/mergetree.md)
 * [compact 파트와 wide 파트 개수 및 크기 계산](/knowledgebase/count-parts-by-type)

@@ -125,6 +125,45 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+## JSONAllValues \{#JSONAllValues\}
+
+Добавлено в: v26.4.0
+
+Возвращает все значения из каждой строки в JSON-столбце в виде массива строк.
+Значения сериализуются в текстовом виде и упорядочиваются по именам путей.
+
+**Синтаксис**
+
+```sql
+JSONAllValues(json)
+```
+
+**Аргументы**
+
+* `json` — JSON-столбец. [`JSON`](/sql-reference/data-types/newjson)
+
+**Возвращаемое значение**
+
+Возвращает массив всех значений из JSON-столбца в виде строк. [`Array(String)`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Пример использования**
+
+```sql title=Query
+CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
+INSERT INTO test FORMAT JSONEachRow {"json": {"a": 42}}, {"json": {"b": "Hello"}}, {"json": {"a": [1, 2, 3], "c": "2020-01-01"}}
+SELECT json, JSONAllValues(json) FROM test;
+```
+
+```response title=Response
+┌─json─────────────────────────────────┬─JSONAllValues(json)──────┐
+│ {"a":42}                             │ ['42']                   │
+│ {"b":"Hello"}                        │ ['Hello']                │
+│ {"a":[1,2,3],"c":"2020-01-01"}       │ ['[1,2,3]','2020-01-01'] │
+└──────────────────────────────────────┴──────────────────────────┘
+```
+
 ## JSONArrayLength \{#JSONArrayLength\}
 
 Появилась в версии: v23.2.0
@@ -1638,6 +1677,54 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 0
 ```
 
+
+## prettyPrintJSON \{#prettyPrintJSON\}
+
+Добавленный в: v26.4.0
+
+Возвращает JSON-строку, отформатированную для удобства чтения, с переносами строк и пробелами для отступов.
+
+**Синтаксис**
+
+```sql
+prettyPrintJSON(json [, indent])
+```
+
+**Аргументы**
+
+* `json` — Корректная JSON-строка для форматирования. [`String`](/sql-reference/data-types/string)
+* `indent` — Число пробелов на один уровень отступа. По умолчанию: 4. Максимум: 32 [`UInt*`](/sql-reference/data-types/int-uint)
+
+**Возвращаемое значение**
+
+JSON-строка, отформатированная для удобства чтения. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Простой объект**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1,"b":"hello"}');
+```
+
+```response title=Response
+{
+    "a": 1,
+    "b": "hello"
+}
+```
+
+**Настраиваемый отступ**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1}', 8);
+```
+
+```response title=Response
+{
+        "a": 1
+}
+```
 
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 

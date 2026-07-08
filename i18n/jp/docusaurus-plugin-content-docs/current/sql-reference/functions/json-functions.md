@@ -125,6 +125,46 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+## JSONAllValues \{#JSONAllValues\}
+
+導入バージョン: v26.4.0
+
+JSONカラムの各行に含まれるすべての値を、文字列の配列として返します。
+値はテキスト表現にシリアライズされ、パス名順に並べられます。
+
+**構文**
+
+```sql
+JSONAllValues(json)
+```
+
+**引数**
+
+* `json` — JSON カラム。[`JSON`](/sql-reference/data-types/newjson)
+
+**戻り値**
+
+JSON カラム内のすべての値を文字列として格納した配列を返します。[`Array(String)`](/sql-reference/data-types/array)
+
+**例**
+
+**使用例**
+
+```sql title=Query
+CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
+INSERT INTO test FORMAT JSONEachRow {"json": {"a": 42}}, {"json": {"b": "Hello"}}, {"json": {"a": [1, 2, 3], "c": "2020-01-01"}}
+SELECT json, JSONAllValues(json) FROM test;
+```
+
+```response title=Response
+┌─json─────────────────────────────────┬─JSONAllValues(json)──────┐
+│ {"a":42}                             │ ['42']                   │
+│ {"b":"Hello"}                        │ ['Hello']                │
+│ {"a":[1,2,3],"c":"2020-01-01"}       │ ['[1,2,3]','2020-01-01'] │
+└──────────────────────────────────────┴──────────────────────────┘
+```
+
+
 ## JSONArrayLength \{#JSONArrayLength\}
 
 導入バージョン: v23.2.0
@@ -1636,6 +1676,54 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 0
 ```
 
+
+## prettyPrintJSON \{#prettyPrintJSON\}
+
+導入バージョン: v26.4.0
+
+JSON文字列を、改行とスペースによるインデントを含む、読みやすく整形された形式で返します。
+
+**構文**
+
+```sql
+prettyPrintJSON(json [, indent])
+```
+
+**引数**
+
+* `json` — 整形する有効な JSON 文字列。 [`String`](/sql-reference/data-types/string)
+* `indent` — インデントレベルごとのスペース数。デフォルト: 4。最大: 32。 [`UInt*`](/sql-reference/data-types/int-uint)
+
+**戻り値**
+
+整形済みの JSON 文字列。 [`String`](/sql-reference/data-types/string)
+
+**例**
+
+**シンプルなオブジェクト**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1,"b":"hello"}');
+```
+
+```response title=Response
+{
+    "a": 1,
+    "b": "hello"
+}
+```
+
+**インデントのカスタマイズ**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1}', 8);
+```
+
+```response title=Response
+{
+        "a": 1
+}
+```
 
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 

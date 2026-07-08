@@ -1,26 +1,23 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/nginx-traces
-title: '使用 ClickStack 监控 Nginx 追踪'
-sidebar_label: 'Nginx 追踪'
+title: '使用 ClickStack 监控 Nginx 链路追踪'
+sidebar_label: 'Nginx 链路追踪'
 pagination_prev: null
 pagination_next: null
-description: '使用 ClickStack 监控 Nginx 追踪'
+description: '使用 ClickStack 监控 Nginx 链路追踪'
 doc_type: 'guide'
 keywords: ['ClickStack', 'Nginx', 'traces', 'otel']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/finish-nginx-traces-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/nginx-traces-dashboard.png';
 import view_traces from '@site/static/images/clickstack/nginx-traces-search-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Nginx 链路追踪 \{#nginx-traces-clickstack\}
-
-:::note[TL;DR]
-使用 OpenTelemetry Nginx 模块在 ClickStack 中捕获 Nginx 的分布式链路追踪。包含演示数据集和预置仪表板。
+:::note[摘要]
+使用 OpenTelemetry Nginx 模块，在 ClickStack 中采集 Nginx 的分布式链路追踪。附带演示数据集和预置仪表板。
 :::
 
 ## 与现有 Nginx 集成 \{#existing-nginx\}
@@ -250,7 +247,7 @@ HyperDX 会以浏览器本地时区显示时间戳。演示数据覆盖的时间
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nginx-traces-dashboard.json')} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nginx-traces-dashboard.json'} download="nginx-traces-dashboard.json" eventName="docs.nginx_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
 
 #### 导入预构建仪表板 \{#import-dashboard\}
 1. 打开 HyperDX 并进入 Dashboards 页面。

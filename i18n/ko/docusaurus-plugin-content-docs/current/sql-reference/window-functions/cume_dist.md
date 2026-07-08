@@ -1,13 +1,11 @@
 ---
-description: 'cume_dist 윈도우 함수(window function) 문서'
+description: 'cume_dist 윈도우 함수에 대한 문서'
 sidebar_label: 'cume_dist'
 sidebar_position: 11
 slug: /sql-reference/window-functions/cume_dist
 title: 'cume_dist'
 doc_type: 'reference'
 ---
-
-# cume_dist \{#cume_dist\}
 
 값 그룹 내에서 특정 값의 누적 분포를 계산합니다. 즉, 현재 행의 값보다 작거나 같은 값을 가진 행이 차지하는 비율(백분율)을 계산합니다. 파티션 내에서 특정 값의 상대적 순위를 파악하는 데 사용할 수 있습니다.
 
@@ -33,9 +31,7 @@ WINDOW window_name as ([PARTITION BY grouping_column] [ORDER BY sorting_column] 
 
 다음 예시는 팀 내 급여의 누적 분포를 계산합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE salaries
 (
     `team` String,
@@ -55,15 +51,13 @@ INSERT INTO salaries FORMAT Values
     ('South Hampton Seagulls', 'James Henderson', 140000, 'M');
 ```
 
-```sql
+```sql title="Query"
 SELECT player, salary,
        cume_dist() OVER (ORDER BY salary DESC) AS cume_dist
 FROM salaries;
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌─player──────────┬─salary─┬───────────cume_dist─┐
 1. │ Robert George   │ 195000 │  0.2857142857142857 │
 2. │ Gary Chen       │ 195000 │  0.2857142857142857 │

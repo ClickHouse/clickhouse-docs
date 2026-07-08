@@ -1,14 +1,14 @@
 ---
 slug: /guides/developer/deduplicating-inserts-on-retries
-title: '重试插入时的数据去重'
-description: '在重试插入操作时防止产生重复数据'
+title: '重试INSERT时的数据去重'
+description: '在重试INSERT操作时防止产生重复数据'
 keywords: ['deduplication', 'deduplicate', 'insert retries', 'inserts']
 doc_type: 'guide'
 ---
 
-插入操作有时会因为超时等错误而失败。当插入失败时，数据可能已经成功写入，也可能没有。本指南介绍如何在重试插入时启用去重，以确保相同数据不会被多次插入。
+INSERT操作有时会因为超时等错误而失败。当INSERT失败时，数据可能已经成功INSERT，也可能没有。本指南介绍如何在重试INSERT时启用去重，以确保相同数据不会被多次INSERT。
 
-当插入被重试时，ClickHouse 会尝试判断这些数据是否已经成功插入。如果插入的数据被标记为重复，ClickHouse 不会将其再次写入目标表。不过，用户仍然会收到成功的操作状态反馈，就像数据已正常插入一样。
+当INSERT被重试时，ClickHouse 会尝试判断这些数据是否已经成功INSERT。如果INSERT的数据被标记为重复，ClickHouse 不会将其再次INSERT到目标表。不过，用户仍然会收到成功的操作状态反馈，就像数据已正常INSERT一样。
 
 ## 限制 \{#limitations\}
 
@@ -65,9 +65,9 @@ doc_type: 'guide'
 
 ## 示例 \{#examples\}
 
-### 物化视图转换后生成的相同数据块 \{#identical-blocks-after-materialized-view-transformations\}
+### 物化视图转换后生成的相同块 \{#identical-blocks-after-materialized-view-transformations\}
 
-在物化视图内部转换过程中生成的相同数据块不会被去重，因为它们是基于不同的插入数据生成的。
+在物化视图内部转换过程中生成的相同块不会被去重，因为它们是基于不同的插入数据生成的。
 
 下面是一个示例：
 
@@ -101,7 +101,7 @@ SET min_insert_block_size_rows=0;
 SET min_insert_block_size_bytes=0;
 ```
 
-上述设置使我们可以从一个表中进行查询，该表由一系列仅包含一行的数据块组成。在插入到表中之前，这些小数据块不会被合并，并会保持不变。
+上述设置使我们可以从一个表中进行查询，该表由一系列仅包含一行的块组成。在插入到表中之前，这些小块不会被合并，并会保持不变。
 
 ```sql
 SET deduplicate_blocks_in_dependent_materialized_views=1;
@@ -120,14 +120,16 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
 │   2 │ B     │ all_1_1_0 │
 └─────┴───────┴───────────┘
 ```
 
-在这里我们可以看到，已经向 `dst` 表中插入了两个分区片段（part）。来自 select 的 2 个数据块 —— 插入时对应 2 个分区片段。这些分区片段中的数据是不同的。
+在这里我们可以看到，已经向 `dst` 表中插入了两个分区片段 (part) 。来自 select 的 2 个块 —— 插入时对应 2 个分区片段。这些分区片段中的数据是不同的。
 
 ```sql
 SELECT
@@ -135,7 +137,9 @@ SELECT
     _part
 FROM mv_dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
 │   0 │ B     │ all_1_1_0 │
@@ -155,18 +159,24 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   1 │ B     │ all_0_0_0 │
 │   2 │ B     │ all_1_1_0 │
 └─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─key─┬─value─┬─_part─────┐
 │   0 │ B     │ all_0_0_0 │
 │   0 │ B     │ all_1_1_0 │
@@ -175,8 +185,7 @@ ORDER by all;
 
 在这里可以看到，当我们重试插入操作时，所有数据都会被去重。去重机制同时适用于 `dst` 和 `mv_dst` 表。
 
-
-### 插入操作中的相同数据块 \{#identical-blocks-on-insertion\}
+### 插入操作中的相同块 \{#identical-blocks-on-insertion\}
 
 ```sql
 CREATE TABLE dst
@@ -207,14 +216,15 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
 ```
 
-使用上述设置，select 查询会产生两个数据块，因此应该向表 `dst` 插入两个数据块。然而，我们看到只向表 `dst` 插入了一个数据块。这是因为第二个数据块被去重了。它具有相同的数据，以及用于去重的键 `block_id`，该键是根据插入数据计算得到的哈希值。这种行为不符合预期。此类情况虽较罕见，但在理论上是可能的。为了正确处理这类情况，用户需要提供 `insert_deduplication_token`。让我们通过以下示例来解决这个问题：
-
+使用上述设置，select 查询会产生两个块，因此应该向表 `dst` 插入两个块。然而，我们看到只向表 `dst` 插入了一个块。这是因为第二个块被去重了。它具有相同的数据，以及用于去重的键 `block_id`，该键是根据插入数据计算得到的哈希值。这种行为不符合预期。此类情况虽较罕见，但在理论上是可能的。为了正确处理这类情况，用户需要提供 `insert_deduplication_token`。让我们通过以下示例来解决这个问题：
 
 ### 插入相同数据块时使用 `insert_deduplication_token` \{#identical-blocks-in-insertion-with-insert_deduplication_token\}
 
@@ -248,7 +258,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -272,7 +284,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -296,7 +310,9 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   0 │ A     │ all_2_2_0 │
 │ from dst   │   0 │ A     │ all_3_3_0 │
@@ -304,7 +320,6 @@ ORDER BY all;
 ```
 
 即使此次插入的数据内容不同，也会被去重。请注意，`insert_deduplication_token` 具有更高优先级：当提供 `insert_deduplication_token` 时，ClickHouse 不会使用数据的哈希值。
-
 
 ### 不同插入操作在转换后会在物化视图的底层表中生成相同的数据 \{#different-insert-operations-generate-the-same-data-after-transformation-in-the-underlying-table-of-the-materialized-view\}
 
@@ -343,22 +358,30 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 └───────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 select 'second attempt';
 
 INSERT INTO dst VALUES (2, 'A');
@@ -369,19 +392,25 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 │ from dst   │   2 │ A     │ all_1_1_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
@@ -389,7 +418,6 @@ ORDER by all;
 ```
 
 我们每次插入的数据都不同。不过，插入到 `mv_dst` 表中的数据却是相同的。由于源数据不同，数据没有被去重。
-
 
 ### 不同物化视图向同一底层表插入等效数据 \{#different-materialized-view-inserts-into-one-underlying-table-with-equivalent-data\}
 
@@ -438,25 +466,31 @@ SELECT
     _part
 FROM dst
 ORDER by all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │
 └───────────────┴─────┴───────┴───────────┘
 ```
 
-两个相同的数据块已插入到表 `mv_dst` 中（符合预期）。
+两个相同的块已插入到表 `mv_dst` 中 (符合预期) 。
 
 ```sql
 SELECT 'second attempt';
@@ -469,18 +503,24 @@ SELECT
     _part
 FROM dst
 ORDER BY all;
+```
 
+```response
 ┌─'from dst'─┬─key─┬─value─┬─_part─────┐
 │ from dst   │   1 │ A     │ all_0_0_0 │
 └────────────┴─────┴───────┴───────────┘
+```
 
+```sql
 SELECT
     'from mv_dst',
     *,
     _part
 FROM mv_dst
 ORDER by all;
+```
 
+```response
 ┌─'from mv_dst'─┬─key─┬─value─┬─_part─────┐
 │ from mv_dst   │   0 │ A     │ all_0_0_0 │
 │ from mv_dst   │   0 │ A     │ all_1_1_0 │

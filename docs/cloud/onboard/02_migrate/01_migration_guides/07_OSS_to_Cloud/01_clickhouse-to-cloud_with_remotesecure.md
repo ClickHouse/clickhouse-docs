@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Using remoteSecure'
 slug: /cloud/migration/clickhouse-to-cloud
-title: 'Migrating between self-managed ClickHouse and ClickHouse Cloud'
+title: 'Migrating between self-managed ClickHouse and ClickHouse Cloud using remoteSecure'
 description: 'Page describing how to migrate between self-managed ClickHouse and ClickHouse Cloud'
 doc_type: 'guide'
 keywords: ['migration', 'ClickHouse Cloud', 'OSS', 'Migrate self-managed to Cloud']
@@ -16,8 +16,6 @@ import self_managed_04 from '@site/static/images/integrations/migration/self-man
 import self_managed_05 from '@site/static/images/integrations/migration/self-managed-05.png';
 import self_managed_06 from '@site/static/images/integrations/migration/self-managed-06.png';
 import CompatibilityNote from '@site/docs/_snippets/compatibility.mdx'
-
-# Migrating between self-managed ClickHouse and ClickHouse Cloud using remoteSecure
 
 <Image img={self_managed_01} size='lg' alt='Migrating Self-managed ClickHouse'/>
 

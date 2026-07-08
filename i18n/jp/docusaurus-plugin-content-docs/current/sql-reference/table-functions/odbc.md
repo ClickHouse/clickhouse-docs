@@ -7,8 +7,6 @@ title: 'odbc'
 doc_type: 'reference'
 ---
 
-# odbc テーブル関数 \{#odbc-table-function\}
-
 [ODBC](https://en.wikipedia.org/wiki/Open_Database_Connectivity) 経由で接続されたテーブルを返します。
 
 ## 構文 \{#syntax\}

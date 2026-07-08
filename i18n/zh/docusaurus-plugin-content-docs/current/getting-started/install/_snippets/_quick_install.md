@@ -1,64 +1,73 @@
 # 通过 curl 脚本安装 ClickHouse \{#install-clickhouse-via-script-using-curl\}
 
-如果您不需要在生产环境中安装 ClickHouse，最快的上手方式是使用 curl 运行安装脚本。该脚本会为您的操作系统选择合适的二进制文件。
+如果您不需要在生产环境中安装 ClickHouse，您可以使用 curl 运行安装脚本。该脚本会为您的操作系统选择合适的二进制文件。
 
 <VerticalStepper>
+  ## 使用 curl 安装 ClickHouse \{#install-clickhouse-using-curl\}
 
-## 使用 curl 安装 ClickHouse \{#install-clickhouse-using-curl\}
+  运行以下命令，为您的操作系统下载单个二进制文件。
 
-运行以下命令，为您的操作系统下载单个二进制文件。
+  ```bash
+  curl https://clickhouse.com/ | sh
+  ```
 
-```bash
-curl https://clickhouse.com/ | sh
-```
+  在 Linux 和 macOS 上，这还会将 [`clickhousectl`](https://github.com/ClickHouse/clickhousectl)
+  安装到 `~/.local/bin` 中 (并创建一个 `chctl` 符号链接) ，这样您就可以管理本地 ClickHouse
+  版本和服务器。
 
-:::note
-对于 Mac 用户：如果您收到“无法验证二进制文件开发者”的错误，请参阅[此处](/knowledgebase/fix-developer-verification-error-in-macos)。
-:::
+  若只安装 `clickhouse` 二进制文件而不安装 `clickhousectl`，请设置
+  `CLICKHOUSE_ONLY=1`：
 
-## 启动 clickhouse-local \{#start-clickhouse-local\}
+  ```bash
+  curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+  ```
 
-`clickhouse-local` 允许您使用 ClickHouse 强大的 SQL 语法处理本地和远程文件，且无需配置。表数据存储在临时位置，这意味着在重启 `clickhouse-local` 后，之前创建的表将不再可用。
+  :::note
+  对于 Mac 用户：如果您收到“无法验证二进制文件开发者”的错误，请参阅[此处](/knowledgebase/fix-developer-verification-error-in-macos)。
+  :::
 
-运行以下命令启动 [clickhouse-local](/operations/utilities/clickhouse-local):
+  ## 启动 clickhouse-local \{#start-clickhouse-local\}
 
-```bash
-./clickhouse
-```
+  `clickhouse-local` 允许您使用 ClickHouse 强大的 SQL 语法处理本地和远程文件，且无需配置。表数据存储在临时位置，这意味着在重启 `clickhouse-local` 后，之前创建的表将不再可用。
 
-## 启动 clickhouse-server \{#start-clickhouse-server\}
+  运行以下命令启动 [clickhouse-local](/operations/utilities/clickhouse-local):
 
-如果您希望持久化数据，则需要运行 `clickhouse-server`。您可以使用以下命令启动 ClickHouse 服务器：
+  ```bash
+  ./clickhouse
+  ```
 
-```bash
-./clickhouse server
-```
+  ## 启动 clickhouse-server \{#start-clickhouse-server\}
 
-## 启动 clickhouse-client \{#start-clickhouse-client\}
+  如果您希望持久化数据，则需要运行 `clickhouse-server`。您可以使用以下命令启动 ClickHouse 服务器：
 
-服务器启动并运行后,打开新的终端窗口并运行以下命令以启动 `clickhouse-client`:
+  ```bash
+  ./clickhouse server
+  ```
 
-```bash
-./clickhouse client
-```
+  ## 启动 clickhouse-client \{#start-clickhouse-client\}
 
-您将看到类似如下的输出:
+  服务器启动并运行后,打开新的终端窗口并运行以下命令以启动 `clickhouse-client`:
 
-```response
-./clickhouse client
-ClickHouse client version 24.5.1.117 (official build).
-Connecting to localhost:9000 as user default.
-Connected to ClickHouse server version 24.5.1.
+  ```bash
+  ./clickhouse client
+  ```
 
-local-host :)
-```
+  您将看到类似如下的输出:
 
-表数据存储在当前目录中,ClickHouse 服务器重启后数据仍然可用。如有必要,您可以将 `-C config.xml` 作为额外的命令行参数传递给 `./clickhouse server`,并在配置文件中提供进一步的配置。所有可用的配置设置记录在[此处](/operations/server-configuration-parameters/settings)以及[示例配置文件模板](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)中。
+  ```response
+  ./clickhouse client
+  ClickHouse client version 24.5.1.117 (official build).
+  Connecting to localhost:9000 as user default.
+  Connected to ClickHouse server version 24.5.1.
 
-现在您可以开始向 ClickHouse 发送 SQL 命令了!
+  local-host :)
+  ```
 
-:::tip
-[快速入门](/get-started/quick-start)将引导您完成创建表和插入数据的步骤。
-:::
+  表数据存储在当前目录中,ClickHouse 服务器重启后数据仍然可用。如有必要,您可以将 `-C config.xml` 作为额外的命令行参数传递给 `./clickhouse server`,并在配置文件中提供进一步的配置。所有可用的配置设置记录在[此处](/operations/server-configuration-parameters/settings)以及[示例配置文件模板](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)中。
 
+  现在您可以开始向 ClickHouse 发送 SQL 命令了!
+
+  :::tip
+  [快速入门](/get-started/quick-start)将引导您完成创建表和插入数据的步骤。
+  :::
 </VerticalStepper>

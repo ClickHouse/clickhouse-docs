@@ -7,7 +7,6 @@ keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'api', 'reference']
 doc_type: 'reference'
 ---
 
-# Python API Reference
 
 ## Core Query Functions {#core-query-functions}
 

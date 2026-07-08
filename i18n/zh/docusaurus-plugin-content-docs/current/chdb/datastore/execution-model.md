@@ -2,14 +2,12 @@
 title: 'DataStore 执行模型'
 sidebar_label: '执行模型'
 slug: /chdb/datastore/execution-model
-description: '理解 DataStore 中的惰性求值、执行触发条件和缓存'
+description: '理解 DataStore 中的惰性求值、执行触发器和缓存'
 keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---
 
-# DataStore 执行模型 \{#datastore-execution-model\}
-
-理解 DataStore 的惰性求值模型是充分利用它并实现最佳性能的关键。
+理解 DataStore 的惰性求值模型，是有效使用它并实现最佳性能的关键。
 
 ## 惰性求值 \{#lazy-evaluation\}
 
@@ -176,7 +174,7 @@ result = (ds
 
 使用 `explain()` 来查看实际将要执行的操作：
 
-```python
+```python title="Query"
 ds = pd.read_csv("sales.csv")
 
 query = (ds
@@ -189,9 +187,7 @@ query = (ds
 query.explain()
 ```
 
-输出结果：
-
-```text
+```text title="Response"
 Pipeline:
   1. Source: file('sales.csv', 'CSVWithNames')
   2. Filter: amount > 1000
@@ -214,7 +210,6 @@ query.explain(verbose=True)
 有关完整文档，请参见 [Debugging: explain()](../debugging/explain.md)。
 
 ***
-
 
 ## 缓存 \{#caching\}
 

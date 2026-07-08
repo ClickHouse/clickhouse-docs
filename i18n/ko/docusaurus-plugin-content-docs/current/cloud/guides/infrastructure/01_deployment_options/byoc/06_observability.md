@@ -14,7 +14,7 @@ import byoc_mixin_3 from '@site/static/images/cloud/reference/byoc-mixin-3.png';
 import byoc_mixin_4 from '@site/static/images/cloud/reference/byoc-mixin-4.png';
 import byoc_mixin_5 from '@site/static/images/cloud/reference/byoc-mixin-5.png';
 
-BYOC 배포에는 포괄적인 관측성 기능이 포함되어 있어, 전용 Prometheus 모니터링 스택과 ClickHouse 서버에서 직접 노출되는 metric 엔드포인트를 통해 ClickHouse 서비스를 모니터링할 수 있습니다. 모든 관측성 데이터는 Cloud 계정 내부에만 유지되며, 이를 통해 모니터링 인프라를 전적으로 제어할 수 있습니다.
+BYOC 배포에는 포괄적인 관측성 기능이 포함되어 있어, 전용 Prometheus 모니터링 스택과 ClickHouse 서버에서 직접 노출되는 메트릭 엔드포인트를 통해 ClickHouse 서비스를 모니터링할 수 있습니다. 모든 관측성 데이터는 Cloud 계정 내부에만 유지되며, 이를 통해 모니터링 인프라를 전적으로 제어할 수 있습니다.
 
 
 ## Prometheus 모니터링 방식 \{#prometheus-monitoring\}

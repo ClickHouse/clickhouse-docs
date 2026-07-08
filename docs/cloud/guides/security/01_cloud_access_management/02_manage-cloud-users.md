@@ -8,92 +8,92 @@ keywords: ['cloud users', 'access management', 'security', 'permissions', 'team 
 ---
 
 import Image from '@theme/IdealImage';
-import step_1 from '@site/static/images/cloud/guides/sql_console/org_level_access/1_org_settings.png'
-import step_2 from '@site/static/images/cloud/guides/sql_console/org_level_access/2_org_settings.png'
-import step_3 from '@site/static/images/cloud/guides/sql_console/org_level_access/3_org_settings.png'
-import step_4 from '@site/static/images/cloud/guides/sql_console/org_level_access/4_org_settings.png'
-import step_5 from '@site/static/images/cloud/guides/sql_console/org_level_access/5_org_settings.png'
-import step_6 from '@site/static/images/cloud/guides/sql_console/org_level_access/6_org_settings.png'
-import step_7 from '@site/static/images/cloud/guides/sql_console/org_level_access/7_org_settings.png'
+import step_1 from '@site/static/images/cloud/guides/control_plane/1_users_and_roles.png'
+import step_2 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/2_invite_user.png'
+import step_3 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/3_invite_user.png'
+import step_4 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/4_invite_user.png'
+import step_5 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/5_edit_user.png'
+import step_6 from '@site/static/images/cloud/guides/control_plane/manage_cloud_users/6_edit_user.png'
+
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 
-This guide is intended for users with the Organization Admin role in ClickHouse Cloud.
+This guide is intended for users with the Admin role in ClickHouse Cloud.
 
 ## Add users to your organization {#add-users}
 
 ### Invite users {#invite-users}
 
-Administrators may invite up to three (3) users at a time and assign organization and service level roles at the time of invitation. 
+Administrators may invite multiple users at a time and assign one or more roles at the time of invitation.
 
-To invite users:
-1. Select the organization name in the lower left corner
-2. Click `Users and roles`
-3. Select `Invite members` in the upper left corner
-4. Enter the email address of up to 3 new users
-5. Select the organization and service roles that will be assigned to the users
-6. Click `Send invites`
+<VerticalStepper headerLevel="h3">
 
-Users will receive an email from which they can join the organization. For more information on accepting invitations, see [Manage my account](/cloud/security/manage-my-account).
+### Access organization settings and select Users and roles {#users-and-roles-1}
+
+From the services page, select the name of your organization. Select the `Users and roles` menu item from the popup menu.
+
+<Image img={step_1} size="lg"/>
+
+### Select 'Invite members' in the upper left corner {#invite-members}
+
+Click the `Invite members` button in the upper left corner.
+
+<Image img={step_2} size="lg"/>
+
+### Enter the email address of new members and assign roles {#add-email-and-roles}
+
+Enter email addresses at the top of the invitation screen. Select one or more roles to assign the users.
+
+<Image img={step_3} size="lg"/>
+
+### Click `Send invites` {#send-invites}
+
+Click `Send invites` at the bottom of the screen. Users will receive an email from which they can join the organization. For more information on accepting invitations, see [Manage my account](/cloud/security/manage-my-account).
+
+<Image img={step_4} size="lg"/>
+
+</VerticalStepper>
 
 ### Add users via SAML identity provider {#add-users-via-saml}
 
 <EnterprisePlanFeatureBadge feature="SAML SSO"/>
 
-If your organization is configured for [SAML SSO](/cloud/security/saml-setup) follow these steps to add users to your organization.
+If your organization is configured for [SAML SSO](/cloud/security/saml-setup), follow these steps to add users to your organization.
 
-1. Add users to your SAML application in your identity provider, the users won't appear in ClickHouse until they have logged in once
-2. When the user logs in to ClickHouse Cloud they will automatically be assigned the `Member` role which may only log in and has no other access
+1. Add users to your SAML application in your identity provider. The users won't appear in ClickHouse until they have logged in once.
+2. When the user logs in to ClickHouse Cloud, they will automatically be assigned the default role selected in your SAML configuration.
 3. Follow the instructions in the `Manage user role assignments` below to grant permissions
 
 ### Enforcing SAML-only authentication {#enforce-saml}
 
-Once you have at least one SAML user in the organization assigned to the Organization Admin role, remove users with other authentication methods from the organization to enforce SAML only authentication for the organization.
+Once you have at least one SAML user in the organization assigned to the Admin role, remove users with other authentication methods from the organization to enforce SAML only authentication for the organization.
 
 ## Manage user role assignments {#manage-role-assignments}
 
-Users assigned the Organization Admin role may update permissions for other users at any time.
+Users assigned the Admin role may update permissions for other users at any time.
 
 <VerticalStepper headerLevel="h3">
 
-### Access organization settings {#access-organization-settings}
+### Access organization settings and select Users and roles {#users-and-roles-2}
 
-From the services page, select the name of your organization:
+From the services page, select the name of your organization. Select the `Users and roles` menu item from the popup menu.
 
-<Image img={step_1} size="md"/>
+<Image img={step_1} size="lg"/>
 
-### Access users and roles {#access-users-and-roles}
+### Select the user to update and select Edit {#select-user-to-update}
 
-Select the `Users and roles` menu item from the popup menu.
-
-<Image img={step_2} size="md"/>
-
-### Select the user to update {#select-user-to-update}
-
-Select the menu item at the end of the row for the user that you which to modify access for:
-
-<Image img={step_3} size="lg"/>
-
-### Select `edit` {#select-edit}
-
-<Image img={step_4} size="lg"/>
-
-A tab will display on the right hand side of the page:
+Select the menu item at the end of the row for the user that you wish to modify access for. Select `edit` from the popup menu.
 
 <Image img={step_5} size="lg"/>
 
 ### Update permissions {#update-permissions}
 
-Select the drop-down menu items to adjust console-wide access permissions and which features a user can access from within the ClickHouse console. Refer to [Console roles and permissions](/cloud/security/console-roles) for a listing of roles and associated permissions.
+Click in the `Roles` box to expand the menu. Select the check boxes to add or remove roles from the user. Refer to [Console roles and permissions](/cloud/security/console-roles) for a listing of roles and associated permissions.
 
-Select the drop-down menu items to adjust the access scope of the service role of the selected user. When selecting `Specific services`, you can control the role of the user per service.
-
-<Image img={step_6} size="md"/>
+<Image img={step_6} size="lg"/>
 
 ### Save your changes {#save-changes}
 
-Save your changes with the `Save changes` button at the bottom of the tab:
-
-<Image img={step_7} size="md"/>
+Save your changes with the `Save changes` button at the bottom of the tab.
 
 </VerticalStepper>
 

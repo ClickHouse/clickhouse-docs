@@ -7,11 +7,9 @@ title: 'remote, remoteSecure'
 doc_type: 'reference'
 ---
 
-# Табличные функции remote, remoteSecure \{#remote-remotesecure-table-function\}
+Табличная функция `remote` позволяет обращаться к удалённым серверам «на лету», то есть без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Табличная функция `remoteSecure` аналогична `remote`, но использует защищённое соединение.
 
-Табличная функция `remote` позволяет получать доступ к удалённым серверам «на лету», то есть без создания таблицы [Distributed](../../engines/table-engines/special/distributed.md). Табличная функция `remoteSecure` аналогична `remote`, но использует защищённое соединение.
-
-Обе функции могут использоваться в запросах `SELECT` и `INSERT`.
+Обе функции можно использовать в запросах `SELECT` и `INSERT`.
 
 ## Синтаксис \{#syntax\}
 

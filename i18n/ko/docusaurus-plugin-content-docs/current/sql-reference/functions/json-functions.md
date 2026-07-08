@@ -125,6 +125,46 @@ SELECT json, JSONAllPathsWithTypes(json) FROM test;
 ```
 
 
+## JSONAllValues \{#JSONAllValues\}
+
+도입 버전: v26.4.0
+
+JSON 컬럼의 각 행에 있는 모든 값을 문자열 배열로 반환합니다.
+값은 텍스트 표현으로 직렬화되며 경로 이름순으로 정렬됩니다.
+
+**구문**
+
+```sql
+JSONAllValues(json)
+```
+
+**인수**
+
+* `json` — JSON 컬럼입니다. [`JSON`](/sql-reference/data-types/newjson)
+
+**반환값**
+
+JSON 컬럼의 모든 값을 문자열 배열로 반환합니다. [`Array(String)`](/sql-reference/data-types/array)
+
+**예시**
+
+**사용 예시**
+
+```sql title=Query
+CREATE TABLE test (json JSON(max_dynamic_paths=1)) ENGINE = Memory;
+INSERT INTO test FORMAT JSONEachRow {"json": {"a": 42}}, {"json": {"b": "Hello"}}, {"json": {"a": [1, 2, 3], "c": "2020-01-01"}}
+SELECT json, JSONAllValues(json) FROM test;
+```
+
+```response title=Response
+┌─json─────────────────────────────────┬─JSONAllValues(json)──────┐
+│ {"a":42}                             │ ['42']                   │
+│ {"b":"Hello"}                        │ ['Hello']                │
+│ {"a":[1,2,3],"c":"2020-01-01"}       │ ['[1,2,3]','2020-01-01'] │
+└──────────────────────────────────────┴──────────────────────────┘
+```
+
+
 ## JSONArrayLength \{#JSONArrayLength\}
 
 도입 버전: v23.2.0
@@ -1634,6 +1674,54 @@ SELECT JSONHas('{"a": "hello", "b": [-100, 200.0, 300]}', 3);
 0
 ```
 
+
+## prettyPrintJSON \{#prettyPrintJSON\}
+
+도입 버전: v26.4.0
+
+줄바꿈과 공백 들여쓰기가 적용된, 읽기 쉽게 포맷된 JSON 문자열을 반환합니다.
+
+**구문**
+
+```sql
+prettyPrintJSON(json [, indent])
+```
+
+**인수**
+
+* `json` — 포맷할 유효한 JSON 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `indent` — 들여쓰기 단계마다 사용할 공백 수입니다. 기본값: 4. 최대값: 32 [`UInt*`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+가독성 좋게 포맷된 JSON 문자열입니다. [`String`](/sql-reference/data-types/string)
+
+**예시**
+
+**단순 객체**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1,"b":"hello"}');
+```
+
+```response title=Response
+{
+    "a": 1,
+    "b": "hello"
+}
+```
+
+**사용자 정의 들여쓰기**
+
+```sql title=Query
+SELECT prettyPrintJSON('{"a":1}', 8);
+```
+
+```response title=Response
+{
+        "a": 1
+}
+```
 
 ## simpleJSONExtractBool \{#simpleJSONExtractBool\}
 

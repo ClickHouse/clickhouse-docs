@@ -7,8 +7,6 @@ title: 'Типы данных в ClickHouse'
 doc_type: 'reference'
 ---
 
-# Типы данных в ClickHouse \{#data-types-in-clickhouse\}
-
 В этом разделе описываются типы данных, поддерживаемые ClickHouse, например [целые числа](int-uint.md), [числа с плавающей запятой](float.md) и [строки](string.md).
 
 Системная таблица [system.data&#95;type&#95;families](/operations/system-tables/data_type_families) содержит

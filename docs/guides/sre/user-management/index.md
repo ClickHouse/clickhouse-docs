@@ -8,7 +8,6 @@ description: 'Describes access control and account management in ClickHouse Clou
 doc_type: 'guide'
 ---
 
-# Creating users and roles in ClickHouse
 
 ClickHouse supports access control management based on [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) approach.
 

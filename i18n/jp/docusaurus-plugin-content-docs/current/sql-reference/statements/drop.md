@@ -1,13 +1,11 @@
 ---
-description: 'DROP ステートメントに関するドキュメント'
+description: 'DROP 文のドキュメント'
 sidebar_label: 'DROP'
 sidebar_position: 44
 slug: /sql-reference/statements/drop
-title: 'DROP ステートメント'
+title: 'DROP 文'
 doc_type: 'reference'
 ---
-
-# DROP 文 \{#drop-statements\}
 
 既存のエンティティを削除します。`IF EXISTS` 句が指定されている場合、エンティティが存在しない場合でもクエリはエラーを返しません。`SYNC` 修飾子が指定されている場合、エンティティは遅延なく削除されます。
 

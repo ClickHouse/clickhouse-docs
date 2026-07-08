@@ -21,7 +21,7 @@ import aws_marketplace_payg_9 from '@site/static/images/cloud/manage/billing/mar
 import azure_marketplace_payg_11 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-11.png';
 import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/marketplace/azure-marketplace-payg-12.png';
 
-약정 계약을 통해 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps)에서 ClickHouse Cloud 사용을 시작할 수 있습니다. 약정 계약(일명 Private Offer)은 고객이 일정 기간 동안 ClickHouse Cloud에 일정 금액을 지출하기로 약정하는 계약입니다.
+약정 계약을 통해 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps)에서 ClickHouse Cloud 사용을 시작할 수 있습니다. 약정 계약(일명 프라이빗 오퍼)은 고객이 일정 기간 동안 ClickHouse Cloud에 일정 금액을 지출하기로 약정하는 계약입니다.
 
 
 ## 사전 요구 사항 \{#prerequisites\}
@@ -34,7 +34,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_1} size="md" alt="Azure Marketplace 비공개 오퍼 이메일" border/>
+<Image img={azure_marketplace_committed_1} size="md" alt="Azure Marketplace 비공개 오퍼 이메일" border />
 
 <br />
 
@@ -42,7 +42,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_2} size="md" alt="Azure Marketplace 비공개 오퍼 세부 정보" border/>
+<Image img={azure_marketplace_committed_2} size="md" alt="Azure Marketplace 비공개 오퍼 세부 정보" border />
 
 <br />
 
@@ -50,11 +50,11 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_3} size="md" alt="Azure Marketplace Private Offer Management 페이지" border/>
+<Image img={azure_marketplace_committed_3} size="md" alt="Azure Marketplace Private Offer Management 페이지" border />
 
 <br />
 
-<Image img={azure_marketplace_committed_4} size="md" alt="Azure Marketplace Private Offer Management 페이지 로딩 중" border/>
+<Image img={azure_marketplace_committed_4} size="md" alt="Azure Marketplace Private Offer Management 페이지 로딩 중" border />
 
 <br />
 
@@ -62,7 +62,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_5} size="md" alt="Azure Marketplace Private Offer Management 페이지에서 구매 가능 상태" border/>
+<Image img={azure_marketplace_committed_5} size="md" alt="Azure Marketplace Private Offer Management 페이지에서 구매 가능 상태" border />
 
 <br />
 
@@ -70,15 +70,15 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-- Subscription 및 resource group
-- SaaS 구독 이름을 지정합니다.
-- 비공개 오퍼가 적용된 billing plan을 선택합니다. 비공개 오퍼가 생성된 기간(예: 1년)에만 금액이 표시됩니다. 다른 billing term 옵션은 $0 금액으로 표시됩니다.
-- 반복 결제를 사용할지 여부를 선택합니다. 반복 결제를 선택하지 않으면 청구 기간 종료 시 계약이 종료되며 리소스는 decommissioned 상태로 설정됩니다.
-- **Review + subscribe**를 클릭합니다.
+* Subscription 및 resource group
+* SaaS 구독 이름을 지정합니다.
+* 비공개 오퍼가 적용된 billing plan을 선택합니다. 비공개 오퍼가 생성된 기간(예: 1년)에만 금액이 표시됩니다. 다른 billing term 옵션은 $0 금액으로 표시됩니다.
+* 반복 결제를 사용할지 여부를 선택합니다. 반복 결제를 선택하지 않으면 청구 기간 종료 시 계약이 종료되며 리소스는 decommissioned 상태로 설정됩니다.
+* **Review + subscribe**를 클릭합니다.
 
 <br />
 
-<Image img={azure_marketplace_committed_6} size="md" alt="Azure Marketplace 구독 폼" border/>
+<Image img={azure_marketplace_committed_6} size="md" alt="Azure Marketplace 구독 폼" border />
 
 <br />
 
@@ -86,7 +86,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_7} size="md" alt="Azure Marketplace 구독 확인" border/>
+<Image img={azure_marketplace_committed_7} size="md" alt="Azure Marketplace 구독 확인" border />
 
 <br />
 
@@ -94,7 +94,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_8} size="md" alt="Azure Marketplace 구독 제출 중 페이지" border/>
+<Image img={azure_marketplace_committed_8} size="md" alt="Azure Marketplace 구독 제출 중 페이지" border />
 
 <br />
 
@@ -102,7 +102,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_committed_9} size="md" alt="Azure Marketplace Configure account now 버튼" border/>
+<Image img={azure_marketplace_committed_9} size="md" alt="Azure Marketplace Configure account now 버튼" border />
 
 <br />
 
@@ -112,11 +112,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 가입 정보 입력 폼" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud 가입 정보 입력 폼 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 가입 정보 입력 폼" border />
 
 <br />
 
@@ -126,13 +122,13 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_11} size="sm" alt="ClickHouse Cloud 가입 정보 입력 폼" border/>
+<Image img={azure_marketplace_payg_11} size="sm" alt="ClickHouse Cloud 가입 정보 입력 폼" border />
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud 가입 정보 입력 폼" border/>
+<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud 가입 정보 입력 폼" border />
 
 <br />
 

@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Postgres용 PlanetScale'
+sidebar_label: 'PlanetScale for Postgres'
 description: 'ClickPipes의 소스로 PlanetScale for Postgres를 설정합니다'
 slug: /integrations/clickpipes/postgres/source/planetscale
 title: 'PlanetScale for Postgres 소스 설정 가이드'
@@ -14,11 +14,8 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
-
-# PlanetScale for Postgres 소스 설정 가이드 \{#planetscale-for-postgres-source-setup-guide\}
-
 :::info
-PlanetScale for Postgres는 현재 [얼리 액세스(Early Access)](https://planetscale.com/postgres) 단계로 제공됩니다.
+PlanetScale for Postgres는 현재 [얼리 액세스](https://planetscale.com/postgres)로 제공됩니다.
 :::
 
 ## 지원되는 Postgres 버전 \{#supported-postgres-versions\}

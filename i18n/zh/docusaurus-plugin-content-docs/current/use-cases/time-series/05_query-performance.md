@@ -1,18 +1,16 @@
 ---
-title: '查询性能 - 时间序列'
+title: '查询性能 - 时序'
 sidebar_label: '查询性能'
-description: '提升时间序列查询性能'
+description: '提升时序查询性能'
 slug: /use-cases/time-series/query-performance
-keywords: ['时间序列', '查询性能', '优化', '索引', '分区', '查询调优', '性能']
+keywords: ['时序', '查询性能', '优化', '索引', '分区', '查询调优', '性能']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 时序查询性能 \{#time-series-query-performance\}
-
-在完成存储优化之后，下一步是提升查询性能。
-本节将探讨两项关键技术：优化 `ORDER BY` 排序键以及使用 materialized view。
-我们将看到，这些方法如何把查询时间从秒级降低到毫秒级。
+在优化存储之后，下一步是提升查询性能。
+本节将介绍两项关键技术：优化 `ORDER BY` 键和使用 materialized view。
+我们将看到，这些方法如何将查询时间从数秒缩短到毫秒级。
 
 ## 优化 `ORDER BY` 键 \{#time-series-optimize-order-by\}
 

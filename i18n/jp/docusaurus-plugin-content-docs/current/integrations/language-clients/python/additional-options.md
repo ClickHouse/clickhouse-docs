@@ -8,9 +8,7 @@ title: '追加オプション'
 doc_type: 'reference'
 ---
 
-# 追加オプション \{#additional-options\}
-
-ClickHouse Connect は、高度なユースケースに対応するためのさまざまな追加オプションを提供しています。
+ClickHouse Connect には、高度なユースケース向けの追加オプションが用意されています。
 
 ## グローバル設定 \{#global-settings\}
 

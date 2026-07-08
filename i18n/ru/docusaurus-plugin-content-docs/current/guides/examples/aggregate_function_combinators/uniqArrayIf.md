@@ -7,8 +7,6 @@ sidebar_label: 'uniqArrayIf'
 doc_type: 'reference'
 ---
 
-# uniqArrayIf \{#uniqarrayif\}
-
 ## Описание \{#description\}
 
 Комбинаторы [`Array`](/sql-reference/aggregate-functions/combinators#-array) и [`If`](/sql-reference/aggregate-functions/combinators#-if) могут быть применены к функции [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
@@ -19,7 +17,7 @@ doc_type: 'reference'
 -`If` и -`Array` можно комбинировать. Однако сначала должен идти `Array`, затем `If`.
 :::
 
-Это полезно, когда нужно посчитать уникальные элементы в массиве на основе 
+Это полезно, когда нужно посчитать уникальные элементы в массиве на основе
 определённых условий, не используя `arrayJoin`.
 
 ## Пример использования \{#example-usage\}
@@ -77,6 +75,7 @@ total_unique_products:       7
 ```
 
 ## См. также \{#see-also\}
-- [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
-- [`Array combinator`](/sql-reference/aggregate-functions/combinators#-array)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`uniq`](/sql-reference/aggregate-functions/reference/uniq)
+* [`Array комбинатор`](/sql-reference/aggregate-functions/combinators#-array)
+* [`If комбинатор`](/sql-reference/aggregate-functions/combinators#-if)

@@ -1,7 +1,7 @@
 ---
 slug: /cloud/billing/marketplace/aws-marketplace-committed-contract
-title: 'AWS Marketplace 承诺消费合约'
-description: '通过 AWS Marketplace（承诺消费合约）订阅 ClickHouse Cloud'
+title: 'AWS Marketplace 承诺消费合同'
+description: '通过 AWS Marketplace（承诺消费合同）订阅 ClickHouse Cloud'
 keywords: ['aws', 'amazon', 'marketplace', '计费', '承诺消费', '承诺消费合约']
 doc_type: 'guide'
 ---
@@ -15,26 +15,22 @@ import mp_committed_spend_5 from '@site/static/images/cloud/reference/mp_committ
 import mp_committed_spend_6 from '@site/static/images/cloud/reference/mp_committed_spend_6.png'
 import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committed_spend_7.png'
 
-通过在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上签订承诺消费合约来开始使用 ClickHouse Cloud。
-承诺消费合约（也称为 Private Offer）允许客户在一段时间内承诺在 ClickHouse Cloud 上花费一定金额。
+通过在 [AWS Marketplace](https://aws.amazon.com/marketplace) 上签订承诺消费合同来开始使用 ClickHouse Cloud。
+承诺消费合同 (也称为 私有优惠) 允许客户在一段时间内承诺在 ClickHouse Cloud 上花费一定金额。
 
 
 ## 先决条件 \{#prerequisites\}
 
-- 基于特定合同条款的 ClickHouse Private Offer。
-- 若要将某个 ClickHouse 组织关联到你的承诺消费优惠，你必须是该组织的管理员。
+* 基于特定合同条款的 ClickHouse Private Offer。
+* 若要将某个 ClickHouse 组织关联到你的承诺消费优惠，你必须是该组织的管理员。
 
-:::note
-一个 AWS 账号只能订阅一个“ClickHouse Cloud - Committed Contract” Private Offer，并且该 Offer 只能关联到一个 ClickHouse 组织。
-:::
+在 AWS 中查看并接受承诺消费合同所需的权限：
 
-在 AWS 中查看并接受承诺合同所需的权限：
-
-- 如果你使用 AWS 托管策略，则必须具备以下权限：
-  - `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
-  - 或 `AWSMarketplaceFullAccess`
-- 如果你未使用 AWS 托管策略，则必须具备以下权限：
-  - IAM 操作 `aws-marketplace:ListPrivateListings` 和 `aws-marketplace:ViewSubscriptions`
+* 如果你使用 AWS 托管策略，则必须具备以下权限：
+  * `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
+  * 或 `AWSMarketplaceFullAccess`
+* 如果你未使用 AWS 托管策略，则必须具备以下权限：
+  * IAM 操作 `aws-marketplace:ListPrivateListings` 和 `aws-marketplace:ViewSubscriptions`
 
 ## 注册步骤 \{#steps-to-sign-up\}
 

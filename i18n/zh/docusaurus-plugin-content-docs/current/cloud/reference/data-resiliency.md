@@ -1,23 +1,20 @@
 ---
 slug: /cloud/data-resiliency
-sidebar_label: '数据恢复能力'
-title: '灾难恢复'
-description: '本指南概述了灾难恢复相关内容。'
+sidebar_label: '数据弹性'
+title: '数据弹性'
+description: '本指南概述了灾难恢复。'
 doc_type: 'reference'
-keywords: ['ClickHouse Cloud', '数据恢复能力', '灾难恢复']
+keywords: ['ClickHouse Cloud', '数据弹性', '灾难恢复']
 ---
 
 import Image from '@theme/IdealImage';
 import restore_backup from '@site/static/images/cloud/guides/restore_backup.png';
 
-
-# 数据弹性 \{#clickhouse-cloud-data-resiliency\}
-
 本页介绍 ClickHouse Cloud 的灾难恢复建议，以及为客户从故障中断中恢复提供指导。
 ClickHouse Cloud 目前不支持自动故障转移，也不支持跨多个地理区域的自动同步。
 
 :::tip
-客户应定期执行备份恢复测试，以了解在其服务规模和配置下的具体恢复时间目标（RTO）。
+客户应定期执行备份恢复测试，以了解在其服务规模和配置下的具体恢复时间目标 (RTO) 。
 :::
 
 ## 定义 \{#definitions\}
@@ -38,14 +35,14 @@ ClickHouse Cloud 支持以下备份功能。
 1. **默认备份**
 
 默认情况下，ClickHouse Cloud 会每 24 小时对您的服务执行一次[备份](/cloud/manage/backups)。
-这些备份与服务位于同一地区，并存放于 ClickHouse CSP（云服务提供商）提供的存储桶中。
+这些备份与服务位于同一区域，并存放于 ClickHouse CSP (云服务提供商) 提供的存储桶中。
 当主服务中的数据损坏时，可以使用该备份将数据恢复到一个新服务。
 
-2. **外部备份（存放在客户自有的存储桶中）**
+2. **外部备份 (存放在客户自有的存储桶中)&#x20;**
 
-Enterprise Tier 客户可以将[备份导出](/cloud/manage/backups/export-backups-to-own-cloud-account)到其账号中的对象存储中，可以位于同一地区，也可以位于其他地区。
+您可以将[备份导出](/cloud/manage/backups/export-backups-to-own-cloud-account)到您账户中的对象存储中，可以位于同一区域，也可以位于其他区域。
 跨云备份导出功能即将推出。
-对于跨地区和跨云备份，将产生相应的数据传输费用。
+对于跨区域和跨云备份，将产生相应的数据传输费用。
 
 :::note
 此特性目前在 PCI/HIPAA 服务中不可用
@@ -105,22 +102,22 @@ Enterprise Tier 客户可以将[备份导出](/cloud/manage/backups/export-backu
 
 </VerticalStepper>
 
-### 主地域停机 \{#primary-region-downtime\}
+### 主区域停机 \{#primary-region-downtime\}
 
-Enterprise Tier 的客户可以将[备份导出](/cloud/manage/backups/export-backups-to-own-cloud-account)到其自己的云服务商 bucket 中。
-如果您担心地域级故障，建议将备份导出到其他地域。
-请注意，将会产生跨地域数据传输费用。
+您可以将[备份导出](/cloud/manage/backups/export-backups-to-own-cloud-account)到您自己的云服务商 存储桶 中。
+如果您担心区域级故障，建议将备份导出到其他区域。
+请注意，将会产生跨区域数据传输费用。
 
-如果主地域发生停机，可以在其他地域将该地域中的备份恢复到新的服务上。
+如果主区域发生停机，可以在其他区域将该区域中的备份恢复到新的服务上。
 
 一旦将备份恢复到另一个服务，您需要确保任何 DNS、负载均衡器或连接字符串配置都已更新为指向新服务。
 这可能包括：
 
-- 更新环境变量或机密
-- 重启应用服务以建立新的连接
+* 更新环境变量或机密
+* 重启应用服务以建立新的连接
 
 :::note
-当前不支持对使用 [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) 的服务执行备份/恢复到外部 bucket 的操作。
+当前不支持对使用 [Transparent Data Encryption (TDE)](/cloud/security/cmek#transparent-data-encryption-tde) 的服务执行备份/恢复到外部 存储桶 的操作。
 :::
 
 ## 其他选项 \{#additional-options\}

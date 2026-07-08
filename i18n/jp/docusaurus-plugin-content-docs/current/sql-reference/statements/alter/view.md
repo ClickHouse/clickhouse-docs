@@ -7,11 +7,9 @@ title: 'ALTER TABLE ... MODIFY QUERY ステートメント'
 doc_type: 'reference'
 ---
 
-# ALTER TABLE ... MODIFY QUERY ステートメント \{#alter-table-modify-query-statement\}
+`ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、インジェスト処理を中断することなく、[materialized view](/sql-reference/statements/create/view#materialized-view) 作成時に指定した `SELECT` クエリを変更できます。
 
-`ALTER TABLE ... MODIFY QUERY` ステートメントを使用すると、インジェスト処理を中断することなく、[マテリアライズドビュー](/sql-reference/statements/create/view#materialized-view) 作成時に指定した `SELECT` クエリを変更できます。
-
-このコマンドは、`TO [db.]name` 句を伴って作成されたマテリアライズドビューを変更するためのものです。基盤となるストレージテーブルの構造や、マテリアライズドビューのカラム定義は変更しないため、`TO [db.]name` 句を指定せずに作成されたマテリアライズドビューに対しては、このコマンドの適用範囲はごく限られます。
+このコマンドは、`TO [db.]name` 句を伴って作成されたmaterialized viewを変更するためのものです。基盤となるストレージテーブルの構造や、materialized viewのカラム定義は変更しないため、`TO [db.]name` 句を指定せずに作成されたmaterialized viewに対しては、このコマンドの適用範囲はごく限られます。
 
 **TO テーブルを使用した例**
 
@@ -196,7 +194,37 @@ SELECT * FROM mv;
 └───┘
 ```
 
+## ALTER TABLE ... MODIFY REFRESH 文 \{#alter-table--modify-refresh-statement\}
 
-## ALTER TABLE ... MODIFY REFRESH ステートメント \{#alter-table--modify-refresh-statement\}
+`ALTER TABLE ... MODIFY REFRESH` は、[リフレッシャブルmaterialized view](../create/view.md#refreshable-materialized-view) のリフレッシュパラメータ (スケジュール、依存関係、ランダム化、[リフレッシュ設定](../create/view.md#refresh-settings) など) を変更します。
 
-`ALTER TABLE ... MODIFY REFRESH` ステートメントは、[リフレッシャブルmaterialized view](../create/view.md#refreshable-materialized-view)のリフレッシュパラメーターを変更します。詳しくは[リフレッシュパラメーターの変更](../create/view.md#changing-refresh-parameters)を参照してください。
+```sql
+ALTER TABLE [db.]name MODIFY REFRESH EVERY|AFTER ... [RANDOMIZE FOR ...] [DEPENDS ON ...] [SETTINGS ...]
+```
+
+スケジュール (`EVERY` または `AFTER`) の指定は必須です。この文では、*すべて*のリフレッシュ パラメータが一度に置き換えられます。指定しなかった句 — `RANDOMIZE FOR`、`DEPENDS ON`、または `SETTINGS` — は削除されるか、デフォルト値にリセットされます。リフレッシュ設定のみを変更する場合は、現在のスケジュールも再度指定してください。
+
+```sql
+-- Change the schedule.
+ALTER TABLE rmv MODIFY REFRESH EVERY 30 MINUTE;
+
+-- Change retry settings (schedule must be repeated).
+ALTER TABLE rmv MODIFY REFRESH EVERY 1 HOUR
+SETTINGS refresh_retries = 5,
+         refresh_retry_initial_backoff_ms = 500,
+         refresh_retry_max_backoff_ms = 60000;
+
+-- Add or keep a dependency.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR DEPENDS ON other_rmv;
+
+-- Drop the dependency by omitting `DEPENDS ON`.
+ALTER TABLE rmv MODIFY REFRESH EVERY 6 HOUR;
+```
+
+制限事項:
+
+* `ALTER TABLE ... MODIFY SETTING` は materialized view ではサポートされていません。リフレッシュ設定を変更できるのは `MODIFY REFRESH` 経由のみです。
+* `APPEND` の追加または削除はサポートされていません。
+* `all_replicas` リフレッシュ設定は、ビューの作成後は変更できません。
+
+リフレッシュ設定の完全な一覧は、[Refresh Settings](../create/view.md#refresh-settings) に記載されています。現在適用されている設定を含むリフレッシュの状態は、[`system.view_refreshes`](../../../operations/system-tables/view_refreshes.md) で確認できます。

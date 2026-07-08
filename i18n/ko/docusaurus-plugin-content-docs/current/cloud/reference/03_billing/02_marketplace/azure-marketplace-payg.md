@@ -24,17 +24,16 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps)에서 제공되는 PAYG(Pay-as-you-go) Public Offer를 통해 ClickHouse Cloud 사용을 시작하십시오.
 
-
 ## Prerequisites \{#prerequisites\}
 
-- 결제 관리자에 의해 구매 권한이 활성화된 Azure 프로젝트가 있어야 합니다.
-- Azure Marketplace에서 ClickHouse Cloud를 구독하려면, 구매 권한이 있는 계정으로 로그인한 상태여야 하며 적절한 프로젝트를 선택해야 합니다.
+* 결제 관리자에 의해 구매 권한이 활성화된 Azure 프로젝트가 있어야 합니다.
+* Azure Marketplace에서 ClickHouse Cloud를 구독하려면, 구매 권한이 있는 계정으로 로그인한 상태여야 하며 적절한 프로젝트를 선택해야 합니다.
 
 1. [Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps)에 접속하여 ClickHouse Cloud를 검색합니다. 마켓플레이스에서 상품을 구매할 수 있도록 로그인되어 있는지 확인합니다.
 
 <br />
 
-<Image img={azure_marketplace_payg_1} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_1} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
@@ -42,7 +41,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_2} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_2} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
@@ -50,7 +49,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_3} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_3} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
@@ -58,7 +57,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_4} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_4} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
@@ -66,25 +65,25 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_5} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_5} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
-6. 구독 이름을 지정하고, 제공된 옵션 중에서 청구 기간을 선택합니다. **Recurring billing**을 켜거나 끌 수 있습니다. 이를 "off"로 설정하면 청구 기간이 종료된 후 계약이 종료되고 리소스가 해제됩니다.
+6. 구독 이름을 지정하고, 제공된 옵션 중에서 청구 기간을 선택합니다. **Recurring billing**을 켜거나 끌 수 있습니다. 이를 &quot;off&quot;로 설정하면 청구 기간이 종료된 후 계약이 종료되고 리소스가 해제됩니다.
 
 <br />
 
-<Image img={azure_marketplace_payg_6} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_6} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
-7. **"Review + subscribe"**를 클릭합니다.
+7. **&quot;Review + subscribe&quot;**를 클릭합니다.
 
 8. 다음 화면에서 모든 설정이 올바른지 확인한 후 **Subscribe**를 클릭합니다.
 
 <br />
 
-<Image img={azure_marketplace_payg_7} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_7} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
@@ -92,7 +91,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_8} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_8} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
@@ -100,7 +99,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_9} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_9} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
@@ -112,7 +111,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_10} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_10} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
@@ -122,11 +121,7 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
-
-<br />
-
-<Image img={aws_marketplace_payg_9} size="md" alt="ClickHouse Cloud 가입 정보 양식 2" border/>
+<Image img={aws_marketplace_payg_8} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
@@ -136,13 +131,13 @@ import azure_marketplace_payg_12 from '@site/static/images/cloud/manage/billing/
 
 <br />
 
-<Image img={azure_marketplace_payg_11} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_11} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 
 <br />
 
-<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud 가입 정보 양식" border/>
+<Image img={azure_marketplace_payg_12} size="md" alt="ClickHouse Cloud 가입 정보 양식" border />
 
 <br />
 

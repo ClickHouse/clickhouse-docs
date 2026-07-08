@@ -12,8 +12,6 @@ keywords: ['apache beam', 'stream processing', 'batch processing', 'jdbc connect
 
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
-# Integrating Apache Beam and ClickHouse
-
 <ClickHouseSupportedBadge/>
 
 **Apache Beam**  is an open-source, unified programming model that enables developers to define and execute both batch and stream (continuous) data processing pipelines. The flexibility of Apache Beam lies in its ability to support a wide range of data processing scenarios, from ETL (Extract, Transform, Load) operations to complex event processing and real-time analytics.

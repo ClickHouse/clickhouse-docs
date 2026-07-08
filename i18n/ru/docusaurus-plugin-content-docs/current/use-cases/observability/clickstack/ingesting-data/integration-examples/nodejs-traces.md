@@ -6,11 +6,10 @@ pagination_prev: null
 pagination_next: null
 description: 'Мониторинг трейсов Node.js-приложений с помощью ClickStack'
 doc_type: 'guide'
-keywords: ['Node.js', 'трейсы', 'OTEL', 'ClickStack', 'распределённый трейсинг']
+keywords: ['Node.js', 'трейсы', 'OTEL', 'ClickStack', 'распределённая трассировка']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import search_view from '@site/static/images/clickstack/nodejs/traces-search-view.png';
@@ -19,11 +18,8 @@ import finish_import from '@site/static/images/clickstack/nodejs/finish-import.p
 import example_dashboard from '@site/static/images/clickstack/nodejs/example-traces-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг трейсов Node.js с помощью ClickStack \{#nodejs-traces-clickstack\}
-
-:::note[TL;DR]
-Собирайте распределённые трейсы из приложений Node.js в ClickStack с помощью автоматической инструментации OpenTelemetry. Включает демо-набор данных и готовую панель мониторинга.
+:::note[Кратко]
+Собирайте распределённые трейсы из приложений Node.js в ClickStack с помощью автоматического инструментирования OpenTelemetry. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим приложением Node.js \{#existing-nodejs\}
@@ -166,7 +162,7 @@ HyperDX отображает временные метки в локальном
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download-dashboard\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nodejs-traces-dashboard.json'} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download-dashboard\}
 
 #### Импортируйте предварительно настроенный дашборд \{#import-dashboard\}
 

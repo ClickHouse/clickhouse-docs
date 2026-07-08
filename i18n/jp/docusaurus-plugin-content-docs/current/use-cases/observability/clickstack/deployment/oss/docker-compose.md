@@ -118,7 +118,7 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 
 必要に応じて OTel collector の設定を変更できます。詳細は「[設定の変更](/use-cases/observability/clickstack/ingesting-data/otel-collector#modifying-otel-collector-configuration)」を参照してください。
 
-## ClickHouse Cloud の使用 \{#using-clickhouse-cloud\}
+## Using ClickHouse Cloud \{#using-clickhouse-cloud\}
 
 このディストリビューションは ClickHouse Cloud と併用できますが、[Managed ClickStack](/use-cases/observability/clickstack/deployment/clickstack-clickhouse-cloud) とは異なります。この構成では、ClickStack UI は自分で管理し、ClickHouse Cloud はコンピュートおよびストレージのみに使用します。特別な理由がない限り UI を独立運用する必要はないため、認証の統合や追加のエンタープライズ機能が含まれ、ClickStack UI を自分で管理する必要がなくなる Managed ClickStack の利用を推奨します。
 
@@ -154,26 +154,3 @@ HYPERDX_OTEL_EXPORTER_CLICKHOUSE_DATABASE=default
 * HyperDX UI に接続し、ClickHouse への接続を作成する際には、ClickHouse Cloud の認証情報を使用します。
 
 <JSONSupport />
-
-これらを設定するには、`docker-compose.yml` 内の該当するサービスを変更します:
-
-```yaml
-  app:
-    image: ${IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    ports:
-      - ${HYPERDX_API_PORT}:${HYPERDX_API_PORT}
-      - ${HYPERDX_APP_PORT}:${HYPERDX_APP_PORT}
-    environment:
-      BETA_CH_OTEL_JSON_SCHEMA_ENABLED: true # enable JSON
-      FRONTEND_URL: ${HYPERDX_APP_URL}:${HYPERDX_APP_PORT}
-      HYPERDX_API_KEY: ${HYPERDX_API_KEY}
-      HYPERDX_API_PORT: ${HYPERDX_API_PORT}
-    # truncated for brevity
-
-  otel-collector:
-    image: ${OTEL_COLLECTOR_IMAGE_NAME_DOCKERHUB}:${IMAGE_VERSION}
-    environment:
-      OTEL_AGENT_FEATURE_GATE_ARG: '--feature-gates=clickhouse.json' # enable JSON
-      CLICKHOUSE_ENDPOINT: 'tcp://ch-server:9000?dial_timeout=10s' 
-      # truncated for brevity
-```

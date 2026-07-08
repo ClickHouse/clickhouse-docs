@@ -10,17 +10,13 @@ keywords: ['Redis', 'metrics', 'OTEL', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/import-redis-metrics-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# ClickStack를 사용한 Redis 메트릭 모니터링 \{#redis-metrics-clickstack\}
-
-:::note[TL;DR]
-OTel Redis receiver를 사용해 ClickStack에서 Redis 성능 메트릭을 모니터링합니다. 데모 데이터셋과 미리 구성된 대시보드가 포함되어 있습니다.
+:::note[요약]
+OTel Redis receiver를 사용해 ClickStack에서 Redis 성능 메트릭을 모니터링합니다. 데모용 데이터셋과 사전 구축된 대시보드가 포함되어 있습니다.
 :::
 
 ## 기존 Redis와의 통합 \{#existing-redis\}
@@ -292,7 +288,7 @@ ClickStack로 Redis를 모니터링하기 시작하는 데 도움이 되도록 R
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-metrics-dashboard.json'} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> {#download}
 
 #### 미리 만들어진 대시보드 가져오기 \{#import-dashboard\}
 

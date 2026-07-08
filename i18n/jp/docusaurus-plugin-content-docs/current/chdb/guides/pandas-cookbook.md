@@ -2,14 +2,12 @@
 title: 'Pandas クックブック'
 sidebar_label: 'Pandas クックブック'
 slug: /chdb/guides/pandas-cookbook
-description: '一般的な pandas のパターンと、それに対応する DataStore での同等表現'
+description: '一般的な pandas のパターンと、それに対応する DataStore での書き方'
 keywords: ['chdb', 'datastore', 'pandas', 'cookbook', 'patterns', 'examples']
 doc_type: 'guide'
 ---
 
-# Pandas クックブック \{#pandas-cookbook\}
-
-一般的な pandas のパターンと、それに対応する DataStore での書き方をまとめています。多くのコードはそのまま動作します。
+一般的な pandas のパターンと、それに対応する DataStore での書き方を紹介します。ほとんどのコードはそのまま使えます！
 
 ## データの読み込み \{#loading\}
 

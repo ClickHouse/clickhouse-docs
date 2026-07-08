@@ -2,22 +2,22 @@
 description: '5つのステップでTab Separated Valueデータを取り込み、クエリを実行する'
 sidebar_label: 'NYPD苦情データ'
 slug: /getting-started/example-datasets/nypd_complaint_data
-title: 'NYPD Complaint Data'
+title: 'NYPD苦情データ'
 doc_type: 'guide'
 keywords: ['サンプルデータセット', 'nypd', '犯罪データ', 'サンプルデータ', '公開データ']
 ---
 
-Tab separated value（TSV）ファイルは一般的な形式であり、ファイルの先頭行にフィールド見出しが含まれている場合があります。ClickHouseはTSVを取り込むことができるだけでなく、ファイルを取り込まずにTSVに対してクエリを実行することもできます。本ガイドでは、この2つのケースの両方を扱います。CSVファイルに対してクエリを実行したり取り込んだりする必要がある場合も、同じ手法が利用でき、フォーマット引数内の `TSV` を `CSV` に置き換えるだけで対応できます。
+Tab separated value (TSV) ファイルは一般的な形式であり、ファイルの先頭行にフィールド見出しが含まれている場合があります。ClickHouseはTSVを取り込むことができるだけでなく、ファイルを取り込まずにTSVに対してクエリを実行することもできます。このガイドでは、この2つのケースの両方を扱います。CSVファイルに対してクエリを実行したり取り込んだりする必要がある場合も、同じ手法が利用でき、フォーマット引数内の `TSV` を `CSV` に置き換えるだけで対応できます。
 
-本ガイドを進めるにあたって、次のことを行います:
+このガイドを進めるにあたって、次のことを行います:
 
-- **調査**: TSVファイルの構造と内容に対してクエリを実行し、確認する。
-- **対象となるClickHouseスキーマの決定**: 適切なデータ型を選択し、既存データをそれらの型にマッピングする。
-- **ClickHouseテーブルをCREATE文で作成する**。
-- データを前処理し、ClickHouseに**ストリーミング**する。
-- ClickHouseに対して**いくつかのクエリを実行**する。
+* **調査**: TSVファイルの構造と内容に対してクエリを実行し、確認する。
+* **対象となるClickHouseスキーマの決定**: 適切なデータ型を選択し、既存データをそれらの型にマッピングする。
+* **ClickHouse テーブルを作成する**。
+* データを前処理し、ClickHouseに**ストリーミング**する。
+* ClickHouseに対して**いくつかのクエリを実行**する。
 
-本ガイドで使用するデータセットはNYC Open Dataチームによるもので、「New York City Police Department (NYPD) に報告された、すべての有効な重罪、軽犯罪、違反行為」に関するデータを含みます。執筆時点ではデータファイルのサイズは166MBですが、定期的に更新されています。
+このガイドで使用するデータセットはNYC Open Dataチームによるもので、「New York City Police Department (NYPD) に報告された、すべての有効な重罪、軽犯罪、違反行為」に関するデータを含みます。執筆時点ではデータファイルのサイズは166MBですが、定期的に更新されています。
 
 **出典**: [data.cityofnewyork.us](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)
 **利用規約**: https://www1.nyc.gov/home/terms-of-use.page
@@ -46,7 +46,7 @@ ClickHouse データベースを操作し始める前に、まずデータの内
 
 これはTSVファイルに対してクエリを実行するコマンドの例ですが、まだ実行しないでください。
 
-```sh
+```sh title="Query"
 clickhouse-local --query \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
@@ -69,15 +69,13 @@ CMPLNT_FR_TM                Nullable(String)
 
 コマンドプロンプトで次のコマンドを実行してください。ダウンロードした TSV ファイル内のデータをクエリするために `clickhouse-local` を使用します。
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "describe file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')"
 ```
 
-結果:
-
-```response
+```response title="Response"
 CMPLNT_NUM        Nullable(String)
 ADDR_PCT_CD       Nullable(Float64)
 BORO_NM           Nullable(String)
@@ -118,12 +116,11 @@ New Georeferenced Column Nullable(String)
 
 この時点で、TSV ファイル内のカラムが、[データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243)の **Columns in this Dataset** セクションで指定されている名前と型に一致していることを確認してください。データ型はあまり厳密ではなく、数値フィールドはすべて `Nullable(Float64)` に、その他のフィールドはすべて `Nullable(String)` に設定されています。データを保存する ClickHouse テーブルを作成する際には、より適切でパフォーマンスに優れた型を指定できます。
 
-
 ### 適切なスキーマを決定する \{#determine-the-proper-schema\}
 
 各フィールドにどの型を使用すべきかを判断するには、データがどのような内容なのかを把握しておく必要があります。例えば、フィールド `JURISDICTION_CODE` は数値ですが、これは `UInt8` とすべきでしょうか、`Enum` とすべきでしょうか、それとも `Float64` が適切でしょうか？
 
-```sql
+```sql title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select JURISDICTION_CODE, count() FROM
@@ -133,9 +130,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-結果:
-
-```response
+```response title="Response"
 ┌─JURISDICTION_CODE─┬─count()─┐
 │                 0 │  188875 │
 │                 1 │    4799 │
@@ -161,9 +156,9 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 同様に、いくつかの `String` 型のフィールドを確認し、それらが `DateTime` 型や [`LowCardinality(String)`](../../sql-reference/data-types/lowcardinality.md) 型に適しているかどうかを見てみましょう。
 
-たとえば、フィールド `PARKS_NM` は「該当する場合、発生場所となった NYC の公園、遊び場、または緑地の名称（州立公園は含まない）」と説明されています。ニューヨーク市内の公園名は、`LowCardinality(String)` 型の良い候補となる可能性があります。
+たとえば、フィールド `PARKS_NM` は「該当する場合、発生場所となった NYC の公園、遊び場、または緑地の名称 (州立公園は含まない) 」と説明されています。ニューヨーク市内の公園名は、`LowCardinality(String)` 型の良い候補となる可能性があります。
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select count(distinct PARKS_NM) FROM
@@ -171,9 +166,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-結果:
-
-```response
+```response title="Response"
 ┌─uniqExact(PARKS_NM)─┐
 │                 319 │
 └─────────────────────┘
@@ -181,7 +174,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 いくつかの公園名を見てみましょう：
 
-```sql
+```sql title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select distinct PARKS_NM FROM
@@ -190,9 +183,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
  FORMAT PrettyCompact"
 ```
 
-結果:
-
-```response
+```response title="Response"
 ┌─PARKS_NM───────────────────┐
 │ (null)                     │
 │ ASSER LEVY PARK            │
@@ -209,12 +200,11 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 
 本ドキュメント執筆時点で使用しているデータセットでは、`PARK_NM` カラム内に存在する公園と遊び場の名称の種類は数百件程度しかありません。これは、`LowCardinality(String)` フィールドに含める異なる文字列数を 10,000 未満に抑えることを推奨している [LowCardinality](/sql-reference/data-types/lowcardinality#description) のガイドラインから見ても、小さい数と言えます。
 
-
 ### DateTime フィールド \{#datetime-fields\}
 
 [データセットのウェブページ](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243) の **Columns in this Dataset** セクションによると、報告されたイベントの開始と終了を表す日時フィールドがあります。`CMPLNT_FR_DT` と `CMPLT_TO_DT` の最小値と最大値を確認すると、それらのフィールドに常に値が入っているかどうかのおおよその見当がつきます。
 
-```sh title="CMPLNT_FR_DT"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_FR_DT), max(CMPLNT_FR_DT) FROM
@@ -222,15 +212,13 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─min(CMPLNT_FR_DT)─┬─max(CMPLNT_FR_DT)─┐
 │ 01/01/1973        │ 12/31/2021        │
 └───────────────────┴───────────────────┘
 ```
 
-```sh title="CMPLNT_TO_DT"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_TO_DT), max(CMPLNT_TO_DT) FROM
@@ -238,15 +226,13 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-結果:
-
-```response
+```response title="Response"
 ┌─min(CMPLNT_TO_DT)─┬─max(CMPLNT_TO_DT)─┐
 │                   │ 12/31/2021        │
 └───────────────────┴───────────────────┘
 ```
 
-```sh title="CMPLNT_FR_TM"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_FR_TM), max(CMPLNT_FR_TM) FROM
@@ -254,15 +240,13 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─min(CMPLNT_FR_TM)─┬─max(CMPLNT_FR_TM)─┐
 │ 00:00:00          │ 23:59:00          │
 └───────────────────┴───────────────────┘
 ```
 
-```sh title="CMPLNT_TO_TM"
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select min(CMPLNT_TO_TM), max(CMPLNT_TO_TM) FROM
@@ -270,14 +254,11 @@ file('${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv', 'TSVWithNames')
 FORMAT PrettyCompact"
 ```
 
-結果:
-
-```response
+```response title="Response"
 ┌─min(CMPLNT_TO_TM)─┬─max(CMPLNT_TO_TM)─┐
 │ (null)            │ 23:59:00          │
 └───────────────────┴───────────────────┘
 ```
-
 
 ## 計画を立てる \{#make-a-plan\}
 
@@ -301,7 +282,7 @@ FORMAT PrettyCompact"
 
 日付フィールド `CMPLNT_FR_DT` と時刻フィールド `CMPLNT_FR_TM` を、`DateTime` にキャスト可能な単一の `String` に連結するには、連結演算子で 2 つのフィールドを結合した式を選択します: `CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM`。`CMPLNT_TO_DT` と `CMPLNT_TO_TM` フィールドも同様に扱います。
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM AS complaint_begin FROM
@@ -310,9 +291,7 @@ LIMIT 10
 FORMAT PrettyCompact"
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─complaint_begin─────┐
 │ 07/29/2010 00:01:00 │
 │ 12/01/2011 12:00:00 │
@@ -327,12 +306,11 @@ FORMAT PrettyCompact"
 └─────────────────────┘
 ```
 
-
 ## 日付と時刻の文字列を DateTime64 型に変換する \{#convert-the-date-and-time-string-to-a-datetime64-type\}
 
 このガイドの前のセクションで、TSV ファイル内に 1970 年 1 月 1 日より前の日付が含まれていることを確認しました。これは、日付に 64 ビットの DateTime 型が必要であることを意味します。加えて、日付を `MM/DD/YYYY` 形式から `YYYY/MM/DD` 形式に変換する必要があります。これらはどちらも、[`parseDateTime64BestEffort()`](../../sql-reference/functions/type-conversion-functions.md#parseDateTime64BestEffort) を使って行うことができます。
 
-```sh
+```sh title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "WITH (CMPLNT_FR_DT || ' ' || CMPLNT_FR_TM) AS CMPLNT_START,
@@ -347,10 +325,7 @@ FORMAT PrettyCompact"
 
 上記の 2 行目と 3 行目には前のステップで作成した連結結果が含まれており、4 行目と 5 行目ではその文字列を `DateTime64` 型に変換しています。苦情の終了時刻は必ずしも存在するとは限らないため、`parseDateTime64BestEffortOrNull` を使用しています。
 
-結果:
-
-
-```response
+```response title="Response"
 ┌─────────complaint_begin─┬───────────complaint_end─┐
 │ 1925-01-01 10:00:00.000 │ 2021-02-12 09:30:00.000 │
 │ 1925-01-01 11:37:00.000 │ 2022-01-16 11:49:00.000 │
@@ -384,7 +359,6 @@ FORMAT PrettyCompact"
 上で `1925` と表示されている日付は、データ中の誤りによるものです。元データには、本来は `2019` ～ `2022` 年であるべきものが `1019` ～ `1022` 年として記録されているレコードがいくつか存在します。64 ビットの DateTime で表現可能な最も早い日付が 1925 年 1 月 1 日であるため、それらは 1925 年 1 月 1 日として保存されています。
 :::
 
-
 ## テーブルを作成する \{#create-a-table\}
 
 上でカラムに使用するデータ型について行った決定は、以下のテーブルスキーマに反映されています。また、テーブルで使用する `ORDER BY` と `PRIMARY KEY` も決定する必要があります。`ORDER BY` と `PRIMARY KEY` の少なくともどちらか一方は指定しなければなりません。`ORDER BY` に含めるカラムを決定するためのガイドラインを以下に示します。さらに詳しい情報は、このドキュメント末尾の *Next Steps* セクションを参照してください。
@@ -395,7 +369,7 @@ FORMAT PrettyCompact"
 * ディスク上での圧縮効率を最大化するには、`ORDER BY` タプルはカーディナリティが小さいものから大きいものへ昇順になるように並べるべきです
 * 存在する場合、`PRIMARY KEY` タプルは `ORDER BY` タプルの部分集合でなければなりません
 * `ORDER BY` のみが指定されている場合、同じタプルが `PRIMARY KEY` として使用されます
-* プライマリキーの索引は、指定されていれば `PRIMARY KEY` タプルを使って、指定されていなければ `ORDER BY` タプルを使って作成されます
+* 主キーの索引は、指定されていれば `PRIMARY KEY` タプルを使って、指定されていなければ `ORDER BY` タプルを使って作成されます
 * `PRIMARY KEY` 索引はメインメモリ内に保持されます
 
 データセットと、そのデータに対してクエリを投げることで答えられそうな質問を検討すると、
@@ -410,7 +384,7 @@ FORMAT PrettyCompact"
 
 3 つの候補カラムのカーディナリティを確認するために TSV ファイルに対してクエリを実行します:
 
-```bash
+```bash title="Query"
 clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
 --query \
 "select formatReadableQuantity(uniq(OFNS_DESC)) as cardinality_OFNS_DESC,
@@ -421,9 +395,7 @@ clickhouse-local --input_format_max_rows_to_read_for_schema_inference=2000 \
   FORMAT PrettyCompact"
 ```
 
-結果：
-
-```response
+```response title="Response"
 ┌─cardinality_OFNS_DESC─┬─cardinality_RPT_DT─┬─cardinality_BORO_NM─┐
 │ 60.00                 │ 306.00             │ 6.00                │
 └───────────────────────┴────────────────────┴─────────────────────┘
@@ -483,7 +455,6 @@ CREATE TABLE NYPD_Complaint (
 ) ENGINE = MergeTree
   ORDER BY ( borough, offense_description, date_reported )
 ```
-
 
 ### テーブルの主キーを確認する \{#finding-the-primary-key-of-a-table\}
 
@@ -578,16 +549,12 @@ cat ${HOME}/NYPD_Complaint_Data_Current__Year_To_Date_.tsv \
 データセットは年に一度以上更新されるため、このドキュメントに記載されている件数と一致しない場合があります。
 :::
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT count()
 FROM NYPD_Complaint
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │  208993 │
 └─────────┘
@@ -597,30 +564,23 @@ FROM NYPD_Complaint
 
 ClickHouse 上のデータセットのサイズは、元の TSV ファイルの 12% しかありません。元の TSV ファイルのサイズとテーブルのサイズを比較してみましょう。
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT formatReadableSize(total_bytes)
 FROM system.tables
 WHERE name = 'NYPD_Complaint'
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─formatReadableSize(total_bytes)─┐
 │ 8.63 MiB                        │
 └─────────────────────────────────┘
 ```
 
-
 ## クエリを実行する \{#run-queries\}
 
 ### クエリ 1. 月別の苦情件数を比較する \{#query-1-compare-the-number-of-complaints-by-month\}
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT
     dateName('month', date_reported) AS month,
     count() AS complaints,
@@ -630,9 +590,7 @@ GROUP BY month
 ORDER BY complaints DESC
 ```
 
-結果：
-
-```response
+```response title="Response"
 Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 
 ┌─month─────┬─complaints─┬─bar(count(), 0, 50000, 80)───────────────────────────────┐
@@ -653,12 +611,9 @@ Query id: 7fbd4244-b32a-4acf-b1f3-c3aa198e74d9
 12 rows in set. Elapsed: 0.006 sec. Processed 208.99 thousand rows, 417.99 KB (37.48 million rows/s., 74.96 MB/s.)
 ```
 
-
 ### クエリ 2. 区ごとの総苦情件数の比較 \{#query-2-compare-total-number-of-complaints-by-borough\}
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT
     borough,
     count() AS complaints,
@@ -668,9 +623,7 @@ GROUP BY borough
 ORDER BY complaints DESC
 ```
 
-結果：
-
-```response
+```response title="Response"
 Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
 ┌─borough───────┬─complaints─┬─bar(count(), 0, 125000, 60)──┐
@@ -684,7 +637,6 @@ Query id: 8cdcdfd4-908f-4be0-99e3-265722a2ab8d
 
 6 rows in set. Elapsed: 0.008 sec. Processed 208.99 thousand rows, 209.43 KB (27.14 million rows/s., 27.20 MB/s.)
 ```
-
 
 ## 次のステップ \{#next-steps\}
 

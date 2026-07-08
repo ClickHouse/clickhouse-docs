@@ -1,13 +1,11 @@
 ---
-description: '可以在 `user.xml` 配置文件的 `profiles` 部分为某些设置定义约束条件，从而禁止用户通过 `SET` 查询更改这些设置。'
-sidebar_label: '设置约束条件'
+description: '可以在 `user.xml` 配置文件的 `profiles` 部分为某些设置定义约束，从而禁止用户通过 `SET` 查询更改这些设置。'
+sidebar_label: '设置约束'
 sidebar_position: 62
 slug: /operations/settings/constraints-on-settings
-title: '设置约束条件'
+title: '设置约束'
 doc_type: 'reference'
 ---
-
-# 配置约束 \{#constraints-on-settings\}
 
 ## 概览 \{#overview\}
 
@@ -64,12 +62,12 @@ ClickHouse 中支持以下几种类型的约束：
 * `min`
 * `max`
 * `disallowed`
-* `readonly`（别名为 `const`）
+* `readonly` (别名为 `const`)
 * `changeable_in_readonly`
 
 `min` 和 `max` 约束为数值型设置指定上下界，并且可以组合使用。
 
-`disallowed` 约束可用于指定某个设置不允许使用的特定取值（或取值集合）。
+`disallowed` 约束可用于指定某个设置不允许使用的特定取值 (或取值集合) 。
 
 `readonly` 或 `const` 约束表示用户完全不能修改对应的设置。
 
@@ -90,9 +88,10 @@ ClickHouse 中支持以下几种类型的约束：
 
 如果某个用户同时有多个配置文件生效，这些约束会被合并。
 合并行为取决于 `settings_constraints_replace_previous`：
-- **true**（推荐）：在合并时，相同设置的约束会被替换，后面的约束生效，之前的全部被忽略。
-  这也包括那些在新约束中未设置的字段（不会从之前的约束中继承）。
-- **false**（默认）：在合并时，相同设置的约束会按以下方式处理：
+
+* **true** (推荐) ：在合并时，相同设置的约束会被替换，后面的约束生效，之前的全部被忽略。
+  这也包括那些在新约束中未设置的字段 (不会从之前的约束中继承) 。
+* **false** (默认) ：在合并时，相同设置的约束会按以下方式处理：
   所有未设置的约束类型从之前的配置文件中继承，所有已设置的约束类型则被新配置文件中的值所替换。
 
 ## 只读模式 \{#read-only\}

@@ -10,16 +10,13 @@ keywords: ['PostgreSQL', 'Postgres', 'metrics', 'OTEL', 'ClickStack', 'database 
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/postgres/import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг метрик PostgreSQL с помощью ClickStack \{#postgres-metrics-clickstack\}
-
-:::note[Кратко]
-Отслеживайте метрики производительности PostgreSQL в ClickStack с помощью приёмника PostgreSQL в OTel. Включает демо-набор данных и готовую панель мониторинга.
+:::note[TL;DR]
+Отслеживайте метрики производительности PostgreSQL в ClickStack с помощью приемника OTel для PostgreSQL. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим PostgreSQL \{#existing-postgres\}
@@ -189,7 +186,7 @@ HyperDX отображает временные метки в локальном
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-metrics-dashboard.json')} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/postgres-metrics-dashboard.json'} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
 
 #### Импорт готового дашборда \{#import-dashboard\}
 

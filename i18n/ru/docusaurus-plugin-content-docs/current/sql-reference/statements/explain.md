@@ -119,13 +119,11 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 Примеры:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Вывод:
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -133,13 +131,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 При использовании `run_query_tree_passes`:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Результат:
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -313,7 +309,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-Если `indexes` = 1, добавляется ключ `Indexes`. Он содержит массив использованных индексов. Каждый индекс описывается как JSON с ключом `Type` (строка `MinMax`, `Partition`, `PrimaryKey` или `Skip`) и дополнительными (необязательными) ключами:
+Если `indexes` = 1, добавляется ключ `Indexes`. Он содержит массив использованных индексов. Каждый индекс описывается как JSON с ключом `Type` (строка `Partition Min-Max`, `Partition`, `Statistics`, `PrimaryKey` или `Skip`) и дополнительными (необязательными) ключами:
 
 * `Name` — имя индекса (в настоящее время используется только для индексов `Skip`).
 * `Keys` — массив столбцов, используемых индексом.
@@ -329,7 +325,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,
@@ -529,8 +525,36 @@ Expression ((Project names + Projection))
 
 В обоих примерах план запроса показывает полный процесс выполнения, включая локальные и удалённые этапы.
 
-При `pretty` = 1 дерево плана отображается с помощью символов псевдографики вместо отступов:
+При `pretty` = 1 дерево плана отображается с помощью символов псевдографики вместо отступов, а для ключевых шагов выводится дополнительная информация:
 
+* **Выходные столбцы запроса** выводятся в верхней части плана.
+* **Выражения** в фильтрах, ключах агрегации, описаниях сортировки и оконных функциях отображаются в SQL-подобной нотации, удобной для чтения (например, `a + 1 > 5` вместо `greater(plus(a, 1), 5)`). Для ясности внутренние префиксы идентификаторов столбцов (например, `__table1.`) удаляются.
+* **Шаги источника** (например, `ReadFromMergeTree`) показывают свои выходные столбцы.
+* **Шаги фильтрации** показывают условие фильтрации в SQL-нотации. Если присутствуют фильтры соединения, применяемые во время выполнения, они показываются отдельно.
+* **Шаги агрегации** показывают ключи и агрегатные функции с их аргументами (например, `sum(c)`, `count()`).
+* **Множества `IN`**, построенные из литералов кортежей, показывают свои значения (для больших множеств они усекаются), множества на основе подзапросов помечаются как `subquery1`, `subquery2` и т. д., а множества из таблиц с движком `Set` показывают имя таблицы.
+* **Шаги соединения** показывают соединение в математической нотации, оценочное количество строк в результате,
+  а также то, какие выходные столбцы приходят с левой и с правой стороны. Для
+  обозначения разных типов соединения используются следующие символы:
+
+| Символ                 | Тип соединения          |
+| ---------------------- | ----------------------- |
+| `⋈`                    | Внутреннее соединение   |
+| `⟕`                    | Левое соединение        |
+| `⟖`                    | Правое соединение       |
+| `⟗`                    | Полное соединение       |
+| `⋉`                    | Левое semi соединение   |
+| `⋊`                    | Правое semi соединение  |
+| `⋉` with strikethrough | Левое anti соединение   |
+| `⋊` with strikethrough | Правое anti соединение  |
+| `×`                    | Перекрёстное соединение |
+
+Например, `t1 ⟕ t2` означает левое соединение между таблицами `t1` и `t2`.
+Число в скобках после имени таблицы (например, `t1[100]`) указывает на оценочное количество строк,
+если доступна статистика таблицы.
+
+Настройка `pretty` хорошо работает вместе с `compact = 1`, который скрывает шаги `Expression` и
+подробную информацию о действиях, делая план более удобным для чтения.
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -543,6 +567,38 @@ Expression ((Project names + Projection))
       └──ReadFromSystemNumbers
 ```
 
+Более подробный пример с соединением:
+
+```sql
+CREATE TABLE t1 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+CREATE TABLE t2 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+INSERT INTO t1 SELECT number, toString(number) FROM numbers(100);
+INSERT INTO t2 SELECT number, toString(number) FROM numbers(100);
+
+EXPLAIN actions = 1, compact = 1, pretty = 1
+SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.id FORMAT Raw;
+```
+
+```text
+Output: id, value, t2.id, t2.value
+
+Join (JOIN FillRightFirst)
+│  t1[100] ⋈ t2[100]
+│  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
+│  Result rows: 100
+│  Output:
+│    Left:  id, value
+│    Right: id, value
+│  Join conditions: id = id
+├──ReadFromMergeTree (default.t1)
+│     Read type: Default
+│     Parts: 1 | Granules: 1
+│     Output: id, value
+└──ReadFromMergeTree (default.t2)
+      Read type: Default
+      Parts: 1 | Granules: 1
+      Output: id, value
+```
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 
@@ -551,6 +607,14 @@ Expression ((Project names + Projection))
 * `header` — Выводит заголовок для каждого выходного порта. По умолчанию: 0.
 * `graph` — Выводит граф, описанный на языке описания графов [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)). По умолчанию: 0.
 * `compact` — Выводит граф в компактном режиме, если настройка `graph` включена. По умолчанию: 1.
+* `compact_repeated_processor_chains` — Объединяет соседние повторяющиеся цепочки процессоров в текстовом выводе, показывая одну копию цепочки с числом повторений. Это может упростить чтение параллельных конвейеров, когда одна и та же цепочка встречается много раз, например в JOIN. Не влияет на вывод графа. По умолчанию: 0.
+
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
 
 Когда `compact=0` и `graph=1`, имена процессоров будут содержать дополнительный суффикс с уникальным идентификатором процессора.
 
@@ -576,7 +640,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 
 Показывает приблизительное количество строк, меток и частей, которые нужно прочитать из таблиц при обработке запроса. Работает с таблицами семейства [MergeTree](/engines/table-engines/mergetree-family/mergetree).
@@ -585,21 +648,17 @@ ExpressionTransform
 
 Создание таблицы:
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-Запрос:
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
@@ -614,21 +673,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 Предположим, у вас есть удалённая таблица MySQL следующего вида:
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

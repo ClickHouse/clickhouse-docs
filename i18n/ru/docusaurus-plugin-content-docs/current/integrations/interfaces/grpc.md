@@ -1,13 +1,11 @@
 ---
 description: 'Документация по интерфейсу gRPC в ClickHouse'
-sidebar_label: 'Интерфейс gRPC'
+sidebar_label: 'интерфейс gRPC'
 sidebar_position: 25
 slug: /interfaces/grpc
-title: 'Интерфейс gRPC'
+title: 'интерфейс gRPC'
 doc_type: 'reference'
 ---
-
-# Интерфейс gRPC \{#grpc-interface\}
 
 ## Введение \{#grpc-interface-introduction\}
 
@@ -86,7 +84,7 @@ ClickHouse поддерживает интерфейс [gRPC](https://grpc.io/).
 
 В следующем примере создаётся таблица и заполняется данными из CSV-файла. Затем выполняется запрос к содержимому таблицы.
 
-```bash
+```bash title="Query"
 ./clickhouse-grpc-client.py -q "CREATE TABLE grpc_example_table (id UInt32, text String) ENGINE = MergeTree() ORDER BY id;"
 echo -e "0,Input data for\n1,gRPC protocol example" > a.csv
 cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMAT CSV"
@@ -94,9 +92,7 @@ cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMA
 ./clickhouse-grpc-client.py --format PrettyCompact -q "SELECT * FROM grpc_example_table;"
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─id─┬─text──────────────────┐
 │  0 │ Input data for        │
 │  1 │ gRPC protocol example │

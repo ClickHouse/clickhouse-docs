@@ -1,13 +1,11 @@
 ---
-description: 'Обзор репликации данных с использованием семейства движков таблиц Replicated* в ClickHouse'
+description: 'Обзор репликации данных в семействе движков таблиц Replicated* в ClickHouse'
 sidebar_label: 'Replicated*'
 sidebar_position: 20
 slug: /engines/table-engines/mergetree-family/replication
 title: 'Движки таблиц Replicated*'
 doc_type: 'reference'
 ---
-
-# Движки таблиц Replicated* \{#replicated-table-engines\}
 
 :::note
 В ClickHouse Cloud репликацией управляет платформа. Пожалуйста, создавайте таблицы без дополнительных аргументов. Например, в тексте ниже вы бы заменили:
@@ -27,15 +25,16 @@ ENGINE = ReplicatedMergeTree
 
 :::
 
-Репликация поддерживается только для таблиц семейства MergeTree:
+Репликация поддерживается только для таблиц семейства MergeTree
 
-* ReplicatedMergeTree
 * ReplicatedSummingMergeTree
+* ReplicatedCoalescingMergeTree
+* ReplicatedVersionedCollapsingMergeTree
+* ReplicatedCollapsingMergeTree
+* ReplicatedGraphiteMergeTree
+* ReplicatedMergeTree
 * ReplicatedReplacingMergeTree
 * ReplicatedAggregatingMergeTree
-* ReplicatedCollapsingMergeTree
-* ReplicatedVersionedCollapsingMergeTree
-* ReplicatedGraphiteMergeTree
 
 Репликация работает на уровне отдельной таблицы, а не всего сервера. Один сервер может одновременно хранить как реплицируемые, так и нереплицируемые таблицы.
 

@@ -1,17 +1,15 @@
 ---
 sidebar_label: '最佳实践'
-description: '详细介绍在使用 Kafka ClickPipes 时应遵循的最佳实践'
+description: '详细介绍在使用 Kafka ClickPipes 时应遵循的最佳实践。'
 slug: /integrations/clickpipes/kafka/best-practices
 sidebar_position: 1
 title: '最佳实践'
 doc_type: 'guide'
-keywords: ['kafka 最佳实践', 'clickpipes', '压缩', '认证', '扩展']
+keywords: ['kafka 最佳实践', 'clickpipes', '压缩', '身份验证', '扩缩容']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
-
-# 最佳实践 \{#best-practices\}
 
 ## 消息压缩 \{#compression\}
 
@@ -21,8 +19,7 @@ integration:
 ## 限制 \{#limitations\}
 
 * 不支持 [`DEFAULT`](/sql-reference/statements/create/table#default)。
-* 使用大量分区可能会导致延迟增加。ClickPipes 会根据副本大小，限制每个副本一次可读取的分区数，范围从 10 (XS) 到 240 (XL) 。如果存在许多没有数据或数据量很少的分区，这些消息的处理可能会延迟。
-* 在使用最小 (XS) 副本大小运行时，单条消息在默认情况下 (未压缩) 限制为 8MB，对于更大的副本则为 16MB (未压缩) 。超出此限制的消息将被拒绝并返回错误。如需发送更大的消息，请联系支持团队。
+* 在使用最小 (XS) 副本大小运行时，单条消息在默认情况下 (未压缩) 限制为 2MB，对于更大的副本则为 8MB (未压缩) 。超出此限制的消息将被拒绝并返回错误。如需发送更大的消息，请联系支持团队。
 
 ## 传输语义 \{#delivery-semantics\}
 
@@ -122,8 +119,8 @@ ClickPipes 会以批处理的方式向 ClickHouse 插入数据。这样可以避
 
 在满足以下任一条件时，会插入当前批次的数据：
 
-- 批次大小达到最大值（每 1GB pod（容器组）内存对应 100,000 行或 32MB）
-- 批次已打开的时间达到最大时长（5 秒）
+* 批次大小达到最大值 (每 1GB pod (容器组) 内存对应 100,000 行或 28MB) 
+* 批次已打开的时间达到最大时长 (5 秒)
 
 ### 延迟 \{#latency\}
 

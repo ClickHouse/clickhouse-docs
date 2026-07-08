@@ -2,7 +2,7 @@
 sidebar_label: 'Spark 原生连接器'
 sidebar_position: 2
 slug: /integrations/apache-spark/spark-native-connector
-description: 'Apache Spark 与 ClickHouse 集成简介'
+description: 'Apache Spark 与 ClickHouse 简介'
 keywords: ['clickhouse', 'Apache Spark', '迁移', '数据']
 title: 'Spark 连接器'
 doc_type: 'guide'
@@ -12,9 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
-
-# Spark 连接器 \{#spark-connector\}
 
 <ClickHouseSupportedBadge />
 

@@ -8,7 +8,6 @@ keywords: ['Apache Avro', 'Apache Arrow', 'ORC format', 'columnar formats', 'big
 doc_type: 'guide'
 ---
 
-# Working with Avro, Arrow, and ORC data in ClickHouse
 
 Apache has released multiple data formats actively used in analytics environments, including the popular [Avro](https://avro.apache.org/), [Arrow](https://arrow.apache.org/), and [Orc](https://orc.apache.org/). ClickHouse supports importing and exporting data using any from that list.
 
@@ -16,7 +15,7 @@ Apache has released multiple data formats actively used in analytics environment
 
 ClickHouse supports reading and writing [Apache Avro](https://avro.apache.org/) data files, which are widely used in Hadoop systems.
 
-To import from an [avro file](assets/data.avro), we should use [Avro](/interfaces/formats/Avro) format in the `INSERT` statement:
+To import from an [avro file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.avro), we should use [Avro](/interfaces/formats/Avro) format in the `INSERT` statement:
 
 ```sql
 INSERT INTO sometable
@@ -88,7 +87,7 @@ kafka_format = 'AvroConfluent';
 
 ## Working with Arrow format {#working-with-arrow-format}
 
-Another columnar format is [Apache Arrow](https://arrow.apache.org/), also supported by ClickHouse for import and export. To import data from an [Arrow file](assets/data.arrow), we use the [Arrow](/interfaces/formats/Arrow) format:
+Another columnar format is [Apache Arrow](https://arrow.apache.org/), also supported by ClickHouse for import and export. To import data from an [Arrow file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.arrow), we use the [Arrow](/interfaces/formats/Arrow) format:
 
 ```sql
 INSERT INTO sometable
@@ -141,7 +140,7 @@ We've used `arrow-stream` as a possible source of Arrow streaming data.
 
 ## Importing and exporting ORC data {#importing-and-exporting-orc-data}
 
-[Apache ORC](https://orc.apache.org/) format is a columnar storage format typically used for Hadoop. ClickHouse supports importing as well as exporting [Orc data](assets/data.orc) using [ORC format](/interfaces/formats/ORC):
+[Apache ORC](https://orc.apache.org/) format is a columnar storage format typically used for Hadoop. ClickHouse supports importing as well as exporting [Orc data](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.orc) using [ORC format](/interfaces/formats/ORC):
 
 ```sql
 SELECT *

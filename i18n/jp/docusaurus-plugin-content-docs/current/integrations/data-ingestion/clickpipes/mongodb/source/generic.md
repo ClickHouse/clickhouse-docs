@@ -10,11 +10,9 @@ integration:
   - category: 'clickpipes'
 ---
 
-# 汎用的な MongoDB ソース設定ガイド \{#generic-mongodb-source-setup-guide\}
-
 :::info
 
-MongoDB Atlas を使用している場合は、[こちら](./atlas)の専用ガイドを参照してください。
+MongoDB Atlas を使用している場合は、[こちら](./atlas) の専用ガイドを参照してください。
 
 :::
 

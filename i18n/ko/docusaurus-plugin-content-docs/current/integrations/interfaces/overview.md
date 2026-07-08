@@ -1,14 +1,12 @@
 ---
-description: 'ClickHouse에 연결하기 위한 네트워크 인터페이스, 드라이버 및 도구에 대한 개요'
+description: 'ClickHouse에 연결하기 위한 네트워크 인터페이스, 드라이버 및 도구 개요'
 keywords: ['clickhouse', 'network', 'interfaces', 'http', 'tcp', 'grpc', 'command-line',
   'client', 'jdbc', 'odbc', 'driver']
 sidebar_label: '개요'
 slug: /interfaces/overview
-title: '드라이버 및 인터페이스'
+title: '드라이버와 인터페이스'
 doc_type: 'reference'
 ---
-
-# 드라이버와 인터페이스 \{#drivers-and-interfaces\}
 
 ClickHouse는 두 가지 네트워크 인터페이스를 제공합니다(추가 보안을 위해 선택적으로 TLS로 암호화할 수 있습니다):
 

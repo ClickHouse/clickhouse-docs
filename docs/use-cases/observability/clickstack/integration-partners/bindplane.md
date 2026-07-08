@@ -15,8 +15,6 @@ import bindplane_hyperdx from '@site/static/images/clickstack/bindplane/bindplan
 import bindplane_configuration from '@site/static/images/clickstack/bindplane/bindplane-configuration.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Sending OpenTelemetry to ClickStack with Bindplane {#bindplane-clickstack}
-
 <PartnerBadge/>
 
 :::note[TL;DR]

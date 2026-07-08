@@ -1648,7 +1648,7 @@ FROM numbers(5);
 
 ## flipCoordinates \{#flipCoordinates\}
 
-Добавлено в: v25.10.0
+Добавлено в: v25.11.0
 
 Меняет местами координаты x и y геометрических объектов. Эта операция переставляет широту и долготу местами, что полезно при преобразовании между различными системами координат или исправлении порядка координат.
 
@@ -1873,12 +1873,13 @@ SELECT a, b FROM tab WHERE (a > 3) AND (b < 3)
 **Синтаксис**
 
 ```sql
-formatReadableDecimalSize(x)
+formatReadableDecimalSize(value[, precision])
 ```
 
 **Аргументы**
 
-* `x` — размер в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — размер в байтах. [`Int8`](/sql-reference/data-types/int-uint) или [`Int16`](/sql-reference/data-types/int-uint) или [`Int32`](/sql-reference/data-types/int-uint) или [`Int64`](/sql-reference/data-types/int-uint) или [`UInt8`](/sql-reference/data-types/int-uint) или [`UInt16`](/sql-reference/data-types/int-uint) или [`UInt32`](/sql-reference/data-types/int-uint) или [`UInt64`](/sql-reference/data-types/int-uint) или [`Float32`](/sql-reference/data-types/float) или [`Float64`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — необязательный параметр. Количество цифр после десятичной запятой. По умолчанию — 2. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -1903,6 +1904,20 @@ SELECT
 └────────────────┴────────────┘
 ```
 
+**С явно заданной точностью**
+
+```sql title=Query
+SELECT
+    formatReadableDecimalSize(192851925, 0) AS no_decimals,
+    formatReadableDecimalSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals─┐
+│ 193 MB      │ 192.8519 MB   │
+└─────────────┴───────────────┘
+```
+
 ## formatReadableQuantity \{#formatReadableQuantity\}
 
 Введена в версии: v20.10.0
@@ -1915,12 +1930,13 @@ SELECT
 **Синтаксис**
 
 ```sql
-formatReadableQuantity(x)
+formatReadableQuantity(value[, precision])
 ```
 
 **Аргументы**
 
-* `x` — Число, которое нужно отформатировать. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — Число, которое нужно отформатировать. [`Int8`](/sql-reference/data-types/int-uint) или [`Int16`](/sql-reference/data-types/int-uint) или [`Int32`](/sql-reference/data-types/int-uint) или [`Int64`](/sql-reference/data-types/int-uint) или [`UInt8`](/sql-reference/data-types/int-uint) или [`UInt16`](/sql-reference/data-types/int-uint) или [`UInt32`](/sql-reference/data-types/int-uint) или [`UInt64`](/sql-reference/data-types/int-uint) или [`Float32`](/sql-reference/data-types/float) или [`Float64`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — Необязательный параметр. Количество знаков после десятичной точки. По умолчанию: 2. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -1945,6 +1961,20 @@ SELECT
 └────────────────┴───────────────────┘
 ```
 
+**С явно заданной точностью**
+
+```sql title=Query
+SELECT
+    formatReadableQuantity(98765432101234, 0) AS no_decimals,
+    formatReadableQuantity(98765432101234, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals──┬─four_decimals─────┐
+│ 99 trillion  │ 98.7654 trillion  │
+└──────────────┴───────────────────┘
+```
+
 ## formatReadableSize \{#formatReadableSize\}
 
 Добавлено в: v1.1.0
@@ -1952,19 +1982,20 @@ SELECT
 Для заданного размера (количества байт) эта функция возвращает человекочитаемый, округлённый размер с суффиксом (KiB, MiB и т. д.) в виде строки.
 
 Обратными операциями к этой функции являются [`parseReadableSize`](#parseReadableSize), [`parseReadableSizeOrZero`](#parseReadableSizeOrZero) и [`parseReadableSizeOrNull`](#parseReadableSizeOrNull).
-Эта функция принимает на вход любое числовое значение, но внутренне преобразует их к `Float64`. Результаты могут быть неточными при очень больших значениях.
+Эта функция принимает на вход любое числовое значение, но внутренне преобразует его к `Float64`. Результаты могут быть неточными при очень больших значениях.
 
 **Синтаксис**
 
 ```sql
-formatReadableSize(x)
+formatReadableSize(value[, precision])
 ```
 
 **Псевдонимы**: `FORMAT_BYTES`
 
 **Аргументы**
 
-* `x` — размер в байтах. [`UInt64`](/sql-reference/data-types/int-uint)
+* `value` — размер в байтах. [`Int8`](/sql-reference/data-types/int-uint) или [`Int16`](/sql-reference/data-types/int-uint) или [`Int32`](/sql-reference/data-types/int-uint) или [`Int64`](/sql-reference/data-types/int-uint) или [`UInt8`](/sql-reference/data-types/int-uint) или [`UInt16`](/sql-reference/data-types/int-uint) или [`UInt32`](/sql-reference/data-types/int-uint) или [`UInt64`](/sql-reference/data-types/int-uint) или [`Float32`](/sql-reference/data-types/float) или [`Float64`](/sql-reference/data-types/float) или [`Decimal`](/sql-reference/data-types/decimal)
+* `precision` — необязательный параметр. Количество знаков после десятичной точки. По умолчанию: 2. [`const UInt8`](/sql-reference/data-types/int-uint)
 
 **Возвращаемое значение**
 
@@ -1987,6 +2018,20 @@ SELECT
 │        1048576 │ 1.00 MiB   │
 │      192851925 │ 183.92 MiB │
 └────────────────┴────────────┘
+```
+
+**С явным указанием точности**
+
+```sql title=Query
+SELECT
+    formatReadableSize(192851925, 0) AS no_decimals,
+    formatReadableSize(192851925, 4) AS four_decimals
+```
+
+```response title=Response
+┌─no_decimals─┬─four_decimals──┐
+│ 184 MiB     │ 183.9179 MiB   │
+└─────────────┴────────────────┘
 ```
 
 ## formatReadableTimeDelta \{#formatReadableTimeDelta\}
@@ -2769,6 +2814,42 @@ SELECT hasThreadFuzzer()
 ┌─hasThreadFuzzer()─┐
 │                 0 │
 └───────────────────┘
+```
+
+## highlightQuery \{#highlightQuery\}
+
+добавить: v26.5.0
+
+Разбирает строку SQL-запроса ClickHouse и возвращает массив диапазонов для подсветки синтаксиса.
+Каждый диапазон представляет собой именованный кортеж с начальной позицией (в байтах), конечной позицией и типом подсветки.
+Типы подсветки описывают синтаксическую роль фрагмента (ключевое слово, идентификатор, функция и т. д.)
+и могут использоваться для назначения цветов в интерфейсе пользователя. Внутри строковых шаблонов LIKE и REGEXP метасимволы
+и символы экранирования подсвечиваются отдельно.
+
+**Синтаксис**
+
+```sql
+highlightQuery(query)
+```
+
+**Аргументы**
+
+* `query` — Строка SQL-запроса ClickHouse. String.
+
+**Возвращаемое значение**
+
+Массив именованных кортежей `(begin UInt64, end UInt64, type Enum8(...))`, представляющий диапазоны с подсветкой. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Простой**
+
+```sql title=Query
+SELECT highlightQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'keyword'),(7,8,'number')]
 ```
 
 ## hostName \{#hostName\}
@@ -3848,6 +3929,143 @@ SELECT normalizedQueryHashKeepNames('SELECT 1 AS `xyz123`') != normalizedQueryHa
 ┌─normalizedQueryHashKeepNames─┐
 │                            1 │
 └──────────────────────────────┘
+```
+
+## obfuscateQuery \{#obfuscateQuery\}
+
+Добавлено в: v26.4.0
+
+Обфусцирует SQL-запрос, заменяя идентификаторы случайными словами, а литералы — случайными значениями, при этом сохраняя структуру запроса.
+
+Эта функция полезна для анонимизации запросов перед записью в журнал или передачей для отладки.
+Даже для одного и того же входного запроса разные строки будут давать разные обфусцированные результаты, что помогает
+сохранять конфиденциальность при работе с несколькими запросами.
+
+Необязательный параметр `tag` предотвращает устранение общих подвыражений, если один и тот же вызов функции
+используется в запросе несколько раз. Это гарантирует, что каждый вызов дает свой обфусцированный результат.
+
+Возможности:
+
+* Заменяет имена таблиц, имена столбцов и псевдонимы случайными словами
+* Заменяет числовые и строковые литералы случайными значениями
+* Сохраняет общую структуру запроса и синтаксис SQL
+* Выдает разные результаты для разных строк
+
+**Синтаксис**
+
+```sql
+obfuscateQuery(query[, tag])
+```
+
+**Аргументы**
+
+* `query` — SQL-запрос для обфускации. [`String`](/sql-reference/data-types/string)
+* `tag` — Необязательно. Значение, которое предотвращает исключение общих подвыражений, если один и тот же вызов функции используется несколько раз.
+
+**Возвращаемое значение**
+
+Обфусцированный запрос, в котором идентификаторы и литералы заменены с сохранением исходной структуры запроса. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Базовое использование**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT name, age FROM users WHERE age > 30')
+```
+
+```response title=Response
+SELECT fruit, number FROM table WHERE number > 12
+```
+
+**С тегом для предотвращения устранения общих подвыражений**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT * FROM t', 1), obfuscateQuery('SELECT * FROM t', 2)
+```
+
+```response title=Response
+SELECT a FROM b, SELECT c FROM d
+```
+
+**Для разных строк результаты будут разными**
+
+```sql title=Query
+SELECT obfuscateQuery('SELECT 1') AS a, obfuscateQuery('SELECT 1') AS b
+```
+
+```response title=Response
+A B
+```
+
+## obfuscateQueryWithSeed \{#obfuscateQueryWithSeed\}
+
+Добавлено в: v26.4.0
+
+Выполняет обфускацию SQL-запроса с использованием указанного seed, обеспечивая детерминированный результат.
+
+В отличие от `obfuscateQuery()`, эта функция выдает детерминированный результат при использовании одного и того же seed.
+Это полезно, когда нужна согласованная обфускация в нескольких запусках или когда требуется
+воспроизвести один и тот же обфусцированный запрос для тестирования или отладки.
+
+Возможности:
+
+* Детерминированная обфускация на основе указанного seed
+* Один и тот же seed всегда дает один и тот же обфусцированный результат
+* Разные seed дают разные результаты
+* Сохраняет структуру запроса, как и obfuscateQuery()
+
+Сценарии использования:
+
+* Воспроизводимые тестовые сценарии
+* Согласованная анонимизация в нескольких запусках
+* Отладка с использованием согласованно обфусцированных запросов
+
+**Синтаксис**
+
+```sql
+obfuscateQueryWithSeed(query, seed)
+```
+
+**Аргументы**
+
+* `query` — SQL-запрос для обфускации. [`String`](/sql-reference/data-types/string)
+* `seed` — Зерно для обфускации. Одно и то же зерно дает детерминированные результаты. [`Integer`](/sql-reference/data-types/int-uint) или [`String`](/sql-reference/data-types/string)
+
+**Возвращаемое значение**
+
+Обфусцированный запрос, детерминированно сгенерированный на основе указанного зерна. [`String`](/sql-reference/data-types/string)
+
+**Примеры**
+
+**Детерминированная обфускация с целочисленным значением seed**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT name FROM users', 42)
+```
+
+```response title=Response
+SELECT fruit FROM table
+```
+
+**Детерминированная обфускация с зерном в виде строки**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT id, value FROM data', 'myseed')
+```
+
+```response title=Response
+SELECT a, b FROM c
+```
+
+**При одинаковом seed результат будет одинаковым**
+
+```sql title=Query
+SELECT obfuscateQueryWithSeed('SELECT 1', 100) = obfuscateQueryWithSeed('SELECT 1', 100)
+```
+
+```response title=Response
+true
 ```
 
 ## parseReadableSize \{#parseReadableSize\}
@@ -4984,6 +5202,39 @@ SELECT toTypeName(123)
 ┌─toTypeName(123)─┐
 │ UInt8           │
 └─────────────────┘
+```
+
+## tokenizeQuery \{#tokenizeQuery\}
+
+Добавить в: v26.5.0
+
+Разбивает строку SQL-запроса ClickHouse на токены и возвращает массив токенов.
+Каждый токен представляет собой именованный кортеж с начальной позицией (в байтах), конечной позицией и типом токена.
+
+**Синтаксис**
+
+```sql
+tokenizeQuery(query)
+```
+
+**Аргументы**
+
+* `query` — Строка SQL-запроса ClickHouse. String.
+
+**Возвращаемое значение**
+
+Массив именованных кортежей `(begin UInt64, end UInt64, type Enum8(...))`, представляющих токены запроса. [`Array(Tuple(begin UInt64, end UInt64, type Enum8(...)))`](/sql-reference/data-types/array)
+
+**Примеры**
+
+**Простой**
+
+```sql title=Query
+SELECT tokenizeQuery('SELECT 1')
+```
+
+```response title=Response
+[(0,6,'BareWord'),(6,7,'Whitespace'),(7,8,'Number')]
 ```
 
 ## transactionID \{#transactionID\}

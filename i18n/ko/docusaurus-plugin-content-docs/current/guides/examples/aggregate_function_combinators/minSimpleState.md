@@ -7,8 +7,6 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState \{#minsimplestate\}
-
 ## 설명 \{#description\}
 
 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 조합자는 [`min`](/sql-reference/aggregate-functions/reference/min)
@@ -149,7 +147,7 @@ ORDER BY location_id;
 이제 예상한 결과를 얻을 수 있습니다:
 
 
-```sql
+```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ North         │        3 │        8 │
 │           2 │ South         │       15 │       18 │
@@ -161,7 +159,6 @@ ORDER BY location_id;
 :::note
 `SimpleState`를 사용하면 부분 집계 상태를 결합할 때 `Merge` 조합자를 사용할 필요가 없습니다.
 :::
-
 
 ## 같이 보기 \{#see-also\}
 

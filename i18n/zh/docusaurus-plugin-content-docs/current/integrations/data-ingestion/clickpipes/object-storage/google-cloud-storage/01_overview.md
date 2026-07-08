@@ -7,16 +7,15 @@ title: '将 Google Cloud Storage 与 ClickHouse Cloud 集成'
 doc_type: 'guide'
 ---
 
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
-import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png';
-import gcs_subscription_input from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png';
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import Image from '@theme/IdealImage';
+import cp_iam from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png"
+import cp_credentials from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/cp_credentials.png"
+import gcs_subscription_input from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/google-cloud-storage/gcs_subscription_input.png"
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import Image from "@theme/IdealImage"
 
-GCS ClickPipe 提供了一种完全托管且具备高可靠性的方式，用于从 Google Cloud Storage (GCS) 摄取数据。它同时支持具有 exactly-once 语义的 **一次性摄取** 和 **持续摄取**。
+GCS ClickPipe 提供了一种完全托管且具备高可靠性的方式，用于从 Google Cloud Storage (GCS) 摄取数据。它同时支持具有精确一次语义的 **一次性摄取** 和 **持续摄取**。
 
-可以通过 ClickPipes UI 手动部署和管理 GCS ClickPipes，也可以以编程方式使用 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) 进行管理。
-
+可以通过 ClickPipes UI 手动部署和管理 GCS ClickPipes，也可以以编程方式使用 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 进行管理。
 
 ## 支持的格式 \{#supported-formats\}
 
@@ -163,7 +162,7 @@ ClickPipes 提供了合理的默认配置，能够满足大多数使用场景的
 
 ### 扩展 \{#scaling\}
 
-Object Storage ClickPipes 的规模取决于由[已配置的垂直自动扩缩设置](/manage/scaling#configuring-vertical-auto-scaling)确定的 ClickHouse 服务最小规格。ClickPipe 的规格会在创建时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
+Object Storage ClickPipes 的规模取决于由[已配置的垂直自动扩缩设置](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)确定的 ClickHouse 服务最小规格。ClickPipe 的规格会在创建时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
 
 要提升大规模摄取任务的吞吐量，我们建议在创建 ClickPipe 之前先扩容 ClickHouse 服务。
 

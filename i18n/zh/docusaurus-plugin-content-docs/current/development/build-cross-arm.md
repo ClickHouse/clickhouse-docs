@@ -7,8 +7,6 @@ title: '如何在 Linux 上面向 AARCH64 构建 ClickHouse'
 doc_type: 'guide'
 ---
 
-# 如何在 Linux 上为 AArch64 构建 ClickHouse \{#how-to-build-clickhouse-on-linux-for-aarch64\}
+在 Aarch64 机器上为 Aarch64 构建 ClickHouse 时，无需任何特殊步骤。
 
-在 AArch64 机器上构建面向 AArch64 的 ClickHouse 时，无需执行任何特殊步骤。
-
-要在 x86 Linux 机器上为 AArch64 交叉编译 ClickHouse，请向 `cmake` 传递以下参数：`-DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-aarch64.cmake`
+要在 x86 Linux 机器上为 AARCH64 交叉编译 ClickHouse，请向 `cmake` 传递以下标志：`-DCMAKE_TOOLCHAIN_FILE=cmake/linux/toolchain-aarch64.cmake`

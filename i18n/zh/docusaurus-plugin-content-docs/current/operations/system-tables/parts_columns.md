@@ -6,57 +6,75 @@ title: 'system.parts_columns'
 doc_type: 'reference'
 ---
 
-# system.parts_columns \{#systemparts_columns\}
+## 描述 \{#description\}
 
-包含 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的分区片段和列的信息。
-每一行描述一个数据分区片段。
+包含 [MergeTree](../../engines/table-engines/mergetree-family/mergetree.md) 表的parts和列的信息。
+每一行描述一个数据parts。
 
-| Column                                  | Type     | Description                                                                                                          |
-| --------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------- |
-| `partition`                             | String   | 分区名称。格式：按月自动分区时为 `YYYYMM`，或在手动分区时为 `any_string`。                                                                     |
-| `name`                                  | String   | 数据分区片段的名称。                                                                                                           |
-| `part_type`                             | String   | 数据分区片段的存储格式。取值：`Wide` (每一列单独一个文件) 或 `Compact` (所有列在同一个文件中) 。由 `min_bytes_for_wide_part` 和 `min_rows_for_wide_part` 设置控制。 |
-| `active`                                | UInt8    | 指示数据分区片段是否为 active 的标志。active 分区片段会被表使用；inactive 分区片段会被删除或在合并后保留。                                                    |
-| `marks`                                 | UInt64   | mark 的数量。乘以索引粒度 (通常为 8192) 可以得到大致的行数。                                                                                  |
-| `rows`                                  | UInt64   | 行数。                                                                                                                  |
-| `bytes_on_disk`                         | UInt64   | 该数据分区片段所有文件的总大小 (以字节计) 。                                                                                               |
-| `data_compressed_bytes`                 | UInt64   | 数据分区片段中已压缩数据的总大小 (不包括 mark 等辅助文件) 。                                                                                    |
-| `data_uncompressed_bytes`               | UInt64   | 数据分区片段中未压缩数据的总大小 (不包括 mark 等辅助文件) 。                                                                                    |
-| `marks_bytes`                           | UInt64   | 含有 mark 的文件大小。                                                                                                       |
-| `modification_time`                     | DateTime | 含有该数据分区片段的目录被修改的时间 (通常对应于创建时间) 。                                                                                       |
-| `remove_time`                           | DateTime | 数据分区片段变为 inactive 的时间。                                                                                               |
-| `refcount`                              | UInt32   | 使用该数据分区片段的位置数量。值 &gt; 2 表示该分区片段正在被查询或合并使用。                                                                           |
-| `min_date`                              | Date     | 该数据分区片段中日期键的最小值。                                                                                                     |
-| `max_date`                              | Date     | 该数据分区片段中日期键的最大值。                                                                                                     |
-| `partition_id`                          | String   | 分区的 ID。                                                                                                              |
-| `min_block_number`                      | UInt64   | 合并后组成当前分区片段的数据分区片段的最小编号。                                                                                             |
-| `max_block_number`                      | UInt64   | 合并后组成当前分区片段的数据分区片段的最大编号。                                                                                             |
-| `level`                                 | UInt32   | MergeTree 的合并层级深度。0 表示通过插入创建，而不是通过合并创建。                                                                              |
-| `data_version`                          | UInt64   | 用于确定应应用哪些 mutation 的编号 (会应用版本号大于 `data_version` 的 mutation) 。                                                          |
-| `primary_key_bytes_in_memory`           | UInt64   | 主键值在内存中使用的字节数。                                                                                                       |
-| `primary_key_bytes_in_memory_allocated` | UInt64   | 为主键值预留的内存字节数。                                                                                                        |
-| `database`                              | String   | 数据库名称。                                                                                                               |
-| `table`                                 | String   | 表名。                                                                                                                  |
-| `engine`                                | String   | 不带参数的表引擎名称。                                                                                                          |
-| `disk_name`                             | String   | 存储该数据分区片段的磁盘名称。                                                                                                      |
-| `path`                                  | String   | 数据分区片段文件所在文件夹的绝对路径。                                                                                                  |
-| `column`                                | String   | 列名。                                                                                                                  |
-| `type`                                  | String   | 列类型。                                                                                                                 |
-| `statistics`                            | String   | 为该列创建的统计信息。                                                                                                          |
-| `estimates.min`                         | String   | 列的估计最小值。                                                                                                             |
-| `estimates.max`                         | String   | 列的估计最大值。                                                                                                             |
-| `estimates.cardinality`                 | String   | 列的估计基数。                                                                                                              |
-| `column_position`                       | UInt64   | 列在表中的序号位置，从 1 开始计数。                                                                                                  |
-| `default_kind`                          | String   | 默认值表达式类型 (`DEFAULT`、`MATERIALIZED`、`ALIAS`) ，如果未定义则为空字符串。                                                              |
-| `default_expression`                    | String   | 默认值的表达式，如果未定义则为空字符串。                                                                                                 |
-| `column_bytes_on_disk`                  | UInt64   | 列在磁盘上的总大小 (以字节计) 。                                                                                                     |
-| `column_data_compressed_bytes`          | UInt64   | 列中已压缩数据的总大小 (以字节计) 。注意：compact 分区片段不会计算该值。                                                                             |
-| `column_data_uncompressed_bytes`        | UInt64   | 列中解压缩后数据的总大小 (以字节计) 。注意：compact 分区片段不会计算该值。                                                                            |
-| `column_marks_bytes`                    | UInt64   | 含有该列 mark 的文件大小 (以字节计) 。                                                                                               |
-| `bytes`                                 | UInt64   | `bytes_on_disk` 的别名。                                                                                                 |
-| `marks_size`                            | UInt64   | `marks_bytes` 的别名。                                                                                                   |
+## 列 \{#columns\}
 
-**示例**
+{/*AUTOGENERATED_START*/ }
+
+* `partition` ([String](../../sql-reference/data-types/)) — 分区名称。
+* `name` ([String](../../sql-reference/data-types/)) — 数据分区片段名称。
+* `uuid` ([UUID](../../sql-reference/data-types/)) — parts 的 UUID。
+* `part_type` ([String](../../sql-reference/data-types/)) — 数据分区片段的存储格式。可选值：Wide — 每一列在文件系统中都存储为单独的文件，Compact — 所有列都存储在文件系统中的同一个文件中。
+* `active` ([UInt8](../../sql-reference/data-types/)) — 表示数据分区片段是否处于活动状态的标志。如果数据分区片段处于活动状态，则表示它正在表中使用；否则会被删除。非活动的数据分区片段在合并后仍会保留。
+* `marks` ([UInt64](../../sql-reference/data-types/)) — 标记数。要获取数据分区片段中的近似行数，请将 marks 乘以索引粒度 (通常为 8192)  (此提示不适用于自适应粒度) 。
+* `rows` ([UInt64](../../sql-reference/data-types/)) — 行的数量。
+* `bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — 所有数据分区片段文件的总大小 (字节) 。
+* `data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 数据分区片段中压缩数据的总大小。不包括任何辅助文件 (例如标记文件) 。
+* `data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 数据分区片段中未压缩数据的总大小。不包括所有辅助文件 (例如标记文件) 。
+* `marks_bytes` ([UInt64](../../sql-reference/data-types/)) — 标记文件的大小。
+* `modification_time` ([DateTime](../../sql-reference/data-types/)) — 数据分区片段所在目录的修改时间。通常对应于数据分区片段的创建时间。
+* `remove_time` ([DateTime](../../sql-reference/data-types/)) — 数据分区片段变为非活跃状态的时间。
+* `refcount` ([UInt32](../../sql-reference/data-types/)) — 数据分区片段被引用的位置数。值大于 2 表示该数据分区片段正用于查询或合并操作。
+* `min_date` ([Date](../../sql-reference/data-types/)) — 如果分区键中包含 Date 列，则表示该列的最小值。
+* `max_date` ([Date](../../sql-reference/data-types/)) — 如果分区键中包含该 Date 列，则该值为该列的最大值。
+* `min_time` ([DateTime](../../sql-reference/data-types/)) — 如果分区键中包含 DateTime 列，则表示该列的最小值。
+* `max_time` ([DateTime](../../sql-reference/data-types/)) — 如果分区键中包含 DateTime 列，则表示该列的最大值。
+* `partition_id` ([String](../../sql-reference/data-types/)) — 分区 ID。
+* `min_block_number` ([Int64](../../sql-reference/data-types/)) — 合并后构成当前数据分区片段的各数据分区片段中的最小编号。
+* `max_block_number` ([Int64](../../sql-reference/data-types/)) — 合并后构成当前数据分区片段的各数据分区片段中的最大编号。
+* `level` ([UInt32](../../sql-reference/data-types/)) — 合并树的层级深度。0 表示当前 part 是通过 insert 创建的，而不是通过合并其他 parts 生成的。
+* `data_version` ([UInt64](../../sql-reference/data-types/)) — 用于确定哪些 mutation 应应用到数据分区片段的编号 (即版本高于 data&#95;version 的 mutation) 。
+* `primary_key_bytes_in_memory` ([UInt64](../../sql-reference/data-types/)) — 主键值占用的内存量 (以字节为单位) 。
+* `primary_key_bytes_in_memory_allocated` ([UInt64](../../sql-reference/data-types/)) — 为主键值预留的内存大小 (以字节为单位) 。
+* `database` ([String](../../sql-reference/data-types/)) — 数据库的名称。
+* `table` ([String](../../sql-reference/data-types/)) — 表名。
+* `engine` ([String](../../sql-reference/data-types/)) — 不含参数的表引擎名称。
+* `disk_name` ([String](../../sql-reference/data-types/)) — 用于存储数据分区片段的磁盘名称。
+* `path` ([String](../../sql-reference/data-types/)) — 存放数据分区片段文件的文件夹的绝对路径。
+* `column` ([String](../../sql-reference/data-types/)) — 列名。
+* `type` ([String](../../sql-reference/data-types/)) — 列的类型。
+* `column_position` ([UInt64](../../sql-reference/data-types/)) — 列在表中的序号位置，从 1 开始。
+* `default_kind` ([String](../../sql-reference/data-types/)) — 默认值的表达式类型 (DEFAULT、MATERIALIZED、ALIAS) ，如果未定义则为空字符串。
+* `default_expression` ([String](../../sql-reference/data-types/)) — 用于默认值的 expression；如果未定义，则为空字符串。
+* `column_bytes_on_disk` ([UInt64](../../sql-reference/data-types/)) — 列的总大小 (字节) 。
+* `column_data_compressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 列中压缩数据的总大小，单位为字节。
+* `column_data_uncompressed_bytes` ([UInt64](../../sql-reference/data-types/)) — 该列中解压后数据的总大小，以字节为单位。
+* `column_marks_bytes` ([UInt64](../../sql-reference/data-types/)) — 该列的 marks 大小，以字节为单位。
+* `column_modification_time` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 列的最后修改时间。
+* `column_ttl_min` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 该列计算所得的生存时间 (TTL) 表达式的最小值。
+* `column_ttl_max` ([Nullable(DateTime)](../../sql-reference/data-types/)) — 该列计算出的 TTL 表达式的最大值。
+* `statistics` ([Array(String)](../../sql-reference/data-types/)) — 该列的统计信息。
+* `estimates.min` ([Nullable(String)](../../sql-reference/data-types/)) — 该列的预估最小值。
+* `estimates.max` ([Nullable(String)](../../sql-reference/data-types/)) — 该列的估计最大值。
+* `estimates.cardinality` ([Nullable(UInt64)](../../sql-reference/data-types/)) — 列的估计基数。
+* `serialization_kind` ([String](../../sql-reference/data-types/)) — 列的序列化方式
+* `substreams` ([Array(String)](../../sql-reference/data-types/)) — 列序列化到的子流名称
+* `filenames` ([Array(String)](../../sql-reference/data-types/)) — 分别对应某一列各个子流的文件名
+* `subcolumns.names` ([Array(String)](../../sql-reference/data-types/)) — 某列的子列名称
+* `subcolumns.types` ([Array(String)](../../sql-reference/data-types/)) — 列的各子列类型
+* `subcolumns.serializations` ([Array(String)](../../sql-reference/data-types/)) — 列的子列的序列化种类
+* `subcolumns.bytes_on_disk` ([Array(UInt64)](../../sql-reference/data-types/)) — 每个子列的大小 (单位为字节)
+* `subcolumns.data_compressed_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — 各子列压缩后数据的大小，单位为字节
+* `subcolumns.data_uncompressed_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — 每个子列解压后的数据大小 (字节)
+* `subcolumns.marks_bytes` ([Array(UInt64)](../../sql-reference/data-types/)) — 该列中各子列的 marks 大小，以字节为单位
+
+{/*AUTOGENERATED_END*/ }
+
+## 示例 \{#example\}
 
 ```sql
 SELECT * FROM system.parts_columns LIMIT 1 FORMAT Vertical;
@@ -103,7 +121,7 @@ column_data_uncompressed_bytes:        2
 column_marks_bytes:                    48
 ```
 
-**另请参阅**
+## 另请参阅 \{#see-also\}
 
 * [MergeTree 系列表引擎](../../engines/table-engines/mergetree-family/mergetree.md)
-* [计算 Compact 和 Wide 分区片段的数量和大小](/knowledgebase/count-parts-by-type)
+* [计算 Compact 和 Wide parts的数量和大小](/knowledgebase/count-parts-by-type)

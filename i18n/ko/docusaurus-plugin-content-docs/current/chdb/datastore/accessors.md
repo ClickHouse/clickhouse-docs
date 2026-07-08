@@ -1,27 +1,25 @@
 ---
-title: 'DataStore 접근자'
-sidebar_label: '접근자'
+title: 'DataStore Accessor'
+sidebar_label: 'Accessor'
 slug: /chdb/datastore/accessors
-description: '문자열(String), DateTime, 배열(Array), JSON, URL, IP, Geo에 대한 접근자와 185개 이상의 메서드'
+description: '185개 이상의 메서드를 제공하는 String, DateTime, Array, JSON, URL, IP, Geo 액세서'
 keywords: ['chdb', 'datastore', 'accessor', 'str', 'dt', 'arr', 'json', 'url', 'ip', 'geo']
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-# DataStore Accessors \{#datastore-accessors\}
 
 DataStore는 도메인별 작업을 위해 7개의 액세서 네임스페이스와 185개 이상의 메서드를 제공합니다.
 
-| Accessor | Methods | Description |
-|----------|---------|-------------|
-| `.str` | 56 | 문자열 연산 |
-| `.dt` | 42+ | DateTime 연산 |
-| `.arr` | 37 | 배열 연산 (ClickHouse 전용) |
-| `.json` | 13 | JSON 파싱 (ClickHouse 전용) |
-| `.url` | 15 | URL 파싱 (ClickHouse 전용) |
-| `.ip` | 9 | IP 주소 연산 (ClickHouse 전용) |
-| `.geo` | 14 | Geo/거리 연산 (ClickHouse 전용) |
+| Accessor | Methods | Description               |
+| -------- | ------- | ------------------------- |
+| `.str`   | 56      | 문자열 연산                    |
+| `.dt`    | 42+     | DateTime 연산               |
+| `.arr`   | 37      | 배열 연산 (ClickHouse 전용)     |
+| `.json`  | 13      | JSON 파싱 (ClickHouse 전용)   |
+| `.url`   | 15      | URL 파싱 (ClickHouse 전용)    |
+| `.ip`    | 9       | IP 주소 연산 (ClickHouse 전용)  |
+| `.geo`   | 14      | Geo/거리 연산 (ClickHouse 전용) |
 
----
+***
 
 ## String Accessor (`.str`) \{#str\}
 

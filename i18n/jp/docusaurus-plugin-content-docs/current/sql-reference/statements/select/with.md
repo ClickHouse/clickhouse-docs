@@ -6,9 +6,7 @@ title: 'WITH 句'
 doc_type: 'reference'
 ---
 
-# WITH 句 \{#with-clause\}
-
-ClickHouse は、共通テーブル式（Common Table Expressions、[CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)）、共通スカラ―式（Common Scalar Expressions）、および再帰クエリ（Recursive Queries）をサポートしています。
+ClickHouse は、共通テーブル式 (Common Table Expressions、[CTE](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)) 、共通スカラ式 (Common Scalar Expressions) 、および再帰クエリ (Recursive Queries) をサポートしています。
 
 ## 共通テーブル式 \{#common-table-expressions\}
 
@@ -525,4 +523,16 @@ SELECT sum(number) FROM (SELECT number FROM test_table LIMIT 100);
 ┌─sum(number)─┐
 │        5050 │
 └─────────────┘
+```
+
+
+## 末尾のカンマ \{#trailing-comma\}
+
+`WITH` 句では、最後の要素の後ろにカンマを付けることができます。
+
+```sql
+WITH
+    (SELECT sum(number) FROM numbers(10)) AS total,
+    total * 2 AS doubled,
+SELECT total, doubled;
 ```

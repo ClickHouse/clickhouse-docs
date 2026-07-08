@@ -1,18 +1,16 @@
 ---
-title: '特定テーブルの再同期'
-description: 'MySQL ClickPipe で特定テーブルを再同期する'
+title: '特定のテーブルを再同期する'
+description: 'MySQL ClickPipe で特定のテーブルを再同期する'
 slug: /integrations/clickpipes/mysql/table_resync
-sidebar_label: 'テーブルの再同期'
+sidebar_label: 'テーブルを再同期'
 doc_type: 'guide'
-keywords: ['clickpipes', 'mysql', 'cdc', 'データインジェスト', 'リアルタイム同期']
+keywords: ['clickpipes', 'mysql', 'CDC', 'データインジェスト', 'リアルタイム同期']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
 
-# 特定のテーブルを再同期する \{#resync-tables\}
-
-特定のパイプ内テーブルを再同期したい状況があるかもしれません。ユースケースの例としては、MySQL 上での大規模なスキーマ変更や、ClickHouse 側でのデータ再モデリングなどが挙げられます。
+特定のパイプライン内のテーブルを再同期すると便利な場合があります。ユースケースの例としては、MySQL での大規模な schema の変更や、ClickHouse 側でのデータの再モデリングなどが挙げられます。
 
 個々のテーブルをボタン一つで再同期できる機能は現在開発中ですが、このガイドでは、現時点で MySQL ClickPipe においてこれを実現するための手順を説明します。
 

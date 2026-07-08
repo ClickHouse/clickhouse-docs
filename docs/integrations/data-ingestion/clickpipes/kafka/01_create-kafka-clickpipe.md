@@ -22,9 +22,9 @@ import cp_table_settings from '@site/static/images/integrations/data-ingestion/c
 import cp_ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpipes/cp_ssh_tunnel.png';
 import Image from '@theme/IdealImage';
 
-# Creating your first Kafka ClickPipe {#creating-your-first-kafka-clickpipe}
-
 > In this guide, we will walk you through the process of creating your first Kafka ClickPipe.
+
+Kafka ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 <VerticalStepper type="numbered" headerLevel="h2">
 
@@ -41,7 +41,7 @@ Fill out the form by providing your ClickPipe with a name, a description (option
 <Image img={cp_step2} alt="Fill out connection details" size="md"/>
 
 ## Configure a schema registry (optional) {#4-configure-your-schema-registry}
-A valid schema is required for Avro streams. See [Schema registries](./02_schema-registries.md) for more details on how to configure a schema registry.
+A valid schema is required for Avro and Protobuf topics. See [Schema registries](./02_schema-registries.md) for more details on how to configure a schema registry.
 
 ## Configure a reverse private endpoint (optional) {#5-configure-reverse-private-endpoint}
 Configure a Reverse Private Endpoint to allow ClickPipes to connect to your Kafka cluster using AWS PrivateLink.

@@ -28,5 +28,5 @@ import Image from '@theme/IdealImage';
 :::
 
 :::note
-バックアップスケジュールを変更すると、一部のバックアップがサービスのデフォルトバックアップに含まれず、ストレージの月額料金が高くなる可能性があります。以下の「[バックアップコストの理解](/cloud/manage/backups/overview#understanding-backup-cost)」セクションを参照してください。
+バックアップスケジュールを変更すると、一部のバックアップがサービスのデフォルトバックアップに含まれず、ストレージの月額料金が高くなる可能性があります。[&quot;バックアップコストの理解&quot;](/cloud/manage/backups/overview#understanding-backup-cost) を参照してください。
 :::

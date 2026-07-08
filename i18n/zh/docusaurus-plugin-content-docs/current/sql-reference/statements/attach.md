@@ -17,7 +17,7 @@ ATTACH TABLE|DICTIONARY|DATABASE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster] 
 
 该查询不会在磁盘上创建任何数据，而是假定数据已经位于合适的位置，只是向服务器添加关于指定表、字典或数据库的信息。执行 `ATTACH` 查询后，服务器将获知该表、字典或数据库的存在。
 
-如果某个表此前已被分离（通过 [DETACH](../../sql-reference/statements/detach.md) 查询），即其结构是已知的，则可以在不定义结构的情况下使用简写语法。
+如果某个表此前已被分离 (通过 [DETACH](../../sql-reference/statements/detach.md) 查询) ，即其结构是已知的，则可以在不定义结构的情况下使用简写语法。
 
 ## 附加已有表 \{#attach-existing-table\}
 
@@ -27,7 +27,7 @@ ATTACH TABLE|DICTIONARY|DATABASE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster] 
 ATTACH TABLE [IF NOT EXISTS] [db.]name [ON CLUSTER cluster]
 ```
 
-在启动服务器时会使用此查询。服务器将表的元数据存储为包含 `ATTACH` 语句的文件，并在启动时直接运行这些语句（部分系统表除外，这些系统表会在服务器上显式创建）。
+在启动服务器时会使用此查询。服务器将表的元数据存储为包含 `ATTACH` 语句的文件，并在启动时直接运行这些语句 (部分系统表除外，这些系统表会在服务器上显式创建) 。
 
 如果表被永久分离，那么在服务器启动时它不会被重新附加，因此你需要显式执行 `ATTACH` 查询。
 
@@ -45,18 +45,14 @@ ATTACH TABLE name FROM 'path/to/data/' (col1 Type1, ...)
 
 **示例**
 
-查询：
-
-```sql
+```sql title="Query"
 DROP TABLE IF EXISTS test;
 INSERT INTO TABLE FUNCTION file('01188_attach/test/data.TSV', 'TSV', 's String, n UInt8') VALUES ('test', 42);
 ATTACH TABLE test FROM '01188_attach/test' (s String, n UInt8) ENGINE = File(TSV);
 SELECT * FROM test;
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 ┌─s────┬──n─┐
 │ test │ 42 │
 └──────┴────┘
@@ -79,7 +75,7 @@ ATTACH TABLE name UUID '<uuid>' (col1 Type1, ...)
 
 请注意，此查询不会影响 ZooKeeper 中该表的数据。这意味着在附加之后，必须使用 `SYSTEM RESTORE REPLICA` 向 ZooKeeper 中添加元数据，或者使用 `SYSTEM DROP REPLICA ... FROM ZKPATH ...` 将其清除。
 
-如果你尝试为现有的 ReplicatedMergeTree 表添加副本，请注意，转换后的 MergeTree 表中的所有本地数据都会被分离（detached）。
+如果你尝试为现有的 ReplicatedMergeTree 表添加副本，请注意，转换后的 MergeTree 表中的所有本地数据都会被分离 (detached) 。
 
 **语法**
 
@@ -99,13 +95,11 @@ SYSTEM RESTORE REPLICA test;
 
 获取该表在 ZooKeeper 中的路径和副本名称：
 
-```sql
+```sql title="Query"
 SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
 ```
 
-结果：
-
-```sql
+```sql title="Response"
 ┌─replica_name─┬─zookeeper_path─────────────────────────────────────────────┐
 │ r1           │ /clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1 │
 └──────────────┴────────────────────────────────────────────────────────────┘
@@ -113,7 +107,7 @@ SELECT replica_name, zookeeper_path FROM system.replicas WHERE table='test';
 
 将表附加为非复制表，并删除该副本在 ZooKeeper 中的数据：
 
-```sql
+```sql title="Query"
 DETACH TABLE test;
 ATTACH TABLE test AS NOT REPLICATED;
 SYSTEM DROP REPLICA 'r1' FROM ZKPATH '/clickhouse/tables/401e6a1f-9bf2-41a3-a900-abb7e94dff98/s1';

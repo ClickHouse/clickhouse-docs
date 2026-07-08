@@ -1,13 +1,11 @@
 ---
-description: 'インテグレーション向けテーブルエンジンに関するドキュメント'
+description: '連携のためのテーブルエンジンのドキュメント'
 sidebar_label: '連携'
 sidebar_position: 40
 slug: /engines/table-engines/integrations/
-title: 'インテグレーション向けテーブルエンジン'
+title: '連携のためのテーブルエンジン'
 doc_type: 'reference'
 ---
-
-# 連携のためのテーブルエンジン \{#table-engines-for-integrations\}
 
 ClickHouse は、テーブルエンジンを含め、外部システムと連携するためのさまざまな手段を提供します。ほかのすべてのテーブルエンジンと同様に、設定は `CREATE TABLE` または `ALTER TABLE` クエリを使用して行います。その後、ユーザーからは、設定された連携は通常のテーブルのように見えますが、そのテーブルへのクエリは外部システムにプロキシされます。このように透過的にクエリできることは、各利用時に独自のクエリ方法の使用を必要とするディクショナリやテーブル関数といった代替的な連携方法と比べた場合、このアプローチの主要な利点の 1 つです。
 
@@ -26,11 +24,12 @@ ClickHouse は、テーブルエンジンを含め、外部システムと連携
 | [DeltaLake テーブルエンジン](/engines/table-engines/integrations/deltalake)                            | このエンジンは、Amazon S3 上の既存の Delta Lake テーブルと読み取り専用で連携します。                                                                                                |
 | [EmbeddedRocksDB テーブルエンジン](/engines/table-engines/integrations/embedded-rocksdb)               | このエンジンを使用すると、ClickHouse を RocksDB と連携できます                                                                                                            |
 | [ExternalDistributed テーブル エンジン](/engines/table-engines/integrations/ExternalDistributed)       | `ExternalDistributed` エンジンを使用すると、リモートサーバー上の MySQL または PostgreSQL に保存されているデータに対して `SELECT` クエリを実行できます。MySQL または PostgreSQL エンジンを引数として指定できるため、分片が可能です。 |
-| [TimeSeries テーブルエンジン](/engines/table-engines/special/time_series)                              | タイムスタンプとタグ（またはラベル）に関連付けられた値の集合として構成される時系列データを格納するテーブルエンジン。                                                                                           |
+| [TimeSeries テーブルエンジン](/engines/table-engines/special/time_series)                              | タイムスタンプとタグ (またはラベル) に関連付けられた値の集合として構成される時系列データを格納するテーブルエンジン。                                                                                         |
 | [HDFS テーブルエンジン](/engines/table-engines/integrations/hdfs)                                      | このエンジンは、HDFS 上のデータを ClickHouse から管理できるようにすることで、Apache Hadoop エコシステムと統合します。File エンジンおよび URL エンジンと類似していますが、Hadoop 固有の機能を備えています。                        |
 | [Hive テーブルエンジン](/engines/table-engines/integrations/hive)                                      | Hive エンジンを使用すると、HDFS 上の Hive テーブルに対して `SELECT` クエリを実行できます。                                                                                           |
 | [Hudi テーブルエンジン](/engines/table-engines/integrations/hudi)                                      | このエンジンは、Amazon S3 上の既存の Apache Hudi テーブルと読み取り専用で統合します。                                                                                               |
 | [Iceberg テーブルエンジン](/engines/table-engines/integrations/iceberg)                                | このエンジンは、Amazon S3、Azure、HDFS、またはローカルに保存された既存の Apache Iceberg テーブルに対する読み取り専用の連携機能を提供します。                                                              |
+| [Paimon テーブルエンジン](/engines/table-engines/integrations/paimon)                                  | このエンジンは、Amazon S3、Azure、HDFS、またはローカルに保存された既存の Apache Paimon テーブルに対する読み取り専用の連携機能を提供します。                                                               |
 | [JDBC テーブルエンジン](/engines/table-engines/integrations/jdbc)                                      | ClickHouse が JDBC 経由で外部データベースに接続できるようにします。                                                                                                           |
 | [Kafka テーブルエンジン](/engines/table-engines/integrations/kafka)                                    | Kafka Table Engine は Apache Kafka と連携して使用でき、データフローのパブリッシュ／サブスクライブ、フォールトトレラントなストレージの構成、ストリームの到着に応じた処理を行うことができます。                                      |
 | [MaterializedPostgreSQL テーブルエンジン](/engines/table-engines/integrations/materialized-postgresql) | PostgreSQL テーブルの初期データダンプを用いて ClickHouse テーブルを作成し、レプリケーションプロセスを開始します。                                                                                 |

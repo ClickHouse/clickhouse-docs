@@ -2,8 +2,8 @@
 slug: /optimize/skipping-indexes
 sidebar_label: 'Индексы пропуска данных'
 sidebar_position: 2
-description: 'Индексы пропуска позволяют ClickHouse пропускать чтение крупных блоков данных, заведомо не содержащих подходящих значений.'
-title: 'Основы индексов пропуска данных в ClickHouse'
+description: 'Индексы пропуска позволяют ClickHouse пропускать чтение значительных фрагментов данных, заведомо не содержащих подходящих значений.'
+title: 'Что такое индексы пропуска данных в ClickHouse'
 doc_type: 'guide'
 keywords: ['индексы пропуска', 'пропуск данных', 'производительность', 'индексация', 'лучшие практики']
 ---
@@ -11,9 +11,6 @@ keywords: ['индексы пропуска', 'пропуск данных', 'п
 import simple_skip from '@site/static/images/guides/best-practices/simple_skip.png';
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
-
-
-# Что такое индексы пропуска данных в ClickHouse \{#understanding-clickhouse-data-skipping-indexes\}
 
 ## Введение \{#introduction\}
 
@@ -32,7 +29,7 @@ import Image from '@theme/IdealImage';
 * Имя индекса. Имя индекса используется для создания файла индекса в каждом разделе. Также оно требуется как параметр при удалении или материализации индекса.
 * Выражение индекса. Выражение индекса используется для вычисления набора значений, сохраняемых в индексе. Это может быть комбинация столбцов, простых операторов и/или подмножества функций, определяемых типом индекса.
 * TYPE. Тип индекса определяет способ вычислений, который позволяет решить, можно ли пропустить чтение и вычисление каждого индексного блока.
-* GRANULARITY. Каждый индексируемый блок состоит из GRANULARITY гранул. Например, если гранулярность первичного индекса таблицы — 8192 строки, а гранулярность индекса — 4, каждый индексируемый «блок» будет содержать 32768 строк.
+* GRANULARITY. Каждый индексируемый блок состоит из GRANULARITY гранул. Например, если гранулярность первичного индекса таблицы — 8192 строки, а гранулярность индекса — 4, каждый индексируемый &quot;блок&quot; будет содержать 32768 строк.
 
 Когда пользователь создает индекс пропуска данных, в каталоге каждой части данных таблицы появятся два дополнительных файла.
 
@@ -57,7 +54,9 @@ INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -85,7 +84,9 @@ ALTER TABLE skip_table MATERIALIZE INDEX vix;
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -115,7 +116,6 @@ SET send_logs_level='trace';
 ```sql
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
-
 
 ## Типы индексов пропуска данных \{#skip-index-types\}
 

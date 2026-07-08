@@ -7,8 +7,6 @@ sidebar_label: 'avgMap'
 doc_type: 'reference'
 ---
 
-# avgMap \{#avgmap\}
-
 ## Описание \{#description\}
 
 Комбинатор [`Map`](/sql-reference/aggregate-functions/combinators#-map) может быть применён к функции [`avg`](/sql-reference/aggregate-functions/reference/avg)

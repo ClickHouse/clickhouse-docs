@@ -2,12 +2,10 @@
 title: 'chDB Python API 参考文档'
 sidebar_label: 'Python API'
 slug: /chdb/api/python
-description: 'chDB 的完整 Python API 参考文档'
+description: 'chDB 的完整 Python API 描述'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'api', 'reference']
 doc_type: 'reference'
 ---
-
-# Python API 参考文档 \{#python-api-reference\}
 
 ## 核心查询函数 \{#core-query-functions\}
 

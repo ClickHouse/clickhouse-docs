@@ -2,24 +2,22 @@
 title: 'DataStore アクセサ'
 sidebar_label: 'アクセサ'
 slug: /chdb/datastore/accessors
-description: 'String、DateTime、Array、JSON、URL、IP、Geo 向けアクセサ（185 以上のメソッド）'
+description: '185 以上のメソッドを備えた String、DateTime、Array、JSON、URL、IP、Geo アクセサ'
 keywords: ['chdb', 'datastore', 'accessor', 'str', 'dt', 'arr', 'json', 'url', 'ip', 'geo']
 doc_type: 'reference'
 ---
 
-# DataStore アクセサー \{#datastore-accessors\}
+DataStore は、ドメイン固有の操作のために 185 以上のメソッドを備えた 7 つのアクセサ用ネームスペースを提供します。
 
-DataStore は、ドメイン固有の操作のために 185 以上のメソッドを備えた 7 つのアクセサー用ネームスペースを提供します。
-
-| Accessor | Methods | Description |
-|----------|---------|-------------|
-| `.str` | 56 | 文字列操作 |
-| `.dt` | 42+ | DateTime 操作 |
-| `.arr` | 37 | 配列操作（ClickHouse 固有） |
-| `.json` | 13 | JSON 解析（ClickHouse 固有） |
-| `.url` | 15 | URL 解析（ClickHouse 固有） |
-| `.ip` | 9 | IP アドレス操作（ClickHouse 固有） |
-| `.geo` | 14 | 地理/距離に関する操作（ClickHouse 固有） |
+| Accessor | Methods | Description                  |
+| -------- | ------- | ---------------------------- |
+| `.str`   | 56      | 文字列操作                        |
+| `.dt`    | 42+     | DateTime 操作                  |
+| `.arr`   | 37      | 配列操作 (ClickHouse 固有)         |
+| `.json`  | 13      | JSON 解析 (ClickHouse 固有)      |
+| `.url`   | 15      | URL 解析 (ClickHouse 固有)       |
+| `.ip`    | 9       | IP アドレス操作 (ClickHouse 固有)    |
+| `.geo`   | 14      | 地理/距離に関する操作 (ClickHouse 固有)  |
 
 ---
 

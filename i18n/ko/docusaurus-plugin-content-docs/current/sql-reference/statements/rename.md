@@ -1,18 +1,16 @@
 ---
-description: 'RENAME SQL 문 문서'
+description: 'RENAME Statement 문서'
 sidebar_label: 'RENAME'
 sidebar_position: 48
 slug: /sql-reference/statements/rename
-title: 'RENAME SQL 문'
+title: 'RENAME Statement'
 doc_type: 'reference'
 ---
-
-# RENAME Statement \{#rename-statement\}
 
 데이터베이스, 테이블 또는 딕셔너리의 이름을 변경합니다. 하나의 쿼리에서 여러 개체의 이름을 변경할 수 있습니다.
 여러 개체를 대상으로 하는 `RENAME` 쿼리는 원자적 연산이 아닙니다. 개체 이름을 원자적으로 교환하려면 [EXCHANGE](./exchange.md) 문을 사용하십시오.
 
-**문법**
+**구문**
 
 ```sql
 RENAME [DATABASE|TABLE|DICTIONARY] name TO new_name [,...] [ON CLUSTER cluster]

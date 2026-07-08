@@ -16,13 +16,11 @@ keywords: [
   '数据库连接问题',
   '故障排查指南'
 ]
-title: '常见问题故障排查'
+title: '常见问题排查'
 description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询、内存错误、连接问题和配置问题。'
 ---
 
-# 常见问题排查 \{#troubleshooting-common-issues\}
-
-使用 ClickHouse 时遇到问题了？你可以在这里找到常见问题的解决方案。
+遇到 ClickHouse 问题？可在此查找常见问题的解决方案。
 
 ## 性能和错误 \{#performance-and-errors\}
 

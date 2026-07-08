@@ -1,13 +1,11 @@
 ---
-description: '통합용 테이블 엔진에 대한 문서'
+description: '통합을 위한 테이블 엔진 문서'
 sidebar_label: '통합'
 sidebar_position: 40
 slug: /engines/table-engines/integrations/
-title: '통합용 테이블 엔진'
-doc_type: 'reference'
+title: '통합을 위한 테이블 엔진'
+doc_type: '참고'
 ---
-
-# 통합을 위한 테이블 엔진 \{#table-engines-for-integrations\}
 
 ClickHouse는 테이블 엔진을 포함하여 외부 시스템과 통합하기 위한 다양한 방법을 제공합니다. 다른 모든 테이블 엔진과 마찬가지로 설정은 `CREATE TABLE` 또는 `ALTER TABLE` 쿼리를 사용하여 수행합니다. 이렇게 설정된 통합은 사용자 입장에서는 일반 테이블처럼 보이지만, 해당 테이블에 대한 쿼리는 프록시를 통해 외부 시스템으로 전달됩니다. 이러한 투명한 쿼리 수행 방식은, 매번 사용자 지정 쿼리 방식을 사용해야 하는 딕셔너리(dictionary)나 테이블 함수(table function)와 같은 다른 통합 방법에 비해 이 접근 방식이 가지는 주요 장점 중 하나입니다.
 
@@ -31,6 +29,7 @@ ClickHouse는 테이블 엔진을 포함하여 외부 시스템과 통합하기 
 | [Hive 테이블 엔진](/engines/table-engines/integrations/hive)                                      | Hive 엔진을 사용하면 HDFS Hive 테이블에서 `SELECT` 쿼리를 실행할 수 있습니다.                                                                                       |
 | [Hudi 테이블 엔진](/engines/table-engines/integrations/hudi)                                      | 이 엔진은 Amazon S3에 저장된 Apache Hudi 테이블과 읽기 전용으로 통합할 수 있도록 지원합니다.                                                                               |
 | [Iceberg 테이블 엔진](/engines/table-engines/integrations/iceberg)                                | 이 엔진은 Amazon S3, Azure, HDFS 및 로컬 스토리지에 저장된 기존 Apache Iceberg 테이블과 읽기 전용으로 통합할 수 있도록 지원합니다.                                                  |
+| [Paimon 테이블 엔진](/engines/table-engines/integrations/paimon)                                  | 이 엔진은 Amazon S3, Azure, HDFS 및 로컬 스토리지에 저장된 기존 Apache Paimon 테이블과 읽기 전용으로 통합할 수 있도록 지원합니다.                                                   |
 | [JDBC 테이블 엔진](/engines/table-engines/integrations/jdbc)                                      | 이 엔진을 사용하면 ClickHouse가 JDBC를 통해 외부 데이터베이스에 연결할 수 있습니다.                                                                                       |
 | [Kafka 테이블 엔진](/engines/table-engines/integrations/kafka)                                    | Kafka 테이블 엔진은 Apache Kafka와 통합하여 데이터 스트림을 발행·구독하고, 내결함성 스토리지를 구성하며, 스트림을 실시간으로 처리하는 데 사용할 수 있습니다.                                            |
 | [MaterializedPostgreSQL 테이블 엔진](/engines/table-engines/integrations/materialized-postgresql) | 이 엔진은 PostgreSQL 테이블의 초기 데이터 덤프를 기반으로 ClickHouse 테이블을 생성하고, 이어서 복제(replication) 프로세스를 시작합니다.                                                 |

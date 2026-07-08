@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Первичные индексы'
 sidebar_position: 1
-description: 'В этом руководстве мы детально углубимся в индексацию в ClickHouse.'
+description: 'В этом руководстве мы подробно рассмотрим индексацию в ClickHouse.'
 title: 'Практическое введение в первичные индексы ClickHouse'
 slug: /guides/best-practices/sparse-primary-indexes
 show_related_blogs: true
@@ -33,9 +33,6 @@ import sparsePrimaryIndexes14b from '@site/static/images/guides/best-practices/s
 import sparsePrimaryIndexes15a from '@site/static/images/guides/best-practices/sparse-primary-indexes-15a.png';
 import sparsePrimaryIndexes15b from '@site/static/images/guides/best-practices/sparse-primary-indexes-15b.png';
 import Image from '@theme/IdealImage';
-
-
-# Практическое введение в первичные индексы ClickHouse \{#a-practical-introduction-to-primary-indexes-in-clickhouse\}
 
 ## Введение \{#introduction\}
 
@@ -413,78 +410,69 @@ ClickHouse — это <a href="https://clickhouse.com/docs/introduction/distinct
   :::
 
 <details>
-    <summary>
+  <summary>
     Изучение содержимого первичного индекса
-    </summary>
-    <p>
+  </summary>
 
-В самоуправляемом кластере ClickHouse мы можем использовать <a href="https://clickhouse.com/docs/sql-reference/table-functions/file/" target="_blank">табличную функцию file</a> для изучения содержимого первичного индекса нашей примерной таблицы.
+  <p>
+    В самоуправляемом кластере ClickHouse мы можем использовать <a href="https://clickhouse.com/docs/sql-reference/table-functions/file/" target="_blank">табличную функцию file</a> для изучения содержимого первичного индекса нашей примерной таблицы.
 
-Для этого сначала нужно скопировать файл первичного индекса в <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-user_files_path" target="_blank">user_files_path</a> одного из узлов работающего кластера:
-<ul>
-<li>Шаг 1: Получить путь к части (part), которая содержит файл первичного индекса</li>
-`
-SELECT path FROM system.parts WHERE table = 'hits_UserID_URL' AND active = 1
-`
+    Для этого сначала нужно скопировать файл первичного индекса в <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#user_files_path" target="_blank">user&#95;files&#95;path</a> одного из узлов работающего кластера:
 
-на тестовой машине возвращает `/Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4`.
+    <ul>
+      <li>Шаг 1: Получить путь к части (part), которая содержит файл первичного индекса</li>
+      `SELECT path FROM system.parts WHERE table = 'hits_UserID_URL' AND active = 1`
 
-<li>Шаг 2: Получить user_files_path</li>
-<a href="https://github.com/ClickHouse/ClickHouse/blob/22.12/programs/server/config.xml#L505" target="_blank">Значение user_files_path по умолчанию</a> в Linux —
-`/var/lib/clickhouse/user_files/`
+      на тестовой машине возвращает `/Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4`.
 
-в Linux можно проверить, изменялось ли оно: `$ grep user_files_path /etc/clickhouse-server/config.xml`
+      <li>Шаг 2: Получить user&#95;files&#95;path</li>
+      <a href="https://github.com/ClickHouse/ClickHouse/blob/22.12/programs/server/config.xml#L505" target="_blank">Значение user&#95;files&#95;path по умолчанию</a> в Linux —
+      `/var/lib/clickhouse/user_files/`
 
-На тестовой машине путь — `/Users/tomschreiber/Clickhouse/user_files/`
+      в Linux можно проверить, изменялось ли оно: `$ grep user_files_path /etc/clickhouse-server/config.xml`
 
-<li>Шаг 3: Скопировать файл первичного индекса в user_files_path</li>
+      На тестовой машине путь — `/Users/tomschreiber/Clickhouse/user_files/`
 
-`cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx`
+      <li>Шаг 3: Скопировать файл первичного индекса в user&#95;files&#95;path</li>
 
-</ul>
+      `cp /Users/tomschreiber/Clickhouse/store/85f/85f4ee68-6e28-4f08-98b1-7d8affa1d88c/all_1_9_4/primary.idx /Users/tomschreiber/Clickhouse/user_files/primary-hits_UserID_URL.idx`
+    </ul>
 
-<br/>
-Теперь мы можем изучить содержимое первичного индекса с помощью SQL:
-<ul>
-<li>Получить число записей</li>
-`
-SELECT count( )<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String');
-`
-возвращает `1083`
+    <br />
 
-<li>Получить первые две метки индекса</li>
-`
-SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 0, 2;
-`
+    Теперь мы можем изучить содержимое первичного индекса с помощью SQL:
 
-возвращает
+    <ul>
+      <li>Получить число записей</li>
+      `SELECT count( )<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String');`
+      возвращает `1083`
 
-`
-240923, http://showtopics.html%3...<br/>
-4073710, http://mk.ru&pos=3_0
-`
+      <li>Получить первые две метки индекса</li>
+      `SELECT UserID, URL<br/>FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 0, 2;`
 
-<li>Получить последнюю метку индекса</li>
-`
-SELECT UserID, URL FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;
-`
-возвращает
-`
-4292714039 │ http://sosyal-mansetleri...
-`
-</ul>
-<br/>
-Это в точности соответствует нашей диаграмме содержимого первичного индекса для нашей примерной таблицы:
+      возвращает
 
-</p>
+      `240923, http://showtopics.html%3...<br/>
+      4073710, http://mk.ru&pos=3_0`
+
+      <li>Получить последнюю метку индекса</li>
+      `SELECT UserID, URL FROM file('primary-hits_UserID_URL.idx', 'RowBinary', 'UserID UInt32, URL String')<br/>LIMIT 1082, 1;`
+      возвращает
+      `4292714039 │ http://sosyal-mansetleri...`
+    </ul>
+
+    <br />
+
+    Это в точности соответствует нашей диаграмме содержимого первичного индекса для нашей примерной таблицы:
+  </p>
 </details>
 
 Записи первичного ключа называются метками индекса, потому что каждая запись индекса отмечает начало определённого диапазона данных. В частности, для примерной таблицы:
 
-- Метки индекса по UserID:
+* Метки индекса по UserID:
 
-  Сохранённые значения `UserID` в первичном индексе отсортированы по возрастанию.<br/>
-  Соответственно, «метка 1» на диаграмме выше означает, что значения `UserID` во всех строках таблицы в грануле 1 и во всех последующих гранулах гарантированно больше либо равны 4&nbsp;073&nbsp;710.
+  Сохранённые значения `UserID` в первичном индексе отсортированы по возрастанию.<br />
+  Соответственно, «метка 1» на диаграмме выше означает, что значения `UserID` во всех строках таблицы в грануле 1 и во всех последующих гранулах гарантированно больше либо равны 4 073 710.
 
 [Как мы увидим позже](#the-primary-index-is-used-for-selecting-granules), этот глобальный порядок позволяет ClickHouse <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">использовать алгоритм двоичного поиска</a> по меткам индекса для первого столбца ключа, когда запрос фильтрует по первому столбцу первичного ключа.
 
@@ -535,7 +523,7 @@ Processed 8.19 thousand rows,
 
 Теперь вывод клиента ClickHouse показывает, что вместо полного сканирования таблицы в ClickHouse было передано всего 8,19 тысячи строк.
 
-Если включено <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#server_configuration_parameters-logger" target="_blank">трассировочное логирование</a>, то в файле журнала сервера ClickHouse видно, что ClickHouse выполнял <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">двоичный поиск</a> по 1083 меткам индекса UserID, чтобы определить гранулы, которые потенциально могут содержать строки со значением столбца UserID `749927693`. На это требуется 19 шагов со средней временной сложностью `O(log2 n)`:
+Если включено <a href="https://clickhouse.com/docs/operations/server-configuration-parameters/settings/#logger" target="_blank">трассировочное логирование</a>, то в файле журнала сервера ClickHouse видно, что ClickHouse выполнял <a href="https://github.com/ClickHouse/ClickHouse/blob/22.3/src/Storages/MergeTree/MergeTreeDataSelectExecutor.cpp#L1452" target="_blank">двоичный поиск</a> по 1083 меткам индекса UserID, чтобы определить гранулы, которые потенциально могут содержать строки со значением столбца UserID `749927693`. На это требуется 19 шагов со средней временной сложностью `O(log2 n)`:
 
 ```response
 ...Executor): Key condition: (column 0 in [749927693, 749927693])
@@ -575,7 +563,6 @@ LIMIT 10;
 ```
 
 Ответ будет выглядеть так:
-
 
 ```response
 ┌─explain───────────────────────────────────────────────────────────────────────────────┐

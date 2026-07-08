@@ -1,15 +1,13 @@
 ---
-title: '객체 스토리지 사용하기'
-description: '객체 스토리지에서 ClickHouse Cloud로 데이터 이동하기'
-keywords: ['객체 스토리지', 'S3', 'azure blob', 'gcs', '마이그레이션']
+title: '클라우드 객체 스토리지에서 ClickHouse Cloud로 데이터 이동'
+description: '객체 스토리지에서 ClickHouse Cloud로 데이터 이동'
+keywords: ['객체 스토리지', 's3', 'azure blob', 'gcs', '마이그레이션']
 slug: /integrations/migration/object-storage-to-clickhouse
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import object_storage_01 from '@site/static/images/integrations/migration/object-storage-01.png';
-
-# 클라우드 객체 스토리지에서 ClickHouse Cloud로 데이터 이동 \{#move-data-from-cloud-object-storage-to-clickhouse-cloud\}
 
 <Image img={object_storage_01} size="md" alt="자가 관리형 ClickHouse 마이그레이션" />
 

@@ -1,18 +1,18 @@
 ---
-description: '호텔, 레스토랑 및 카페의 메뉴와 그 안에 포함된 요리와 가격에 대한 역사적 데이터 130만 개 레코드가 포함된 데이터세트입니다.'
-sidebar_label: 'New York Public Library "what''s on the menu?" 데이터세트'
+description: '호텔, 레스토랑 및 카페의 메뉴와 그 안에 포함된 요리와 가격에 대한 역사적 데이터 130만 개 레코드가 포함된 데이터셋입니다.'
+sidebar_label: 'New York Public Library "what''s on the menu?" 데이터셋'
 slug: /getting-started/example-datasets/menus
-title: 'New York Public Library "What''s on the Menu?" 데이터세트'
+title: 'New York Public Library "What''s on the Menu?" 데이터셋'
 doc_type: 'guide'
 keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
-이 데이터세트는 New York Public Library에서 제작했습니다. 호텔, 레스토랑 및 카페의 메뉴와 각 요리 및 그 가격에 대한 역사적 데이터를 포함합니다.
+이 데이터셋는 New York Public Library에서 제작했습니다. 호텔, 레스토랑 및 카페의 메뉴와 각 요리 및 그 가격에 대한 역사적 데이터를 포함합니다.
 
-출처: http://menus.nypl.org/data  
+출처: http://menus.nypl.org/data
 데이터는 퍼블릭 도메인입니다.
 
-이 데이터는 도서관 아카이브에서 가져온 것이므로 불완전할 수 있고 통계 분석에는 다소 어려울 수 있습니다. 그럼에도 불구하고 매우 흥미로운 데이터입니다.  
+이 데이터는 도서관 아카이브에서 가져온 것이므로 불완전할 수 있고 통계 분석에는 다소 어려울 수 있습니다. 그럼에도 불구하고 매우 흥미로운 데이터입니다.
 데이터 크기는 메뉴에 포함된 요리에 대한 약 130만 개의 레코드에 불과합니다. ClickHouse 기준으로는 매우 작은 데이터 양이지만, 여전히 좋은 예시입니다.
 
 ## 데이터셋 다운로드 \{#download-dataset\}
@@ -189,28 +189,21 @@ FROM menu_item
 
 ## 데이터 검증 \{#validate-data\}
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT count() FROM menu_item_denorm;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─count()─┐
 │ 1329175 │
 └─────────┘
 ```
 
-
 ## 몇 개의 쿼리를 실행해 봅니다 \{#run-queries\}
 
 ### 요리의 과거 평균 가격 \{#query-averaged-historical-prices\}
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -222,9 +215,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 100, 100)─┐
 │ 1850 │     618 │                  1.5 │ █▍                           │
 │ 1860 │    1634 │                 1.29 │ █▎                           │
@@ -248,12 +239,9 @@ ORDER BY d ASC;
 
 지나치게 곧이곧대로 받아들이지 마십시오.
 
-
 ### 버거 가격 \{#query-burger-prices\}
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -265,9 +253,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)───────────┐
 │ 1880 │       2 │                 0.42 │ ▋                                     │
 │ 1890 │       7 │                 0.85 │ █▋                                    │
@@ -286,12 +272,9 @@ ORDER BY d ASC;
 └──────┴─────────┴──────────────────────┴───────────────────────────────────────┘
 ```
 
-
 ### 보드카 \{#query-vodka\}
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -303,9 +286,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)─┐
 │ 1910 │       2 │                    0 │                             │
 │ 1920 │       1 │                  0.3 │ ▌                           │
@@ -321,14 +302,11 @@ ORDER BY d ASC;
 
 보드카를 찾으려면 `ILIKE '%vodka%'`라고 작성해야 하며, 이 자체로도 꽤나 의미심장합니다.
 
-
 ### 캐비어 \{#query-caviar\}
 
 캐비어 가격을 출력합니다. 또한 캐비어가 들어간 임의의 요리 이름도 출력합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -341,9 +319,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-실행 결과:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)──────┬─any(dish_name)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 1090 │       1 │                    0 │                                  │ Caviar                                                                                                                              │
 │ 1880 │       3 │                    0 │                                  │ Caviar                                                                                                                              │
@@ -364,7 +340,6 @@ ORDER BY d ASC;
 ```
 
 그래도 캐비어에 보드카는 곁들여 나오네요. 꽤 좋습니다.
-
 
 ## 온라인 플레이그라운드 \{#playground\}
 

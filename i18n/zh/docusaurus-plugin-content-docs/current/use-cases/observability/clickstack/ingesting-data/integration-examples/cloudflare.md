@@ -10,7 +10,6 @@ keywords: ['Cloudflare', '日志', 'ClickStack', 'ClickPipes', 'S3', 'HTTP', 'Lo
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import clickpipe_s3 from '@site/static/images/clickstack/cloudflare/clickpipe-s3.png';
 import continuous_ingestion from '@site/static/images/clickstack/cloudflare/continuous-ingestion.png';
 import parse_information from '@site/static/images/clickstack/cloudflare/parse-information.png';
@@ -24,12 +23,10 @@ import finish_import from '@site/static/images/clickstack/cloudflare/finish-impo
 import example_dashboard from '@site/static/images/clickstack/cloudflare/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Cloudflare 日志 \{#cloudflare-clickstack\}
-
 :::note[简而言之]
-本指南说明如何使用 ClickPipes 将 Cloudflare 日志摄取到 ClickStack 中。Cloudflare Logpush 会将日志写入 S3，ClickPipes 则会持续将新文件摄取到 ClickHouse。与大多数使用 OpenTelemetry Collector 的 ClickStack 集成指南不同，本指南使用 [ClickPipes](/integrations/clickpipes) 直接从 S3 拉取数据。
+本指南介绍如何使用 ClickPipes 将 Cloudflare 日志摄取到 ClickStack。Cloudflare Logpush 会将日志写入 S3，而 ClickPipes 会持续将新文件摄取到 ClickHouse。与大多数使用 OpenTelemetry Collector 的 ClickStack 集成指南不同，本指南使用 [ClickPipes](/integrations/clickpipes) 直接从 S3 拉取数据。
 
-如果您想先查看这些仪表板，再配置生产环境摄取，可以使用演示数据集。
+如果您想在配置生产环境摄取之前先浏览仪表盘，可使用演示数据集。
 :::
 
 ## 概述 \{#overview\}
@@ -200,7 +197,7 @@ https://YOUR_CLICKHOUSE_HOST:8443/?query=INSERT+INTO+cloudflare_http_logs+FORMAT
 ## 仪表板和可视化 \{#dashboards\}
 
 <VerticalStepper headerLevel="h4">
-  #### <TrackedLink href={useBaseUrl('/examples/cloudflare-logs-dashboard.json')} download="cloudflare-logs-dashboard.json" eventName="docs.cloudflare_logs_monitoring.dashboard_download">下载</TrackedLink>仪表板配置文件 \{#download\}
+  #### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/cloudflare-logs-dashboard.json'} download="cloudflare-logs-dashboard.json" eventName="docs.cloudflare_logs_monitoring.dashboard_download">下载</TrackedLink>仪表板配置文件 \{#download\}
 
   #### 导入仪表板 \{#import-dashboard\}
 

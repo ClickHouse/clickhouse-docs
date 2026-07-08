@@ -1,23 +1,19 @@
 ---
 sidebar_label: 'PostgreSQL CDC'
 slug: /cloud/reference/billing/clickpipes/postgres-cdc
-title: 'PostgreSQL CDC를 위한 ClickPipes'
-description: 'PostgreSQL CDC ClickPipes에 대한 과금 개요'
+title: 'ClickPipes for PostgreSQL CDC'
+description: 'PostgreSQL CDC ClickPipes 과금 개요'
 doc_type: 'reference'
-keywords: ['과금', 'clickpipes', 'CDC 요금', '비용', '요금']
+keywords: ['과금', 'clickpipes', 'cdc 가격', '비용', '가격']
 ---
-
-
-
-# ClickPipes for PostgreSQL CDC \{#clickpipes-for-postgresql-cdc\}
 
 이 섹션에서는 ClickPipes에서 Postgres Change Data Capture (CDC)
 커넥터에 대한 가격 책정 모델을 설명합니다. 이 모델을 설계할 때의 목표는 다음의 핵심 비전을 유지하면서
 가격 경쟁력을 매우 높게 유지하는 것이었습니다.
 
 > 사용자가 Postgres에서 ClickHouse로 데이터를 이동하여
-실시간 분석을 수행하는 과정을 원활하고
-경제적으로 만들기.
+> 실시간 분석을 수행하는 과정을 원활하고
+> 경제적으로 만들기.
 
 이 커넥터는 외부 ETL 도구 및 다른 데이터베이스 플랫폼의 유사 기능과 비교하여
 **비용 면에서 5배 이상 효율적**입니다.

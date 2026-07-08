@@ -1,5 +1,6 @@
 ---
-description: 'ClickHouse C++ クライアントライブラリおよび u-server フレームワークとの統合に関するドキュメント'
+description: 'ClickHouse C++ クライアントライブラリおよび
+  u-server フレームワークとの統合に関するドキュメント'
 sidebar_label: 'C++'
 sidebar_position: 24
 slug: /interfaces/cpp
@@ -7,12 +8,10 @@ title: 'C++ クライアントライブラリ'
 doc_type: 'reference'
 ---
 
-# C++ クライアントライブラリ \{#c-client-library\}
-
 `clickhouse-cpp` は ClickHouse 用の公式 C++ クライアントライブラリであり、ClickHouse のネイティブバイナリプロトコルを用いて、高速かつ型安全なインターフェースを提供します。
 
 ビルド手順、使用例、および追加のドキュメントは、プロジェクトの GitHub リポジトリで参照できます:
-[https://github.com/ClickHouse/clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp)。 
+[https://github.com/ClickHouse/clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp)。
 
 :::note
 このライブラリは現在も活発に開発されています。すでに ClickHouse の中核となる機能はサポートされていますが、

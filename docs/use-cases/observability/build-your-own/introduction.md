@@ -1,5 +1,5 @@
 ---
-title: 'Introduction'
+title: 'Using ClickHouse for observability'
 description: 'Using ClickHouse as an observability solution'
 slug: /use-cases/observability/introduction
 keywords: ['observability', 'logs', 'traces', 'metrics', 'OpenTelemetry', 'Grafana', 'OTel']
@@ -10,8 +10,6 @@ doc_type: 'guide'
 import observability_1 from '@site/static/images/use-cases/observability/observability-1.png';
 import observability_2 from '@site/static/images/use-cases/observability/observability-2.png';
 import Image from '@theme/IdealImage';
-
-# Using ClickHouse for observability
 
 ## Introduction {#introduction}
 

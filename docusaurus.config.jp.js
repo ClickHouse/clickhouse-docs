@@ -56,7 +56,7 @@ const config = {
   organizationName: "ClickHouse",
   trailingSlash: false,
   i18n: {
-    defaultLocale: "jp",
+    defaultLocale: "en",
     locales: ["en", "jp", "zh", "ru", "ko"],
     path: "i18n",
     localeConfigs: {
@@ -298,6 +298,10 @@ const config = {
     blogSidebarLink: "/docs/knowledgebase", // Used for KB article page
     galaxyApiEndpoint:
       process.env.NEXT_PUBLIC_GALAXY_API_ENDPOINT || "http://localhost:3000",
+    strapiUrl:
+      process.env.CLIENT_STRAPI_URL || "https://staging-cms.clickhouse.com",
+    strapiToken:
+      process.env.CLIENT_STRAPI_TOKEN || "",
   },
 };
 

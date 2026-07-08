@@ -1,6 +1,6 @@
 ---
 sidebar_position: 1
-sidebar_label: '베타 기능 및 실험적 기능'
+sidebar_label: '베타 및 실험적 기능'
 title: '베타 및 실험적 기능'
 description: 'ClickHouse에는 베타 기능과 실험적 기능이 있습니다. 이 문서에서는 해당 개념을 정의합니다.'
 slug: /beta-and-experimental-features
@@ -49,30 +49,32 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 
 ## 베타 설정 \{#beta-settings\}
 
-| 이름                                                                                                                                     | 기본값       |
-| -------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| [geotoh3&#95;argument&#95;order](/operations/settings/settings#geotoh3_argument_order)                                                 | `lat_lon` |
-| [enable&#95;lightweight&#95;update](/operations/settings/settings#enable_lightweight_update)                                           | `1`       |
-| [allow&#95;experimental&#95;correlated&#95;subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries)         | `1`       |
-| [parallel&#95;replicas&#95;count](/operations/settings/settings#parallel_replicas_count)                                               | `0`       |
-| [parallel&#95;replica&#95;offset](/operations/settings/settings#parallel_replica_offset)                                               | `0`       |
-| [parallel&#95;replicas&#95;custom&#95;key](/operations/settings/settings#parallel_replicas_custom_key)                                 | ``        |
-| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower) | `0`       |
-| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper) | `0`       |
-| [parallel&#95;replicas&#95;filter&#95;pushdown](/operations/settings/settings#parallel_replicas_filter_pushdown)                       | `0`       |
-| [allow&#95;experimental&#95;database&#95;iceberg](/operations/settings/settings#allow_experimental_database_iceberg)                   | `0`       |
-| [allow&#95;experimental&#95;database&#95;unity&#95;catalog](/operations/settings/settings#allow_experimental_database_unity_catalog)   | `0`       |
-| [allow&#95;experimental&#95;database&#95;glue&#95;catalog](/operations/settings/settings#allow_experimental_database_glue_catalog)     | `0`       |
-| [session&#95;timezone](/operations/settings/settings#session_timezone)                                                                 | ``        |
-| [low&#95;priority&#95;query&#95;wait&#95;time&#95;ms](/operations/settings/settings#low_priority_query_wait_time_ms)                   | `1000`    |
-| [allow&#95;experimental&#95;delta&#95;kernel&#95;rs](/operations/settings/settings#allow_experimental_delta_kernel_rs)                 | `1`       |
-| [allow&#95;insert&#95;into&#95;iceberg](/operations/settings/settings#allow_insert_into_iceberg)                                       | `0`       |
-| [enable&#95;join&#95;runtime&#95;filters](/operations/settings/settings#enable_join_runtime_filters)                                   | `1`       |
+| 이름                                                                                                                                           | 기본값       |
+| -------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| [geotoh3&#95;argument&#95;order](/operations/settings/settings#geotoh3_argument_order)                                                       | `lat_lon` |
+| [enable&#95;lightweight&#95;update](/operations/settings/settings#enable_lightweight_update)                                                 | `1`       |
+| [allow&#95;experimental&#95;correlated&#95;subqueries](/operations/settings/settings#allow_experimental_correlated_subqueries)               | `1`       |
+| [parallel&#95;replicas&#95;count](/operations/settings/settings#parallel_replicas_count)                                                     | `0`       |
+| [parallel&#95;replica&#95;offset](/operations/settings/settings#parallel_replica_offset)                                                     | `0`       |
+| [parallel&#95;replicas&#95;custom&#95;key](/operations/settings/settings#parallel_replicas_custom_key)                                       | ``        |
+| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;lower](/operations/settings/settings#parallel_replicas_custom_key_range_lower)       | `0`       |
+| [parallel&#95;replicas&#95;custom&#95;key&#95;range&#95;upper](/operations/settings/settings#parallel_replicas_custom_key_range_upper)       | `0`       |
+| [parallel&#95;replicas&#95;filter&#95;pushdown](/operations/settings/settings#parallel_replicas_filter_pushdown)                             | `0`       |
+| [parallel&#95;replicas&#95;allow&#95;view&#95;over&#95;mergetree](/operations/settings/settings#parallel_replicas_allow_view_over_mergetree) | `0`       |
+| [allow&#95;experimental&#95;database&#95;iceberg](/operations/settings/settings#allow_experimental_database_iceberg)                         | `0`       |
+| [allow&#95;experimental&#95;database&#95;unity&#95;catalog](/operations/settings/settings#allow_experimental_database_unity_catalog)         | `0`       |
+| [allow&#95;experimental&#95;database&#95;glue&#95;catalog](/operations/settings/settings#allow_experimental_database_glue_catalog)           | `0`       |
+| [session&#95;timezone](/operations/settings/settings#session_timezone)                                                                       | ``        |
+| [low&#95;priority&#95;query&#95;wait&#95;time&#95;ms](/operations/settings/settings#low_priority_query_wait_time_ms)                         | `1000`    |
+| [allow&#95;experimental&#95;delta&#95;kernel&#95;rs](/operations/settings/settings#allow_experimental_delta_kernel_rs)                       | `1`       |
+| [allow&#95;insert&#95;into&#95;iceberg](/operations/settings/settings#allow_insert_into_iceberg)                                             | `0`       |
+| [enable&#95;join&#95;runtime&#95;filters](/operations/settings/settings#enable_join_runtime_filters)                                         | `1`       |
 
 ## 실험적 설정 \{#experimental-settings\}
 
 | 이름                                                                                                                                                                                                                                  | 기본값                     |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| [allow&#95;commit&#95;order&#95;projection](/operations/settings/merge-tree-settings#allow_commit_order_projection)                                                                                                                 | `0`                     |
 | [allow&#95;experimental&#95;replacing&#95;merge&#95;with&#95;cleanup](/operations/settings/merge-tree-settings#allow_experimental_replacing_merge_with_cleanup)                                                                     | `0`                     |
 | [allow&#95;experimental&#95;reverse&#95;key](/operations/settings/merge-tree-settings#allow_experimental_reverse_key)                                                                                                               | `0`                     |
 | [allow&#95;remote&#95;fs&#95;zero&#95;copy&#95;replication](/operations/settings/merge-tree-settings#allow_remote_fs_zero_copy_replication)                                                                                         | `0`                     |
@@ -90,10 +92,13 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 | [remote&#95;fs&#95;zero&#95;copy&#95;zookeeper&#95;path](/operations/settings/merge-tree-settings#remote_fs_zero_copy_zookeeper_path)                                                                                               | `/clickhouse/zero_copy` |
 | [remove&#95;rolled&#95;back&#95;parts&#95;immediately](/operations/settings/merge-tree-settings#remove_rolled_back_parts_immediately)                                                                                               | `1`                     |
 | [shared&#95;merge&#95;tree&#95;virtual&#95;parts&#95;discovery&#95;batch](/operations/settings/merge-tree-settings#shared_merge_tree_virtual_parts_discovery_batch)                                                                 | `1`                     |
+| [query&#95;plan&#95;optimize&#95;join&#95;order&#95;randomize](/operations/settings/settings#query_plan_optimize_join_order_randomize)                                                                                              | `0`                     |
+| [enable&#95;join&#95;transitive&#95;predicates](/operations/settings/settings#enable_join_transitive_predicates)                                                                                                                    | `0`                     |
 | [ast&#95;fuzzer&#95;runs](/operations/settings/settings#ast_fuzzer_runs)                                                                                                                                                            | `0`                     |
 | [ast&#95;fuzzer&#95;any&#95;query](/operations/settings/settings#ast_fuzzer_any_query)                                                                                                                                              | `0`                     |
 | [allow&#95;fuzz&#95;query&#95;functions](/operations/settings/settings#allow_fuzz_query_functions)                                                                                                                                  | `0`                     |
 | [enable&#95;materialized&#95;cte](/operations/settings/settings#enable_materialized_cte)                                                                                                                                            | `0`                     |
+| [analyzer&#95;inline&#95;views](/operations/settings/settings#analyzer_inline_views)                                                                                                                                                | `0`                     |
 | [allow&#95;experimental&#95;kafka&#95;offsets&#95;storage&#95;in&#95;keeper](/operations/settings/settings#allow_experimental_kafka_offsets_storage_in_keeper)                                                                      | `0`                     |
 | [allow&#95;experimental&#95;delta&#95;lake&#95;writes](/operations/settings/settings#allow_experimental_delta_lake_writes)                                                                                                          | `0`                     |
 | [automatic&#95;parallel&#95;replicas&#95;mode](/operations/settings/settings#automatic_parallel_replicas_mode)                                                                                                                      | `0`                     |
@@ -104,6 +109,8 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 | [allow&#95;experimental&#95;nlp&#95;functions](/operations/settings/settings#allow_experimental_nlp_functions)                                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;hash&#95;functions](/operations/settings/settings#allow_experimental_hash_functions)                                                                                                                    | `0`                     |
 | [allow&#95;experimental&#95;time&#95;series&#95;table](/operations/settings/settings#allow_experimental_time_series_table)                                                                                                          | `0`                     |
+| [unique&#95;key&#95;max&#95;encoded&#95;size](/operations/settings/settings#unique_key_max_encoded_size)                                                                                                                            | `256`                   |
+| [allow&#95;experimental&#95;unique&#95;key](/operations/settings/settings#allow_experimental_unique_key)                                                                                                                            | `0`                     |
 | [allow&#95;experimental&#95;codecs](/operations/settings/settings#allow_experimental_codecs)                                                                                                                                        | `0`                     |
 | [throw&#95;on&#95;unsupported&#95;query&#95;inside&#95;transaction](/operations/settings/settings#throw_on_unsupported_query_inside_transaction)                                                                                    | `1`                     |
 | [wait&#95;changes&#95;become&#95;visible&#95;after&#95;commit&#95;mode](/operations/settings/settings#wait_changes_become_visible_after_commit_mode)                                                                                | `wait_unknown`          |
@@ -114,6 +121,8 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 | [join&#95;to&#95;sort&#95;maximum&#95;table&#95;rows](/operations/settings/settings#join_to_sort_maximum_table_rows)                                                                                                                | `10000`                 |
 | [allow&#95;experimental&#95;join&#95;right&#95;table&#95;sorting](/operations/settings/settings#allow_experimental_join_right_table_sorting)                                                                                        | `0`                     |
 | [allow&#95;experimental&#95;json&#95;lazy&#95;type&#95;hints](/operations/settings/settings#allow_experimental_json_lazy_type_hints)                                                                                                | `0`                     |
+| [enable&#95;streaming&#95;queries](/operations/settings/settings#enable_streaming_queries)                                                                                                                                          | `0`                     |
+| [allow&#95;experimental&#95;text&#95;index&#95;lazy&#95;apply](/operations/settings/settings#allow_experimental_text_index_lazy_apply)                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;window&#95;view](/operations/settings/settings#allow_experimental_window_view)                                                                                                                          | `0`                     |
 | [window&#95;view&#95;clean&#95;interval](/operations/settings/settings#window_view_clean_interval)                                                                                                                                  | `60`                    |
 | [window&#95;view&#95;heartbeat&#95;interval](/operations/settings/settings#window_view_heartbeat_interval)                                                                                                                          | `15`                    |
@@ -126,18 +135,22 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 | [allow&#95;experimental&#95;kusto&#95;dialect](/operations/settings/settings#allow_experimental_kusto_dialect)                                                                                                                      | `0`                     |
 | [allow&#95;experimental&#95;prql&#95;dialect](/operations/settings/settings#allow_experimental_prql_dialect)                                                                                                                        | `0`                     |
 | [allow&#95;experimental&#95;polyglot&#95;dialect](/operations/settings/settings#allow_experimental_polyglot_dialect)                                                                                                                | `0`                     |
-| [polyglot&#95;dialect](/operations/settings/settings#polyglot_dialect)                                                                                                                                                              | ``                      |
+| [polyglot&#95;dialect](/operations/settings/settings#polyglot_dialect)                                                                                                                                                              | &#96;&#96;              |
 | [enable&#95;adaptive&#95;memory&#95;spill&#95;scheduler](/operations/settings/settings#enable_adaptive_memory_spill_scheduler)                                                                                                      | `0`                     |
+| [allow&#95;experimental&#95;cleanup&#95;old&#95;data&#95;files&#95;compaction](/operations/settings/settings#allow_experimental_cleanup_old_data_files_compaction)                                                                  | `0`                     |
 | [allow&#95;experimental&#95;iceberg&#95;compaction](/operations/settings/settings#allow_experimental_iceberg_compaction)                                                                                                            | `0`                     |
+| [allow&#95;iceberg&#95;remove&#95;orphan&#95;files](/operations/settings/settings#allow_iceberg_remove_orphan_files)                                                                                                                | `0`                     |
+| [iceberg&#95;orphan&#95;files&#95;older&#95;than&#95;seconds](/operations/settings/settings#iceberg_orphan_files_older_than_seconds)                                                                                                | `259200`                |
 | [allow&#95;experimental&#95;expire&#95;snapshots](/operations/settings/settings#allow_experimental_expire_snapshots)                                                                                                                | `0`                     |
 | [write&#95;full&#95;path&#95;in&#95;iceberg&#95;metadata](/operations/settings/settings#write_full_path_in_iceberg_metadata)                                                                                                        | `0`                     |
-| [iceberg&#95;metadata&#95;compression&#95;method](/operations/settings/settings#iceberg_metadata_compression_method)                                                                                                                | ``                      |
+| [iceberg&#95;metadata&#95;compression&#95;method](/operations/settings/settings#iceberg_metadata_compression_method)                                                                                                                | &#96;&#96;              |
 | [make&#95;distributed&#95;plan](/operations/settings/settings#make_distributed_plan)                                                                                                                                                | `0`                     |
 | [distributed&#95;plan&#95;execute&#95;locally](/operations/settings/settings#distributed_plan_execute_locally)                                                                                                                      | `0`                     |
 | [distributed&#95;plan&#95;default&#95;shuffle&#95;join&#95;bucket&#95;count](/operations/settings/settings#distributed_plan_default_shuffle_join_bucket_count)                                                                      | `8`                     |
 | [distributed&#95;plan&#95;default&#95;reader&#95;bucket&#95;count](/operations/settings/settings#distributed_plan_default_reader_bucket_count)                                                                                      | `8`                     |
-| [distributed&#95;plan&#95;force&#95;exchange&#95;kind](/operations/settings/settings#distributed_plan_force_exchange_kind)                                                                                                          | ``                      |
+| [distributed&#95;plan&#95;force&#95;exchange&#95;kind](/operations/settings/settings#distributed_plan_force_exchange_kind)                                                                                                          | &#96;&#96;              |
 | [distributed&#95;plan&#95;max&#95;rows&#95;to&#95;broadcast](/operations/settings/settings#distributed_plan_max_rows_to_broadcast)                                                                                                  | `20000`                 |
+| [distributed&#95;plan&#95;prefer&#95;replicas&#95;over&#95;workers](/operations/settings/settings#distributed_plan_prefer_replicas_over_workers)                                                                                    | `0`                     |
 | [allow&#95;experimental&#95;ytsaurus&#95;table&#95;engine](/operations/settings/settings#allow_experimental_ytsaurus_table_engine)                                                                                                  | `0`                     |
 | [allow&#95;experimental&#95;ytsaurus&#95;table&#95;function](/operations/settings/settings#allow_experimental_ytsaurus_table_function)                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;ytsaurus&#95;dictionary&#95;source](/operations/settings/settings#allow_experimental_ytsaurus_dictionary_source)                                                                                        | `0`                     |
@@ -150,10 +163,12 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 | [join&#95;runtime&#95;bloom&#95;filter&#95;max&#95;ratio&#95;of&#95;set&#95;bits](/operations/settings/settings#join_runtime_bloom_filter_max_ratio_of_set_bits)                                                                    | `0.7`                   |
 | [rewrite&#95;in&#95;to&#95;join](/operations/settings/settings#rewrite_in_to_join)                                                                                                                                                  | `0`                     |
 | [allow&#95;experimental&#95;time&#95;series&#95;aggregate&#95;functions](/operations/settings/settings#allow_experimental_time_series_aggregate_functions)                                                                          | `0`                     |
-| [promql&#95;database](/operations/settings/settings#promql_database)                                                                                                                                                                | ``                      |
-| [promql&#95;table](/operations/settings/settings#promql_table)                                                                                                                                                                      | ``                      |
+| [promql&#95;database](/operations/settings/settings#promql_database)                                                                                                                                                                | &#96;&#96;              |
+| [promql&#95;table](/operations/settings/settings#promql_table)                                                                                                                                                                      | &#96;&#96;              |
 | [promql&#95;evaluation&#95;time](/operations/settings/settings#promql_evaluation_time)                                                                                                                                              | `auto`                  |
-| [allow&#95;experimental&#95;alias&#95;table&#95;engine](/operations/settings/settings#allow_experimental_alias_table_engine)                                                                                                        | `0`                     |
+| [allow&#95;experimental&#95;paimon&#95;storage&#95;engine](/operations/settings/settings#allow_experimental_paimon_storage_engine)                                                                                                  | `0`                     |
+| [paimon&#95;target&#95;snapshot&#95;id](/operations/settings/settings#paimon_target_snapshot_id)                                                                                                                                    | `-1`                    |
+| [max&#95;consume&#95;snapshots](/operations/settings/settings#max_consume_snapshots)                                                                                                                                                | `0`                     |
 | [use&#95;paimon&#95;partition&#95;pruning](/operations/settings/settings#use_paimon_partition_pruning)                                                                                                                              | `0`                     |
 | [allow&#95;experimental&#95;object&#95;storage&#95;queue&#95;hive&#95;partitioning](/operations/settings/settings#allow_experimental_object_storage_queue_hive_partitioning)                                                        | `0`                     |
 | [query&#95;plan&#95;optimize&#95;join&#95;order&#95;algorithm](/operations/settings/settings#query_plan_optimize_join_order_algorithm)                                                                                              | `greedy`                |
@@ -162,5 +177,15 @@ ClickHouse는 오픈 소스 프로젝트이므로 ClickHouse 직원뿐만 아니
 | [webassembly&#95;udf&#95;max&#95;memory](/operations/settings/settings#webassembly_udf_max_memory)                                                                                                                                  | `134217728`             |
 | [webassembly&#95;udf&#95;max&#95;input&#95;block&#95;size](/operations/settings/settings#webassembly_udf_max_input_block_size)                                                                                                      | `0`                     |
 | [webassembly&#95;udf&#95;max&#95;instances](/operations/settings/settings#webassembly_udf_max_instances)                                                                                                                            | `32`                    |
+| [allow&#95;experimental&#95;ai&#95;functions](/operations/settings/settings#allow_experimental_ai_functions)                                                                                                                        | `0`                     |
+| [ai&#95;function&#95;request&#95;timeout&#95;sec](/operations/settings/settings#ai_function_request_timeout_sec)                                                                                                                    | `60`                    |
+| [ai&#95;function&#95;max&#95;retries](/operations/settings/settings#ai_function_max_retries)                                                                                                                                        | `0`                     |
+| [ai&#95;function&#95;retry&#95;initial&#95;delay&#95;ms](/operations/settings/settings#ai_function_retry_initial_delay_ms)                                                                                                          | `1000`                  |
+| [ai&#95;function&#95;throw&#95;on&#95;error](/operations/settings/settings#ai_function_throw_on_error)                                                                                                                              | `1`                     |
+| [ai&#95;function&#95;max&#95;input&#95;tokens&#95;per&#95;query](/operations/settings/settings#ai_function_max_input_tokens_per_query)                                                                                              | `1000000`               |
+| [ai&#95;function&#95;max&#95;output&#95;tokens&#95;per&#95;query](/operations/settings/settings#ai_function_max_output_tokens_per_query)                                                                                            | `500000`                |
+| [ai&#95;function&#95;max&#95;api&#95;calls&#95;per&#95;query](/operations/settings/settings#ai_function_max_api_calls_per_query)                                                                                                    | `0`                     |
+| [ai&#95;function&#95;throw&#95;on&#95;quota&#95;exceeded](/operations/settings/settings#ai_function_throw_on_quota_exceeded)                                                                                                        | `1`                     |
+| [ai&#95;function&#95;embedding&#95;max&#95;batch&#95;size](/operations/settings/settings#ai_function_embedding_max_batch_size)                                                                                                      | `100`                   |
 
 {/*AUTOGENERATED_END*/ }

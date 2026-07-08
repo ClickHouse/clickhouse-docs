@@ -10,16 +10,13 @@ keywords: ['PostgreSQL', 'Postgres', '指标', 'OTel', 'ClickStack', '数据库�
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/postgres/import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/postgres/postgres-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 PostgreSQL 指标 \{#postgres-metrics-clickstack\}
-
-:::note[TL;DR]
-通过 OTel 的 PostgreSQL 接收器，在 ClickStack 中监控 PostgreSQL 性能指标。包含演示数据集和预置仪表板。
+:::note[简而言之]
+使用 OTel PostgreSQL 接收器在 ClickStack 中监控 PostgreSQL 性能指标。包含演示数据集和预置仪表板。
 :::
 
 ## 集成现有 PostgreSQL \{#existing-postgres\}
@@ -189,7 +186,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-metrics-dashboard.json')} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/postgres-metrics-dashboard.json'} download="postgres-metrics-dashboard.json" eventName="docs.postgres_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
 
 #### 导入预构建的仪表板 \{#import-dashboard\}
 

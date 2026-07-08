@@ -1,14 +1,12 @@
 ---
 slug: /guides/developer/time-series-filling-gaps
-sidebar_label: '시계열 - 누락 구간 채우기'
+sidebar_label: '시계열 - 공백 채우기'
 sidebar_position: 10
-description: '시계열 데이터의 누락 구간 채우기.'
-keywords: ['시계열', '누락 구간 채우기']
-title: '시계열 데이터의 누락 구간 채우기'
+description: '시계열 데이터의 공백 채우기.'
+keywords: ['시계열', '공백 채우기']
+title: '시계열 데이터의 공백 채우기'
 doc_type: 'guide'
 ---
-
-# 시계열 데이터의 공백 채우기 \{#filling-gaps-in-time-series-data\}
 
 시계열 데이터를 다룰 때 누락된 데이터나 비활성 구간 때문에 데이터에 공백이 생길 수 있습니다.
 일반적으로는 데이터를 쿼리할 때 이러한 공백이 없기를 바랍니다. 이럴 때 `WITH FILL` 절이 유용하게 사용될 수 있습니다.

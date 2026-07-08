@@ -24,17 +24,21 @@ import edit_connection from '@site/static/images/use-cases/observability/edit_co
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-要部署 **ClickStack Open Source**（由你自行运行和管理 ClickHouse 和 ClickStack UI），我们提供预构建的 Docker 镜像，将 UI、一个 OpenTelemetry collector 和 ClickHouse 打包到单个容器中——让本地开发、测试以及自管理部署的起步变得简单直接。
+要部署 **ClickStack 开源版** (由你自行运行和管理 ClickHouse 和 ClickStack UI) ，我们提供预构建的 Docker 镜像，将 UI、一个 OpenTelemetry collector 和 ClickHouse 打包到单个容器中——让本地开发、测试以及自管理部署的起步变得简单直接。
+
+:::tip
+还提供 ClickStack 的托管版本——参阅 [托管 ClickStack](/use-cases/observability/clickstack/getting-started/managed)。
+:::
 
 这些镜像基于官方的 ClickHouse Debian 包构建，并提供多种发行版本，以适配不同的使用场景。
 
-最简单的选项是一个 **单镜像发行版**，其中包含整个栈的所有核心组件，打包在一起：
+最简单的选项是一个 **单镜像发行版**，其中包含整个堆栈的所有核心组件，打包在一起：
 
 * **HyperDX UI**
 * **OpenTelemetry (OTel) collector**
 * **ClickHouse**
 
-这种一体化镜像允许你通过一条命令启动完整的栈，非常适合用于测试、实验或快速本地部署。
+这种 All-in-one 镜像允许你通过一条命令启动完整的堆栈，非常适合用于测试、实验或快速本地部署。
 
 
 <VerticalStepper headerLevel="h2">

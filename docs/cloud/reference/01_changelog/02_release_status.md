@@ -1,7 +1,7 @@
 ---
 title: 'Release status page'
 sidebar_label: 'Release status'
-keywords: ['aws', 'gcp', 'google cloud', 'azure', 'cloud', 'regions']
+keywords: ['cloud', 'release status', 'rollout', 'version', 'update']
 description: 'Page with release status for each release channel'
 slug: /cloud/release-status
 doc_type: 'reference'
@@ -47,9 +47,9 @@ For advance testing before production upgrades, use the Fast or Regular channel 
 
 <ReleaseSchedule releases={[
     {
-     changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
-     version: '26.2',
-     fast_start_date: '2026-03-30',
+     changelog_link: 'https://clickhouse.com/docs/changelogs/26.4',
+     version: '26.4',
+     fast_start_date: '2026-06-22',
      fast_end_date: 'TBD',
      regular_start_date: 'TBD',
      regular_end_date: 'TBD',
@@ -57,7 +57,20 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      slow_end_date: 'TBD',
      fast_progress: 'green',
      regular_progress: 'green',
-     slow_progress: 'green'
+     slow_progress: 'green',
+    },
+    {
+     changelog_link: 'https://clickhouse.com/docs/changelogs/26.2',
+     version: '26.2',
+     fast_start_date: '2026-04-03',
+     fast_end_date: '2026-04-14',
+     regular_start_date: '2026-05-06',
+     regular_end_date: '2026-06-17',
+     slow_start_date: '2026-07-01',
+     slow_end_date: 'TBD',
+     fast_progress: 'green',
+     regular_progress: 'green',
+     slow_progress: 'green',
     },
     {
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.12',
@@ -66,12 +79,11 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      fast_end_date: '2026-02-11',
      regular_start_date: '2026-03-09',
      regular_end_date: '2026-03-18',
-     slow_start_date: '2026-04-06',
-     slow_end_date: 'TBD',
+     slow_start_date: '2026-04-07',
+     slow_end_date: '2026-04-09',
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green',
-     regular_delay_note: 'Services with scheduled upgrade windows will receive 25.12 during their scheduled window in the week after Mar 23',
    },
    {
      changelog_link: 'https://clickhouse.com/docs/changelogs/25.10',
@@ -81,7 +93,7 @@ For advance testing before production upgrades, use the Fast or Regular channel 
      regular_start_date: '2026-01-23',
      regular_end_date: '2026-03-10',
      slow_start_date: '2026-03-23',
-     slow_end_date: 'TBD',
+     slow_end_date: '2026-03-23',
      fast_progress: 'green',
      regular_progress: 'green',
      slow_progress: 'green',

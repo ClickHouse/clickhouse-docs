@@ -77,15 +77,17 @@ PARTITION BY toYear(CreationDate)
 
 ### 파티션의 활용 \{#applications-of-partitions\}
 
-ClickHouse에서의 파티션은 Postgres에서의 파티션과 유사하게 활용되지만, 몇 가지 미묘한 차이가 있습니다. 보다 구체적으로는 다음과 같습니다.
+ClickHouse에서의 파티셔닝은 Postgres에서의 파티션과 유사하게 활용되지만, 몇 가지 미묘한 차이가 있습니다. 보다 구체적으로는 다음과 같습니다.
 
-* **데이터 관리** - ClickHouse에서 파티션은 기본적으로 쿼리 최적화 기법이 아니라 데이터 관리 기능으로 간주해야 합니다. 키를 기준으로 데이터를 논리적으로 분리하면, 각 파티션을 예를 들어 삭제와 같이 독립적으로 조작할 수 있습니다. 이를 통해 [스토리지 계층](/integrations/s3#storage-tiers) 간에 파티션, 즉 데이터의 부분 집합을 시간 기준으로 효율적으로 이동하거나, [데이터를 만료시키거나 클러스터에서 효율적으로 삭제](/sql-reference/statements/alter/partition)할 수 있습니다. 예를 들어, 아래에서는 2008년의 게시글을 제거합니다.
+* **데이터 관리** - ClickHouse에서 파티셔닝은 기본적으로 쿌리 최적화 기법이 아니라 데이터 관리 기능으로 간주해야 합니다. 키를 기준으로 데이터를 논리적으로 분리하면, 각 파티션을 예를 들어 삭제와 같이 독립적으로 조작할 수 있습니다. 이를 통해 [스토리지 계층](/integrations/s3#storage-tiers) 간에 파티션, 즉 데이터의 부분 집합을 시간 기준으로 효율적으로 이동하거나, [데이터를 만료시키거나 클러스터에서 효율적으로 삭제](/sql-reference/statements/alter/partition)할 수 있습니다. 예를 들어, 아래에서는 2008년의 게시글을 제거합니다.
 
 ```sql
 SELECT DISTINCT partition
 FROM system.parts
 WHERE `table` = 'posts'
+```
 
+```response
 ┌─partition─┐
 │ 2008      │
 │ 2009      │
@@ -107,17 +109,20 @@ WHERE `table` = 'posts'
 └───────────┘
 
 17 rows in set. Elapsed: 0.002 sec.
+```
 
+```sql
 ALTER TABLE posts
 (DROP PARTITION '2008')
+```
 
+```response
 Ok.
 
 0 rows in set. Elapsed: 0.103 sec.
 ```
 
-* **쿼리 최적화** - 파티션은 쿼리 성능 향상에 도움이 될 수 있지만, 이는 데이터 접근 패턴에 크게 좌우됩니다. 쿼리가 소수의 파티션(이상적으로는 하나)만을 대상으로 하는 경우 성능이 향상될 수 있습니다. 이는 일반적으로 파티셔닝 키가 기본 키에 포함되어 있지 않고 해당 키로 필터링하는 경우에만 유용합니다. 반대로, 여러 파티션을 대상으로 해야 하는 쿼리는 파티셔닝을 사용하지 않는 경우보다 성능이 나빠질 수 있습니다(파티셔닝 결과로 더 많은 파트가 생길 수 있기 때문입니다). 파티셔닝 키가 이미 기본 키에서 앞쪽에 위치해 있는 경우 단일 파티션만을 대상으로 하는 이점은 거의 사라지거나 의미가 없어집니다. 각 파티션 내의 값이 고유하다면, 파티셔닝은 [GROUP BY 쿼리 최적화](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)에도 사용될 수 있습니다. 그러나 일반적으로는 우선 기본 키가 잘 최적화되어 있는지를 확인해야 하며, 일 단위로 파티셔닝했을 때 대부분의 쿼리가 최근 1일 구간에 집중되는 경우처럼 접근 패턴이 하루 중 특정 예측 가능한 하위 구간에만 집중되는 예외적인 경우에 한해서만 쿼리 최적화 기법으로 파티셔닝을 고려하는 것이 좋습니다.
-
+* **쿼리 최적화** - 파티션은 쿼리 성능 향상에 도움이 될 수 있지만, 이는 액세스 패턴에 크게 좌우됩니다. 쿼리가 소수의 파티션(이상적으로는 하나)만을 대상으로 하는 경우 성능이 향상될 수 있습니다. 이는 일반적으로 파티셔닝 키가 기본 키에 포함되어 있지 않고 해당 키로 필터링하는 경우에만 유용합니다. 반대로, 여러 파티션을 대상으로 해야 하는 쿼리는 파티셔닝을 사용하지 않는 경우보다 성능이 나빠질 수 있습니다(파티셔닝 결과로 더 많은 파트가 생길 수 있기 때문입니다). 파티셔닝 키가 이미 기본 키에서 앞쪽에 위치해 있는 경우 단일 파티션만을 대상으로 하는 이점은 거의 사라지거나 의미가 없어집니다. 각 파티션 내의 값이 고유하다면, 파티셔닝은 [GROUP BY 쿼리 최적화](/engines/table-engines/mergetree-family/custom-partitioning-key#group-by-optimisation-using-partition-key)에도 사용될 수 있습니다. 그러나 일반적으로는 우선 기본 키가 잘 최적화되어 있는지를 확인해야 하며, 일 단위로 파티셔닝했을 때 대부분의 쿼리가 최근 1일 구간에 집중되는 경우처럼 액세스 패턴이 하루 중 특정 예측 가능한 하위 구간에만 집중되는 예외적인 경우에 한해서만 쿼리 최적화 기법으로 파티셔닝을 고려하는 것이 좋습니다.
 
 ### 파티션에 대한 권장 사항 \{#recommendations-for-partitions\}
 
@@ -129,9 +134,9 @@ Ok.
 
 > 파트는 파티션마다 독립적으로 생성되므로, 파티션 개수가 증가하면 파트 개수도 증가하며, 이는 파티션 개수의 배수가 됩니다. 따라서 고유값 개수가 큰 파티셔닝 키는 이러한 오류를 유발할 수 있으므로 피해야 합니다.
 
-## Materialized view와 프로젝션 비교 \{#materialized-views-vs-projections\}
+## Materialized view와 PROJECTION 비교 \{#materialized-views-vs-projections\}
 
-Postgres는 하나의 테이블에 여러 인덱스를 생성할 수 있어, 다양한 액세스 패턴에 대해 최적화할 수 있습니다. 이러한 유연성 덕분에 관리자와 개발자는 특정 쿼리와 운영 요구 사항에 맞춰 데이터베이스 성능을 조정할 수 있습니다. ClickHouse의 프로젝션 개념은 이것과 정확히 같은 것은 아니지만, 테이블에 대해 여러 개의 `ORDER BY` 절을 지정할 수 있게 해줍니다.
+Postgres는 하나의 테이블에 여러 인덱스를 생성할 수 있어, 다양한 액세스 패턴에 대해 최적화할 수 있습니다. 이러한 유연성 덕분에 관리자와 개발자는 특정 쿼리와 운영 요구 사항에 맞춰 데이터베이스 성능을 조정할 수 있습니다. ClickHouse의 PROJECTION 개념은 이것과 정확히 같은 것은 아니지만, 테이블에 대해 여러 개의 `ORDER BY` 절을 지정할 수 있게 해줍니다.
 
 ClickHouse [data modeling docs](/data-modeling/schema-design)에서는 ClickHouse에서 materialized view를 사용하여 사전 집계를 수행하고, 행을 변환하며, 다양한 액세스 패턴에 맞게 쿼리를 최적화하는 방법을 설명합니다.
 
@@ -143,7 +148,9 @@ ClickHouse [data modeling docs](/data-modeling/schema-design)에서는 ClickHous
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
    ┌──────────avg(Score)─┐
 1. │ 0.18181818181818182 │
    └─────────────────────┘
@@ -154,8 +161,8 @@ Peak memory usage: 201.93 MiB.
 
 이 쿼리는 `UserId`가 정렬 키가 아니므로 (비교적 빠르긴 하지만) 전체 9,000만 행을 스캔해야 합니다.
 앞에서는 `PostId`를 조회하기 위한 materialized view를 사용해 이 문제를 해결했습니다. 동일한 문제는
-[projection](/data-modeling/projections)을 사용해도 해결할 수 있습니다. 아래 명령은
-`ORDER BY user_id`에 대한 프로젝션을 추가합니다.
+[PROJECTION](/data-modeling/projections)을 사용해도 해결할 수 있습니다. 아래 명령은
+`ORDER BY user_id`에 대한 PROJECTION을 추가합니다.
 
 ```sql
 ALTER TABLE comments ADD PROJECTION comments_user_id (
@@ -196,7 +203,9 @@ SELECT
         latest_fail_reason
 FROM system.mutations
 WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
+```
 
+```response
    ┌─parts_to_do─┬─is_done─┬─latest_fail_reason─┐
 1. │           1 │       0 │                    │
    └─────────────┴─────────┴────────────────────┘
@@ -210,7 +219,9 @@ WHERE (`table` = 'comments') AND (command LIKE '%MATERIALIZE%')
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
    ┌──────────avg(Score)─┐
 1. │ 0.18181818181818182 │
    └─────────────────────┘
@@ -219,15 +230,16 @@ WHERE UserId = 8592047
 Peak memory usage: 4.06 MiB.
 ```
 
-`EXPLAIN` 명령으로 이 쿼리를 처리하는 데 프로젝션이 사용되었는지 확인할 수 있습니다.
-
+`EXPLAIN` 명령으로 이 쿼리를 처리하는 데 PROJECTION이 사용되었는지 확인할 수 있습니다.
 
 ```sql
 EXPLAIN indexes = 1
 SELECT avg(Score)
 FROM comments
 WHERE UserId = 8592047
+```
 
+```response
     ┌─explain─────────────────────────────────────────────┐
  1. │ Expression ((Projection + Before ORDER BY))         │
  2. │   Aggregating                                       │
@@ -244,7 +256,6 @@ WHERE UserId = 8592047
 
 11 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ### 프로젝션을 언제 사용해야 하는가 \{#when-to-use-projections\}
 

@@ -114,18 +114,16 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 設定:
 
 * `oneline` – クエリを1行で出力します。デフォルト: `0`。
-* `run_query_tree_passes` – クエリツリーをダンプする前にクエリツリーのパス処理を実行します。デフォルト: `0`。
-* `query_tree_passes` – `run_query_tree_passes` が有効な場合に、実行するパス処理の回数を指定します。`query_tree_passes` を指定しない場合は、すべてのパス処理を実行します。
+* `run_query_tree_passes` – クエリツリーをダンプする前にクエリツリーパスを実行します。デフォルト: `0`。
+* `query_tree_passes` – `run_query_tree_passes` が有効な場合に、実行するクエリツリーパスの回数を指定します。`query_tree_passes` を指定しない場合は、すべてのクエリツリーパスを実行します。
 
 例:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-Output:
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -133,13 +131,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 `run_query_tree_passes` を有効にした場合：
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-出力:
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -313,7 +309,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-`indexes` = 1 の場合、`Indexes` キーが追加されます。`Indexes` キーには、使用される索引の配列が含まれます。各索引は JSON オブジェクトで表され、`Type` キー (文字列 `MinMax`、`Partition`、`PrimaryKey` または `Skip`) と、以下の任意のキーを持ちます:
+`indexes` = 1 の場合、`Indexes` キーが追加されます。`Indexes` キーには、使用される索引の配列が含まれます。各索引は JSON オブジェクトで表され、`Type` キー (文字列 `Partition Min-Max`、`Partition`、`Statistics`、`PrimaryKey` または `Skip`) と、以下の任意のキーを持ちます:
 
 * `Name` — 索引名 (現在は `Skip` 索引用でのみ使用されます) 。
 * `Keys` — 索引で使用されるカラムの配列。
@@ -329,7 +325,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,
@@ -370,7 +366,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 `projections` = 1 の場合、`Projections` キーが追加されます。これは解析済みプロジェクションの配列を含みます。各プロジェクションは、以下のキーを持つ JSON として記述されます。
 
 * `Name` — プロジェクション名。
-* `Condition` — そのプロジェクションで使用されるプライマリキー条件。
+* `Condition` — そのプロジェクションで使用される主キー条件。
 * `Description` — プロジェクションの使用方法の説明 (例：パーツレベルのフィルタリング) 。
 * `Selected Parts` — プロジェクションによって選択されたパーツ数。
 * `Selected Marks` — 選択されたマーク数。
@@ -529,8 +525,35 @@ Expression ((Project names + Projection))
 
 どちらの例でも、クエリプランはローカルおよびリモートのステップを含む実行フロー全体を示します。
 
-`pretty` = 1 の場合、プランツリーはインデントの代わりに線描文字を使って表示されます:
+`pretty` = 1 の場合、プランツリーはインデントの代わりに線描文字を使って表示され、主要なステップに関する追加情報も表示されます:
 
+* **クエリの出力カラム**は、計画の先頭に表示されます。
+* フィルター、集約キー、ソート記述、および**ウィンドウ関数**内の**式**は、人が読みやすい SQL 風の表記で表示されます (例: `greater(plus(a, 1), 5)` ではなく `a + 1 > 5`)。わかりやすくするために、内部カラム識別子のプレフィックス (`__table1.` など) は削除されます。
+* **ソースステップ** (`ReadFromMergeTree` など) には、その出力カラムが表示されます。
+* **Filter ステップ**には、SQL 表記によるフィルター条件が表示されます。ランタイム join フィルターが存在する場合は、それらも別個に表示されます。
+* **Aggregation ステップ**には、キーと集約関数がその引数とともに表示されます (例: `sum(c)`, `count()`)。
+* タプルリテラル由来の **IN sets** にはその値が表示され (大きい set の場合は省略表示)、サブクエリベースの set には `subquery1`、`subquery2` などのラベルが付き、`Set` エンジンテーブル由来の set にはテーブル名が表示されます。
+* **Join ステップ**には、数学的な表記による結合関係、推定結果行数、
+  および各出力カラムが左側と右側のどちらに由来するかが表示されます。異なる join 種別を
+  表すために、次の記号を使用します。
+
+| Symbol                 | Join Type |
+| ---------------------- | --------- |
+| `⋈`                    | 内部結合      |
+| `⟕`                    | 左結合       |
+| `⟖`                    | 右結合       |
+| `⟗`                    | 完全結合      |
+| `⋉`                    | 左セミ結合     |
+| `⋊`                    | 右セミ結合     |
+| `⋉` with strikethrough | 左アンチ結合    |
+| `⋊` with strikethrough | 右アンチ結合    |
+| `×`                    | クロス結合     |
+
+たとえば、`t1 ⟕ t2` はテーブル `t1` と `t2` の左結合を意味します。
+テーブル名の後の角括弧内の数値 (例: `t1[100]`) は、テーブル統計を利用できる場合の
+推定行数を示します。
+
+`pretty` オプションは `compact = 1` と併用すると効果的で、`Expression` ステップや詳細なアクション情報を非表示にできるため、計画が読みやすくなります。
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -543,6 +566,38 @@ Expression ((Project names + Projection))
       └──ReadFromSystemNumbers
 ```
 
+JOINを使った、より詳しい例:
+
+```sql
+CREATE TABLE t1 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+CREATE TABLE t2 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+INSERT INTO t1 SELECT number, toString(number) FROM numbers(100);
+INSERT INTO t2 SELECT number, toString(number) FROM numbers(100);
+
+EXPLAIN actions = 1, compact = 1, pretty = 1
+SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.id FORMAT Raw;
+```
+
+```text
+Output: id, value, t2.id, t2.value
+
+Join (JOIN FillRightFirst)
+│  t1[100] ⋈ t2[100]
+│  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
+│  Result rows: 100
+│  Output:
+│    Left:  id, value
+│    Right: id, value
+│  Join conditions: id = id
+├──ReadFromMergeTree (default.t1)
+│     Read type: Default
+│     Parts: 1 | Granules: 1
+│     Output: id, value
+└──ReadFromMergeTree (default.t2)
+      Read type: Default
+      Parts: 1 | Granules: 1
+      Output: id, value
+```
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 
@@ -551,6 +606,14 @@ Expression ((Project names + Projection))
 * `header` — 各出力ポートのヘッダーを出力します。デフォルト: 0。
 * `graph` — [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) グラフ記述言語で記述されたグラフを出力します。デフォルト: 0。
 * `compact` — `graph` 設定が有効な場合、グラフをコンパクトモードで出力します。デフォルト: 1。
+* `compact_repeated_processor_chains` — テキスト出力では、隣接する繰り返しのプロセッサチェーンを、チェーンの 1 つのコピーと繰り返し回数を表示することでコンパクト化します。これにより、たとえば join で同じチェーンが何度も現れる場合に、並列パイプラインを読みやすくできます。これはグラフ出力には影響しません。デフォルト: 0。
+
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
 
 `compact=0` かつ `graph=1` の場合、プロセッサ名には一意のプロセッサ識別子を含む追加のサフィックスが付与されます。
 
@@ -576,7 +639,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 
 クエリを実行する際に、テーブルから読み取られる推定行数、マーク数、およびパーツ数を表示します。[MergeTree](/engines/table-engines/mergetree-family/mergetree) ファミリーのテーブルで利用できます。
@@ -585,21 +647,17 @@ ExpressionTransform
 
 テーブルの作成:
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-クエリ：
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
@@ -614,21 +672,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 次のようなリモートの MySQL テーブルがあるとします：
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

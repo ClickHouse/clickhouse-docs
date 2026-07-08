@@ -8,38 +8,40 @@ title: '設定'
 doc_type: 'reference'
 ---
 
-# 設定 \{#configuration\}
-
 ## 接続設定 \{#connection-settings\}
+
+:::tip
+各オプションの詳細、デフォルト値、DSN パラメータ、ベストプラクティス、トラブルシューティングについては、[Configuration Reference](/integrations/language-clients/go/config-reference) を参照してください。
+:::
 
 接続を開く際は、`Options` 構造体を使用してクライアントの動作を制御できます。使用できる設定は次のとおりです。
 
 | パラメータ                  | 型                                                  | デフォルト              | 説明                                                                                                                              |
 | ---------------------- | -------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
 | `Protocol`             | `Protocol`                                         | `Native`           | 通信プロトコル: `Native` (TCP) または `HTTP`。詳細は [TCP vs HTTP](#tcp-vs-http) を参照してください。                                                   |
-| `Addr`                 | `[]string`                                         | —                  | `host:port` 形式のアドレスのスライス。複数ノードについては [Connecting to multiple nodes](#connecting-to-multiple-nodes) を参照してください。                    |
-| `Auth`                 | `Auth`                                             | —                  | 認証情報 (`Database`, `Username`, `Password`)。詳細は [Authentication](#authentication) を参照してください。                                      |
+| `Addr`                 | `[]string`                                         | —                  | `host:port` 形式のアドレスのスライス。複数ノードについては [複数のノードへの接続](#connecting-to-multiple-nodes) を参照してください。                    |
+| `Auth`                 | `Auth`                                             | —                  | 認証情報 (`Database`, `Username`, `Password`)。詳細は [認証](#authentication) を参照してください。                                      |
 | `TLS`                  | `*tls.Config`                                      | `nil`              | TLS 設定。`nil` 以外の値を指定すると TLS が有効になります。詳細は [TLS](#using-tls) を参照してください。                                                           |
 | `DialContext`          | `func(ctx, addr) (net.Conn, error)`                | —                  | TCP 接続の確立方法を制御するためのカスタムダイヤル関数。                                                                                                  |
 | `DialTimeout`          | `time.Duration`                                    | `30s`              | 新しい接続を開く際の最大待機時間。                                                                                                               |
 | `MaxOpenConns`         | `int`                                              | `MaxIdleConns + 5` | 同時に開くことができる接続の最大数。                                                                                                              |
 | `MaxIdleConns`         | `int`                                              | `5`                | 接続プール内で維持するアイドル接続の数。                                                                                                            |
-| `ConnMaxLifetime`      | `time.Duration`                                    | `1h`               | プールされた接続の最大存続時間。詳細は [Connection pooling](#connection-pooling) を参照してください。                                                        |
-| `ConnOpenStrategy`     | `ConnOpenStrategy`                                 | `ConnOpenInOrder`  | `Addr` からノードを選択する戦略。詳細は [Connecting to multiple nodes](#connecting-to-multiple-nodes) を参照してください。                                |
+| `ConnMaxLifetime`      | `time.Duration`                                    | `1h`               | プールされた接続の最大存続時間。詳細は [接続プーリング](#connection-pooling) を参照してください。                                                        |
+| `ConnOpenStrategy`     | `ConnOpenStrategy`                                 | `ConnOpenInOrder`  | `Addr` からノードを選択する戦略。詳細は [複数のノードへの接続](#connecting-to-multiple-nodes) を参照してください。                                |
 | `BlockBufferSize`      | `uint8`                                            | `2`                | 並列にデコードするブロック数。値を大きくすると、メモリ消費と引き換えにスループットが向上します。クエリごとに context 経由で上書きできます。                                                      |
 | `Settings`             | `Settings`                                         | —                  | すべてのクエリに適用される ClickHouse 設定のマップ。個別のクエリでは [context](/integrations/language-clients/go/clickhouse-api#using-context) を通じて上書きできます。 |
-| `Compression`          | `*Compression`                                     | `nil`              | ブロック単位の圧縮。詳細は [Compression](#compression) を参照してください。                                                                            |
+| `Compression`          | `*Compression`                                     | `nil`              | ブロック単位の圧縮。詳細は [圧縮](#compression) を参照してください。                                                                            |
 | `ReadTimeout`          | `time.Duration`                                    | —                  | 1 回の呼び出しでサーバーからの読み取りを待機する最大時間。                                                                                                  |
 | `FreeBufOnConnRelease` | `bool`                                             | `false`            | true の場合、クエリごとに接続のメモリバッファをプールに戻します。わずかな CPU コストでメモリ使用量を削減できます。                                                                  |
-| `Logger`               | `*slog.Logger`                                     | `nil`              | 構造化ロガー (Go `log/slog`)。詳細は [Logging](#logging) を参照してください。                                                                       |
+| `Logger`               | `*slog.Logger`                                     | `nil`              | 構造化ロガー (Go `log/slog`)。詳細は [ログ](#logging) を参照してください。                                                                       |
 | `Debug`                | `bool`                                             | `false`            | **非推奨。** 代わりに `Logger` を使用してください。従来のデバッグ出力を stdout に出力します。                                                                      |
 | `Debugf`               | `func(string, ...any)`                             | —                  | **非推奨。** 代わりに `Logger` を使用してください。カスタムのデバッグログ関数。`Debug: true` が必要です。                                                             |
 | `GetJWT`               | `GetJWTFunc`                                       | —                  | ClickHouse Cloud 認証用の JWT token を返すコールバック (HTTPS のみ)。                                                                           |
-| `HttpHeaders`          | `map[string]string`                                | —                  | すべてのリクエストで送信される追加の HTTP header (HTTP トランスポートのみ)。                                                                                     |
-| `HttpUrlPath`          | `string`                                           | —                  | HTTP リクエストに追加される URL パス (HTTP トランスポートのみ)。                                                                                            |
-| `HttpMaxConnsPerHost`  | `int`                                              | —                  | 基盤となる `http.Transport` の `MaxConnsPerHost` を上書きします (HTTP トランスポートのみ)。                                                                 |
-| `TransportFunc`        | `func(*http.Transport) (http.RoundTripper, error)` | —                  | カスタム HTTP トランスポート ファクトリ。必要な項目だけを上書きできるよう、デフォルトのトランスポートが渡されます (HTTP トランスポートのみ)。                                                 |
-| `HTTPProxyURL`         | `*url.URL`                                         | —                  | すべてのリクエストに使用する HTTP プロキシ URL (HTTP トランスポートのみ)。                                                                                       |
+| `HttpHeaders`          | `map[string]string`                                | —                  | すべてのリクエストで送信される追加の HTTP header (HTTP トランスポートのみ)。                                                                                |
+| `HttpUrlPath`          | `string`                                           | —                  | HTTP リクエストに追加される URL パス (HTTP トランスポートのみ)。                                                                                       |
+| `HttpMaxConnsPerHost`  | `int`                                              | —                  | 基盤となる `http.Transport` の `MaxConnsPerHost` を上書きします (HTTP トランスポートのみ)。                                                            |
+| `TransportFunc`        | `func(*http.Transport) (http.RoundTripper, error)` | —                  | カスタム HTTP トランスポート ファクトリ。必要な項目だけを上書きできるよう、デフォルトのトランスポートが渡されます (HTTP トランスポートのみ)。                                                  |
+| `HTTPProxyURL`         | `*url.URL`                                         | —                  | すべてのリクエストに使用する HTTP プロキシ URL (HTTP トランスポートのみ)。                                                                                  |
 
 ```go
 conn, err := clickhouse.Open(&clickhouse.Options{

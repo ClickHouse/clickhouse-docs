@@ -1,64 +1,73 @@
 # curl を使用したスクリプトによる ClickHouse のインストール \{#install-clickhouse-via-script-using-curl\}
 
-本番環境向けに ClickHouse をインストールする必要がない場合、最も手早くセットアップする方法は、curl を使ってインストールスクリプトを実行することです。このスクリプトは、使用している OS に適したバイナリを自動的に判別します。
+本番環境向けに ClickHouse をインストールする必要がない場合は、curl を使ってインストールスクリプトを実行できます。このスクリプトは、使用している OS に適したバイナリを自動的に判別します。
 
 <VerticalStepper>
+  ## curl を使用して ClickHouse をインストールする \{#install-clickhouse-using-curl\}
 
-## curl を使用して ClickHouse をインストールする \{#install-clickhouse-using-curl\}
+  お使いのオペレーティングシステム向けの単一バイナリをダウンロードするには、次のコマンドを実行します。
 
-お使いのオペレーティングシステム向けの単一バイナリをダウンロードするには、次のコマンドを実行します。
+  ```bash
+  curl https://clickhouse.com/ | sh
+  ```
 
-```bash
-curl https://clickhouse.com/ | sh
-```
+  Linux および macOS では、これにより [`clickhousectl`](https://github.com/ClickHouse/clickhousectl) も
+  `~/.local/bin` にインストールされ (`chctl` シンボリックリンク付き) 、ローカルの ClickHouse の
+  バージョンとサーバーを管理できるようになります。
 
-:::note
-Mac ユーザー向け: バイナリの開発元を検証できないというエラーが発生する場合は、[こちら](/knowledgebase/fix-developer-verification-error-in-macos)を参照してください。
-:::
+  `clickhousectl` なしで `clickhouse` バイナリのみをインストールするには、
+  `CLICKHOUSE_ONLY=1` を設定します:
 
-## clickhouse-local を起動する \{#start-clickhouse-local\}
+  ```bash
+  curl https://clickhouse.com/ | CLICKHOUSE_ONLY=1 sh
+  ```
 
-`clickhouse-local` を使用すると、ClickHouse の強力な SQL 構文を用いてローカルおよびリモートファイルを処理でき、追加の設定も不要です。テーブルデータは一時的な場所に保存されるため、`clickhouse-local` を再起動すると、以前に作成したテーブルは利用できなくなります。
+  :::note
+  Mac ユーザー向け: バイナリの開発元を検証できないというエラーが発生する場合は、[こちら](/knowledgebase/fix-developer-verification-error-in-macos)を参照してください。
+  :::
 
-[clickhouse-local](/operations/utilities/clickhouse-local) を起動するには、次のコマンドを実行します。
+  ## clickhouse-local を起動する \{#start-clickhouse-local\}
 
-```bash
-./clickhouse
-```
+  `clickhouse-local` を使用すると、ClickHouse の強力な SQL 構文を用いてローカルおよびリモートファイルを処理でき、追加の設定も不要です。テーブルデータは一時的な場所に保存されるため、`clickhouse-local` を再起動すると、以前に作成したテーブルは利用できなくなります。
 
-## clickhouse-server を起動する \{#start-clickhouse-server\}
+  [clickhouse-local](/operations/utilities/clickhouse-local) を起動するには、次のコマンドを実行します。
 
-データを永続化したい場合は、`clickhouse-server` を実行する必要があります。ClickHouse サーバーは次のコマンドで起動できます。
+  ```bash
+  ./clickhouse
+  ```
 
-```bash
-./clickhouse server
-```
+  ## clickhouse-server を起動する \{#start-clickhouse-server\}
 
-## clickhouse-client を起動する \{#start-clickhouse-client\}
+  データを永続化したい場合は、`clickhouse-server` を実行する必要があります。ClickHouse サーバーは次のコマンドで起動できます。
 
-サーバーが起動して稼働している状態で、新しいターミナルウィンドウを開き、`clickhouse-client` を起動するために次のコマンドを実行します：
+  ```bash
+  ./clickhouse server
+  ```
 
-```bash
-./clickhouse client
-```
+  ## clickhouse-client を起動する \{#start-clickhouse-client\}
 
-次のように表示されます：
+  サーバーが起動して稼働している状態で、新しいターミナルウィンドウを開き、`clickhouse-client` を起動するために次のコマンドを実行します：
 
-```response
-./clickhouse client
-ClickHouse client version 24.5.1.117 (official build).
-Connecting to localhost:9000 as user default.
-Connected to ClickHouse server version 24.5.1.
+  ```bash
+  ./clickhouse client
+  ```
 
-local-host :)
-```
+  次のように表示されます：
 
-テーブルデータはカレントディレクトリに保存され、ClickHouse サーバーを再起動した後も引き続き利用できます。必要に応じて、`./clickhouse server` に追加のコマンドライン引数として `-C config.xml` を渡し、設定ファイル内でさらに詳細な設定を行うことができます。利用可能なすべての設定は、[こちら](/operations/server-configuration-parameters/settings)および[サンプル設定ファイルのテンプレート](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に記載されています。
+  ```response
+  ./clickhouse client
+  ClickHouse client version 24.5.1.117 (official build).
+  Connecting to localhost:9000 as user default.
+  Connected to ClickHouse server version 24.5.1.
 
-これで ClickHouse に対して SQL コマンドを送信する準備が整いました。
+  local-host :)
+  ```
 
-:::tip
-[Quick Start](/get-started/quick-start) では、テーブルの作成およびデータの挿入手順を順を追って解説しています。
-:::
+  テーブルデータはカレントディレクトリに保存され、ClickHouse サーバーを再起動した後も引き続き利用できます。必要に応じて、`./clickhouse server` に追加のコマンドライン引数として `-C config.xml` を渡し、設定ファイル内でさらに詳細な設定を行うことができます。利用可能なすべての設定は、[こちら](/operations/server-configuration-parameters/settings)および[サンプル設定ファイルのテンプレート](https://github.com/ClickHouse/ClickHouse/blob/master/programs/server/config.xml)に記載されています。
 
+  これで ClickHouse に対して SQL コマンドを送信する準備が整いました。
+
+  :::tip
+  [Quick Start](/get-started/quick-start) では、テーブルの作成およびデータの挿入手順を順を追って解説しています。
+  :::
 </VerticalStepper>

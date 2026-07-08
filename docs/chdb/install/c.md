@@ -7,7 +7,6 @@ keywords: ['chdb', 'c', 'cpp', 'embedded', 'clickhouse', 'sql', 'olap', 'api']
 doc_type: 'guide'
 ---
 
-# chDB for C and C++
 
 chDB provides a native C/C++ API for embedding ClickHouse functionality directly into your applications. The API supports both simple queries and advanced features like persistent connections and streaming query results.
 
@@ -328,4 +327,4 @@ cleanup:
 
 - **Main Repository**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **Issues and Support**: Report issues on the [GitHub repository](https://github.com/chdb-io/chdb/issues)
-- **C API Documentation**: [Bindings Documentation](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+- **C API Documentation**: [Bindings Documentation](https://github.com/chdb-io/chdb-core/blob/main/bindings.md)

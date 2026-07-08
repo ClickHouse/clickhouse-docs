@@ -8,9 +8,7 @@ title: 'SQLite'
 doc_type: 'reference'
 ---
 
-# SQLite \{#sqlite\}
-
-用于连接 [SQLite](https://www.sqlite.org/index.html) 数据库，并执行 `INSERT` 和 `SELECT` 查询，以在 ClickHouse 与 SQLite 之间交换数据。
+可连接到 [SQLite](https://www.sqlite.org/index.html) 数据库，并执行 `INSERT` 和 `SELECT` 查询，以在 ClickHouse 和 SQLite 之间交换数据。
 
 ## 创建数据库 \{#creating-a-database\}
 

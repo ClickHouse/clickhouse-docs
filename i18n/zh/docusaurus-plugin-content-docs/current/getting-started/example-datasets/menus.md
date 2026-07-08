@@ -9,10 +9,10 @@ keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 
 该数据集由纽约公共图书馆创建。它包含酒店、餐厅和咖啡馆菜单的历史数据，包括菜品及其价格。
 
-来源: http://menus.nypl.org/data  
+来源: http://menus.nypl.org/data
 该数据属于公有领域。
 
-这些数据来自图书馆馆藏档案，可能不完整，也不一定适合严格的统计分析。不过它也非常有趣且“美味”。  
+这些数据来自图书馆馆藏档案，可能不完整，也不一定适合严格的统计分析。不过它也非常有趣且“美味”。
 数据规模仅为关于菜单菜品的 130 万条记录——对 ClickHouse 来说，这个数据量非常小，但仍然是一个很好的示例。
 
 ## 下载数据集 \{#download-dataset\}
@@ -185,15 +185,11 @@ FROM menu_item
 
 ## 验证数据 \{#validate-data\}
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT count() FROM menu_item_denorm;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─count()─┐
 │ 1329175 │
 └─────────┘
@@ -203,9 +199,7 @@ SELECT count() FROM menu_item_denorm;
 
 ### 菜品历史价格平均值 \{#query-averaged-historical-prices\}
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -217,9 +211,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 100, 100)─┐
 │ 1850 │     618 │                  1.5 │ █▍                           │
 │ 1860 │    1634 │                 1.29 │ █▎                           │
@@ -245,9 +237,7 @@ ORDER BY d ASC;
 
 ### 汉堡价格 \{#query-burger-prices\}
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -259,9 +249,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)───────────┐
 │ 1880 │       2 │                 0.42 │ ▋                                     │
 │ 1890 │       7 │                 0.85 │ █▋                                    │
@@ -282,9 +270,7 @@ ORDER BY d ASC;
 
 ### 伏特加 \{#query-vodka\}
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -296,9 +282,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)─┐
 │ 1910 │       2 │                    0 │                             │
 │ 1920 │       1 │                  0.3 │ ▌                           │
@@ -318,9 +302,7 @@ ORDER BY d ASC;
 
 我们来打印鱼子酱的价格，同时打印任意一道包含鱼子酱的菜肴名称。
 
-查询：
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -333,9 +315,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)──────┬─any(dish_name)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 1090 │       1 │                    0 │                                  │ Caviar                                                                                                                              │
 │ 1880 │       3 │                    0 │                                  │ Caviar                                                                                                                              │

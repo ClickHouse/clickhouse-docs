@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
-title: '使用 ClickStack 监控 Temporal Cloud'
+title: '使用 ClickStack 监控 Temporal Cloud 指标'
 sidebar_label: 'Temporal Cloud 指标'
 pagination_prev: null
 pagination_next: null
@@ -10,7 +10,6 @@ keywords: ['Temporal', '指标', 'OTel', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import temporal_metrics from '@site/static/images/clickstack/temporal/temporal-metrics.png';
 import finish_import from '@site/static/images/clickstack/temporal/import-temporal-metrics-dashboard.png';
@@ -23,11 +22,8 @@ Temporal 平台中的 OpenMetrics 支持目前处于[公开预览](https://docs.
 
 Temporal 提供了一种抽象，用于构建简单、精巧且具备高弹性的应用程序。
 
-
-# 使用 ClickStack 监控 Temporal Cloud 指标 \{#temporal-metrics-clickstack\}
-
-:::note[摘要]
-使用 OTel Prometheus receiver 在 ClickStack 中监控 Temporal Cloud 指标。包含预置仪表板。
+:::note[TL;DR]
+使用 OTel Prometheus receiver 在 ClickStack 中监控 Temporal Cloud 指标。包含一个预构建的仪表板。
 :::
 
 ## 与现有 Temporal Cloud 的集成 \{#existing-temporal\}
@@ -164,7 +160,7 @@ Temporal 提供了一种抽象，用于构建简单、精巧且具备高弹性�
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/temporal-metrics-dashboard.json'} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download\}
 
 #### 导入预构建的仪表板 \{#import-dashboard\}
 

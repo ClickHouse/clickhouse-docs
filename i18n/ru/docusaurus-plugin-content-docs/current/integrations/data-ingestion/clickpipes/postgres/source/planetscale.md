@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'PlanetScale для Postgres'
-description: 'Настройка PlanetScale для Postgres в качестве источника для ClickPipes'
+sidebar_label: 'PlanetScale for Postgres'
+description: 'Настройка PlanetScale for Postgres в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/planetscale
-title: 'Руководство по настройке источника PlanetScale для Postgres'
+title: 'Руководство по настройке источника PlanetScale for Postgres'
 doc_type: 'guide'
 keywords: ['clickpipes', 'postgresql', 'cdc', 'ингестия данных', 'синхронизация в режиме реального времени']
 integration:
@@ -14,11 +14,8 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника PlanetScale for Postgres \{#planetscale-for-postgres-source-setup-guide\}
-
 :::info
-PlanetScale for Postgres в настоящее время находится на этапе [раннего доступа](https://planetscale.com/postgres).
+PlanetScale for Postgres сейчас доступен в рамках [раннего доступа](https://planetscale.com/postgres).
 :::
 
 ## Поддерживаемые версии Postgres \{#supported-postgres-versions\}

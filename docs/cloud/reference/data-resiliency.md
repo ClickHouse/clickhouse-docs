@@ -1,7 +1,7 @@
 ---
 slug: /cloud/data-resiliency
 sidebar_label: 'Data resiliency'
-title: 'Disaster recovery'
+title: 'Data resiliency'
 description: 'This guide provides an overview of disaster recovery.'
 doc_type: 'reference'
 keywords: ['ClickHouse Cloud', 'data resiliency', 'disaster recovery']
@@ -9,8 +9,6 @@ keywords: ['ClickHouse Cloud', 'data resiliency', 'disaster recovery']
 
 import Image from '@theme/IdealImage';
 import restore_backup from '@site/static/images/cloud/guides/restore_backup.png';
-
-# Data resiliency {#clickhouse-cloud-data-resiliency}
 
 This page covers the disaster recovery recommendations for ClickHouse Cloud, and guidance for customers to recover from an outage.
 ClickHouse Cloud doesn't currently support automatic failover, or automatic syncing across multiple geographical regions.
@@ -42,7 +40,7 @@ In the event that the data in the primary service gets corrupted, the backup can
 
 2. **External backups (in the customer's own storage bucket)**
 
-Enterprise Tier customers can [export backups](/cloud/manage/backups/export-backups-to-own-cloud-account) to their object storage in their own account, in the same region, or in another region.
+You can [export backups](/cloud/manage/backups/export-backups-to-own-cloud-account) to your own object storage in your account, in the same region, or in another region.
 Cross-cloud backup export support is coming soon.
 Applicable data transfer charges will apply for cross-region, and cross-cloud backups.
 
@@ -106,7 +104,7 @@ To restore from an existing backup
 
 ### Primary region downtime {#primary-region-downtime}
 
-Customers in the Enterprise Tier can [export backups](/cloud/manage/backups/export-backups-to-own-cloud-account) to their own cloud provider bucket.
+You can [export backups](/cloud/manage/backups/export-backups-to-own-cloud-account) to your own cloud provider bucket.
 If you're concerned about regional failures, we recommend exporting backups to a different region.
 Keep in mind that cross-region data transfer charges will apply.
 

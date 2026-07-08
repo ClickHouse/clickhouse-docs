@@ -10,15 +10,12 @@ keywords: ['PostgreSQL', 'Postgres', 'logs', 'OTEL', 'ClickStack', 'database mon
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import logs_search_view from '@site/static/images/clickstack/postgres/postgres-logs-search-view.png';
 import log_view from '@site/static/images/clickstack/postgres/postgres-log-view.png';
 import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-logs-dashboard.png';
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
-
-# Monitoring PostgreSQL Logs with ClickStack {#postgres-logs-clickstack}
 
 :::note[TL;DR]
 Collect and visualize PostgreSQL server logs (CSV format) in ClickStack using the OTel `filelog` receiver. Includes a demo dataset and pre-built dashboard.
@@ -301,7 +298,7 @@ To help you get started monitoring PostgreSQL with ClickStack, we provide essent
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/postgres-logs-dashboard.json'} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">Download</TrackedLink> the dashboard configuration {#download}
 
 #### Import the pre-built dashboard {#import-dashboard}
 

@@ -1,19 +1,17 @@
 ---
-sidebar_label: 'Дампы SQL'
+sidebar_label: 'SQL-дампы'
 slug: /integrations/data-formats/sql
-title: 'Вставка данных и создание дампов SQL в ClickHouse'
-description: 'Страница, описывающая, как передавать данные между другими базами данных и ClickHouse с помощью дампов SQL.'
+title: 'Вставка данных и создание SQL-дампов в ClickHouse'
+description: 'Страница, описывающая, как передавать данные между другими базами данных и ClickHouse с помощью SQL-дампов.'
 doc_type: 'guide'
-keywords: ['формат SQL', 'экспорт данных', 'импорт данных', 'резервное копирование', 'дампы SQL']
+keywords: ['формат SQL', 'экспорт данных', 'импорт данных', 'резервное копирование', 'SQL-дампы']
 ---
 
-# Вставка и выгрузка SQL-данных в ClickHouse \{#inserting-and-dumping-sql-data-in-clickhouse\}
-
-ClickHouse можно легко интегрировать в OLTP‑инфраструктуры баз данных разными способами. Один из вариантов — передавать данные между другими базами данных и ClickHouse с помощью SQL‑дампов.
+ClickHouse можно легко интегрировать в инфраструктуру баз данных OLTP различными способами. Один из них — передача данных между другими базами данных и ClickHouse с помощью SQL-дампов.
 
 ## Создание SQL-дампов \{#creating-sql-dumps\}
 
-Данные можно выгрузить в формате SQL с помощью [SQLInsert](/interfaces/formats/SQLInsert). ClickHouse запишет данные в виде `INSERT INTO <table name> VALUES(...` и будет использовать настройку [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) в качестве имени таблицы:
+Данные можно сохранить в виде SQL-дампа с помощью [SQLInsert](/interfaces/formats/SQLInsert). ClickHouse запишет данные в виде `INSERT INTO <table name> VALUES(...` и будет использовать настройку [`output_format_sql_insert_table_name`](/operations/settings/settings-formats.md/#output_format_sql_insert_table_name) в качестве имени таблицы:
 
 ```sql
 SET output_format_sql_insert_table_name = 'some_table';
@@ -28,7 +26,7 @@ FORMAT SQLInsert
 SET output_format_sql_insert_include_column_names = 0
 ```
 
-Теперь мы можем загрузить файл [dump.sql](assets/dump.sql) в другую OLTP-базу данных:
+Теперь мы можем загрузить файл [dump.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/dump.sql) в другую OLTP-базу данных:
 
 ```bash
 mysql some_db < dump.sql
@@ -36,7 +34,7 @@ mysql some_db < dump.sql
 
 Мы предполагаем, что таблица `some_table` существует в базе данных MySQL `some_db`.
 
-Некоторые СУБД могут иметь ограничения на количество значений, которые могут быть обработаны в одном пакете. По умолчанию ClickHouse будет создавать пакеты по 65 тыс. значений, но это можно изменить с помощью опции [`output_format_sql_insert_max_batch_size`](/operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size):
+Некоторые СУБД могут иметь ограничения на количество значений, которые могут быть обработаны в одном пакете. По умолчанию ClickHouse будет создавать пакеты по 65 тыс. значений, но это можно изменить с помощью настройки [`output_format_sql_insert_max_batch_size`](/operations/settings/settings-formats.md/#output_format_sql_insert_max_batch_size):
 
 ```sql
 SET output_format_sql_insert_max_batch_size = 1000;
@@ -54,7 +52,7 @@ SELECT * FROM some_data LIMIT 3 FORMAT Values
 ('Bangor_City_Forest','2015-07-01',34),('Alireza_Afzal','2017-02-01',24),('Akhaura-Laksam-Chittagong_Line','2015-09-01',30)
 ```
 
-## Импорт данных из SQL-дампов \{#inserting-data-from-sql-dumps\}
+## Вставка данных из SQL-дампов \{#inserting-data-from-sql-dumps\}
 
 Для чтения SQL-дампов используется формат [MySQLDump](/interfaces/formats/MySQLDump):
 
@@ -74,7 +72,7 @@ LIMIT 5
 └────────────────────────────────┴────────────┴──────┘
 ```
 
-По умолчанию ClickHouse будет пропускать неизвестные столбцы (за это отвечает опция [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields)) и обрабатывать данные для первой найденной в дампе таблицы (если в один файл выгружено несколько таблиц). Операторы DDL будут пропущены. Чтобы загрузить данные из дампа MySQL в таблицу (файл [mysql.sql](assets/mysql.sql)):
+По умолчанию ClickHouse будет пропускать неизвестные столбцы (за это отвечает настройка [input&#95;format&#95;skip&#95;unknown&#95;fields](/operations/settings/settings-formats.md/#input_format_skip_unknown_fields)) и обрабатывать данные для первой найденной в дампе таблицы (если в один файл выгружено несколько таблиц). Операторы DDL будут пропущены. Чтобы загрузить данные из дампа MySQL в таблицу (файл [mysql.sql](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/mysql.sql)):
 
 ```sql
 INSERT INTO some_data
@@ -109,11 +107,11 @@ DESCRIBE TABLE table_from_mysql;
 
 ClickHouse поддерживает множество форматов, как текстовых, так и бинарных, чтобы охватить различные сценарии и платформы. Узнайте больше о форматах и способах работы с ними в следующих статьях:
 
-- [Форматы CSV и TSV](csv-tsv.md)
-- [Parquet](parquet.md)
-- [Форматы JSON](/integrations/data-ingestion/data-formats/json/intro.md)
-- [Регулярные выражения (Regex) и шаблоны](templates-regex.md)
-- [Нативные и бинарные форматы](binary.md)
-- **SQL-форматы**
+* [Форматы CSV и TSV](csv-tsv.md)
+* [Parquet](parquet.md)
+* [Форматы JSON](/integrations/data-ingestion/data-formats/json/intro.md)
+* [Регулярные выражения (Regex) и шаблоны](templates-regex.md)
+* [Нативные и бинарные форматы](binary.md)
+* **SQL-форматы**
 
 Также ознакомьтесь с [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local) — переносимым полнофункциональным инструментом для работы с локальными и удалёнными файлами без необходимости запускать сервер ClickHouse.

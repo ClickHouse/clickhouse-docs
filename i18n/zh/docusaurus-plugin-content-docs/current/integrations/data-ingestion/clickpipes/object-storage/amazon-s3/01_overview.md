@@ -1,25 +1,24 @@
 ---
-sidebar_label: '概览'
-description: '将对象存储无缝连接到 ClickHouse Cloud。'
+sidebar_label: "概览"
+description: "将对象存储无缝连接到 ClickHouse Cloud。"
 slug: /integrations/clickpipes/object-storage/s3/overview
 sidebar_position: 1
-title: '将 Amazon S3 与 ClickHouse Cloud 集成'
-doc_type: 'guide'
+title: "将 Amazon S3 与 ClickHouse Cloud 集成"
+doc_type: "guide"
 ---
 
-import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
-import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
-import OVHpng from '@site/static/images/integrations/logos/ovh.png';
-import R2svg from '@site/static/images/integrations/logos/cloudflare.svg';
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import cp_iam from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png';
-import cp_credentials from '@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_credentials.png';
-import Image from '@theme/IdealImage';
+import S3svg from "@site/static/images/integrations/logos/amazon_s3_logo.svg"
+import DOsvg from "@site/static/images/integrations/logos/digitalocean.svg"
+import OVHpng from "@site/static/images/integrations/logos/ovh.png"
+import R2svg from "@site/static/images/integrations/logos/cloudflare.svg"
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import cp_iam from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_iam.png"
+import cp_credentials from "@site/static/images/integrations/data-ingestion/clickpipes/object-storage/amazon-s3/cp_credentials.png"
+import Image from "@theme/IdealImage"
 
 S3 ClickPipe 提供了一种完全托管且高可用的方式，将数据从 Amazon S3 和兼容 S3 的对象存储中摄取到 ClickHouse Cloud 中。它支持具有精确一次语义的**一次性摄取**和**持续摄取**。
 
-可以通过 ClickPipes UI 手动部署和管理 S3 ClickPipes，也可以通过 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe) 以编程方式进行部署和管理。
-
+可以通过 ClickPipes UI 手动部署和管理 S3 ClickPipes，也可以通过 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式进行部署和管理。
 
 ## 支持的数据源 \{#supported-data-sources\}
 
@@ -207,7 +206,7 @@ ClickPipes 提供了合理的默认值，能够满足大多数用例的需求。
 
 ### 扩缩容 \{#scaling\}
 
-Object Storage ClickPipes 的扩缩容基于 [已配置的纵向自动扩缩容设置](/manage/scaling#configuring-vertical-auto-scaling) 所确定的 ClickHouse 服务最小规格。ClickPipe 的规格在创建 ClickPipe 时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
+对象存储 ClickPipes 的扩缩容基于 [已配置的纵向自动扩缩容设置](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling) 所确定的 ClickHouse 服务最小规格。ClickPipe 的规格在创建 ClickPipe 时确定。之后对 ClickHouse 服务设置所做的更改不会影响 ClickPipe 的规格。
 
 若要提高大型摄取作业的吞吐量，建议在创建 ClickPipe 之前先对 ClickHouse 服务进行扩容。
 

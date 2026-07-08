@@ -1,5 +1,5 @@
 ---
-description: '此引擎用于将 ClickHouse 与 NATS 集成，可发布或订阅消息主题（subject），并在有新消息时进行处理。'
+description: '此引擎用于将 ClickHouse 与 NATS 集成，可发布或订阅消息 subject（subject），并在有新消息时进行处理。'
 sidebar_label: 'NATS'
 sidebar_position: 140
 slug: /engines/table-engines/integrations/nats
@@ -7,14 +7,12 @@ title: 'NATS 表引擎'
 doc_type: 'guide'
 ---
 
-# NATS 表引擎 \{#redisstreams-engine\}
+此引擎可用于将 ClickHouse 与 [NATS](https://nats.io/) 集成。
 
-此引擎用于将 ClickHouse 与 [NATS](https://nats.io/) 集成。
+`NATS` 可让您：
 
-`NATS` 可以让您：
-
-- 发布或订阅消息主题。
-- 在有新消息时进行处理。
+* 发布或订阅消息 subject。
+* 在新消息可用时对其进行处理。
 
 ## 创建表 \{#creating-a-table\}
 

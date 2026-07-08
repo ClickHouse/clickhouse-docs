@@ -3,12 +3,10 @@ sidebar_label: '개요'
 sidebar_position: 1
 slug: /integrations/migration/overview
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data']
-title: 'ClickHouse로 데이터 마이그레이션하기'
-description: '데이터를 ClickHouse로 마이그레이션할 때 사용할 수 있는 옵션을 설명하는 페이지입니다.'
+title: 'ClickHouse로 데이터 마이그레이션'
+description: 'ClickHouse로 데이터를 마이그레이션할 때 사용할 수 있는 옵션을 설명하는 페이지'
 doc_type: 'guide'
 ---
-
-# ClickHouse로 데이터 마이그레이션 \{#migrating-data-into-clickhouse\}
 
 <div class="vimeo-container">
   <iframe

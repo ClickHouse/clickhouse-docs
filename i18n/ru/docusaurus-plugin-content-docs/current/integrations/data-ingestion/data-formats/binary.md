@@ -1,20 +1,17 @@
 ---
 sidebar_label: 'Native и двоичные'
 slug: /integrations/data-formats/binary-native
-title: 'Использование формата Native и двоичных форматов в ClickHouse'
-description: 'Страница, описывающая, как использовать формат Native и двоичные форматы в ClickHouse'
-keywords: ['двоичные форматы', 'формат Native', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'форматы данных', 'производительность', 'сжатие']
+title: 'использование нативного формата и двоичный формат в ClickHouse'
+description: 'Страница, описывающая, как использовать нативный формат и двоичный формат в ClickHouse'
+keywords: ['двоичный формат', 'нативный формат', 'rowbinary', 'rawblob', 'messagepack', 'protobuf', 'capn proto', 'форматы данных', 'производительность', 'сжатие']
 doc_type: 'guide'
 ---
 
 import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
+ClickHouse поддерживает несколько двоичных форматов, которые обеспечивают более высокую производительность и более эффективное использование пространства. Двоичные форматы также не вызывают проблем с кодировкой символов, поскольку данные сохраняются в бинарном виде.
 
-# Использование формата Native и бинарных форматов в ClickHouse \{#using-native-and-binary-formats-in-clickhouse\}
-
-ClickHouse поддерживает несколько бинарных форматов, которые обеспечивают более высокую производительность и эффективность использования дискового пространства. Бинарные форматы также безопасны с точки зрения кодировки символов, поскольку данные сохраняются в двоичном виде.
-
-Для демонстрации мы будем использовать [таблицу some_data](assets/some_data.sql) и [данные](assets/some_data.tsv); вы можете воспроизвести это в своём экземпляре ClickHouse.
+Для демонстрации мы будем использовать таблицу some&#95;data [table](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.sql) и [данные](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.tsv); при желании вы можете повторить это в своем экземпляре ClickHouse.
 
 ## Экспорт в нативном формате ClickHouse \{#exporting-in-a-native-clickhouse-format\}
 
@@ -25,7 +22,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.clickhouse' FORMAT Native
 ```
 
-Это создаст файл [data.clickhouse](assets/data.clickhouse) в нативном формате.
+Это создаст файл [data.clickhouse](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.clickhouse) в нативном формате.
 
 
 ### Импорт из нативного формата \{#importing-from-a-native-format\}
@@ -87,7 +84,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.binary' FORMAT RowBinary
 ```
 
-Это создаст файл [data.binary](assets/data.binary) в формате бинарных строк.
+Это создаст файл [data.binary](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.binary) в формате бинарных строк.
 
 
 ### Исследование файлов RowBinary \{#exploring-rowbinary-files\}
@@ -176,7 +173,7 @@ INTO OUTFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-Чтобы импортировать данные из [файла в формате MessagePack](assets/data.msgpk):
+Чтобы импортировать данные из [файла в формате MessagePack](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.msgpk):
 
 ```sql
 INSERT INTO sometable
@@ -189,7 +186,7 @@ FORMAT MsgPack
 
 <CloudNotSupportedBadge />
 
-Чтобы работать с [Protocol Buffers](/interfaces/formats/Protobuf), сначала нужно определить [файл схемы](assets/schema.proto):
+Чтобы работать с [Protocol Buffers](/interfaces/formats/Protobuf), сначала нужно определить [файл схемы](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.proto):
 
 ```protobuf
 syntax = "proto3";
@@ -210,14 +207,14 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-Это сохраняет данные в файл [proto.bin](assets/proto.bin). ClickHouse также поддерживает импорт данных Protobuf, включая вложенные сообщения. Рассмотрите возможность использования [ProtobufSingle](/interfaces/formats/ProtobufSingle) для работы с одним сообщением Protocol Buffer (в этом случае разделители длины будут опущены).
+Это сохраняет данные в файл [proto.bin](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/proto.bin). ClickHouse также поддерживает импорт данных Protobuf, включая вложенные сообщения. Рассмотрите возможность использования [ProtobufSingle](/interfaces/formats/ProtobufSingle) для работы с одним сообщением Protocol Buffer (в этом случае разделители длины будут опущены).
 
 
 ## Cap&#39;n Proto \{#capn-proto\}
 
 <CloudNotSupportedBadge />
 
-Еще один популярный бинарный формат сериализации, поддерживаемый ClickHouse, — [Cap&#39;n Proto](https://capnproto.org/). Как и в случае с форматом `Protobuf`, в нашем примере нужно определить файл схемы ([`schema.capnp`](assets/schema.capnp)):
+Еще один популярный бинарный формат сериализации, поддерживаемый ClickHouse, — [Cap&#39;n Proto](https://capnproto.org/). Как и в случае с форматом `Protobuf`, в нашем примере нужно определить файл схемы ([`schema.capnp`](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.capnp)):
 
 ```response
 @0xec8ff1a10aa10dbe;

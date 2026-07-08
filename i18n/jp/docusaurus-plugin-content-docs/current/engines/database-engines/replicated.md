@@ -1,13 +1,11 @@
 ---
-description: "このエンジンは Atomic エンジンに基づいています。ZooKeeper に書き込まれる DDL ログを介してメタデータのレプリケーションを行い、あるデータベースに属するすべてのレプリカで実行されます。"
-sidebar_label: "Replicated"
+description: 'このエンジンは Atomic エンジンをベースとしています。ZooKeeper に書き込まれる DDL ログを介したメタデータのレプリケーションをサポートしており、特定のデータベースに対するすべてのレプリカで実行されます。'
+sidebar_label: 'Replicated'
 sidebar_position: 30
 slug: /engines/database-engines/replicated
-title: "Replicated"
-doc_type: "reference"
+title: 'Replicated'
+doc_type: 'reference'
 ---
-
-# Replicated \{#replicated\}
 
 このエンジンは [Atomic](../../engines/database-engines/atomic.md) エンジンをベースとしています。ZooKeeper に書き込まれる DDL ログを介したメタデータのレプリケーションをサポートしており、特定のデータベースに対するすべてのレプリカで実行されます。
 

@@ -1,18 +1,15 @@
 ---
-sidebar_label: 'Потоковая передача и объектное хранилище'
+sidebar_label: 'Стриминг и объектное хранилище'
 slug: /cloud/reference/billing/clickpipes/streaming-and-object-storage
-title: 'ClickPipes для потоковой передачи и объектного хранилища'
-description: 'Обзор тарификации ClickPipes для потоковой передачи и объектного хранилища'
+title: 'ClickPipes для стриминга и объектного хранилища'
+description: 'Обзор тарификации ClickPipes для стриминга и объектного хранилища'
 doc_type: 'reference'
-keywords: ['тарификация', 'clickpipes', 'цены на потоковую передачу', 'стоимость', 'цены']
+keywords: ['тарификация', 'clickpipes', 'цены на стриминг', 'стоимость', 'цены']
 ---
 
 import ClickPipesFAQ from '../../../_snippets/_clickpipes_faq.md'
 
-
-# ClickPipes для потоковой передачи данных и объектного хранилища \{#clickpipes-for-streaming-object-storage\}
-
-В этом разделе рассматривается модель ценообразования ClickPipes для потоковой передачи данных и объектного хранилища.
+В этом разделе описана тарификация ClickPipes для стриминга и объектного хранилища.
 
 ## Как устроена структура ценообразования ClickPipes? \{#what-does-the-clickpipes-pricing-structure-look-like\}
 

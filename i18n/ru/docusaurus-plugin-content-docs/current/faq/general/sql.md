@@ -3,12 +3,10 @@ title: 'Какой синтаксис SQL поддерживает ClickHouse?'
 toc_hidden: true
 toc_priority: 10
 slug: /faq/general/sql
-description: 'ClickHouse поддерживает SQL-синтаксис на 100 %'
+description: 'ClickHouse поддерживает 100% синтаксиса SQL'
 doc_type: 'reference'
 keywords: ['синтаксис SQL', 'ANSI SQL']
 ---
-
-# Какой синтаксис SQL поддерживает ClickHouse? \{#what-sql-syntax-does-clickhouse-support\}
 
 ClickHouse полностью поддерживает синтаксис SQL, включая такие возможности, как:
 

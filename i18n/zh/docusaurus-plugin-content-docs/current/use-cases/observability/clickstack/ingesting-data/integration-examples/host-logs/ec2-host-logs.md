@@ -10,7 +10,6 @@ keywords: ['EC2', 'AWS', '主机日志', 'systemd', 'syslog', 'OTel', 'ClickStac
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import search_view from '@site/static/images/clickstack/host-logs/ec2/search-view.png';
 import log_view from '@site/static/images/clickstack/host-logs/ec2/log-view.png';
@@ -22,10 +21,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# 使用 ClickStack 监控 EC2 主机日志 \{#ec2-host-logs-clickstack\}
-
 :::note[摘要]
-使用 OpenTelemetry Collector 并自动补充 EC2 元数据 (实例 ID、区域、可用区、实例类型) ，在 ClickStack 中收集并可视化 EC2 系统日志。包含演示数据集和预置仪表板。
+使用 OpenTelemetry Collector 在 ClickStack 中采集并可视化 EC2 系统日志，并自动添加 EC2 元数据 (实例 ID、区域、AZ、实例类型) 。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 EC2 实例集成 \{#existing-ec2\}
@@ -439,7 +436,7 @@ docker run --name clickstack-demo \
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/host-logs-dashboard.json')} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/host-logs-dashboard.json'} download="host-logs-dashboard.json" eventName="docs.ec2_host_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
 
 #### 导入预构建的仪表盘 \{#import-dashboard\}
 

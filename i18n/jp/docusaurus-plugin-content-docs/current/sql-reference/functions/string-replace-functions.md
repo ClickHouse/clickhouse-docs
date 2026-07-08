@@ -1,13 +1,11 @@
 ---
-description: '文字列置換関数のリファレンス'
+description: '文字列置換関数のドキュメント'
 sidebar_label: '文字列置換'
 slug: /sql-reference/functions/string-replace-functions
-title: '文字列置換関数'
+title: '文字列置換用の関数'
 doc_type: 'reference'
 keywords: ['文字列置換']
 ---
-
-# 文字列置換用の関数 \{#functions-for-string-replacement\}
 
 [一般的な文字列関数](string-functions.md)および[文字列検索用の関数](string-search-functions.md)については別途説明されています。
 
@@ -170,6 +168,7 @@ SELECT overlayUTF8('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
 フォーマット文字列には、`%` 文字で始まる書式指定子を含めることができます。
 `%` とその後に続く書式指定子に含まれない部分はリテラルテキストと見なされ、そのまま出力にコピーされます。
 リテラルとしての `%` 文字は `%%` でエスケープできます。
+フォーマット文字列には定数またはカラム式を使用できるため、行ごとに異なるフォーマットパターンを指定できます。
 
 **構文**
 
@@ -182,7 +181,7 @@ printf(format[, sub1, sub2, ...])
 * `format` — `%` フォーマット指定子を含むフォーマット文字列。[`String`](/sql-reference/data-types/string)
 * `sub1, sub2, ...` — 省略可。フォーマット文字列に埋め込む 0 個以上の値。[`Any`](/sql-reference/data-types)
 
-**返される値**
+**戻り値**
 
 フォーマット済みの文字列を返します。[`String`](/sql-reference/data-types/string)
 

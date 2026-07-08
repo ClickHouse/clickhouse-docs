@@ -1,5 +1,5 @@
 ---
-description: 'Sensor.Community の貢献者主導によるグローバルセンサーネットワークが生成した、200 億件超のデータレコードを含むオープンな環境データ。'
+description: 'Sensor.Community の貢献者主導によるグローバルなセンサーネットワークが生成した、200 億件超のデータレコードを含むオープンな環境データ。'
 sidebar_label: '環境センサーデータ'
 slug: /getting-started/example-datasets/environmental-sensors
 title: '環境センサーデータ'
@@ -11,13 +11,13 @@ import Image from '@theme/IdealImage';
 import no_events_per_day from '@site/static/images/getting-started/example-datasets/sensors_01.png';
 import sensors_02 from '@site/static/images/getting-started/example-datasets/sensors_02.png';
 
-[Sensor.Community](https://sensor.community/en/) は、オープンな環境データを生成する、コントリビューター主導のグローバルなセンサーネットワークです。データは世界中のセンサーから収集されています。誰でもセンサーを購入して、好きな場所に設置できます。データをダウンロードするための API は [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs) に公開されており、データは [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/) に基づいて自由に利用できます。
+[Sensor.Community](https://sensor.community/en/) は、オープンな環境データを生成する、貢献者主導のグローバルなセンサーネットワークです。データは世界中のセンサーから収集されています。誰でもセンサーを購入して、好きな場所に設置できます。データをダウンロードするための API は [GitHub](https://github.com/opendata-stuttgart/meta/wiki/APIs) に公開されており、データは [Database Contents License (DbCL)](https://opendatacommons.org/licenses/dbcl/1-0/) に基づいて自由に利用できます。
 
 :::important
 このデータセットには 200 億件を超えるレコードがあるため、下記のコマンドをそのままコピー&amp;ペーストする場合は、この規模のデータ量を処理できるリソースがあることを確認してください。以下のコマンドは、[ClickHouse Cloud](https://clickhouse.cloud) の **Production** インスタンス上で実行されました。
 :::
 
-1. データは S3 にあるため、`s3` テーブル関数を使用してファイルからテーブルを作成できます。また、データをその場でクエリすることも可能です。ClickHouse への挿入を行う前に、いくつかのレコードを確認してみましょう。
+1. データは S3 にあるため、`s3` テーブル関数を使用してファイルからテーブルを作成できます。また、データをその場でクエリすることも可能です。ClickHouse への挿入を行う前に、いくつかの行を確認してみましょう。
 
 ```sql
 SELECT *
@@ -30,6 +30,7 @@ SETTINGS format_csv_delimiter = ';';
 ```
 
 データは CSV ファイルですが、区切り文字にはセミコロンが使われています。行は次のような形式です：
+
 
 ```response
 ┌─sensor_id─┬─sensor_type─┬─location─┬────lat─┬────lon─┬─timestamp───────────┬──pressure─┬─altitude─┬─pressure_sealevel─┬─temperature─┐

@@ -8,7 +8,7 @@ title: 'SQLAlchemy 支持'
 doc_type: 'reference'
 ---
 
-ClickHouse Connect 包含一个基于核心驱动程序构建的 SQLAlchemy 方言（`clickhousedb`）。它面向 SQLAlchemy Core API，并支持 SQLAlchemy 1.4.40+ 和 2.0.x。
+ClickHouse Connect 包含一个基于核心驱动程序构建的 SQLAlchemy 方言 (`clickhousedb`) 。它面向 SQLAlchemy Core API，并支持 SQLAlchemy 1.4.40+ 和 2.0.x。
 
 ## 使用 SQLAlchemy 连接 \{#sqlalchemy-connect\}
 

@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/cloudflare-logs
-title: 'Мониторинг логов Cloudflare в ClickStack'
+title: 'Мониторинг логов Cloudflare с помощью ClickStack'
 sidebar_label: 'Логи Cloudflare'
 pagination_prev: null
 pagination_next: null
@@ -10,7 +10,6 @@ keywords: ['Cloudflare', 'logs', 'ClickStack', 'ClickPipes', 'S3', 'HTTP', 'Logp
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import clickpipe_s3 from '@site/static/images/clickstack/cloudflare/clickpipe-s3.png';
 import continuous_ingestion from '@site/static/images/clickstack/cloudflare/continuous-ingestion.png';
 import parse_information from '@site/static/images/clickstack/cloudflare/parse-information.png';
@@ -24,13 +23,10 @@ import finish_import from '@site/static/images/clickstack/cloudflare/finish-impo
 import example_dashboard from '@site/static/images/clickstack/cloudflare/example-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг логов Cloudflare с ClickStack \{#cloudflare-clickstack\}
-
 :::note[Кратко]
-В этом руководстве показано, как настроить приём логов Cloudflare в ClickStack с помощью ClickPipes. Cloudflare Logpush записывает логи в S3, а ClickPipes непрерывно загружает новые файлы в ClickHouse. В отличие от большинства руководств по интеграции ClickStack, где используется OpenTelemetry Collector, в этом руководстве [ClickPipes](/integrations/clickpipes) используется для прямого получения данных из S3.
+Это руководство показывает, как загружать логи Cloudflare в ClickStack с помощью ClickPipes. Cloudflare Logpush записывает логи в S3, а ClickPipes непрерывно загружает новые файлы в ClickHouse. В отличие от большинства руководств по интеграции ClickStack, где используется OpenTelemetry Collector, в этом руководстве [ClickPipes](/integrations/clickpipes) используется для прямого получения данных из S3.
 
-Если вы хотите изучить панели мониторинга до настройки приёма данных в рабочей среде, доступен демонстрационный набор данных.
+Демонстрационный набор данных доступен, если вы хотите изучить панели мониторинга перед настройкой рабочей ингестии.
 :::
 
 ## Обзор \{#overview\}
@@ -202,7 +198,7 @@ https://YOUR_CLICKHOUSE_HOST:8443/?query=INSERT+INTO+cloudflare_http_logs+FORMAT
 ## Панели мониторинга и визуализация
 
 <VerticalStepper headerLevel="h4">
-  #### <TrackedLink href={useBaseUrl('/examples/cloudflare-logs-dashboard.json')} download="cloudflare-logs-dashboard.json" eventName="docs.cloudflare_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию панели мониторинга
+  #### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/cloudflare-logs-dashboard.json'} download="cloudflare-logs-dashboard.json" eventName="docs.cloudflare_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию панели мониторинга
 
   #### Импорт панели мониторинга
 

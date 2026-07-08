@@ -3,12 +3,10 @@ sidebar_label: 'Parquet'
 sidebar_position: 3
 slug: /integrations/data-formats/parquet
 title: '在 ClickHouse 中使用 Parquet'
-description: '本文介绍如何在 ClickHouse 中使用 Parquet'
+description: '介绍如何在 ClickHouse 中使用 Parquet 的页面'
 doc_type: 'guide'
-keywords: ['parquet', '列式格式', '数据格式', '压缩', 'Apache Parquet']
+keywords: ['Parquet', '列式格式', '数据格式', '压缩', 'apache parquet']
 ---
-
-# 在 ClickHouse 中使用 Parquet \{#working-with-parquet-in-clickhouse\}
 
 Parquet 是一种高效的文件格式，用于以列式方式存储数据。
 ClickHouse 支持读取和写入 Parquet 文件。
@@ -17,12 +15,12 @@ ClickHouse 支持读取和写入 Parquet 文件。
 在查询中引用文件路径时，ClickHouse 实际尝试读取的位置取决于你所使用的 ClickHouse 运行方式。
 
 如果你使用的是 [`clickhouse-local`](/operations/utilities/clickhouse-local.md)，它会从相对于你启动 ClickHouse Local 时所在位置的路径进行读取。
-如果你是通过 `clickhouse client` 使用 ClickHouse Server 或 ClickHouse Cloud，它会从相对于服务器上 `/var/lib/clickhouse/user_files/` 目录的路径进行读取。
+如果你是通过 `clickhouse client` 使用 ClickHouse 服务端 或 ClickHouse Cloud，它会从相对于服务器上 `/var/lib/clickhouse/user_files/` 目录的路径进行读取。
 :::
 
 ## 从 Parquet 导入 \{#importing-from-parquet\}
 
-在加载数据之前，我们可以使用 [file()](/sql-reference/functions/files.md/#file) 函数来查看[示例 Parquet 文件](assets/data.parquet)的结构：
+在加载数据之前，我们可以使用 [file()](/sql-reference/functions/files.md/#file) 函数来查看[示例 Parquet 文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.parquet)的结构：
 
 ```sql
 DESCRIBE TABLE file('data.parquet', Parquet);
@@ -95,11 +93,11 @@ LIMIT 5;
 └───────────────────────────────┴────────────┴──────┘
 ```
 
-请注意 ClickHouse 如何自动将 Parquet 字符串（`date` 列中的值）转换为 `Date` 类型。这是因为 ClickHouse 会根据目标表中的列类型自动进行类型转换。
+请注意 ClickHouse 如何自动将 Parquet 字符串 (`date` 列中的值) 转换为 `Date` 类型。这是因为 ClickHouse 会根据目标表中的列类型自动进行类型转换。
 
 ## 将本地文件插入到远程服务器 \{#inserting-a-local-file-to-remote-server\}
 
-如果您想将本地 Parquet 文件插入到远程 ClickHouse 服务器，可以像下面这样通过管道将文件内容传递给 `clickhouse-client`：
+如果您想将本地 Parquet 文件插入到远程 ClickHouse 服务端，可以像下面这样通过管道将文件内容传递给 `clickhouse-client`：
 
 ```sql
 clickhouse client -q "INSERT INTO sometable FORMAT Parquet" < data.parquet
@@ -152,7 +150,7 @@ FORMAT Parquet
 
 ## ClickHouse 与 Parquet 数据类型 \{#clickhouse-and-parquet-data-types\}
 
-ClickHouse 与 Parquet 的数据类型在大多数情况下是相同的，但仍然[存在一些差异](/interfaces/formats/Parquet#data-types-matching-parquet)。例如，ClickHouse 会将 `DateTime` 类型导出为 Parquet 的 `int64`。如果我们随后再将该数据导入回 ClickHouse，看到的将是一串数字（[time.parquet 文件](assets/time.parquet)）：
+ClickHouse 与 Parquet 的数据类型在大多数情况下是相同的，但仍然[存在一些差异](/interfaces/formats/Parquet#data-types-matching-parquet)。例如，ClickHouse 会将 `DateTime` 类型导出为 Parquet 的 `int64`。如果我们随后再将该数据导入回 ClickHouse，看到的将是一串数字 ([time.parquet 文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/time.parquet)) ：
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);
@@ -191,11 +189,11 @@ FROM file('time.parquet', Parquet);
 
 ClickHouse 支持多种格式，包括文本和二进制格式，以适配各种场景和平台。请在以下文章中了解更多格式以及使用它们的方法：
 
-- [CSV 和 TSV 格式](csv-tsv.md)
-- [Avro、Arrow 和 ORC](arrow-avro-orc.md)
-- [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
-- [正则表达式和模板](templates-regex.md)
-- [原生和二进制格式](binary.md)
-- [SQL 格式](sql.md)
+* [CSV 和 TSV 格式](csv-tsv.md)
+* [Avro、Arrow 和 ORC](arrow-avro-orc.md)
+* [JSON 格式](/integrations/data-ingestion/data-formats/json/intro.md)
+* [正则表达式和模板](templates-regex.md)
+* [原生和二进制格式](binary.md)
+* [SQL 格式](sql.md)
 
-还可以查看 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)——一个可移植且功能完备的工具，可在无需 ClickHouse 服务器的情况下处理本地/远程文件。
+还可以查看 [clickhouse-local](https://clickhouse.com/blog/extracting-converting-querying-local-files-with-sql-clickhouse-local)——一个可移植且功能完备的工具，可在无需 ClickHouse 服务端的情况下处理本地/远程文件。

@@ -2,12 +2,10 @@
 slug: /whats-new/cloud-compatibility
 sidebar_label: 'Cloud 兼容性'
 title: 'Cloud 兼容性'
-description: '本指南概述在 ClickHouse Cloud 中可预期的功能和运维特性。'
-keywords: ['ClickHouse Cloud', '兼容性']
+description: '本指南从功能和运维两个层面概述在 ClickHouse Cloud 中应当预期的特性和行为。'
+keywords: ['ClickHouse Cloud', 'compatibility']
 doc_type: 'guide'
 ---
-
-# ClickHouse Cloud 兼容性指南 \{#clickhouse-cloud-compatibility-guide\}
 
 本指南从功能和运维两个层面概述在 ClickHouse Cloud 中应当预期的特性和行为。尽管 ClickHouse Cloud 构建于开源 ClickHouse 发行版之上，但在架构和实现细节上可能存在一些差异。读者可能会对这篇关于[我们如何构建 ClickHouse Cloud](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year)的博客感兴趣，将其作为背景阅读会很有帮助。
 
@@ -88,7 +86,7 @@ ClickHouse Cloud 支持 HTTPS、原生接口，以及 [MySQL 线协议](/interfa
 
 ### 用户自定义函数 \{#user-defined-functions\}
 
-ClickHouse Cloud 中的用户自定义函数目前处于[私有预览](https://clickhouse.com/docs/sql-reference/functions/udf)阶段。
+ClickHouse Cloud 中的用户自定义函数目前处于[Public Beta](https://clickhouse.com/docs/sql-reference/functions/udf)阶段。
 
 #### 设置行为 \{#udf-settings-behavior\}
 

@@ -10,29 +10,29 @@ doc_type: 'guide'
 ---
 
 | Вход | Выход | Псевдоним |
-|-------|--------|-------|
-| ✔     | ✔      |       |
+| ---- | ----- | --------- |
+| ✔    | ✔     |           |
 
 ## Описание \{#description\}
 
-В случаях, когда вам требуется больше возможностей для настройки, чем предоставляют другие стандартные форматы, 
-формат `Template` позволяет задать собственную строку формата с заполнителями для значений
+В случаях, когда вам требуется больше возможностей для настройки, чем предоставляют другие стандартные форматы,
+формат `Template` позволяет задать собственную строку формата с плейсхолдерами для значений
 и указать правила экранирования данных.
 
 Используются следующие настройки:
 
-| Setting                                                                                                  | Description                                                                                                                |
-|----------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------|
-| [`format_template_row`](#format_template_row)                                                            | Указывает путь к файлу, который содержит строки формата для строк.                                                         |
-| [`format_template_resultset`](#format_template_resultset)                                                | Указывает путь к файлу, который содержит строки формата для наборов результатов.                                           |
-| [`format_template_rows_between_delimiter`](#format_template_rows_between_delimiter)                      | Указывает разделитель между строками, который выводится (или ожидается) после каждой строки, кроме последней (`\n` по умолчанию). |
-| `format_template_row_format`                                                                             | Указывает строку формата для строк [во встроенной спецификации](#inline_specification).                                    |                                                                           
-| `format_template_resultset_format`                                                                       | Указывает строку формата для набора результатов [во встроенной спецификации](#inline_specification).                       |
-| Некоторые настройки других форматов (например, `output_format_json_quote_64bit_integers` при использовании экранирования `JSON` |                                                                                                                            |
+| Setting                                                                                                                         | Description                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| [`format_template_row`](#format_template_row)                                                                                   | Указывает путь к файлу, который содержит строки формата для строк.                                                                |
+| [`format_template_resultset`](#format_template_resultset)                                                                       | Указывает путь к файлу, который содержит строки формата для результирующих наборов.                                               |
+| [`format_template_rows_between_delimiter`](#format_template_rows_between_delimiter)                                             | Указывает разделитель между строками, который выводится (или ожидается) после каждой строки, кроме последней (`\n` по умолчанию). |
+| `format_template_row_format`                                                                                                    | Указывает строку формата для строк [во встроенной спецификации](#inline_specification).                                           |
+| `format_template_resultset_format`                                                                                              | Указывает строку формата для результирующего набора [во встроенной спецификации](#inline_specification).                          |
+| Некоторые настройки других форматов (например, `output_format_json_quote_64bit_integers` при использовании экранирования `JSON` |                                                                                                                                   |
 
 ## Настройки и правила экранирования \{#settings-and-escaping-rules\}
 
-### format&#95;template&#95;row \{#format_template_row\}
+### format_template_row \{#format_template_row\}
 
 Настройка `format_template_row` задаёт путь к файлу, который содержит шаблоны формата для строк со следующим синтаксисом:
 
@@ -84,11 +84,11 @@ Search phrase: ${s:Quoted}, count: ${c:Escaped}, ad price: $$${p:JSON};
 Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 ```
 
-### format&#95;template&#95;rows&#95;between&#95;delimiter \{#format_template_rows_between_delimiter\}
+### format_template_rows_between_delimiter \{#format_template_rows_between_delimiter\}
 
 Параметр `format_template_rows_between_delimiter` задаёт разделитель между строками, который выводится (или ожидается) после каждой строки, кроме последней (`\n` по умолчанию).
 
-### format&#95;template&#95;resultset \{#format_template_resultset\}
+### format_template_resultset \{#format_template_resultset\}
 
 Параметр `format_template_resultset` указывает путь к файлу, содержащему форматную строку для результирующего набора данных.
 
@@ -111,22 +111,23 @@ Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 Если параметр `format_template_resultset` является пустой строкой, по умолчанию используется `${data}`.
 :::
 
-Для запросов INSERT формат позволяет пропускать некоторые столбцы или поля, если задан префикс или суффикс (см. пример).
+Для запросов INSERT этот формат позволяет пропускать некоторые столбцы или поля, если заданы префикс или суффикс (см. пример).
 
 ### Встроенная спецификация \{#inline_specification\}
 
 Часто бывает сложно или невозможно развернуть конфигурации формата
-(заданные `format_template_row`, `format_template_resultset`) для шаблонного формата в каталог на всех узлах кластера. 
+(заданные `format_template_row`, `format_template_resultset`) для шаблонного формата в каталог на всех узлах кластера.
 Кроме того, формат может быть настолько тривиальным, что его не требуется выносить в отдельный файл.
 
-Для таких случаев `format_template_row_format` (для `format_template_row`) и `format_template_resultset_format` (для `format_template_resultset`) можно использовать для задания строки шаблона непосредственно в запросе, 
+Для таких случаев `format_template_row_format` (для `format_template_row`) и `format_template_resultset_format` (для `format_template_resultset`) можно использовать для задания строки шаблона непосредственно в запросе,
 а не как путь к файлу, в котором она содержится.
 
 :::note
 Правила для строк формата и управляющих последовательностей такие же, как и для:
-- [`format_template_row`](#format_template_row) при использовании `format_template_row_format`.
-- [`format_template_resultset`](#format_template_resultset) при использовании `format_template_resultset_format`.
-:::
+
+* [`format_template_row`](#format_template_row) при использовании `format_template_row_format`.
+* [`format_template_resultset`](#format_template_resultset) при использовании `format_template_resultset_format`.
+  :::
 
 ## Пример использования \{#example-usage\}
 
@@ -134,7 +135,7 @@ Search phrase: 'bathroom interior design', count: 2166, ad price: $3;
 
 ### Выборка данных \{#selecting-data\}
 
-```sql
+```sql title="Query"
 SELECT SearchPhrase, count() AS c FROM test.hits GROUP BY SearchPhrase ORDER BY c DESC LIMIT 5 FORMAT Template SETTINGS
 format_template_resultset = '/some/path/resultset.format', format_template_row = '/some/path/row.format', format_template_rows_between_delimiter = '\n    '
 ```
@@ -159,9 +160,7 @@ format_template_resultset = '/some/path/resultset.format', format_template_row =
 <tr> <td>${0:XML}</td> <td>${1:XML}</td> </tr>
 ```
 
-Результат:
-
-```html
+```html title="Response"
 <!DOCTYPE HTML>
 <html> <head> <title>Search phrases</title> </head>
  <body>
@@ -209,7 +208,7 @@ Page views: ${PageViews:CSV}, User id: ${UserID:CSV}, Useless field: ${:CSV}, Du
 
 ### Встроенная спецификация \{#in-line-specification\}
 
-Устали вручную форматировать таблицы Markdown? В этом примере мы рассмотрим, как можно использовать формат `Template` и настройки встроенной спецификации, чтобы решить простую задачу — выполнить `SELECT` по именам некоторых форматов ClickHouse из таблицы `system.formats` и отформатировать их как таблицу в формате Markdown. Это можно легко сделать, используя формат `Template` и настройки `format_template_row_format` и `format_template_resultset_format`.
+Устали вручную форматировать markdown-таблицы? В этом примере мы рассмотрим, как использовать формат `Template` и настройки встроенной спецификации для решения простой задачи — выполнить `SELECT` имён некоторых форматов ClickHouse из таблицы `system.formats` и представить их в виде markdown-таблицы. Это легко сделать с помощью формата `Template` и настроек `format_template_row_format` и `format_template_resultset_format`.
 
 В предыдущих примерах мы указывали строки шаблонов для результирующего набора и строк в отдельных файлах, а пути к этим файлам задавали с помощью настроек `format_template_resultset` и `format_template_row` соответственно. Здесь мы сделаем это прямо в запросе, потому что наш шаблон тривиален и состоит лишь из нескольких символов `|` и `-` для создания таблицы в формате Markdown. Шаблонную строку для результирующего набора мы зададим с помощью настройки `format_template_resultset_format`. Чтобы сделать заголовок таблицы, мы добавили `|ClickHouse Formats|\n|---|\n` перед `${data}`. Настройку `format_template_row_format` мы используем, чтобы задать шаблонную строку ``|`{0:XML}`|`` для наших строк. Формат `Template` вставит наши строки с заданным форматом в плейсхолдер `${data}`. В этом примере у нас только один столбец, но при необходимости вы можете добавить больше, добавив `{1:XML}`, `{2:XML}` и т. д. в шаблон строки, выбирая правило экранирования по необходимости. В этом примере мы используем правило экранирования `XML`.
 

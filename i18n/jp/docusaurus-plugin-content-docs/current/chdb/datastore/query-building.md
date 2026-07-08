@@ -2,14 +2,12 @@
 title: 'DataStore クエリ構築'
 sidebar_label: 'クエリ構築'
 slug: /chdb/datastore/query-building
-description: 'fluent なメソッドチェーンを使用して DataStore で SQL スタイルのクエリを構築します'
+description: 'fluent なメソッドチェーンを使用して DataStore で SQL ライクのクエリを構築します'
 keywords: ['chdb', 'datastore', 'query', 'select', 'filter', 'where', 'join', 'groupby']
 doc_type: 'reference'
 ---
 
-# DataStore クエリ構築 \{#datastore-query-building\}
-
-DataStore は、最適化された SQL クエリに変換される SQL ライクなクエリ構築メソッドを提供します。すべての操作は、結果が必要になるまで実行されません。
+DataStore は、最適化された SQL クエリにコンパイルされる SQL ライクのクエリ構築メソッドを提供します。すべての操作は、結果が必要になるまで遅延評価されます。
 
 ## クエリメソッドの概要 \{#overview\}
 

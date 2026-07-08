@@ -8,9 +8,7 @@ title: 'Hudi テーブルエンジン'
 doc_type: 'reference'
 ---
 
-# Hudi テーブルエンジン \{#hudi-table-engine\}
-
-このエンジンは、Amazon S3 上の既存の Apache [Hudi](https://hudi.apache.org/) テーブルとの読み取り専用の統合を提供します。
+このエンジンは、Amazon S3 上の既存の Apache [Hudi](https://hudi.apache.org/) テーブルを読み取り専用で統合します。
 
 ## テーブルを作成 \{#create-table\}
 

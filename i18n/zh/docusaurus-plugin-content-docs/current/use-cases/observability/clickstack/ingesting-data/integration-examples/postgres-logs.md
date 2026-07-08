@@ -10,7 +10,6 @@ keywords: ['PostgreSQL', 'Postgres', '日志', 'OTel', 'ClickStack', '数据库�
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import logs_search_view from '@site/static/images/clickstack/postgres/postgres-logs-search-view.png';
 import log_view from '@site/static/images/clickstack/postgres/postgres-log-view.png';
@@ -18,10 +17,7 @@ import logs_dashboard from '@site/static/images/clickstack/postgres/postgres-log
 import finish_import from '@site/static/images/clickstack/postgres/import-logs-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# 使用 ClickStack 监控 PostgreSQL 日志 \{#postgres-logs-clickstack\}
-
-:::note[要点速览]
+:::note[TL;DR]
 使用 OTel `filelog` 接收器，在 ClickStack 中收集并可视化 PostgreSQL 服务器日志 (CSV 格式) 。包含演示数据集和预置仪表板。
 :::
 
@@ -306,7 +302,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。该演示数据覆盖的
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/postgres-logs-dashboard.json')} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/postgres-logs-dashboard.json'} download="postgresql-logs-dashboard.json" eventName="docs.postgres_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 {#download}
 
 #### 导入预构建的仪表板 \{#import-dashboard\}
 

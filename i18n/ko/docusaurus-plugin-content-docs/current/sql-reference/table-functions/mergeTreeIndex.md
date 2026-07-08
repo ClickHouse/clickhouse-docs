@@ -1,5 +1,5 @@
 ---
-description: 'MergeTree 테이블의 인덱스 파일과 마크 파일의 내용을 나타냅니다. 내부를 살펴보는 데 사용할 수 있습니다.'
+description: 'MergeTree 테이블의 인덱스 파일과 마크 파일의 내용을 나타냅니다. 내부 검사에 사용할 수 있습니다.'
 sidebar_label: 'mergeTreeIndex'
 sidebar_position: 77
 slug: /sql-reference/table-functions/mergeTreeIndex
@@ -7,13 +7,7 @@ title: 'mergeTreeIndex'
 doc_type: 'reference'
 ---
 
-
-
-# mergeTreeIndex 테이블 함수 \{#mergetreeindex-table-function\}
-
-MergeTree 테이블의 인덱스와 마크 파일의 내용을 나타냅니다. 내부 구조를 살펴보는 용도로 사용할 수 있습니다.
-
-
+MergeTree 테이블의 인덱스 파일과 마크 파일의 내용을 나타냅니다. 내부 검사에 사용할 수 있습니다.
 
 ## 구문 \{#syntax\}
 
@@ -21,29 +15,24 @@ MergeTree 테이블의 인덱스와 마크 파일의 내용을 나타냅니다. 
 mergeTreeIndex(database, table [, with_marks = true] [, with_minmax = true])
 ```
 
-
 ## 인수 \{#arguments\}
 
-| Argument      | Description                                       |
-|---------------|---------------------------------------------------|
-| `database`    | 인덱스와 마크를 읽어 올 데이터베이스 이름입니다.   |
-| `table`       | 인덱스와 마크를 읽어 올 테이블 이름입니다.         |
-| `with_marks`  | 결과에 마크가 있는 컬럼을 포함할지 여부입니다.     |
-| `with_minmax` | 결과에 min-max 인덱스를 포함할지 여부입니다.       |
-
-
+| Argument      | Description                  |
+| ------------- | ---------------------------- |
+| `database`    | 인덱스와 마크를 읽어 올 데이터베이스 이름입니다.  |
+| `table`       | 인덱스와 마크를 읽어 올 테이블 이름입니다.     |
+| `with_marks`  | 결과에 마크가 있는 컬럼을 포함할지 여부입니다.   |
+| `with_minmax` | 결과에 min-max 인덱스를 포함할지 여부입니다. |
 
 ## 반환 값 \{#returned_value\}
 
 소스 테이블의 기본 인덱스와 min-max 인덱스(사용 설정된 경우) 값이 포함된 컬럼, 소스 테이블의 데이터 파트에서 가능한 모든 파일에 대한 마크 값(사용 설정된 경우)이 포함된 컬럼, 그리고 가상 컬럼을 가진 테이블 객체입니다:
 
-- `part_name` - 데이터 파트의 이름.
-- `mark_number` - 데이터 파트에서 현재 마크의 번호.
-- `rows_in_granule` - 현재 granule(그라뉼)에 있는 행의 개수.
+* `part_name` - 데이터 파트의 이름.
+* `mark_number` - 데이터 파트에서 현재 마크의 번호.
+* `rows_in_granule` - 현재 granule(그라뉼)에 있는 행의 개수.
 
 마크 컬럼에는 컬럼이 데이터 파트에 존재하지 않거나, 서브스트림 중 하나에 대한 마크가 기록되지 않은 경우(예: 컴팩트 파트) `(NULL, NULL)` 값이 들어 있을 수 있습니다.
-
-
 
 ## 사용 예 \{#usage-example\}
 

@@ -1,20 +1,18 @@
 ---
 sidebar_position: 1
-sidebar_label: '왜 ClickHouse는 이렇게 빠른가?'
-description: 'ClickHouse는 속도를 염두에 두고 설계되었습니다. 개발 전 과정에서 쿼리 실행 성능을 항상 최우선순위로 삼았으며, ClickHouse가 실제 프로덕션 시스템이 될 수 있도록 사용 편의성, 확장성, 보안과 같은 다른 중요한 특성도 함께 고려되었습니다.'
-title: '왜 ClickHouse는 이렇게 빠른가?'
+sidebar_label: 'ClickHouse는 왜 그렇게 빠를까요?'
+description: '빠르게 동작하도록 설계되었습니다. 개발 프로세스 전반에서 쿼리 실행 성능은 항상 최우선 순위였지만, ClickHouse가 실제 프로덕션 시스템이 될 수 있도록 사용자 친화성, 확장성, 보안과 같은 다른 중요한 특성도 함께 고려되었습니다.'
+title: 'ClickHouse는 왜 그렇게 빠를까요?'
 slug: /concepts/why-clickhouse-is-so-fast
-keywords: ['아키텍처', 'VLDB', '성능']
+keywords: ['아키텍처', 'VLDB', 'Performance']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# ClickHouse는 왜 그렇게 빠를까요? \{#why-clickhouse-is-so-fast\}
-
 [데이터 저장 방식](/intro#row-oriented-vs-column-oriented-storage) 외에도 데이터베이스 성능에는 다양한 다른 요소들이 기여합니다.
 다음으로, 특히 다른 컬럼 지향 데이터베이스와 비교했을 때 ClickHouse가 이렇게 빠른 이유를 더 자세히 설명합니다.
 
-아키텍처 관점에서 보면 데이터베이스는 (최소한) 스토리지 계층과 쿼리 처리 계층으로 구성됩니다. 스토리지 계층은 테이블 데이터의 저장, 로드 및 유지 관리를 담당하고, 쿼리 처리 계층은 사용자 쿼리를 실행합니다. 다른 데이터베이스와 비교했을 때 ClickHouse는 두 계층 모두에서 매우 빠른 INSERT 및 SELECT 쿼리를 가능하게 하는 혁신을 제공합니다.
+아키텍처 관점에서 보면 데이터베이스는 (최소한) 스토리지 계층과 쿼리 처리 레이어로 구성됩니다. 스토리지 계층은 테이블 데이터의 저장, 로드 및 유지 관리를 담당하고, 쿼리 처리 레이어는 사용자 쿼리를 실행합니다. 다른 데이터베이스와 비교했을 때 ClickHouse는 두 계층 모두에서 매우 빠른 INSERT 및 SELECT 쿼리를 가능하게 하는 혁신을 제공합니다.
 
 ## 스토리지 계층: 동시 INSERT는 서로 격리됩니다 \{#storage-layer-concurrent-inserts-are-isolated-from-each-other\}
 

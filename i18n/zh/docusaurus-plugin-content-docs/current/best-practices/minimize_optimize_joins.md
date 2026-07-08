@@ -3,7 +3,7 @@ slug: /best-practices/minimize-optimize-joins
 sidebar_position: 10
 sidebar_label: '尽量减少并优化 JOIN 操作'
 title: '尽量减少并优化 JOIN 操作'
-description: '介绍 JOIN 最佳实践的页面'
+description: '介绍在 ClickHouse 中使用 JOIN 的最佳实践的文档'
 keywords: ['JOIN', 'Parallel Hash JOIN']
 show_related_blogs: true
 doc_type: 'guide'
@@ -25,7 +25,6 @@ ClickHouse 支持多种 JOIN 类型和算法，并且在近期版本中 JOIN 性
 
 关于在 ClickHouse 中对数据进行反规范化的完整指南，请参见[此处](/data-modeling/denormalization)。
 
-
 ## 何时需要使用 JOIN \{#when-joins-are-required\}
 
 在需要使用 JOIN 时，请确保使用**至少 24.12 版本，且最好是最新版本**，因为每个新版本都会持续改进 JOIN 性能。从 ClickHouse 24.12 开始，查询规划器会自动将较小的表放在 JOIN 的右侧以获得最佳性能——这一任务此前需要手动完成。后续还会有更多增强功能推出，包括更激进的过滤下推以及对多表 JOIN 的自动重排序。
@@ -40,7 +39,7 @@ ClickHouse 支持多种 JOIN 类型和算法，并且在近期版本中 JOIN 性
 * **在外连接中使用默认值作为未匹配标记**：左/右/全外连接会包含来自左表/右表/两个表的所有值。如果在另一张表中找不到某个值的 JOIN 伙伴，ClickHouse 会用一个特殊的标记替代该 JOIN 伙伴。SQL 标准要求数据库使用 NULL 作为这种标记。在 ClickHouse 中，这需要将结果列包装为 Nullable，从而带来额外的内存和性能开销。作为替代方案，可以将设置 `join_use_nulls = 0`，并使用结果列数据类型的默认值作为该标记。
 
 :::note 谨慎使用字典
-在 ClickHouse 中将字典用于 JOIN 时，需要理解：字典在设计上不允许存在重复键。在数据加载过程中，任何重复键都会被静默去重——对于给定键，仅保留最后加载的那个值。此行为使得字典非常适合一对一或多对一的关系场景，此类场景只需要最新或权威值即可。然而，如果将字典用于一对多或多对多关系（例如在关联演员与角色时，一个演员可以拥有多个角色），则会导致静默的数据丢失，因为除了一行匹配记录之外，其余匹配行都会被丢弃。因此，在需要保留所有匹配结果、完全还原关系结构的场景中，字典并不适用。
+在 ClickHouse 中将字典用于 JOIN 时，需要理解：字典在设计上不允许存在重复键。在数据加载过程中，任何重复键都会被静默去重——对于给定键，仅保留最后加载的那个值。此行为使得字典非常适合一对一或多对一的关系场景，此类场景只需要最新或权威值即可。然而，如果将字典用于一对多或多对多关系 (例如在关联演员与角色时，一个演员可以拥有多个角色) ，则会导致静默的数据丢失，因为除了一行匹配记录之外，其余匹配行都会被丢弃。因此，在需要保留所有匹配结果、完全还原关系结构的场景中，字典并不适用。有关字典适用与不适用场景的更多信息，请参阅[字典最佳实践](/dictionary/best-practices)。
 :::
 
 ## 选择合适的 JOIN 算法 \{#choosing-the-right-join-algorithm\}

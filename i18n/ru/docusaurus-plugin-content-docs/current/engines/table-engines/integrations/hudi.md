@@ -7,9 +7,7 @@ title: 'Табличный движок Hudi'
 doc_type: 'reference'
 ---
 
-# Табличный движок Hudi \{#hudi-table-engine\}
-
-Этот движок предоставляет доступ только для чтения к существующим таблицам Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
+Этот движок обеспечивает интеграцию в режиме только для чтения с существующими таблицами Apache [Hudi](https://hudi.apache.org/) в Amazon S3.
 
 ## Создание таблицы \{#create-table\}
 

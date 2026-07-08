@@ -9,7 +9,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/redis/redis-import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis/redis-logs-dashboard.png';
@@ -17,10 +16,8 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 Redis 日志 \{#redis-clickstack\}
-
-:::note[要点速览]
-使用 OTel `filelog` receiver 在 ClickStack 中采集并可视化 Redis 服务器日志。包含演示数据集和预置仪表板。
+:::note[摘要]
+使用 OTel `filelog` 接收器在 ClickStack 中采集并可视化 Redis 服务器日志。包含演示数据集和预置仪表板。
 :::
 
 ## 与现有 Redis 集成 \{#existing-redis\}
@@ -274,7 +271,7 @@ HyperDX 会按浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-logs-dashboard.json'} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 {#download}
 
 #### 导入预构建仪表盘 \{#import-dashboard\}
 

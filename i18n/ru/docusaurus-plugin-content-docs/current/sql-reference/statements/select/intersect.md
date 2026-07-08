@@ -6,8 +6,6 @@ title: 'Оператор INTERSECT'
 doc_type: 'reference'
 ---
 
-# Оператор INTERSECT \{#intersect-clause\}
-
 Оператор `INTERSECT` возвращает только те строки, которые присутствуют одновременно и в первом, и во втором запросе. Запросы должны совпадать по количеству столбцов, их порядку и типам данных. Результат `INTERSECT` может содержать повторяющиеся строки.
 
 Несколько операторов `INTERSECT` выполняются слева направо, если скобки не используются. Оператор `INTERSECT` имеет более высокий приоритет, чем операторы `UNION` и `EXCEPT`.
@@ -31,13 +29,11 @@ FROM table2
 
 Ниже приведён простой пример пересечения чисел от 1 до 10 с числами от 3 до 8:
 
-```sql
+```sql title="Query"
 SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─number─┐
 │      3 │
 │      4 │
@@ -50,7 +46,7 @@ SELECT number FROM numbers(1,10) INTERSECT SELECT number FROM numbers(3,8);
 
 Оператор `INTERSECT` полезен, если у вас есть две таблицы с общим столбцом (или столбцами). Вы можете выполнить пересечение результатов двух запросов, при условии, что результаты содержат одинаковые столбцы. Например, предположим, что у нас есть несколько миллионов строк исторических данных по криптовалютам, содержащих цены сделок и объём торгов:
 
-```sql
+```sql title="Query"
 CREATE TABLE crypto_prices
 (
     trade_date Date,
@@ -76,7 +72,7 @@ ORDER BY trade_date DESC
 LIMIT 10;
 ```
 
-```response
+```response title="Response"
 ┌─trade_date─┬─crypto_name─┬──────volume─┬────price─┬───market_cap─┬──change_1_day─┐
 │ 2020-11-02 │ Bitcoin     │ 30771456000 │ 13550.49 │ 251119860000 │  -0.013585099 │
 │ 2020-11-01 │ Bitcoin     │ 24453857000 │ 13737.11 │ 254569760000 │ -0.0031840964 │
@@ -93,7 +89,7 @@ LIMIT 10;
 
 Теперь предположим, что у нас есть таблица `holdings`, в которой хранится список принадлежащих нам криптовалют и количество монет:
 
-```sql
+```sql title="Query"
 CREATE TABLE holdings
 (
     crypto_name String,
@@ -113,16 +109,14 @@ INSERT INTO holdings VALUES
 
 Мы можем использовать `INTERSECT`, чтобы ответить на вопросы вроде **&quot;Какие из принадлежащих нам монет торговались по цене выше $100?&quot;**:
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 INTERSECT
 SELECT crypto_name FROM crypto_prices
 WHERE price > 100
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Bitcoin     │
@@ -131,22 +125,20 @@ WHERE price > 100
 └─────────────┘
 ```
 
-Это означает, что в какой‑то момент Bitcoin и Ethereum торговались выше $100, тогда как DOGEFI и Bitcoin Diamond никогда не поднимались выше этой отметки (по крайней мере, судя по данным, которые у нас есть в этом примере).
+Это означает, что в какой-то момент Bitcoin и Ethereum торговались выше $100, а DOGEFI и Bitcoin Diamond никогда не торговались выше $100 (по крайней мере, по имеющимся у нас в этом примере данным).
 
 ## INTERSECT DISTINCT \{#intersect-distinct\}
 
 Обратите внимание, что в предыдущем запросе у нас было несколько позиций в Bitcoin и Ethereum, которые торговались по цене выше 100 $. Было бы неплохо удалить дублирующиеся строки (поскольку они лишь повторяют то, что мы уже знаем). Вы можете добавить `DISTINCT` к `INTERSECT`, чтобы исключить дублирующиеся строки из результата:
 
-```sql
+```sql title="Query"
 SELECT crypto_name FROM holdings
 INTERSECT DISTINCT
 SELECT crypto_name FROM crypto_prices
 WHERE price > 100;
 ```
 
-Результат:
-
-```response
+```response title="Response"
 ┌─crypto_name─┐
 │ Bitcoin     │
 │ Ethereum    │

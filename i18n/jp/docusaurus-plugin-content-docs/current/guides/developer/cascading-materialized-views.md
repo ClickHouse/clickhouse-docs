@@ -1,12 +1,10 @@
 ---
 slug: /guides/developer/cascading-materialized-views
-title: 'カスケーディングマテリアライズドビュー'
-description: '単一のソーステーブルから複数のマテリアライズドビューを利用する方法。'
-keywords: ['マテリアライズドビュー', '集約']
+title: 'カスケードするマテリアライズドビュー'
+description: 'ソーステーブルから複数の materialized view を使用する方法。'
+keywords: ['materialized view', '集計']
 doc_type: 'guide'
 ---
-
-# カスケードするマテリアライズドビュー \{#cascading-materialized-views\}
 
 この例では、まずマテリアライズドビューの作成方法を示し、その後、2つ目のマテリアライズドビューを1つ目にカスケードさせる方法を説明します。このページでは、その手順、さまざまな活用方法、および制約について説明します。2つ目のマテリアライズドビューをソースとして使用してマテリアライズドビューを作成することで、さまざまなユースケースに対応できます。
 
@@ -53,7 +51,6 @@ ENGINE = Null
 Null テーブルに対してマテリアライズドビューを作成できます。つまり、テーブルに書き込まれたデータはビューには反映されますが、元の生データそのものは破棄されます。
 :::
 
-
 ## 月次集計テーブルとマテリアライズドビュー \{#monthly-aggregated-table-and-materialized-view\}
 
 最初のマテリアライズドビューのために `Target` テーブルを作成する必要があります。この例では `analytics.monthly_aggregated_data` とし、月単位およびドメイン名単位でビュー数の合計を保存します。
@@ -84,7 +81,6 @@ GROUP BY
     domain_name,
     month
 ```
-
 
 ## 年次集計テーブルとマテリアライズドビュー \{#yearly-aggregated-table-and-materialized-view\}
 
@@ -131,7 +127,6 @@ GROUP BY
 もし CollapsingMergeTree、ReplacingMergeTree、あるいは SummingMergeTree を使用していて、カスケード構成のマテリアライズドビューを作成する予定がある場合は、ここで説明している制限事項を理解しておく必要があります。
 :::
 
-
 ## サンプルデータ \{#sample-data\}
 
 ここで、カスケードマテリアライズドビューをテストするために、いくつかのデータを挿入します。
@@ -158,13 +153,12 @@ Ok.
 
 ここでは、期待どおりの結果と突き合わせて検証しやすいように、小さなデータセットを使用しています。小さなデータセットでフローが正しく動作することを確認できたら、その設定のまま大規模なデータに切り替えることができます。
 
-
 ## 結果 \{#results\}
 
 ターゲットテーブルに対して `sumCountViews` フィールドを選択するクエリを実行すると、一部のターミナルではバイナリ表現が表示されます。これは、その値が数値ではなく AggregateFunction 型として保存されているためです。
 集計の最終結果を取得するには、`-Merge` サフィックスを使用する必要があります。
 
-次のクエリで、AggregateFunction に保存されている特殊な文字列（バイト列）を確認できます。
+次のクエリで、AggregateFunction に保存されている特殊な文字列 (バイト列) を確認できます。
 
 ```sql
 SELECT sumCountViews FROM analytics.monthly_aggregated_data
@@ -255,7 +249,6 @@ GROUP BY
 
 2 rows in set. Elapsed: 0.004 sec.
 ```
-
 
 ## 複数のソーステーブルを単一のターゲットテーブルに結合する \{#combining-multiple-source-tables-to-single-target-table\}
 

@@ -2,21 +2,20 @@
 slug: /cloud/managed-postgres/high-availability
 sidebar_label: '高可用性'
 title: '高可用性'
-description: '在 ClickHouse Managed Postgres 中配置备用副本和复制模式以实现高可用性'
-keywords: ['高可用性', 'HA', '备用', '复制', '故障切换', 'Postgres 高可用性']
+description: '在 ClickHouse Managed Postgres 中配置备用节点和复制模式以实现高可用性'
+keywords: ['高可用性', 'HA', '备用节点', '复制', '故障转移', 'Postgres 高可用性']
 doc_type: '指南'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="high-availability" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.high-availability-beta" />
 
-Managed Postgres 提供多种高可用性级别，以满足您的数据持久性和性能需求。您可以在配置数据库时添加一个或两个备用副本，或稍后根据需要在 **Settings** 页面中调整此配置。
+Managed Postgres 提供多种高可用性级别，以满足您的数据持久性和性能需求。您可以在配置数据库时添加一个或两个备用节点，或稍后根据需要在 **Settings** 页面中调整此配置。
 
 {/* TODO(kaushik-ubi): 高可用性配置界面的截图
     Path: /static/images/cloud/managed-postgres/high-availability-config.png */}
-
 
 ## 高可用性选项 \{#high-availability-options\}
 

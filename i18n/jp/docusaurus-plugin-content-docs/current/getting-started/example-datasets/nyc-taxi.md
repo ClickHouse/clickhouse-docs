@@ -4,22 +4,22 @@ sidebar_label: 'ニューヨークのタクシーデータ'
 slug: /getting-started/example-datasets/nyc-taxi
 title: 'ニューヨークのタクシーデータ'
 doc_type: 'guide'
-keywords: ['サンプルデータセット', 'nyc taxi', 'チュートリアル', 'サンプルデータ', 'はじめに']
+keywords: ['サンプルデータセット', 'nyc taxi', 'チュートリアル', 'サンプルデータ', '利用開始']
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-ニューヨークのタクシーデータサンプルは、2009 年以降にニューヨーク市内から出発した 30 億件以上のタクシーおよび配車サービス（Uber、Lyft など）の乗車記録で構成されています。この入門ガイドでは、そのうち 300 万行のサンプルを使用します。
+ニューヨークのタクシーデータサンプルは、2009 年以降にニューヨーク市内から出発した 30 億件以上のタクシーおよび配車サービス (Uber、Lyft など) の乗車データで構成されています。この利用開始ガイドでは、そのうち 300 万行のサンプルを使用します。
 
 完全なデータセットは、次のいずれかの方法で取得できます。
 
-* S3 または GCS から ClickHouse Cloud に直接データを挿入する
+* S3 または GCS から ClickHouse Cloud に直接データをinsertする
 * 準備済みのパーティションをダウンロードする
 * あるいは、デモ環境の [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19) で完全なデータセットに対してクエリを実行することもできます。
 
 :::note
-以下のサンプルクエリは、ClickHouse Cloud の **Production**（本番）インスタンスで実行したものです。詳細については
+以下のサンプルクエリは、ClickHouse Cloud の **Production** (本番) インスタンスで実行したものです。詳細については
 [「Playground の仕様」](/getting-started/playground#specifications) を参照してください。
 :::
 

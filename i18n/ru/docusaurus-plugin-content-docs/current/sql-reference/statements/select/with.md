@@ -1,12 +1,10 @@
 ---
-description: 'Документация по конструкции WITH'
+description: 'Документация по клаузе WITH'
 sidebar_label: 'WITH'
 slug: /sql-reference/statements/select/with
-title: 'Конструкция WITH'
+title: 'Клауза WITH'
 doc_type: 'reference'
 ---
-
-# Клауза WITH \{#with-clause\}
 
 ClickHouse поддерживает общие табличные выражения ([CTE, Common Table Expressions](https://en.wikipedia.org/wiki/Hierarchical_and_recursive_queries_in_SQL)), общие скалярные выражения и рекурсивные запросы.
 
@@ -525,4 +523,16 @@ SELECT sum(number) FROM (SELECT number FROM test_table LIMIT 100);
 ┌─sum(number)─┐
 │        5050 │
 └─────────────┘
+```
+
+
+## Запятая в конце \{#trailing-comma\}
+
+После последнего элемента в конструкции `WITH` допускается запятая:
+
+```sql
+WITH
+    (SELECT sum(number) FROM numbers(10)) AS total,
+    total * 2 AS doubled,
+SELECT total, doubled;
 ```

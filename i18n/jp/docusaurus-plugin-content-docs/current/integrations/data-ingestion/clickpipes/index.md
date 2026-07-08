@@ -17,6 +17,7 @@ import Azureeventhubssvg from '@site/static/images/integrations/logos/azure_even
 import Warpstreamsvg from '@site/static/images/integrations/logos/warpstream.svg';
 import S3svg from '@site/static/images/integrations/logos/amazon_s3_logo.svg';
 import Amazonkinesis from '@site/static/images/integrations/logos/amazon_kinesis_logo.svg';
+import GoogleCloudPubSub from '@site/static/images/integrations/logos/google_pubsub.svg';
 import Gcssvg from '@site/static/images/integrations/logos/gcs.svg';
 import DOsvg from '@site/static/images/integrations/logos/digitalocean.svg';
 import ABSsvg from '@site/static/images/integrations/logos/azureblobstorage.svg';
@@ -29,63 +30,99 @@ import cp_custom_role from '@site/static/images/integrations/data-ingestion/clic
 import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse Cloud との連携 \{#integrating-with-clickhouse-cloud\}
-
 ## はじめに \{#introduction\}
 
-[ClickPipes](/integrations/clickpipes) は、さまざまなデータソースからのデータを、数回クリックするだけで簡単に取り込むことができるマネージド型統合プラットフォームです。最も厳しいワークロード向けに設計された ClickPipes の堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと高い信頼性を実現します。ClickPipes は、長期的なストリーミング用途にも、単発のデータロード・ジョブにも利用できます。
+[ClickPipes](/integrations/clickpipes) は、さまざまなデータソースからのデータを、数回クリックするだけで簡単に取り込むことができるマネージド型インテグレーションプラットフォームです。最も厳しいワークロード向けに設計された ClickPipes の堅牢でスケーラブルなアーキテクチャは、一貫したパフォーマンスと高い信頼性を実現します。ClickPipes は、長期的なストリーミング用途にも、単発のデータロード・ジョブにも利用できます。
 
-<Image img={clickpipes_stack} alt="ClickPipes スタック" size="lg" border/>
+ClickPipes は、ClickPipes UI を使用して手動でデプロイおよび管理できるほか、[OpenAPI](/integrations/clickpipes/programmatic-access/openapi) や [Terraform](/integrations/clickpipes/programmatic-access/terraform) を使用してプログラムから操作することもできます。
+
+<Image img={clickpipes_stack} alt="ClickPipes スタック" size="lg" border />
 
 ## サポートされているデータソース \{#supported-data-sources\}
 
-| 名前                                               | ロゴ                                                                                             |タイプ| ステータス           | 説明                                                                                          |
-|----------------------------------------------------|--------------------------------------------------------------------------------------------------|----|------------------|------------------------------------------------------------------------------------------------------|
-| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka ロゴ" style={{width: '3rem', 'height': '3rem'}}/>      |Streaming| Stable           | ClickPipes を構成し、Apache Kafka から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。     |
-| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud ロゴ" style={{width: '3rem'}}/>                 |Streaming| Stable           | Confluent と ClickHouse Cloud のダイレクト連携により、両者を組み合わせた高いパフォーマンスを引き出します。          |
-| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda ロゴ"/>                                     |Streaming| Stable           | ClickPipes を構成し、Redpanda から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。         |
-| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK ロゴ" style={{width: '3rem', 'height': '3rem'}}/>             |Streaming| Stable           | ClickPipes を構成し、AWS MSK から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。          |
-| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs ロゴ" style={{width: '3rem'}}/>           |Streaming| Stable           | ClickPipes を構成し、Azure Event Hubs から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。詳細なガイダンスについては [Azure Event Hubs FAQ](/integrations/clickpipes/kafka/faq/#azure-eventhubs) を参照してください。 |
-| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream ロゴ" style={{width: '3rem'}}/>                     |Streaming| Stable           | ClickPipes を構成し、WarpStream から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。       |
-| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 ロゴ" style={{width: '3rem', height: 'auto'}}/>              |Object Storage| Stable           | ClickPipes を構成し、オブジェクトストレージから大量のデータを取り込めるようにします。                            |
-| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage ロゴ" style={{width: '3rem', height: 'auto'}}/>  |Object Storage| Stable           | ClickPipes を構成し、オブジェクトストレージから大量のデータを取り込めるようにします。                            |
-| DigitalOcean Spaces                                | <DOsvg class="image" alt="Digital Ocean ロゴ" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Stable | ClickPipes を構成し、オブジェクトストレージから大量のデータを取り込めるようにします。
-| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage ロゴ" style={{width: '3rem', height: 'auto'}}/> | Object Storage | Stable | ClickPipes を構成し、オブジェクトストレージから大量のデータを取り込めるようにします。
-| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <Amazonkinesis class="image" alt="Amazon Kenesis ロゴ" style={{width: '3rem', height: 'auto'}}/> |Streaming| Stable           | ClickPipes を構成し、Amazon Kinesis から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。   |
-| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres ロゴ" style={{width: '3rem', height: 'auto'}}/>         |DBMS| Stable      | ClickPipes を構成し、Postgres から ClickHouse Cloud へのデータ取り込みを開始します。                   |
-| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL ロゴ" style={{width: '3rem', height: '3rem'}}/>               |DBMS| Public Beta | ClickPipes を構成し、MySQL から ClickHouse Cloud へのデータ取り込みを開始します。                      |
-| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB ロゴ" style={{width: '3rem', height: '3rem'}}/>           |DBMS| Private Preview | ClickPipes を構成し、MongoDB から ClickHouse Cloud へのデータ取り込みを開始します。                   |
+| 名前                                                 | ロゴ                                                                                                        | タイプ            | ステータス           | 説明                                                                                                                                                                                |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | -------------- | --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Apache Kafka](/integrations/clickpipes/kafka)     | <Kafkasvg class="image" alt="Apache Kafka ロゴ" style={{width: '3rem', 'height': '3rem'}} />                | Streaming      | Stable          | ClickPipes を構成し、Apache Kafka から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。                                                                                                         |
+| Confluent Cloud                                    | <Confluentsvg class="image" alt="Confluent Cloud ロゴ" style={{width: '3rem'}} />                           | Streaming      | Stable          | Confluent と ClickHouse Cloud のダイレクト連携により、両者を組み合わせた高いパフォーマンスを引き出します。                                                                                                               |
+| Redpanda                                           | <Image img={redpanda_logo} size="logo" alt="Redpanda ロゴ" />                                               | Streaming      | Stable          | ClickPipes を構成し、Redpanda から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。                                                                                                             |
+| AWS MSK                                            | <Msksvg class="image" alt="AWS MSK ロゴ" style={{width: '3rem', 'height': '3rem'}} />                       | Streaming      | Stable          | ClickPipes を構成し、AWS MSK から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。                                                                                                              |
+| Azure Event Hubs                                   | <Azureeventhubssvg class="image" alt="Azure Event Hubs ロゴ" style={{width: '3rem'}} />                     | Streaming      | Stable          | ClickPipes を構成し、Azure Event Hubs から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。詳細なガイダンスについては [Azure Event Hubs FAQ](/integrations/clickpipes/kafka/faq/#azure-eventhubs) を参照してください。 |
+| WarpStream                                         | <Warpstreamsvg class="image" alt="WarpStream ロゴ" style={{width: '3rem'}} />                               | Streaming      | Stable          | ClickPipes を構成し、WarpStream から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。                                                                                                           |
+| Amazon S3                                          | <S3svg class="image" alt="Amazon S3 ロゴ" style={{width: '3rem', height: 'auto'}} />                        | オブジェクトストレージ | Stable          | ClickPipes を構成し、オブジェクトストレージから大量のデータを取り込めるようにします。                                                                                                                                  |
+| Google Cloud Storage                               | <Gcssvg class="image" alt="Google Cloud Storage ロゴ" style={{width: '3rem', height: 'auto'}} />            | オブジェクトストレージ | Stable          | ClickPipes を構成し、オブジェクトストレージから大量のデータを取り込めるようにします。                                                                                                                                  |
+| DigitalOcean Spaces                                | <DOsvg class="image" alt="Digital Ocean ロゴ" style={{width: '3rem', height: 'auto'}} />                    | オブジェクトストレージ | Stable          | ClickPipes を構成し、オブジェクトストレージから大量のデータを取り込めるようにします。                                                                                                                                  |
+| Azure Blob Storage                                 | <ABSsvg class="image" alt="Azure Blob Storage ロゴ" style={{width: '3rem', height: 'auto'}} />              | オブジェクトストレージ | Stable          | ClickPipes を構成し、オブジェクトストレージから大量のデータを取り込めるようにします。                                                                                                                                  |
+| [Amazon Kinesis](/integrations/clickpipes/kinesis) | <Amazonkinesis class="image" alt="Amazon Kenesis ロゴ" style={{width: '3rem', height: 'auto'}} />           | Streaming      | Stable          | ClickPipes を構成し、Amazon Kinesis から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。                                                                                                       |
+| [GCP Pub/Sub](/integrations/clickpipes/pubsub)     | <GoogleCloudPubSub class="image" alt="Google Cloud Pub/Sub ロゴ" style={{width: '3rem', height: 'auto'}} /> | Streaming      | Public Beta     | ClickPipes を構成し、Google Cloud Pub/Sub から ClickHouse Cloud へのストリーミングデータの取り込みを開始します。                                                                                                 |
+| [Postgres](/integrations/clickpipes/postgres)      | <Postgressvg class="image" alt="Postgres ロゴ" style={{width: '3rem', height: 'auto'}} />                   | DBMS           | Stable          | ClickPipes を構成し、Postgres から ClickHouse Cloud へのデータ取り込みを開始します。                                                                                                                     |
+| [MySQL](/integrations/clickpipes/mysql)            | <Mysqlsvg class="image" alt="MySQL ロゴ" style={{width: '3rem', height: '3rem'}} />                         | DBMS           | Public Beta     | ClickPipes を構成し、MySQL から ClickHouse Cloud へのデータ取り込みを開始します。                                                                                                                        |
+| [MongoDB](/integrations/clickpipes/mongodb)        | <Mongodbsvg class="image" alt="MongoDB ロゴ" style={{width: '3rem', height: '3rem'}} />                     | DBMS           | Private Preview | ClickPipes を構成し、MongoDB から ClickHouse Cloud へのデータ取り込みを開始します。                                                                                                                      |
 
 ClickPipes には今後さらに多くのコネクタが追加される予定です。詳しくは[お問い合わせ](https://clickhouse.com/company/contact?loc=clickpipes)ください。
 
 ## 固定 IP の一覧 \{#list-of-static-ips\}
 
-以下は、ClickPipes が外部サービスへの接続に使用する固定 NAT IP (リージョンごと) です。ご利用のインスタンスが属するリージョンの IP を IP 許可リストに追加し、そのトラフィックを許可してください。オブジェクトストレージのパイプを利用する場合は、[ClickHouse クラスター IP](/manage/data-sources/cloud-endpoints-api) も IP 許可リストに追加する必要があります。
+以下の表は、ClickPipes が外部サービスへの接続に使用する固定 NAT IP を示しています。ご利用の ClickHouse Cloud サービスを提供する ClickPipes リージョンの IP を IP 許可リストに追加してください。オブジェクトストレージのパイプを利用する場合は、[ClickHouse クラスター IP](/manage/data-sources/cloud-endpoints-api) も IP 許可リストに追加する必要があります。
 
-すべてのサービスについて、ClickPipes のトラフィックはサービスの配置場所に基づき、デフォルトのリージョンから発信されます。
+以下の Google Cloud 表に記載されている Google Cloud リージョン内のサービスは、そのサービスが 2026 年 5 月 27 日以降に作成された場合に限り、それらの Google Cloud IP を使用します。これらのリージョン内で 2026 年 5 月 27 日より前に作成されたサービスは、引き続き以下に記載するデフォルトリージョンの IP を使用します。
 
-* **eu-central-1**: 個別に記載されていないすべての EU リージョン (GCP および Azure の EU リージョンを含む) 。
+その他のサービスについては、ClickPipes のトラフィックはサービスの配置場所に基づき、デフォルトのリージョンから発信されます。
+
+* **eu-central-1**: 個別に記載されていないすべての EU リージョンに加え、Azure の EU リージョン、および 2026 年 5 月 27 日より前に作成された Google Cloud の EU サービス。
 * **eu-west-1**: 2026 年 1 月 20 日以降に作成された、AWS `eu-west-1` 内のすべてのサービス (この日付より前に作成されたサービスは `eu-central-1` の IP を使用) 。
 * **us-east-1**: AWS `us-east-1` 内のすべてのサービス。
 * **ap-south-1**: 2025 年 6 月 25 日以降に作成された、AWS `ap-south-1` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
 * **ap-northeast-2**: 2025 年 11 月 14 日以降に作成された、AWS `ap-northeast-2` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
+* **af-south-1**: 2026 年 4 月 15 日以降に作成された、AWS `af-south-1` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
+* **ap-east-1**: 2026 年 4 月 15 日以降に作成された、AWS `ap-east-1` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
+* **ap-northeast-1**: 2026 年 4 月 15 日以降に作成された、AWS `ap-northeast-1` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
 * **ap-southeast-1**: 2026 年 3 月 18 日以降に作成された、AWS `ap-southeast-1` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
 * **ap-southeast-2**: 2025 年 6 月 25 日以降に作成された、AWS `ap-southeast-2` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
+* **ap-southeast-3**: 2026 年 3 月 6 日以降に作成された、AWS `ap-southeast-3` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
+* **ca-central-1**: 2026 年 4 月 15 日以降に作成された、AWS `ca-central-1` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
+* **eu-north-1**: 2026 年 4 月 15 日以降に作成された、AWS `eu-north-1` 内のサービス (この日付より前に作成されたサービスは `eu-central-1` の IP を使用) 。
+* **eu-west-2**: 2026 年 4 月 15 日以降に作成された、AWS `eu-west-2` 内のサービス (この日付より前に作成されたサービスは `eu-central-1` の IP を使用) 。
+* **il-central-1**: 2026 年 4 月 15 日以降に作成された、AWS `il-central-1` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
+* **mx-central-1**: 2026 年 5 月 19 日以降に作成された、AWS `mx-central-1` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
+* **sa-east-1**: 2026 年 4 月 15 日以降に作成された、AWS `sa-east-1` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
 * **us-west-2**: 2025 年 6 月 24 日以降に作成された、AWS `us-west-2` 内のサービス (この日付より前に作成されたサービスは `us-east-2` の IP を使用) 。
-* **us-east-2**: 上記で明示的に記載されていないすべてのその他のリージョン (GCP および Azure のリージョンを含む) 。
+* **us-east-2**: 上記のルールに一致しないすべてのその他のリージョン。これには、Azure リージョンおよび 2026 年 5 月 27 日より前に作成された Google Cloud サービスが含まれます。
 
-| AWS リージョン                               | IP アドレス                                                                                                                                     |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| **eu-central-1**                        | `18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `18.197.167.47`, `3.122.25.29`, `52.28.148.40`                                              |
-| **eu-west-1** (2026 年 1 月 20 日以降)       | `54.228.1.92`, `54.72.101.254`, `54.228.16.208`, `54.76.200.104`, `52.211.2.177`, `54.77.10.134`                                            |
-| **us-east-1**                           | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
-| **us-east-2**                           | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`, `3.132.20.192`, `18.119.76.110`, `3.134.185.180`                                            |
-| **ap-south-1** (2025 年 6 月 25 日以降)      | `13.203.140.189`, `13.232.213.12`, `13.235.145.208`, `35.154.167.40`, `65.0.39.245`, `65.1.225.89`                                          |
-| **ap-northeast-2** (2025 年 11 月 14 日以降) | `3.38.68.69`, `52.78.68.128`, `13.209.152.13`, `3.38.24.84`, `3.37.159.31`, `3.34.25.104`                                                   |
-| **ap-southeast-1** (2026 年 3 月 18 日以降)  | `13.215.65.134`, `18.139.118.108`, `47.130.197.47`, `54.251.134.219`, `54.254.98.29`, `54.255.153.106`                                      |
-| **ap-southeast-2** (2025 年 6 月 25 日以降)  | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                            |
-| **us-west-2** (2025 年 6 月 24 日以降)       | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                            |
+### AWS の固定 NAT IP \{#aws-static-nat-ips\}
+
+| AWS リージョン                                  | IP アドレス                                                                                                                                     |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| **eu-central-1** - フランクフルト                 | `18.195.233.217`, `3.127.86.90`, `35.157.23.2`, `18.197.167.47`, `3.122.25.29`, `52.28.148.40`                                              |
+| **eu-west-1** - アイルランド (2026年1月20日以降)      | `54.228.1.92` , `54.72.101.254`, `54.228.16.208`, `54.76.200.104`, `52.211.2.177`, `54.77.10.134`                                           |
+| **us-east-1** - 北バージニア                     | `54.82.38.199`, `3.90.133.29`, `52.5.177.8`, `3.227.227.145`, `3.216.6.184`, `54.84.202.92`, `3.131.130.196`, `3.23.172.68`, `3.20.208.150` |
+| **us-east-2** - オハイオ                       | `3.131.130.196`, `3.23.172.68`, `3.20.208.150`, `3.132.20.192`, `18.119.76.110`, `3.134.185.180`                                            |
+| **ap-south-1** - ムンバイ (2025年6月25日以降)       | `13.203.140.189`, `13.232.213.12`, `13.235.145.208`, `35.154.167.40`, `65.0.39.245`, `65.1.225.89`                                          |
+| **ap-northeast-2** - ソウル (2025年11月14日以降)   | `3.38.68.69`, `52.78.68.128`, `13.209.152.13`, `3.38.24.84`, `3.37.159.31`, `3.34.25.104`                                                   |
+| **ap-southeast-1** - シンガポール (2026年3月18日以降) | `13.215.65.134`, `18.139.118.108`, `47.130.197.47`, `54.251.134.219`, `54.254.98.29`, `54.255.153.106`                                      |
+| **ap-southeast-2** - シドニー (2025年6月25日以降)   | `3.106.48.103`, `52.62.168.142`, `13.55.113.162`, `3.24.61.148`, `54.206.77.184`, `54.79.253.17`                                            |
+| **af-south-1** - ケープタウン (2026年4月15日以降)     | `13.245.187.24`, `15.240.60.178`, `15.240.81.191`, `13.245.25.101`, `13.245.91.225`, `15.240.54.195`                                        |
+| **ap-east-1** - 香港 (2026年4月15日以降)          | `18.166.168.168`, `43.199.224.85`, `95.40.0.242`, `16.162.107.229`, `43.199.125.240`, `54.46.86.27`                                         |
+| **ap-northeast-1** - 東京 (2026年4月15日以降)     | `54.168.88.92`, `35.76.97.79`, `54.64.100.89`, `54.178.40.17`, `52.195.101.208`, `13.193.109.245`                                           |
+| **ap-southeast-1** - シンガポール (2026年3月18日以降) | `47.130.197.47`, `54.251.134.219`, `18.139.118.108`, `54.255.153.106`, `54.254.98.29`, `13.215.65.134`                                      |
+| **ap-southeast-3** - ジャカルタ (2026年3月6日以降)   | `16.78.195.195`, `43.218.184.235`, `16.79.88.54`, `16.78.153.162`, `16.79.6.125`, `108.137.52.155`                                          |
+| **ca-central-1** - カナダ (2026年4月15日以降)      | `52.60.123.235`, `3.97.222.98`, `3.99.62.248`, `15.223.61.186`, `3.96.255.101`, `3.97.29.96`                                                |
+| **eu-north-1** - ストックホルム (2026年4月15日以降)    | `13.63.1.65`, `16.171.127.30`, `56.228.76.44`, `13.63.101.248`, `16.170.124.188`, `13.60.109.201`                                           |
+| **eu-west-2** - ロンドン (2026年4月15日以降)        | `13.134.82.158`, `16.60.209.167`, `18.134.221.203`, `16.60.139.176`, `13.43.66.75`, `3.11.78.183`                                           |
+| **il-central-1** - テルアビブ (2026年4月15日以降)    | `16.164.25.13`, `51.84.162.29`, `51.85.90.183`, `51.84.36.146`, `51.84.72.29`, `51.85.28.184`                                               |
+| **mx-central-1** - メキシコ (2026年5月19日以降)     | `78.12.67.220`, `78.12.117.175`, `78.13.186.238`, `78.13.219.184`, `78.13.224.212`, `78.13.248.162`                                         |
+| **sa-east-1** - サンパウロ (2026年4月15日以降)       | `18.230.164.131`, `56.126.1.234`, `18.230.39.24`, `15.229.102.116`, `18.230.174.204`, `18.229.237.116`                                      |
+| **us-west-2** - オレゴン (2025年6月24日以降)        | `52.42.100.5`, `44.242.47.162`, `52.40.44.52`, `44.227.206.163`, `44.246.241.23`, `35.83.230.19`                                            |
+
+### Google Cloud の固定 NAT IP \{#google-cloud-static-nat-ips\}
+
+| Google Cloud リージョン                           | IP アドレス                                                                               |
+| -------------------------------------------- | ------------------------------------------------------------------------------------- |
+| **asia-northeast1** - 東京 (2026年5月27日以降)      | `104.198.114.210`, `35.221.66.81`, `35.243.126.127`, `136.110.107.86`, `34.85.18.112` |
+| **asia-southeast1** - シンガポール (2026年5月27日以降)  | `34.21.197.28`, `35.197.141.23`, `35.197.157.90`, `136.110.17.200`, `35.185.179.231`  |
+| **europe-west2** - ロンドン (2026年5月27日以降)       | `35.242.131.178`, `34.39.77.101`, `34.39.47.179`, `34.89.53.234`, `8.228.63.151`      |
+| **europe-west4** - オランダ (2026年5月27日以降)       | `34.34.86.3`, `34.6.175.56`, `34.178.6.187`, `34.91.204.220`, `34.12.85.206`          |
+| **us-central1** - アイオワ (2026年5月27日以降)        | `34.28.24.54`, `34.42.56.195`, `34.63.141.9`, `35.238.146.37`, `34.10.251.49`         |
+| **us-east1** - サウスカロライナ (2026年5月27日以降)       | `34.24.134.232`, `34.24.214.165`, `34.24.20.1`, `35.243.193.248`, `34.23.98.76`       |
 
 ## ClickHouse 設定の調整 \{#adjusting-clickhouse-settings\}
 
@@ -103,26 +140,26 @@ ClickPipes には、多くのユースケースをカバーする妥当なデフ
 
 ### オブジェクトストレージ ClickPipes \{#clickpipes-advanced-settings-object-storage\}
 
-| Setting                            | Default value |  Description                     |                    
-|------------------------------------|---------------|---------------------------------------------------------------------------------------|
-| `Max insert bytes`                 | 10GB          | 1回の挿入バッチで処理するバイト数。                                  |
-| `Max file count`                   | 100           | 1回の挿入バッチで処理するファイルの最大数。                          |
-| `Max threads`                      | auto(3)       | ファイル処理に使用する[同時実行スレッド数の上限](/operations/settings/settings#max_threads)。 |
-| `Max insert threads`               | 1             | ファイル処理に使用する[同時実行挿入スレッド数の上限](/operations/settings/settings#max_insert_threads)。 |
-| `Min insert block size bytes`      | 1GB           | テーブルに挿入可能な[ブロック内の最小サイズ（バイト数）](/operations/settings/settings#min_insert_block_size_bytes)。 |
-| `Max download threads`             | 4             | [同時実行ダウンロードスレッド数の上限](/operations/settings/settings#max_download_threads)。 |
-| `Object storage polling interval`  | 30s           | ClickHouse クラスターへデータを挿入する前の最大待機時間を設定します。 |
-| `Parallel distributed insert select` | 2           | [parallel_distributed_insert_select 設定](/operations/settings/settings#parallel_distributed_insert_select)。 |
-| `Parallel view processing`         | false         | アタッチされた VIEW への書き込みを[逐次ではなく並行して](/operations/settings/settings#parallel_view_processing)行うかどうか。 |
-| `Use cluster function`             | true          | 複数ノード間でファイルを並行処理するかどうか。 |
+| Setting                              | Default value | Description                                                                                                            |
+| ------------------------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `Max insert bytes`                   | 10 GB         | 1回の挿入バッチで処理するバイト数。                                                                                                     |
+| `Max file count`                     | 100           | 1回の挿入バッチで処理するファイルの最大数。                                                                                                 |
+| `Max threads`                        | auto(3)       | ファイル処理に使用する[同時実行スレッド数の上限](/operations/settings/settings#max_threads)。                                                  |
+| `Max insert threads`                 | 1             | ファイル処理に使用する[同時実行挿入スレッド数の上限](/operations/settings/settings#max_insert_threads)。                                         |
+| `Min insert block size bytes`        | 1 GB          | テーブルに挿入可能な[ブロック内の最小サイズ (バイト数) ](/operations/settings/settings#min_insert_block_size_bytes)。                            |
+| `Max download threads`               | 4             | [同時実行ダウンロードスレッド数の上限](/operations/settings/settings#max_download_threads)。                                              |
+| `Object storage polling interval`    | 30 s          | ClickHouse クラスターへデータを挿入する前の最大待機時間を設定します。                                                                               |
+| `Parallel distributed insert select` | 2             | [parallel&#95;distributed&#95;insert&#95;select 設定](/operations/settings/settings#parallel_distributed_insert_select)。 |
+| `Parallel view processing`           | false         | アタッチされた VIEW への書き込みを[逐次ではなく並行して](/operations/settings/settings#parallel_view_processing)行うかどうか。                        |
+| `Use cluster function`               | true          | 複数ノード間でファイルを並行処理するかどうか。                                                                                                |
 
-<Image img={cp_advanced_settings} alt="ClickPipes の高度な設定" size="lg" border/>
+<Image img={cp_advanced_settings} alt="ClickPipes の高度な設定" size="lg" border />
 
 ### ストリーミング ClickPipes \{#clickpipes-advanced-settings-streaming\}
 
-| 設定                               | デフォルト値 |  説明                                                                                  |                    
-|------------------------------------|---------------|---------------------------------------------------------------------------------------|
-| `Streaming max insert wait time`   | 5s            | データを ClickHouse クラスターに挿入する前の最大待機時間を設定します。                |
+| 設定                               | デフォルト値 | 説明                                        |
+| -------------------------------- | ------ | ----------------------------------------- |
+| `Streaming max insert wait time` | 5 s    | データを ClickHouse クラスターに挿入する前の最大待機時間を設定します。 |
 
 ## エラー レポート \{#error-reporting\}
 
@@ -134,9 +171,13 @@ ClickPipes は、宛先テーブルとは別に、`<destination_table_name>_clic
 
 ### システムエラー \{#system-errors\}
 
-ClickPipe の動作に関連するエラー（ネットワークや接続などを含む）は、すべて `system.clickpipes_log` テーブルに保存されます。このテーブルには 7 日間の[有効期限 (TTL)](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) が設定されています。
+ClickPipe の動作に関連するエラー (ネットワークや接続などを含む) は、すべて `system.clickpipes_log` テーブルに保存されます。このテーブルには 7 日間の[有効期限 (TTL)](/engines/table-engines/mergetree-family/mergetree#table_engine-mergetree-ttl) が設定されています。
 
-ClickPipes が 15 分経過してもデータソースに接続できない場合、または 1 時間経過しても送信先に接続できない場合、ClickPipes インスタンスは停止し、（ClickHouse インスタンスが利用可能であれば）システムエラーテーブルに適切なメッセージを保存します。
+ClickPipes が 15 分経過してもデータソースに接続できない場合、または 1 時間経過しても送信先に接続できない場合、ClickPipes インスタンスは停止し、 (ClickHouse インスタンスが利用可能であれば) システムエラーテーブルに適切なメッセージを保存します。
+
+## 監視 \{#monitoring\}
+
+コンソールでの監視に加えて、ClickPipes はスクレイピング用にメトリクスを [Prometheus互換エンドポイント](/integrations/prometheus) で公開しています。これらのメトリクスは他の ClickHouse Cloud サービスのメトリクスとあわせて公開されるため、既存のオブザーバビリティスタック (例: [Grafana](/integrations/prometheus#integrating-with-grafana)、[Datadog](/integrations/prometheus#integrating-with-datadog)) に ClickPipes の監視を統合できます。利用可能なメトリクスの一覧については、[Monitoring ClickPipes](/integrations/clickpipes/monitoring) を参照してください。
 
 ## FAQ \{#faq\}
 

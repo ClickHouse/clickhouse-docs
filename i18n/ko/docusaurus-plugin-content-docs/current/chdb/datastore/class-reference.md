@@ -2,14 +2,12 @@
 title: 'DataStore 클래스 참조'
 sidebar_label: '클래스 참조'
 slug: /chdb/datastore/class-reference
-description: 'DataStore, ColumnExpr, LazyGroupBy, LazySeries 클래스에 대한 전체 API 참조'
+설명: 'DataStore, ColumnExpr, LazyGroupBy, LazySeries 클래스에 대한 전체 API 참조'
 keywords: ['chdb', 'datastore', 'class', 'reference', 'api', 'columnexpr', 'lazygroupby']
 doc_type: 'reference'
 ---
 
-# DataStore 클래스 레퍼런스 \{#datastore-class-reference\}
-
-이 문서에서는 DataStore API의 핵심 클래스를 설명합니다.
+이 참고 문서에서는 DataStore API의 핵심 클래스를 설명합니다.
 
 ## DataStore \{#datastore\}
 

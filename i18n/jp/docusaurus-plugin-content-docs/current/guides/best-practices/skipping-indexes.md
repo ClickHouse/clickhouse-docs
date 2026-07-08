@@ -1,9 +1,9 @@
 ---
 slug: /optimize/skipping-indexes
-sidebar_label: 'データスキップインデックス'
+sidebar_label: 'データスキッピングインデックス'
 sidebar_position: 2
 description: 'スキップインデックスを使用すると、ClickHouse は一致する値が存在しないことが保証されている大きなデータチャンクの読み取りをスキップできます。'
-title: 'ClickHouse のデータスキップインデックスを理解する'
+title: 'ClickHouse のデータスキッピングインデックスを理解する'
 doc_type: 'guide'
 keywords: ['スキップインデックス', 'データスキップ', 'パフォーマンス', 'インデックス', 'ベストプラクティス']
 ---
@@ -12,8 +12,6 @@ import simple_skip from '@site/static/images/guides/best-practices/simple_skip.p
 import bad_skip from '@site/static/images/guides/best-practices/bad_skip.png';
 import Image from '@theme/IdealImage';
 
-
-# ClickHouse のデータスキッピングインデックスを理解する \{#understanding-clickhouse-data-skipping-indexes\}
 
 ## はじめに \{#introduction\}
 
@@ -30,7 +28,7 @@ ClickHouse のクエリパフォーマンスには多くの要因が影響しま
 ユーザーが Data Skipping Indexes を使用できるのは、MergeTree ファミリーのテーブルのみです。各データスキップインデックスには、主に次の 4 つの引数があります。
 
 * インデックス名。インデックス名は、各パーティション内でインデックスファイルを作成するために使用されます。また、インデックスを削除したりマテリアライズしたりする際のパラメータとしても必要です。
-* インデックス式。インデックス式は、インデックスに格納される値の集合を計算するために使用されます。これは、列、単純な演算子、および（インデックスタイプによって決定される）関数のサブセットの組み合わせにすることができます。
+* インデックス式。インデックス式は、インデックスに格納される値の集合を計算するために使用されます。これは、列、単純な演算子、および (インデックスタイプによって決定される) 関数のサブセットの組み合わせにすることができます。
 * TYPE。インデックスタイプは、各インデックスブロックの読み取りおよび評価をスキップできるかどうかを判断するための計算方法を制御します。
 * GRANULARITY。各インデックス付きブロックは、GRANULARITY 個のグラニュールで構成されます。たとえば、主キーインデックスの粒度が 8192 行で、インデックスの粒度が 4 の場合、各インデックス付き「ブロック」は 32768 行になります。
 
@@ -39,7 +37,7 @@ ClickHouse のクエリパフォーマンスには多くの要因が影響しま
 * `skp_idx_{index_name}.idx` — 順序付けされた式の値を格納します
 * `skp_idx_{index_name}.mrk2` — 対応するデータ列ファイル内のオフセットを格納します。
 
-クエリを実行して関連する列ファイルを読み込む際に、WHERE 句のフィルタ条件の一部がスキップインデックス式と一致する場合、ClickHouse はインデックスファイルのデータを使用して、各関連データブロックを処理すべきか、あるいは（主キーの適用によってすでに除外されていないと仮定して）スキップできるかどうかを判定します。非常に単純化した例として、予測可能なデータが読み込まれた次のテーブルを考えます。
+クエリを実行して関連する列ファイルを読み込む際に、WHERE 句のフィルタ条件の一部がスキップインデックス式と一致する場合、ClickHouse はインデックスファイルのデータを使用して、各関連データブロックを処理すべきか、あるいは (主キーの適用によってすでに除外されていないと仮定して) スキップできるかどうかを判定します。非常に単純化した例として、予測可能なデータが読み込まれた次のテーブルを考えます。
 
 ```sql
 CREATE TABLE skip_table
@@ -58,7 +56,9 @@ INSERT INTO skip_table SELECT number, intDiv(number,4096) FROM numbers(100000000
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -86,7 +86,9 @@ ALTER TABLE skip_table MATERIALIZE INDEX vix;
 
 ```sql
 SELECT * FROM skip_table WHERE my_value IN (125, 700)
+```
 
+```response
 ┌─my_key─┬─my_value─┐
 │ 512000 │      125 │
 │ 512001 │      125 │
@@ -116,7 +118,6 @@ SET send_logs_level='trace';
 ```sql
 <Debug> default.skip_table (933d4b2c-8cea-4bf9-8c93-c56e900eefd1) (SelectExecutor): Index `vix` has dropped 6102/6104 granules.
 ```
-
 
 ## スキップインデックスのタイプ \{#skip-index-types\}
 

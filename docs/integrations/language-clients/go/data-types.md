@@ -8,7 +8,6 @@ title: 'Data types'
 doc_type: 'reference'
 ---
 
-# Data Types {#data-types}
 
 ## Type conversions {#type-conversions}
 

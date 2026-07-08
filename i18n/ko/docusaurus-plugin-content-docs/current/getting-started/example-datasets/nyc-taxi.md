@@ -15,7 +15,7 @@ import TabItem from '@theme/TabItem';
 전체 데이터셋은 다음과 같은 몇 가지 방법으로 얻을 수 있습니다.
 
 * S3 또는 GCS에서 ClickHouse Cloud로 데이터를 직접 삽입합니다.
-* 미리 준비된 파티션을 다운로드합니다.
+* 준비된 파티션을 다운로드합니다.
 * 또는 데모 환경인 [sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19)에서 전체 데이터셋을 쿼리할 수 있습니다.
 
 :::note

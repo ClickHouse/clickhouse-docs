@@ -7,7 +7,6 @@ keywords: ['chdb', 'datastore', 'pandas', 'migration', 'guide']
 doc_type: 'guide'
 ---
 
-# Migration from pandas
 
 This guide helps you migrate existing pandas code to DataStore for better performance while maintaining compatibility.
 

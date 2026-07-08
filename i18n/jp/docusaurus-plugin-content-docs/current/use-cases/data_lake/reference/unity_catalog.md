@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/unity-catalog
-sidebar_label: 'Unity カタログ'
-title: 'Unity カタログ'
+sidebar_label: 'Unity Catalog'
+title: 'Unity Catalog'
 pagination_prev: null
 pagination_next: null
 description: 'このガイドでは、ClickHouse と Unity Catalog を使用して
@@ -15,7 +15,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse は複数のカタログ（Unity、Glue、Polaris など）との連携をサポートしています。本ガイドでは、ClickHouse と [Unity Catalog](https://www.databricks.com/product/unity-catalog) を使用して、Databricks によって管理されているデータをクエリする手順を説明します。
+ClickHouse は複数のカタログ (Unity、Glue、Polaris など) との連携をサポートしています。本ガイドでは、ClickHouse と [Unity Catalog](https://www.databricks.com/product/unity-catalog) を使用して、Databricks によって管理されているデータをクエリする手順を説明します。
 
 Databricks はレイクハウス向けに複数のデータ形式をサポートしています。ClickHouse を使用すると、Unity Catalog のテーブルを Delta および Iceberg としてクエリできます。
 
@@ -71,7 +71,9 @@ oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', 
 USE unity;
 
 SHOW TABLES;
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ clickbench.delta_hits                              │
 │ demo.fake_user                                     │
@@ -109,7 +111,9 @@ SHOW TABLES;
 
 ```sql
 SHOW TABLES
+```
 
+```response
 ┌─name───────────────┐
 │ uniform.delta_hits │
 └────────────────────┘
@@ -150,7 +154,6 @@ CREATE TABLE unity_uniform.`uniform.delta_hits`
 ENGINE = Iceberg('s3://<path>);
 
 ```
-
 
 ## データレイクから ClickHouse へのデータの読み込み \{#loading-data-from-your-data-lake-into-clickhouse\}
 

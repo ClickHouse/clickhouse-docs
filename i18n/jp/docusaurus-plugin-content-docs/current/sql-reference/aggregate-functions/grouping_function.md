@@ -5,19 +5,18 @@ title: 'GROUPING'
 doc_type: 'リファレンス'
 ---
 
-# グループ化 \{#grouping\}
-
 ## GROUPING \{#grouping\}
 
-[ROLLUP](../statements/select/group-by.md/#rollup-modifier) と [CUBE](../statements/select/group-by.md/#cube-modifier) は GROUP BY の修飾子です。これらはいずれも小計を計算します。ROLLUP は `(day, month, year)` のような順序付きのカラムリストを受け取り、集約の各レベルで小計を計算し、最後に総計を計算します。CUBE は、指定されたカラムのあらゆる組み合わせに対して小計を計算します。GROUPING は、ROLLUP または CUBE によって返される行のうち、どれがスーパー集約（より上位レベルの集約行）であり、どれが修飾されていない GROUP BY によって返される行に相当するかを識別します。
+[ROLLUP](../statements/select/group-by.md/#rollup-modifier) と [CUBE](../statements/select/group-by.md/#cube-modifier) は GROUP BY の修飾子です。これらはいずれも小計を計算します。ROLLUP は `(day, month, year)` のような順序付きのカラムリストを受け取り、集約の各レベルで小計を計算し、最後に総計を計算します。CUBE は、指定されたカラムのあらゆる組み合わせに対して小計を計算します。GROUPING は、ROLLUP または CUBE によって返される行のうち、どれがスーパー集約 (より上位レベルの集約行) であり、どれが修飾されていない GROUP BY によって返される行に相当するかを識別します。
 
-GROUPING 関数は複数のカラムを引数として取り、ビットマスクを返します。 
-- `1` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計であることを示します
-- `0` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計ではないことを示します
+GROUPING 関数は複数のカラムを引数として取り、ビットマスクを返します。
+
+* `1` は、`GROUP BY` に対する `ROLLUP` または `CUBE` 修飾子によって返された行が小計であることを示します
+* `0` は、`ROLLUP` または `CUBE` によって返された行が小計ではない行であることを示します
 
 ## GROUPING SETS \{#grouping-sets\}
 
-デフォルトでは、`CUBE` 修飾子は、`CUBE` に渡された列のあらゆる組み合わせに対して小計を計算します。`GROUPING SETS` を使用すると、計算する組み合わせを明示的に指定できます。
+デフォルトでは、`CUBE` 修飾子は、`CUBE` に渡されたカラムのあらゆる組み合わせに対して小計を計算します。`GROUPING SETS` を使用すると、計算する組み合わせを明示的に指定できます。
 
 階層データの分析は、`ROLLUP`、`CUBE`、`GROUPING SETS` 修飾子の代表的なユースケースの 1 つです。ここでのサンプルは、2 つのデータセンターにインストールされている Linux ディストリビューションとそのバージョンに関するデータを含むテーブルです。ディストリビューション別、バージョン別、ロケーション別にデータを確認することが有用な場合があります。
 
@@ -72,7 +71,7 @@ FROM
 
 ### 簡単なクエリ \{#simple-queries\}
 
-分布別に各データセンター内のサーバー数を取得します。
+ディストリビューション別に各データセンターのサーバー数を取得します。
 
 ```sql
 SELECT
@@ -254,9 +253,9 @@ GROUP BY
 9 rows in set. Elapsed: 0.427 sec.
 ```
 
-### GROUPING SETS との比較 \{#comparing-cube-with-grouping-sets\}
+### CUBE と GROUPING SETS の比較 \{#comparing-cube-with-grouping-sets\}
 
-次のクエリにおける CUBE `CUBE(datacenter,distro,version)` は、意味のある階層にはなりません。Arch と RHEL ではリリースサイクルやバージョン命名規則が異なるため、2 つのディストリビューションをまたいでバージョンを見ることには意味がありません。この後に続く GROUPING SETS の例のほうが適切であり、`distro` と `version` を同じセット内でグループ化しています。
+次のクエリの CUBE、`CUBE(datacenter,distro,version)` は、あまり意味をなさない階層を作る可能性があります。Arch と RHEL ではリリースサイクルもバージョンの命名規則も異なるため、2 つのディストリビューションをまたいで Version を見ることには意味がありません。この次に続く `GROUPING SETS` の例では、`distro` と `version` を同じセットでグループ化しているため、こちらの方がより適切です。
 
 ```sql
 SELECT

@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'ClickPipes и языковые клиенты'
+sidebar_label: 'ClickPipes и клиентские библиотеки для языков программирования'
 slug: /manage/integrations
-title: 'ClickPipes и языковые клиенты'
-description: 'Интеграции ClickPipes и языковых клиентов с ClickHouse Cloud'
+title: 'ClickPipes и клиентские библиотеки для языков программирования'
+description: 'Интеграции ClickPipes и клиентских библиотек для языков программирования с ClickHouse Cloud'
 doc_type: 'landing-page'
-keywords: ['интеграции', 'возможности Cloud', 'clickpipes', 'языковые клиенты', 'коннекторы']
+keywords: ['интеграции', 'возможности Cloud', 'clickpipes', 'клиентские библиотеки для языков программирования', 'коннекторы']
 ---
 
 import Kafkasvg from '@site/static/images/integrations/logos/kafka.svg';

@@ -3,11 +3,9 @@ description: '문자열 치환 함수 문서'
 sidebar_label: '문자열 치환'
 slug: /sql-reference/functions/string-replace-functions
 title: '문자열 치환 함수'
-doc_type: 'reference'
+doc_type: '참고'
 keywords: ['문자열 치환']
 ---
-
-# 문자열 치환 함수 \{#functions-for-string-replacement\}
 
 [일반 문자열 함수](string-functions.md) 및 [문자열 검색 함수](string-search-functions.md)는 별도의 문서에서 설명합니다.
 
@@ -170,8 +168,9 @@ SELECT overlayUTF8('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
 형식 문자열에는 `%` 문자로 시작하는 형식 지정자를 포함할 수 있습니다.
 `%` 및 그 뒤에 오는 형식 지정자에 포함되지 않은 모든 내용은 리터럴 텍스트로 간주되어 출력에 그대로 복사됩니다.
 리터럴 `%` 문자는 `%%`로 이스케이프할 수 있습니다.
+형식 문자열은 상수이거나 컬럼 표현식일 수 있으므로, 행마다 서로 다른 형식 패턴을 사용할 수 있습니다.
 
-**문법**
+**구문**
 
 ```sql
 printf(format[, sub1, sub2, ...])

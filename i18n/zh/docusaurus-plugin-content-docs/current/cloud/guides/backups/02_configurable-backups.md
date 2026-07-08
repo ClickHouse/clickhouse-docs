@@ -28,5 +28,5 @@ import Image from '@theme/IdealImage';
 :::
 
 :::note
-更改备份计划可能会导致更高的月度存储费用，因为某些备份可能不再包含在该服务的默认备份中。请参阅下文[“了解备份成本”](/cloud/manage/backups/overview#understanding-backup-cost)部分。
+更改备份计划可能会导致更高的月度存储费用，因为某些备份可能不再包含在该服务的默认备份中。请参阅[&quot;了解备份成本&quot;](/cloud/manage/backups/overview#understanding-backup-cost)。
 :::

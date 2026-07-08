@@ -8,8 +8,6 @@ title: '고급 사용법'
 doc_type: 'reference'
 ---
 
-# 고급 활용 \{#advanced-usage\}
-
 ## Raw API \{#raw-api\}
 
 ClickHouse 데이터와 네이티브 또는 타사 데이터 타입 및 구조 간 변환이 필요하지 않은 사용 사례에서는, ClickHouse Connect 클라이언트가 ClickHouse 연결을 직접 사용할 수 있는 메서드를 제공합니다.

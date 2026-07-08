@@ -23,7 +23,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 Словари дерева регулярных выражений определяются в открытой версии ClickHouse с использованием источника [`YAMLRegExpTree`](../sources/yamlregexptree.md), которому передаётся путь к YAML-файлу с деревом регулярных выражений.
 
-```sql
+```sql title="Query"
 CREATE DICTIONARY regexp_dict
 (
     regexp String,
@@ -63,7 +63,7 @@ LAYOUT(regexp_tree)
   * Значение атрибута может содержать **обратные ссылки**, ссылающиеся на группы захвата сопоставленного регулярного выражения. В примере значение атрибута `version` в первом узле состоит из обратной ссылки `\1` на группу захвата `(\d+[\.\d]*)` в регулярном выражении. Номера обратных ссылок находятся в диапазоне от 1 до 9 и записываются как `$1` или `\1` (для числа 1). Во время выполнения запроса обратная ссылка заменяется сопоставленной группой захвата.
 * **child nodes**: список дочерних узлов узла дерева regexp, каждый из которых имеет свои собственные атрибуты и (потенциально) дочерние узлы. Сопоставление строки выполняется в порядке обхода в глубину. Если строка соответствует узлу regexp, словарь проверяет, соответствует ли она также дочерним узлам этого узла. Если это так, назначаются атрибуты самого глубокого совпавшего узла. Атрибуты дочернего узла переопределяют одноимённые атрибуты родительских узлов. Имя дочерних узлов в YAML-файлах может быть произвольным, например `versions` в приведённом выше примере.
 
-Словари на основе дерева регулярных выражений допускают доступ только с использованием функций `dictGet`, `dictGetOrDefault` и `dictGetAll`. Например:
+Словари дерева регулярных выражений допускают доступ только с использованием функций `dictGet`, `dictGetOrDefault` и `dictGetAll`. Например:
 
 ```sql title="Query"
 SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
@@ -79,9 +79,8 @@ SELECT dictGet('regexp_dict', ('name', 'version'), '31/tclwebkit1024');
 Затем словарь продолжает просматривать дочерние узлы и обнаруживает, что строка также соответствует `3[12]/tclwebkit`.
 В результате значение атрибута `name` равно `Android` (определено на первом уровне), а значение атрибута `version` равно `12` (определено в дочернем узле).
 
-С помощью сложного конфигурационного файла YAML вы можете использовать словари в виде дерева регулярных выражений в качестве парсера строки user agent.
+С помощью сложного конфигурационного файла YAML вы можете использовать словари дерева регулярных выражений в качестве парсера строки user agent.
 ClickHouse поддерживает [uap-core](https://github.com/ua-parser/uap-core), и вы можете увидеть, как его использовать, в функциональном тесте [02504&#95;regexp&#95;dictionary&#95;ua&#95;parser](https://github.com/ClickHouse/ClickHouse/blob/master/tests/queries/0_stateless/02504_regexp_dictionary_ua_parser.sh)
-
 
 ### Сбор значений атрибутов \{#collecting-attribute-values\}
 
@@ -128,22 +127,19 @@ LIFETIME(0)
   captured: 'NULL'
 ```
 
-```sql
+```sql title="Query"
 CREATE TABLE urls (url String) ENGINE=MergeTree ORDER BY url;
 INSERT INTO urls VALUES ('clickhouse.com'), ('clickhouse.com/docs/en'), ('github.com/clickhouse/tree/master/docs');
 SELECT url, dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', 'parent'), url, 2) FROM urls;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─url────────────────────────────────────┬─dictGetAll('regexp_dict', ('tag', 'topological_index', 'captured', 'parent'), url, 2)─┐
 │ clickhouse.com                         │ (['ClickHouse'],[1],[],[])                                                            │
 │ clickhouse.com/docs/en                 │ (['ClickHouse Documentation','ClickHouse'],[0,1],['/en'],['ClickHouse'])              │
 │ github.com/clickhouse/tree/master/docs │ (['Documentation','GitHub'],[2,3],[NULL],[])                                          │
 └────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────┘
 ```
-
 
 ### Режимы сопоставления \{#matching-modes\}
 

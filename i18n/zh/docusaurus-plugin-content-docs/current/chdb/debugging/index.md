@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'debug', 'explain', 'profiling', 'logging']
 doc_type: 'guide'
 ---
 
-# DataStore 调试 \{#datastore-debugging\}
-
-DataStore 提供了一套全面的调试工具，用于帮助理解并优化数据管道。
+DataStore 提供了一套全面的调试工具，帮助您理解并优化数据管道。
 
 ## 调试工具概览 \{#overview\}
 
@@ -59,7 +57,7 @@ profiler.report()
 
 在运行查询前先查看执行计划。
 
-```python
+```python title="Query"
 ds = pd.read_csv("data.csv")
 
 query = (ds
@@ -72,9 +70,7 @@ query = (ds
 query.explain()
 ```
 
-输出：
-
-```text
+```text title="Response"
 Pipeline:
   Source: file('data.csv', 'CSVWithNames')
   Filter: amount > 1000
@@ -92,12 +88,11 @@ GROUP BY region
 
 ***
 
-
 ## 性能分析 \{#profiling\}
 
 用于测量每个操作的执行时间。
 
-```python
+```python title="Query"
 from chdb.datastore.config import config, get_profiler
 
 # Enable profiling
@@ -119,9 +114,7 @@ profiler = get_profiler()
 profiler.report(min_duration_ms=0.1)
 ```
 
-输出结果：
-
-```text
+```text title="Response"
 Performance Report
 ==================
 Step                          Duration    Calls
@@ -140,7 +133,6 @@ Total                         1.939s      7
 有关详细信息，请参阅 [Profiling Guide](profiling.md)。
 
 ***
-
 
 ## 日志 \{#logging\}
 

@@ -8,9 +8,7 @@ title: 'deltaLake'
 doc_type: 'reference'
 ---
 
-# Табличная функция deltaLake \{#deltalake-table-function\}
-
-Предоставляет табличный интерфейс к таблицам [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или локально смонтированной файловой системе с поддержкой операций чтения и записи (начиная с v25.10)
+Предоставляет табличный интерфейс для таблиц [Delta Lake](https://github.com/delta-io/delta) в Amazon S3, Azure Blob Storage или в локально смонтированной файловой системе, с поддержкой чтения и записи (начиная с v25.10)
 
 ## Синтаксис \{#syntax\}
 
@@ -67,7 +65,7 @@ LIMIT 2
 Рассмотрим таблицу в хранилище S3 по адресу `s3://ch-docs-s3-bucket/people_10k/`.
 Чтобы вставить данные в таблицу, сначала включите экспериментальную возможность:
 
-```sql
+```sql title="Query"
 SET allow_experimental_delta_lake_writes=1
 ```
 
@@ -100,7 +98,6 @@ Query id: 65032944-bed6-4d45-86b3-a71205a2b659
 1. │ 10001 │ John      │ Smith    │ Male   │  30 │
    └───────┴───────────┴──────────┴────────┴─────┘
 ```
-
 
 ## Виртуальные столбцы \{#virtual-columns\}
 

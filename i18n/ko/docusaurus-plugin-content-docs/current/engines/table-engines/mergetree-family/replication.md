@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse의 Replicated* 테이블 엔진 계열을 사용한 데이터 복제 개요'
+description: 'ClickHouse의 Replicated* 테이블 엔진 계열에서의 데이터 복제 개요'
 sidebar_label: 'Replicated*'
 sidebar_position: 20
 slug: /engines/table-engines/mergetree-family/replication
 title: 'Replicated* 테이블 엔진'
 doc_type: 'reference'
 ---
-
-# Replicated* 테이블 엔진 \{#replicated-table-engines\}
 
 :::note
 ClickHouse Cloud에서는 복제가 자동으로 관리됩니다. 테이블을 생성할 때 인수를 추가하지 않고 생성하십시오. 예를 들어, 아래 텍스트에서는 다음과 같이 변경하십시오:
@@ -19,7 +17,7 @@ ENGINE = ReplicatedMergeTree(
 )
 ```
 
-다음과 함께 사용합니다:
+다음으로 바꿉니다:
 
 ```sql
 ENGINE = ReplicatedMergeTree
@@ -27,15 +25,16 @@ ENGINE = ReplicatedMergeTree
 
 :::
 
-복제는 MergeTree 계열에 속한 테이블에만 지원됩니다:
+복제는 MergeTree 엔진 계열에 속한 테이블에만 지원됩니다
 
-* ReplicatedMergeTree
 * ReplicatedSummingMergeTree
+* ReplicatedCoalescingMergeTree
+* ReplicatedVersionedCollapsingMergeTree
+* ReplicatedCollapsingMergeTree
+* ReplicatedGraphiteMergeTree
+* ReplicatedMergeTree
 * ReplicatedReplacingMergeTree
 * ReplicatedAggregatingMergeTree
-* ReplicatedCollapsingMergeTree
-* ReplicatedVersionedCollapsingMergeTree
-* ReplicatedGraphiteMergeTree
 
 복제는 전체 서버가 아니라 개별 테이블 단위에서 동작합니다. 하나의 서버에서 복제된 테이블과 비복제 테이블을 동시에 저장할 수 있습니다.
 
@@ -115,7 +114,6 @@ CREATE TABLE table_name ( ... ) ENGINE = ReplicatedMergeTree('zookeeper_name_con
 기존 ZooKeeper 클러스터를 임의로 지정하면 시스템이 해당 클러스터 내의 디렉토리 하나(복제 가능한 테이블을 생성할 때 지정하는 디렉토리)를 자체 데이터 저장 용도로 사용합니다.
 
 구성 파일에 ZooKeeper가 설정되어 있지 않으면 복제된 테이블을 생성할 수 없으며, 기존에 존재하는 복제된 테이블은 모두 읽기 전용으로만 동작합니다.
-
 
 `SELECT` 쿼리에서는 ZooKeeper를 사용하지 않습니다. 복제는 `SELECT` 성능에 영향을 주지 않으며, 비복제 테이블과 동일한 속도로 쿼리가 실행되기 때문입니다. 분산 복제 테이블에 대해 쿼리할 때 ClickHouse의 동작은 [max_replica_delay_for_distributed_queries](/operations/settings/settings.md/#max_replica_delay_for_distributed_queries) 및 [fallback_to_stale_replicas_for_distributed_queries](/operations/settings/settings.md/#fallback_to_stale_replicas_for_distributed_queries) 설정에 의해 제어됩니다.
 

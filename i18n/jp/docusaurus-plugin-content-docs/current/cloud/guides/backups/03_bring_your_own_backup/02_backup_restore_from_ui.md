@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'UI を使用したバックアップ／復元'
 slug: /cloud/manage/backups/backup-restore-via-ui
-title: 'UI からバックアップを取得・復元する'
+title: 'UI によるバックアップ／復元'
 description: '独自のバケットを使用して、UI からバックアップを取得および復元する方法を説明するページ'
 sidebar_position: 2
 doc_type: 'guide'
@@ -21,8 +21,9 @@ import azure_connection_details from '@site/static/images/cloud/manage/backups/a
 import view_backups_azure from '@site/static/images/cloud/manage/backups/view_backups_azure.png'
 import restore_backups_azure from '@site/static/images/cloud/manage/backups/restore_backups_azure.png'
 
-
-# ユーザーインターフェイスからのバックアップ／リストア \{#ui-experience\}
+:::note
+外部バケットへの自動バックアップは、24 時間ごとに「フル」バックアップとして実行されるよう設定されており、その頻度は変更できません。
+:::
 
 ## AWS \{#AWS\}
 

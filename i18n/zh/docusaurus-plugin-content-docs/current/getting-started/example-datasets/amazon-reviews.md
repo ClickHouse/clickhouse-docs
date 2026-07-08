@@ -7,7 +7,7 @@ doc_type: 'guide'
 keywords: ['Amazon reviews', 'customer reviews dataset', 'e-commerce data', 'example dataset', 'getting started']
 ---
 
-该数据集包含超过 1.5 亿条 Amazon 商品的客户评论。数据以存储在 AWS S3 中的 snappy 压缩 Parquet 文件形式提供，压缩后总大小为 49GB。下面我们逐步演示如何将其导入 ClickHouse。
+该数据集包含超过 1.5 亿条 Amazon 商品的客户评论。数据以存储在 AWS S3 中的 snappy 压缩 Parquet 文件形式提供，压缩后总大小为 49GB。下面我们逐步演示如何将其 INSERT 到 ClickHouse。
 
 :::note
 下面的查询是在 **Production** 环境的 ClickHouse Cloud 实例上执行的。更多信息请参阅

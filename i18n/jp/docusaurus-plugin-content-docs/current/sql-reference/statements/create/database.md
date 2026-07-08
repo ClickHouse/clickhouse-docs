@@ -7,14 +7,11 @@ title: 'CREATE DATABASE'
 doc_type: 'reference'
 ---
 
-# CREATE DATABASE \{#create-database\}
-
 新しいデータベースを作成します。
 
 ```sql
 CREATE DATABASE [IF NOT EXISTS] db_name [ON CLUSTER cluster] [ENGINE = engine(...)] [SETTINGS ...] [COMMENT 'Comment']
 ```
-
 
 ## 句 \{#clauses\}
 
@@ -47,21 +44,16 @@ CREATE DATABASE db_name ENGINE = engine(...) COMMENT 'Comment'
 
 **例**
 
-クエリ:
-
-```sql
+```sql title="Query"
 CREATE DATABASE db_comment ENGINE = Memory COMMENT 'The temporary database';
 SELECT name, comment FROM system.databases WHERE name = 'db_comment';
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─name───────┬─comment────────────────┐
 │ db_comment │ The temporary database │
 └────────────┴────────────────────────┘
 ```
-
 
 ### SETTINGS \{#settings\}
 

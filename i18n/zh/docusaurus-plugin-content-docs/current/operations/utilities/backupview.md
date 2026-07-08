@@ -1,20 +1,19 @@
 ---
-description: 'clickhouse_backupview 文档 {#clickhouse_backupview}'
+description: 'clickhouse_backupview {#clickhouse_backupview} 的文档'
 slug: /operations/utilities/backupview
 title: 'clickhouse_backupview'
 doc_type: 'reference'
 ---
 
-# clickhouse_backupview \{#clickhouse_backupview\}
-
 用于分析由 [BACKUP](/operations/backup/overview) 命令创建的备份的 Python 模块。
 主要目的是在不实际恢复备份的情况下，从备份中获取部分信息。
 
 该模块提供的功能包括：
-- 枚举备份中包含的文件
-- 读取备份中的文件
-- 以可读形式获取有关备份中包含的数据库、表和数据分片的有用信息
-- 检查备份的完整性
+
+* 枚举备份中包含的文件
+* 读取备份中的文件
+* 以可读形式获取有关备份中包含的数据库、表和 parts 的有用信息
+* 检查备份的完整性
 
 ## 示例： \{#example\}
 

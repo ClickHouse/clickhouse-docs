@@ -2,7 +2,7 @@
 sidebar_label: 'Azure Flexible Server for Postgres'
 description: 'Set up Azure Flexible Server for Postgres as a source for ClickPipes'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
-title: 'Azure Flexible Server for Postgres source setup guide'
+title: 'Azure flexible server for Postgres source setup guide'
 keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
 doc_type: 'guide'
 integration:
@@ -15,8 +15,6 @@ import wal_level from '@site/static/images/integrations/data-ingestion/clickpipe
 import restart from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/restart.png';
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
-
-# Azure flexible server for Postgres source setup guide
 
 ClickPipes supports Postgres version 12 and later.
 
@@ -79,12 +77,6 @@ Connect to your Azure Flexible Server Postgres through the admin user and run th
       ```
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
-
-5. Set `wal_sender_timeout` to 0 for `clickpipes_user`
-
-   ```sql
-   ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
-   ```
 
 ## Add ClickPipes IPs to Firewall {#add-clickpipes-ips-to-firewall}
 

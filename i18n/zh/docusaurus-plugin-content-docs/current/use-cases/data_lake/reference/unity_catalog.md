@@ -1,7 +1,7 @@
 ---
 slug: /use-cases/data-lake/unity-catalog
-sidebar_label: 'Unity catalog'
-title: 'Unity catalog'
+sidebar_label: 'Unity Catalog'
+title: 'Unity Catalog'
 pagination_prev: null
 pagination_next: null
 description: '在本指南中，我们将逐步演示如何使用 ClickHouse 和 Unity Catalog 查询 S3 存储桶中的数据。'
@@ -14,9 +14,9 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge />
 
-ClickHouse 支持与多个目录（Unity、Glue、Polaris 等）集成。本文将引导您完成使用 ClickHouse 和 [Unity Catalog](https://www.databricks.com/product/unity-catalog) 查询由 Databricks 管理的数据的步骤。
+ClickHouse 支持与多个目录 (Unity、Glue、Polaris 等) 集成。本文将引导您完成使用 ClickHouse 和 [Unity Catalog](https://www.databricks.com/product/unity-catalog) 查询由 Databricks 管理的数据的步骤。
 
-Databricks 为其湖仓（lakehouse）支持多种数据格式。借助 ClickHouse，您可以将 Unity Catalog 中的表以 Delta 和 Iceberg 的形式进行查询。
+Databricks 为其湖仓 (lakehouse) 支持多种数据格式。借助 ClickHouse，您可以将 Unity Catalog 中的表以 Delta 和 Iceberg 的形式进行查询。
 
 :::note
 由于此功能为实验性功能，您需要通过以下方式将其启用：
@@ -70,7 +70,9 @@ oauth_server_uri = 'https://<workspace-id>.cloud.databricks.com/oidc/v1/token', 
 USE unity;
 
 SHOW TABLES;
+```
 
+```response
 ┌─name───────────────────────────────────────────────┐
 │ clickbench.delta_hits                              │
 │ demo.fake_user                                     │
@@ -108,7 +110,9 @@ SHOW TABLES;
 
 ```sql
 SHOW TABLES
+```
 
+```response
 ┌─name───────────────┐
 │ uniform.delta_hits │
 └────────────────────┘
@@ -149,7 +153,6 @@ CREATE TABLE unity_uniform.`uniform.delta_hits`
 ENGINE = Iceberg('s3://<path>);
 
 ```
-
 
 ## 从数据湖将数据加载到 ClickHouse \{#loading-data-from-your-data-lake-into-clickhouse\}
 

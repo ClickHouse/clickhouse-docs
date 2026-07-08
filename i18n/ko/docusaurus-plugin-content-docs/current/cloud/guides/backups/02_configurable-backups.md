@@ -28,5 +28,5 @@ import Image from '@theme/IdealImage';
 :::
 
 :::note
-백업 스케줄을 변경하면 일부 백업이 서비스의 기본 백업에 포함되지 않을 수 있어 스토리지 요금의 월간 청구액이 증가할 수 있습니다. 아래의 [&quot;백업 비용 이해하기&quot;](/cloud/manage/backups/overview#understanding-backup-cost) 섹션을 참조하십시오.
+백업 스케줄을 변경하면 일부 백업이 서비스의 기본 백업에 포함되지 않을 수 있어 스토리지 요금의 월간 청구액이 증가할 수 있습니다. [&quot;백업 비용 이해하기&quot;](/cloud/manage/backups/overview#understanding-backup-cost)를 참조하십시오.
 :::

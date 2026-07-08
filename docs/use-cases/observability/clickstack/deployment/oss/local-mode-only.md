@@ -59,9 +59,3 @@ Create a source, retain all default values, and complete the `Table` field with 
 </VerticalStepper>
 
 <JSONSupport/>
-
-For the local mode only image, users only need to set the `BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true` parameter e.g.
-
-```shell
-docker run -e BETA_CH_OTEL_JSON_SCHEMA_ENABLED=true -p 8080:8080 clickhouse/clickstack-local:latest
-```

@@ -20,15 +20,16 @@ import ExampleFiles from '@site/i18n/ru/docusaurus-plugin-content-docs/current/d
 import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deployment-guides/replication-sharding-examples/_snippets/_cloud_tip.mdx';
 
 > В этом примере вы узнаете, как развернуть простой кластер ClickHouse, который
-> одновременно обеспечивает репликацию и масштабирование. Он состоит из двух шардов и двух реплик,
+> одновременно обеспечивает репликацию и масштабирование. Он состоит из двух сегментов и двух реплик,
 > а также кластера ClickHouse Keeper из 3 узлов для координации работы и
 > поддержания кворума в кластере.
 
 Архитектура кластера, который вы будете настраивать, показана ниже:
 
-<Image img={SharedReplicatedArchitecture} size="md" alt="Схема архитектуры для 2 шардов и 1 реплики" />
+<Image img={SharedReplicatedArchitecture} size="md" alt="Схема архитектуры для 2 сегментов и 1 реплики" />
 
 <DedicatedKeeperServers />
+
 
 ## Предварительные требования \{#prerequisites\}
 
@@ -175,7 +176,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   Теперь измените каждый пустой файл конфигурации `config.xml`, расположенный по пути
   `fs/volumes/clickhouse-{}/etc/clickhouse-server/config.d`. Строки, выделенные
-  ниже, должны быть изменены для каждого узла отдельно:
+  ниже, должны быть изменены для каждого узла:
 
   ```xml
   <clickhouse replace="true">
@@ -251,7 +252,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   </clickhouse>
   ```
 
-  | Каталог                                                   | Файл                                                                                                                                                                             |
+  | Каталог                                                   | File                                                                                                                                                                             |
   | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
   | `fs/volumes/clickhouse-01/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-01/etc/clickhouse-server/config.d/config.xml) |
   | `fs/volumes/clickhouse-02/etc/clickhouse-server/config.d` | [`config.xml`](https://github.com/ClickHouse/examples/blob/main/docker-compose-recipes/recipes/cluster_2S_2R/fs/volumes/clickhouse-02/etc/clickhouse-server/config.d/config.xml) |
@@ -611,7 +612,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
   ORDER BY (postcode1, postcode2, addr1, addr2);
   ```
 
-  Обратите внимание, что этот запрос идентичен запросу из исходной инструкции `CREATE` в
+  Обратите внимание, что этот запрос идентичен запросу из исходного оператора `CREATE` в
   руководстве по примеру набора данных [цен на недвижимость в Великобритании](/getting-started/example-datasets/uk-price-paid),
   за исключением конструкции `ON CLUSTER` и использования движка `ReplicatedMergeTree`.
 
@@ -672,7 +673,7 @@ import CloudTip from '@site/i18n/ru/docusaurus-plugin-content-docs/current/deplo
 
   На каждом хосте теперь будут доступны следующие таблицы в базе данных `uk`:
 
-  ```sql
+  ```response
      ┌─name──────────────────────┐
   1. │ uk_price_paid_distributed │
   2. │ uk_price_paid_local       │

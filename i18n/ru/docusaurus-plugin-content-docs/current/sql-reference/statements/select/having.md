@@ -1,12 +1,10 @@
 ---
-description: 'Описание оператора HAVING'
+description: 'Документация по предложению HAVING'
 sidebar_label: 'HAVING'
 slug: /sql-reference/statements/select/having
-title: 'Оператор HAVING'
+title: 'Предложение HAVING'
 doc_type: 'reference'
 ---
-
-# Предложение HAVING \{#having-clause\}
 
 Позволяет фильтровать результаты агрегирования, полученные с помощью [GROUP BY](/sql-reference/statements/select/group-by). Оно похоже на предложение [WHERE](../../../sql-reference/statements/select/where.md), но разница в том, что `WHERE` выполняется до агрегирования, тогда как `HAVING` выполняется после него.
 
@@ -14,7 +12,7 @@ doc_type: 'reference'
 
 ## Пример \{#example\}
 
-Если у вас есть таблица `sales` следующей структуры:
+Если у вас есть таблица `sales` следующего вида:
 
 ```sql
 CREATE TABLE sales

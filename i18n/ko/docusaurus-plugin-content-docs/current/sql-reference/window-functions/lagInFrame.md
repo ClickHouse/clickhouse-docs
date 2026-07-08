@@ -1,13 +1,11 @@
 ---
-description: 'lagInFrame 윈도우 함수에 대한 설명서'
+description: 'lagInFrame 윈도우 함수에 대한 문서'
 sidebar_label: 'lagInFrame'
 sidebar_position: 9
 slug: /sql-reference/window-functions/lagInFrame
 title: 'lagInFrame'
 doc_type: 'reference'
 ---
-
-# lagInFrame \{#laginframe\}
 
 정렬된 프레임 내에서 현재 행보다 지정된 물리적 오프셋만큼 앞에 있는 행에서 평가된 값을 반환합니다.
 
@@ -43,9 +41,7 @@ WINDOW window_name as ([[PARTITION BY grouping_column] [ORDER BY sorting_column]
 
 이 예시는 특정 주식의 과거 데이터를 살펴보고, `lagInFrame` 함수를 사용하여 종가의 일간 증감과 변동률을 계산합니다.
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE TABLE stock_prices
 (
     `date`   Date,
@@ -65,7 +61,7 @@ INSERT INTO stock_prices FORMAT Values
     ('2024-06-07', 119.77, 121.69, 118.02, 120.89, 412386000);
 ```
 
-```sql
+```sql title="Query"
 SELECT
     date,
     close,
@@ -78,9 +74,7 @@ FROM stock_prices
 ORDER BY date DESC
 ```
 
-결과:
-
-```response
+```response title="Response"
    ┌───────date─┬──close─┬─previous_day_close─┬─delta─┬─percent_change─┐
 1. │ 2024-06-07 │ 120.89 │                121 │ -0.11 │          -0.09 │
 2. │ 2024-06-06 │    121 │             122.44 │ -1.44 │          -1.18 │

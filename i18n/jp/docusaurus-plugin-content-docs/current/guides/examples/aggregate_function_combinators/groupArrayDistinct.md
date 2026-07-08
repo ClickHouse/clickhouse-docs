@@ -7,8 +7,6 @@ sidebar_label: 'groupArrayDistinct'
 doc_type: 'reference'
 ---
 
-# groupArrayDistinct \{#sumdistinct\}
-
 ## 説明 \{#description\}
 
 [`groupArrayDistinct`](/sql-reference/aggregate-functions/combinators#-foreach) コンビネータは、
@@ -19,8 +17,8 @@ doc_type: 'reference'
 
 この例では、[SQL playground](https://sql.clickhouse.com/) で利用可能な `hits` データセットを使用します。
 
-自分のウェブサイトについて、各ランディングページのドメイン（`URLDomain`）ごとに、
-そのドメインに流入した訪問者について記録されている、すべての一意なユーザーエージェントの OS コード（`OS`）を
+自分のウェブサイトについて、各ランディングページのドメイン (`URLDomain`) ごとに、
+そのドメインに流入した訪問者について記録されている、すべての一意なユーザーエージェントの OS コード (`OS`) を
 把握したいとします。これは、サイトのさまざまな部分を利用しているオペレーティングシステムの多様性を理解するのに役立ちます。
 
 ```sql runnable
@@ -28,12 +26,13 @@ SELECT
     URLDomain,
     groupArrayDistinct(OS) AS distinct_os_codes
 FROM metrica.hits_v1
-WHERE URLDomain != '' -- ドメインが記録されているヒットのみを対象とする
+WHERE URLDomain != '' -- Consider only hits with a recorded domain
 GROUP BY URLDomain
 ORDER BY URLDomain ASC
 LIMIT 20;
 ```
 
 ## 関連項目 \{#see-also\}
-- [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
-- [`Distinct コンビネータ`](/sql-reference/aggregate-functions/combinators#-distinct)
+
+* [`groupArray`](/sql-reference/aggregate-functions/reference/grouparray)
+* [`Distinct コンビネータ`](/sql-reference/aggregate-functions/combinators#-distinct)

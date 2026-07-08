@@ -114,6 +114,9 @@ export const useInitGalaxy = () => {
 
     const [galaxy, stopGalaxy] = Galaxy.init(galaxyOptions);
     window.galaxy = galaxy;
+    // Signal readiness so page-level effects that mounted before init (the
+    // common case on a cold visit) can fire their queued load events.
+    window.dispatchEvent(new Event("galaxy:ready"));
 
     return () => {
       void stopGalaxy();
@@ -138,7 +141,7 @@ export const galaxyOnLoad = (event) => {
  */
 export const galaxyOnFocus = (event, depsArray) => {
   const listener = () => {
-    window.galaxy.track(event, { interaction: "trigger" });
+    window.galaxy?.track(event, { interaction: "trigger" });
   };
 
   useEffect(() => {
@@ -157,7 +160,7 @@ export const galaxyOnFocus = (event, depsArray) => {
  */
 export const galaxyOnBlur = (event, depsArray) => {
   const listener = () => {
-    window.galaxy.track(event, { interaction: "trigger" });
+    window.galaxy?.track(event, { interaction: "trigger" });
   };
 
   useEffect(() => {
@@ -171,14 +174,34 @@ export const galaxyOnBlur = (event, depsArray) => {
 /**
  * Instrument galaxy for this page for load, blur and focus events.
  *
+ * Fires `${prefix}.window.load` once each time the page (or `depsArray`)
+ * changes, and tracks blur/focus for the lifetime of the component.
+ *
  * @param prefix used to name the events sent to galaxy (`${prefix}.window.load`, `${prefix}.window.blur` and `${prefix}.window.focus`)
  * @param depsArray used to trigger a rerender of the component that will re-run the useEffect
  *
  */
-export const galaxyOnPage = (prefix, depsArray = []) => {
-  galaxyOnLoad(`${prefix}.window.load`);
-  galaxyOnBlur(`${prefix}.window.blur`, depsArray);
-  galaxyOnFocus(`${prefix}.window.focus`, depsArray);
+export const useGalaxyOnPage = (prefix, depsArray = []) => {
+  // Fire the load event once per page change. Galaxy is initialised in an
+  // effect of its own (see useInitGalaxy) in an unrelated subtree, so on a
+  // cold visit this effect usually runs before galaxy is ready. If it isn't
+  // ready yet, wait for the one-shot `galaxy:ready` signal instead of dropping
+  // the event with no retry.
+  useEffect(() => {
+    const track = () =>
+      window.galaxy.track(`${prefix}.window.load`, { interaction: "trigger" });
+
+    if (window.galaxy) {
+      track();
+      return;
+    }
+
+    window.addEventListener("galaxy:ready", track, { once: true });
+    return () => window.removeEventListener("galaxy:ready", track);
+  }, [prefix, ...depsArray]);
+
+  galaxyOnBlur(`${prefix}.window.blur`, [prefix, ...depsArray]);
+  galaxyOnFocus(`${prefix}.window.focus`, [prefix, ...depsArray]);
 };
 
 // Pass String with convention 'namespace.component.eventName'

@@ -1,5 +1,5 @@
 ---
-title: 'ClickPipe에 특정 테이블 추가하기'
+title: 'ClickPipe에 특정 테이블 추가'
 description: 'ClickPipe에 특정 테이블을 추가하는 데 필요한 단계를 설명합니다.'
 sidebar_label: '테이블 추가'
 slug: /integrations/clickpipes/mongodb/add_table
@@ -14,10 +14,7 @@ integration:
 import Image from '@theme/IdealImage';
 import add_table from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/add_table.png'
 
-
-# ClickPipe에 특정 테이블 추가하기 \{#adding-specific-tables-to-a-clickpipe\}
-
-특정 테이블을 ClickPipe에 추가하는 것이 유용한 경우가 있습니다. 트랜잭션 워크로드나 분석 워크로드가 확장될수록 이는 일반적인 요구 사항이 됩니다.
+특정 테이블(table)을 파이프에 추가해야 하는 경우가 있습니다. 이는 트랜잭션 또는 분석 워크로드가 커질수록 흔히 필요해집니다.
 
 ## ClickPipe에 특정 테이블을 추가하는 단계 \{#add-tables-steps\}
 

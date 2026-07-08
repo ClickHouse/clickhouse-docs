@@ -16,14 +16,11 @@ import qstudio_running_query from '@site/static/images/integrations/sql-clients/
 import Image from '@theme/IdealImage';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# 将 QStudio 连接到 ClickHouse \{#connect-qstudio-to-clickhouse\}
+QStudio 是一款免费的 SQL 图形界面工具，可运行 SQL 脚本、轻松浏览表、绘制图表并导出结果。它适用于所有操作系统，并兼容所有数据库。
 
-<CommunityMaintainedBadge/>
-
-QStudio 是一款免费的 SQL 图形界面（GUI）工具，支持运行 SQL 脚本、便捷浏览数据表、绘制图表以及导出结果。它可在所有操作系统上运行，并可连接各种数据库。
-
-QStudio 通过 JDBC 连接到 ClickHouse。
+QStudio 使用 JDBC 连接 ClickHouse。
 
 ## 1. 收集 ClickHouse 连接信息 \{#1-gather-your-clickhouse-details\}
 

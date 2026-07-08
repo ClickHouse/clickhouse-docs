@@ -8,7 +8,6 @@ keywords: ['creating tables', 'CREATE TABLE', 'table creation', 'database guide'
 doc_type: 'guide'
 ---
 
-# Creating tables in ClickHouse
 
  Like most databases, ClickHouse logically groups tables into **databases**. Use the `CREATE DATABASE` command to create a new database in ClickHouse:
 

@@ -1,8 +1,8 @@
 ---
 slug: /cloud/billing/marketplace/aws-marketplace-committed-contract
-title: 'AWS Marketplace コミットメント契約'
-description: 'AWS Marketplace（コミットメント契約）を通じて ClickHouse Cloud を契約する'
-keywords: ['aws', 'amazon', 'marketplace', 'billing', 'コミットメント', 'コミットメント契約']
+title: 'AWS Marketplace コミット済み契約'
+description: 'AWS Marketplace（コミット済み契約）を通じて ClickHouse Cloud を契約する'
+keywords: ['aws', 'amazon', 'marketplace', 'billing', 'コミットメント', 'コミット済み契約']
 doc_type: 'guide'
 ---
 
@@ -15,26 +15,22 @@ import mp_committed_spend_5 from '@site/static/images/cloud/reference/mp_committ
 import mp_committed_spend_6 from '@site/static/images/cloud/reference/mp_committed_spend_6.png'
 import mp_committed_spend_7 from '@site/static/images/cloud/reference/mp_committed_spend_7.png'
 
-コミットメント契約を利用して、[AWS Marketplace](https://aws.amazon.com/marketplace) 上で ClickHouse Cloud の利用を開始できます。
-コミットメント契約は Private Offer（プライベートオファー）とも呼ばれ、一定期間にわたり、ClickHouse Cloud に対してあらかじめ定めた金額の利用を約束することができます。
+コミット済み契約を利用して、[AWS Marketplace](https://aws.amazon.com/marketplace) 上で ClickHouse Cloud の利用を開始できます。
+コミット済み契約はプライベートオファーとも呼ばれ、一定期間にわたり、ClickHouse Cloud に対してあらかじめ定めた金額の利用を約束することができます。
 
 
 ## 前提条件 \{#prerequisites\}
 
-- 特定の契約条件に基づく ClickHouse からのプライベートオファー。
-- コミット済み支出オファーに ClickHouse の組織を紐付けるには、その組織の管理者である必要があります。
-
-:::note
-1 つの AWS アカウントは、1 つの ClickHouse 組織にのみリンク可能な 1 件の「ClickHouse Cloud - Committed Contract」プライベートオファーにだけ申し込むことができます。
-:::
+* 特定の契約条件に基づく ClickHouse からのプライベートオファー。
+* コミット済み支出オファーに ClickHouse の組織を紐付けるには、その組織の管理者である必要があります。
 
 AWS 上でコミット済み契約を表示および受諾するために必要な権限:
 
-- AWS マネージドポリシーを使用する場合、以下の権限が必要です:
-  - `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
-  - または `AWSMarketplaceFullAccess`
-- AWS マネージドポリシーを使用しない場合、以下の権限が必要です:
-  - IAM アクション `aws-marketplace:ListPrivateListings` および `aws-marketplace:ViewSubscriptions`
+* AWS マネージドポリシーを使用する場合、以下の権限が必要です:
+  * `AWSMarketplaceRead-only`, `AWSMarketplaceManageSubscriptions`
+  * または `AWSMarketplaceFullAccess`
+* AWS マネージドポリシーを使用しない場合、以下の権限が必要です:
+  * IAM アクション `aws-marketplace:ListPrivateListings` および `aws-marketplace:ViewSubscriptions`
 
 ## サインアップ手順 \{#steps-to-sign-up\}
 

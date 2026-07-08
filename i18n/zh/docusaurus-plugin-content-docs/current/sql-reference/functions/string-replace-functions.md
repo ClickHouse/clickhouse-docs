@@ -1,13 +1,11 @@
 ---
-description: '字符串替换函数参考文档'
+description: '字符串替换函数文档'
 sidebar_label: '字符串替换'
 slug: /sql-reference/functions/string-replace-functions
 title: '字符串替换函数'
 doc_type: 'reference'
 keywords: ['字符串替换']
 ---
-
-# 字符串替换函数 \{#functions-for-string-replacement\}
 
 [通用字符串函数](string-functions.md)和[字符串搜索函数](string-search-functions.md)在单独的文档中说明。
 
@@ -170,6 +168,7 @@ SELECT overlayUTF8('Mein Vater ist aus Österreich.', 'der Türkei', 20) AS res;
 格式字符串中可以包含以 `%` 字符开头的格式说明符。
 不在 `%` 及其后续格式说明符中的任何内容都被视为字面文本，并原样复制到输出中。
 作为字面量使用的 `%` 字符可以通过 `%%` 进行转义。
+格式字符串既可以是常量，也可以是列表达式，从而允许每一行使用不同的格式模式。
 
 **语法**
 

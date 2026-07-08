@@ -18,16 +18,16 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 
 输入格式用于：
 
-- 解析提供给 `INSERT` 语句的数据
-- 对诸如 `File`、`URL` 或 `HDFS` 等文件后端表执行 `SELECT` 查询
-- 读取字典
+* 解析提供给 `INSERT` 语句的数据
+* 对诸如 `File`、`URL` 或 `HDFS` 等以文件为后端的表执行 `SELECT` 查询
+* 读取字典
 
 为 ClickHouse 选择合适的输入格式对高效数据摄取至关重要。ClickHouse 支持 70 多种格式，选择性能最佳的选项会显著影响插入速度、CPU 与内存使用率以及整体系统效率。为帮助你在这些选项中进行选择，我们对不同格式的摄取性能进行了基准测试，并得出了以下关键结论：
 
-- **[Native](formats/Native.md) 格式是最高效的输入格式**，提供最佳压缩率、最低资源占用以及最小的服务器端处理开销。
-- **压缩至关重要** —— LZ4 能在较低 CPU 开销下减小数据体积，而 ZSTD 则以更高压缩率为代价增加了 CPU 开销。
-- **预排序的影响中等**，因为 ClickHouse 本身就能高效完成排序。
-- **批量写入显著提高效率** —— 更大的批次可以减少插入开销并提升吞吐量。
+* **[Native](formats/Native.md) 格式是最高效的输入格式**，提供最佳压缩率、最低资源占用以及最小的服务器端处理开销。
+* **压缩至关重要** —— LZ4 能在较低 CPU 开销下减小数据体积，而 ZSTD 则以更高压缩率为代价增加了 CPU 开销。
+* **预排序的影响中等**，因为 ClickHouse 本身就能高效完成排序。
+* **批量写入显著提高效率** —— 更大的批次可以减少插入开销并提升吞吐量。
 
 如需深入了解测试结果和最佳实践，
 请阅读完整的[基准分析](https://www.clickhouse.com/blog/clickhouse-input-format-matchup-which-is-fastest-most-efficient)。
@@ -105,7 +105,7 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 | [ProtobufSingle](./formats/Protobuf/ProtobufSingle.md)                                                     | ✔  | ✔  |
 | [ProtobufList](./formats/Protobuf/ProtobufList.md)                                                         | ✔  | ✔  |
 | [Avro](./formats/Avro/Avro.md)                                                                             | ✔  | ✔  |
-| [AvroConfluent](./formats/Avro/AvroConfluent.md)                                                           | ✔  | ✗  |
+| [AvroConfluent](./formats/Avro/AvroConfluent.md)                                                           | ✔  | ✔  |
 | [Parquet](./formats/Parquet/Parquet.md)                                                                    | ✔  | ✔  |
 | [ParquetMetadata](./formats/Parquet/ParquetMetadata.md)                                                    | ✔  | ✗  |
 | [Arrow](./formats/Arrow/Arrow.md)                                                                          | ✔  | ✔  |
@@ -117,6 +117,7 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 | [RowBinaryWithNames](./formats/RowBinary/RowBinaryWithNames.md)                                            | ✔  | ✔  |
 | [RowBinaryWithNamesAndTypes](./formats/RowBinary/RowBinaryWithNamesAndTypes.md)                            | ✔  | ✔  |
 | [RowBinaryWithDefaults](./formats/RowBinary/RowBinaryWithDefaults.md)                                      | ✔  | ✗  |
+| [RowBinaryWithNamesAndTypesAndDefaults](./formats/RowBinary/RowBinaryWithNamesAndTypesAndDefaults.md)      | ✔  | ✗  |
 | [Native](./formats/Native.md)                                                                              | ✔  | ✔  |
 | [Buffers](./formats/Buffers.md)                                                                            | ✔  | ✔  |
 | [Null](./formats/Null.md)                                                                                  | ✗  | ✔  |
@@ -126,7 +127,7 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 | [LineAsString](./formats/LineAsString/LineAsString.md)                                                     | ✔  | ✔  |
 | [LineAsStringWithNames](./formats/LineAsString/LineAsStringWithNames.md)                                   | ✔  | ✔  |
 | [LineAsStringWithNamesAndTypes](./formats/LineAsString/LineAsStringWithNamesAndTypes.md)                   | ✔  | ✔  |
-| [正则表达式（Regexp）](./formats/Regexp.md)                                                                       | ✔  | ✗  |
+| [正则表达式 (Regexp) ](./formats/Regexp.md)                                                                     | ✔  | ✗  |
 | [RawBLOB](./formats/RawBLOB.md)                                                                            | ✔  | ✔  |
 | [MsgPack](./formats/MsgPack.md)                                                                            | ✔  | ✔  |
 | [MySQLDump](./formats/MySQLDump.md)                                                                        | ✔  | ✗  |
@@ -142,15 +143,15 @@ ClickHouse 支持大多数已知的文本和二进制数据格式，从而可以
 在使用 `Cap'n Proto` 或 `Protobuf` 任一格式时，必须设置该配置。
 格式模式由文件名和该文件中消息类型的名称组成，两者以冒号分隔，
 例如：`schemafile.proto:MessageType`。
-如果文件具有该格式的标准扩展名（例如 `Protobuf` 的 `.proto`），
+如果文件具有该格式的标准扩展名 (例如 `Protobuf` 的 `.proto`) ，
 则扩展名可以省略，此时格式模式为 `schemafile:MessageType`。
 
-如果通过交互模式下的[客户端](/interfaces/cli.md)进行数据输入或输出，格式模式中指定的文件名
+如果通过交互模式下的[客户端](/interfaces/client.md)进行数据输入或输出，格式模式中指定的文件名
 可以是绝对路径，也可以是相对于客户端当前目录的相对路径。
-如果在[批处理模式](/interfaces/cli.md/#batch-mode)下使用客户端，出于安全考虑，模式文件的路径必须是相对路径。
+如果在[批处理模式](/interfaces/client.md/#batch-mode)下使用客户端，出于安全考虑，模式文件的路径必须是相对路径。
 
 如果通过 [HTTP 接口](/interfaces/http) 进行数据输入或输出，则格式模式中指定的文件名
-必须位于服务器配置中由 [format_schema_path](/operations/server-configuration-parameters/settings.md/#format_schema_path) 指定的目录中。
+必须位于服务器配置中由 [format&#95;schema&#95;path](/operations/server-configuration-parameters/settings.md/#format_schema_path) 指定的目录中。
 
 ## 跳过错误 \{#skippingerrors\}
 

@@ -7,7 +7,6 @@ keywords: ['json', 'formats', 'json formats']
 doc_type: 'guide'
 ---
 
-# Handling other JSON formats
 
 Earlier examples of loading JSON data assume the use of [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`). This format reads the keys in each JSON line as columns. For example:
 
@@ -15,7 +14,9 @@ Earlier examples of loading JSON data assume the use of [`JSONEachRow`](/interfa
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONEachRow)
 LIMIT 5
+```
 
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type────────┬─installer────┬─python_minor─┬─system─┬─version─┐
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
@@ -45,7 +46,9 @@ Contrast the above example, with the following query which reads the same data a
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONAsObject)
 LIMIT 5
+```
 
+```response
 ┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
@@ -74,7 +77,9 @@ LIMIT 5;
 SELECT *
 FROM pypi
 LIMIT 2;
+```
 
+```response
 ┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
@@ -88,7 +93,9 @@ The `JSONAsObject` format may also be useful for reading newline-delimited JSON 
 ```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONEachRow')
+```
 
+```response
 Elapsed: 1.198 sec.
 
 Received exception from server (version 24.12.1):
@@ -103,7 +110,9 @@ Conversely, `JSONAsObject` can be used in this case as the `JSON` type supports 
 ```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONAsObject')
+```
 
+```response
 ┌─count()─┐
 │ 1000000 │
 └─────────┘
@@ -113,7 +122,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 
 ## Array of JSON objects {#array-of-json-objects}
 
-One of the most popular forms of JSON data is having a list of JSON objects in a JSON array, like in [this example](../assets/list.json):
+One of the most popular forms of JSON data is having a list of JSON objects in a JSON array, like in [this example](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list.json):
 
 ```bash
 > cat list.json
@@ -145,7 +154,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-To import a list of JSON objects, we can use a [`JSONEachRow`](/interfaces/formats/JSONEachRow) format (inserting data from [list.json](../assets/list.json) file):
+To import a list of JSON objects, we can use a [`JSONEachRow`](/interfaces/formats/JSONEachRow) format (inserting data from [list.json](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list.json) file):
 
 ```sql
 INSERT INTO sometable
@@ -169,7 +178,7 @@ FROM sometable
 
 ## JSON object keys {#json-object-keys}
 
-In some cases, the list of JSON objects can be encoded as object properties instead of array elements (see [objects.json](../assets/objects.json) for example):
+In some cases, the list of JSON objects can be encoded as object properties instead of array elements (see [objects.json](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/objects.json) for example):
 
 ```bash
 cat objects.json
@@ -230,7 +239,7 @@ Note how the `id` column has been populated by key values correctly.
 
 ## JSON arrays {#json-arrays}
 
-Sometimes, for the sake of saving space, JSON files are encoded in arrays instead of objects. In this case, we deal with a [list of JSON arrays](../assets/arrays.json):
+Sometimes, for the sake of saving space, JSON files are encoded in arrays instead of objects. In this case, we deal with a [list of JSON arrays](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/arrays.json):
 
 ```bash
 cat arrays.json
@@ -256,7 +265,7 @@ SELECT * FROM sometable
 
 ### Importing individual columns from JSON arrays {#importing-individual-columns-from-json-arrays}
 
-In some cases, data can be encoded column-wise instead of row-wise. In this case, a parent JSON object contains columns with values. Take a look at the [following file](../assets/columns.json):
+In some cases, data can be encoded column-wise instead of row-wise. In this case, a parent JSON object contains columns with values. Take a look at the [following file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/columns.json):
 
 ```bash
 cat columns.json
@@ -282,7 +291,7 @@ SELECT * FROM file('columns.json', JSONColumns)
 └────────────────────────────┴────────────┴──────┘
 ```
 
-A more compact format is also supported when dealing with an [array of columns](../assets/columns-array.json) instead of an object using [`JSONCompactColumns`](/interfaces/formats/JSONCompactColumns) format:
+A more compact format is also supported when dealing with an [array of columns](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/columns-array.json) instead of an object using [`JSONCompactColumns`](/interfaces/formats/JSONCompactColumns) format:
 
 ```sql
 SELECT * FROM file('columns-array.json', JSONCompactColumns)
@@ -297,7 +306,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## Saving JSON objects instead of parsing {#saving-json-objects-instead-of-parsing}
 
-There are cases you might want to save JSON objects to a single `String` (or `JSON`) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](../assets/custom.json) for example, where we have multiple different JSON objects inside a parent list:
+There are cases you might want to save JSON objects to a single `String` (or `JSON`) column instead of parsing it. This can be useful when dealing with a list of JSON objects of different structures. Let's take [this file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/custom.json) for example, where we have multiple different JSON objects inside a parent list:
 
 ```bash
 cat custom.json
@@ -349,7 +358,7 @@ Note that `JSONAsString` works perfectly fine in cases we have JSON object-per-l
 
 ## Schema for nested objects {#schema-for-nested-objects}
 
-In cases when we're dealing with [nested JSON objects](../assets/list-nested.json), we can additionally define an explicit schema and use complex types ([`Array`](/sql-reference/data-types/array.md), [`JSON`](/integrations/data-formats/json/overview) or [`Tuple`](/sql-reference/data-types/tuple.md)) to load data:
+In cases when we're dealing with [nested JSON objects](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list-nested.json), we can additionally define an explicit schema and use complex types ([`Array`](/sql-reference/data-types/array.md), [`JSON`](/integrations/data-formats/json/overview) or [`Tuple`](/sql-reference/data-types/tuple.md)) to load data:
 
 ```sql
 SELECT *
@@ -364,7 +373,7 @@ LIMIT 1
 
 ## Accessing nested JSON objects {#accessing-nested-json-objects}
 
-We can refer to [nested JSON keys](../assets/list-nested.json) by enabling the [following settings option](/operations/settings/settings-formats.md/#input_format_import_nested_json):
+We can refer to [nested JSON keys](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list-nested.json) by enabling the [following settings option](/operations/settings/settings-formats.md/#input_format_import_nested_json):
 
 ```sql
 SET input_format_import_nested_json = 1
@@ -399,7 +408,7 @@ ENGINE = MergeTree
 ORDER BY path
 ```
 
-We can still insert the [original JSON data](../assets/list.json) with 3 columns into this table:
+We can still insert the [original JSON data](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list.json) with 3 columns into this table:
 
 ```sql
 INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
@@ -431,7 +440,7 @@ ClickHouse will throw exceptions in cases of inconsistent JSON and table columns
 
 ClickHouse allows exporting to and importing data from [BSON](https://bsonspec.org/) encoded files. This format is used by some DBMSs, e.g. [MongoDB](https://github.com/mongodb/mongo) database.
 
-To import BSON data, we use the [BSONEachRow](/interfaces/formats/BSONEachRow) format. Let's import data from [this BSON file](../assets/data.bson):
+To import BSON data, we use the [BSONEachRow](/interfaces/formats/BSONEachRow) format. Let's import data from [this BSON file](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.bson):
 
 ```sql
 SELECT * FROM file('data.bson', BSONEachRow)

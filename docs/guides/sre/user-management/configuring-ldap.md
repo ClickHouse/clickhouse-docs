@@ -10,8 +10,6 @@ doc_type: 'guide'
 
 import SelfManaged from '@site/docs/_snippets/_self_managed_only_no_roadmap.md';
 
-# Configuring ClickHouse to use LDAP for authentication and role mapping
-
 <SelfManaged />
 
 ClickHouse can be configured to use LDAP to authenticate ClickHouse database users. This guide provides a simple example of integrating ClickHouse with an LDAP system authenticating to a publicly available directory.

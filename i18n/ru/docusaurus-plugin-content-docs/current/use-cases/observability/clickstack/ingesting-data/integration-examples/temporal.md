@@ -1,6 +1,6 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/temporal-metrics
-title: 'Мониторинг Temporal Cloud с помощью ClickStack'
+title: 'Мониторинг метрик Temporal Cloud с помощью ClickStack'
 sidebar_label: 'Метрики Temporal Cloud'
 pagination_prev: null
 pagination_next: null
@@ -10,7 +10,6 @@ keywords: ['Temporal', 'metrics', 'OTEL', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import temporal_metrics from '@site/static/images/clickstack/temporal/temporal-metrics.png';
 import finish_import from '@site/static/images/clickstack/temporal/import-temporal-metrics-dashboard.png';
@@ -23,11 +22,8 @@ import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTracke
 
 Temporal предоставляет абстракцию для создания простых, сложных и отказоустойчивых приложений.
 
-
-# Мониторинг метрик Temporal Cloud с помощью ClickStack \{#temporal-metrics-clickstack\}
-
-:::note[Кратко]
-Отслеживайте метрики Temporal Cloud в ClickStack с помощью приёмника Prometheus в OTel. В комплект входит преднастроенная панель мониторинга.
+:::note[TL;DR]
+Отслеживайте метрики Temporal Cloud в ClickStack с помощью приёмника Prometheus в OTel. Включает предварительно созданную панель мониторинга.
 :::
 
 ## Интеграция с существующим Temporal Cloud \{#existing-temporal\}
@@ -164,7 +160,7 @@ Temporal предоставляет абстракцию для создания
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">Скачайте</TrackedLink> конфигурацию дашборда \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/temporal-metrics-dashboard.json'} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">Скачайте</TrackedLink> конфигурацию дашборда \{#download\}
 
 #### Импортируйте преднастроенный дашборд \{#import-dashboard\}
 

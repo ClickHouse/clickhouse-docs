@@ -1,20 +1,19 @@
 ---
-description: '이 엔진은 Amazon S3, Azure, HDFS 및 로컬에 저장된 기존 Apache Iceberg 테이블과 읽기 전용으로 통합됩니다.'
+description: '이 엔진은 Amazon S3, Azure, HDFS 및 로컬에 저장된 기존 Apache Iceberg
+  테이블과의 읽기 전용 통합 기능을 제공합니다.'
 sidebar_label: 'Iceberg'
 sidebar_position: 90
 slug: /engines/table-engines/integrations/iceberg
-title: 'Iceberg 테이블 엔진'
+title: 'Iceberg table engine'
 doc_type: 'reference'
 ---
 
-# Iceberg table engine \{#iceberg-table-engine\}
+:::warning
+ClickHouse에서 Iceberg 데이터를 다룰 때는 [Iceberg 테이블 함수](/sql-reference/table-functions/iceberg.md)을 사용할 것을 권장합니다. Iceberg 테이블 함수는 현재 Iceberg 테이블에 대해 읽기 전용의 부분적인 인터페이스를 제공하지만, 대부분의 사용 사례에 충분한 기능을 갖추고 있습니다.
 
-:::warning 
-ClickHouse에서 Iceberg 데이터를 다룰 때는 [Iceberg Table Function](/sql-reference/table-functions/iceberg.md)을 사용할 것을 권장합니다. Iceberg Table Function은 현재 Iceberg 테이블에 대해 읽기 전용의 부분적인 인터페이스를 제공하지만, 대부분의 사용 사례에 충분한 기능을 갖추고 있습니다.
+Iceberg 테이블 엔진도 사용 가능하지만 일부 제약이 있을 수 있습니다. ClickHouse는 원래 외부에서 스키마가 변경되는 테이블을 지원하도록 설계되지 않았기 때문에 이 점이 Iceberg 테이블 엔진의 동작에 영향을 줄 수 있습니다. 그 결과, 일반 테이블에서 동작하는 일부 기능은 사용할 수 없거나, 특히 기존 분석기(&quot;old analyzer&quot;)를 사용할 때 올바르게 동작하지 않을 수 있습니다.
 
-Iceberg Table Engine도 사용 가능하지만 일부 제약이 있을 수 있습니다. ClickHouse는 원래 외부에서 스키마가 변경되는 테이블을 지원하도록 설계되지 않았기 때문에 이 점이 Iceberg Table Engine의 동작에 영향을 줄 수 있습니다. 그 결과, 일반 테이블에서 동작하는 일부 기능은 사용할 수 없거나, 특히 기존 분석기("old analyzer")를 사용할 때 올바르게 동작하지 않을 수 있습니다.
-
-최적의 호환성을 위해 Iceberg Table Engine에 대한 지원을 지속적으로 개선하는 동안에는 Iceberg Table Function을 사용할 것을 권장합니다.
+최적의 호환성을 위해 Iceberg 테이블 엔진에 대한 지원을 지속적으로 개선하는 동안에는 Iceberg 테이블 함수를 사용할 것을 권장합니다.
 :::
 
 이 엔진은 Amazon S3, Azure, HDFS 및 로컬에 저장된 기존 Apache [Iceberg](https://iceberg.apache.org/) 테이블과의 읽기 전용 통합 기능을 제공합니다.

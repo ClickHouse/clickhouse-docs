@@ -15,8 +15,6 @@ import dynamodb_s3_export from '@site/static/images/integrations/data-ingestion/
 import dynamodb_map_columns from '@site/static/images/integrations/data-ingestion/dbms/dynamodb/dynamodb-map-columns.png';
 import Image from '@theme/IdealImage';
 
-# CDC from DynamoDB to ClickHouse
-
 This page covers how set up CDC from DynamoDB to ClickHouse using ClickPipes. There are 2 components to this integration:
 1. The initial snapshot via S3 ClickPipes
 2. Real-time updates via Kinesis ClickPipes

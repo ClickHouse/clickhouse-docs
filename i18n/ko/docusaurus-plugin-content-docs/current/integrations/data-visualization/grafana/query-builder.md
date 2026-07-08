@@ -23,23 +23,20 @@ import trace_id_in_logs from '@site/static/images/integrations/data-visualizatio
 import demo_data_links from '@site/static/images/integrations/data-visualization/grafana/demo_data_links.png';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
+<ClickHouseSupportedBadge />
 
-# 쿼리 빌더 \{#query-builder\}
+모든 쿼리는 ClickHouse 플러그인으로 실행할 수 있습니다.
+쿼리 빌더는 더 간단한 쿼리에 편리한 옵션이지만, 복잡한 쿼리의 경우 [SQL Editor](#sql-editor)를 사용해야 합니다.
 
-<ClickHouseSupportedBadge/>
-
-모든 쿼리는 ClickHouse 플러그인을 통해 실행할 수 있습니다.
-쿼리 빌더는 간단한 쿼리에는 편리하지만, 복잡한 쿼리에는 [SQL Editor](#sql-editor)를 사용해야 합니다.
-
-쿼리 빌더의 모든 쿼리에는 [쿼리 유형](#query-types)이 있으며, 최소 한 개의 컬럼을 선택해야 합니다.
+쿼리 빌더의 모든 쿼리에는 [쿼리 유형](#query-types)이 있으며, 최소 하나의 컬럼을 선택해야 합니다.
 
 사용 가능한 쿼리 유형은 다음과 같습니다.
 
-- [Table](#table): 데이터를 테이블 형식으로 표시하는 가장 단순한 쿼리 유형입니다. 집계 함수가 포함된 단순 및 복잡 쿼리 모두에 사용할 수 있는 범용 쿼리 유형으로 적합합니다.
-- [Logs](#logs): 로그용 쿼리를 구성하도록 최적화되어 있습니다. [기본값이 구성된](./config.md#logs) Explore 뷰에서 가장 잘 동작합니다.
-- [Time Series](#time-series): 시계열 쿼리를 구성할 때 가장 적합합니다. 전용 시간 컬럼을 선택하고 집계 함수를 추가할 수 있습니다.
-- [Traces](#traces): 트레이스를 검색/조회하도록 최적화되어 있습니다. [기본값이 구성된](./config.md#traces) Explore 뷰에서 가장 잘 동작합니다.
-- [SQL Editor](#sql-editor): 쿼리를 완전히 제어해야 할 때 SQL Editor를 사용할 수 있습니다. 이 모드에서는 임의의 SQL 쿼리를 실행할 수 있습니다.
+* [테이블](#table): 데이터를 테이블 형식으로 표시하는 가장 단순한 쿼리 유형입니다. 집계 함수가 포함된 간단한 쿼리와 복잡한 쿼리 모두에 범용적으로 적합합니다.
+* [로그](#logs): 로그용 쿼리를 작성하는 데 최적화되어 있습니다. [기본값이 구성된](./config.md#logs) Explore 뷰에서 가장 잘 작동합니다.
+* [시계열](#time-series): 시계열 쿼리를 작성할 때 가장 적합합니다. 전용 시간 컬럼을 선택하고 집계 함수를 추가할 수 있습니다.
+* [트레이스](#traces): 트레이스를 검색하거나 조회하는 데 최적화되어 있습니다. [기본값이 구성된](./config.md#traces) Explore 뷰에서 가장 잘 작동합니다.
+* [SQL Editor](#sql-editor): 쿼리를 완전히 제어하려는 경우 SQL Editor를 사용할 수 있습니다. 이 모드에서는 모든 SQL 쿼리를 실행할 수 있습니다.
 
 ## 쿼리 유형 \{#query-types\}
 

@@ -1,22 +1,20 @@
 ---
-description: '여러 배열을 해당 배열들의 배열인 더 큰 하나의 배열로 집계합니다.'
+description: '배열들을 더 큰 하나의 배열로 집계합니다.'
 keywords: ['groupArrayArray', 'array_concat_agg']
 slug: /sql-reference/aggregate-functions/reference/grouparrayarray
 title: 'groupArrayArray'
 doc_type: 'reference'
 ---
 
-# groupArrayArray \{#grouparrayarray\}
-
-배열들을 하나의 더 큰 배열로 집계합니다.
-[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 함수와 [Array](/sql-reference/aggregate-functions/combinators#-array) 조합자를 결합합니다.
+배열들을 더 큰 하나의 배열로 집계합니다.
+[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 함수와 [Array](/sql-reference/aggregate-functions/combinators#-array) combinator를 결합합니다.
 
 별칭: `array_concat_agg`
 
 **예시**
 
-사용자 브라우징 세션을 포착한 데이터가 있다고 가정합니다. 각 세션은 특정 사용자가 방문한 페이지의 순서를 기록합니다.
-`groupArrayArray` 함수를 사용하여 사용자별 페이지 방문 패턴을 분석할 수 있습니다.
+사용자 브라우징 세션을 기록한 데이터가 있다고 가정합니다. 각 세션에는 특정 사용자가 방문한 페이지의 순서가 기록됩니다.
+`groupArrayArray` 함수를 사용하면 사용자별 페이지 방문 패턴을 분석할 수 있습니다.
 
 ```sql title="Setup"
 CREATE TABLE website_visits (

@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Azure Flexible Server для Postgres'
-description: 'Настройка Azure Flexible Server для Postgres в качестве источника для ClickPipes'
+sidebar_label: 'Azure Flexible Server for Postgres'
+description: 'Настройка Azure Flexible Server for Postgres в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/azure-flexible-server-postgres
-title: 'Руководство по настройке источника Azure Flexible Server для Postgres'
+title: 'Руководство по настройке источника Azure Flexible Server for Postgres'
 keywords: ['azure', 'flexible server', 'postgres', 'clickpipes', 'wal level']
 doc_type: 'guide'
 integration:
@@ -16,10 +16,7 @@ import restart from '@site/static/images/integrations/data-ingestion/clickpipes/
 import firewall from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres/firewall.png';
 import Image from '@theme/IdealImage';
 
-
-# Руководство по настройке источника Azure Flexible Server для Postgres \{#azure-flexible-server-for-postgres-source-setup-guide\}
-
-ClickPipes поддерживает Postgres версии 12 и выше.
+ClickPipes поддерживает Postgres версии 12 и более поздних.
 
 ## Включение логической репликации \{#enable-logical-replication\}
 
@@ -64,28 +61,22 @@ ClickPipes поддерживает Postgres версии 12 и выше.
 4. Создайте [publication](https://www.postgresql.org/docs/current/logical-replication-publication.html) с таблицами, которые вы хотите реплицировать. Настоятельно рекомендуется включать в публикацию только необходимые таблицы, чтобы избежать лишней нагрузки на производительность.
 
    :::warning
-   Любая таблица, включённая в публикацию, должна либо иметь определённый **первичный ключ**, _либо_ иметь **replica identity**, настроенную в значение `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для рекомендаций по выбору области публикаций.
+   Любая таблица, включённая в публикацию, должна либо иметь определённый **первичный ключ**, *либо* иметь **replica identity**, настроенную в значение `FULL`. См. раздел [Postgres FAQs](../faq.md#how-should-i-scope-my-publications-when-setting-up-replication) для рекомендаций по выбору области публикаций.
    :::
 
-   - Чтобы создать публикацию для конкретных таблиц:
+   * Чтобы создать публикацию для конкретных таблиц:
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLE table_to_replicate, table_to_replicate2;
+     ```
 
-   - Чтобы создать публикацию для всех таблиц в определённой схеме:
+   * Чтобы создать публикацию для всех таблиц в определённой схеме:
 
-      ```sql
-      CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
-      ```
+     ```sql
+     CREATE PUBLICATION clickpipes FOR TABLES IN SCHEMA "public";
+     ```
 
    Публикация `clickpipes` будет содержать набор событий изменений, сгенерированных из указанных таблиц, и позже будет использоваться для приёма потока репликации.
-
-5. Установите `wal_sender_timeout` в 0 для `clickpipes_user`:
-
-   ```sql
-   ALTER ROLE clickpipes_user SET wal_sender_timeout to 0;
-   ```
 
 ## Добавьте IP-адреса ClickPipes в Firewall \{#add-clickpipes-ips-to-firewall\}
 

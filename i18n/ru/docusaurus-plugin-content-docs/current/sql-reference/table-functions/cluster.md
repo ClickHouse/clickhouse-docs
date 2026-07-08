@@ -1,14 +1,12 @@
 ---
-description: 'Позволяет обращаться ко всем шардам (настроенным в разделе `remote_servers`)
-  кластера без создания distributed таблицы.'
-sidebar_label: 'кластер'
+description: 'Позволяет обращаться ко всем шардам кластера (настроенным в разделе `remote_servers`)
+  без создания distributed таблицы.'
+sidebar_label: 'cluster'
 sidebar_position: 30
 slug: /sql-reference/table-functions/cluster
 title: 'clusterAllReplicas'
 doc_type: 'reference'
 ---
-
-# Табличная функция clusterAllReplicas \{#clusterallreplicas-table-function\}
 
 Позволяет обращаться ко всем шардам кластера (настроенным в разделе `remote_servers`) без создания [distributed таблицы](../../engines/table-engines/special/distributed.md). Запрашивается только одна реплика каждого шарда.
 

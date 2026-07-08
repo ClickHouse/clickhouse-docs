@@ -168,30 +168,30 @@ SELECT tupleConcat((1, 2), ('a',), (true, false))
 
 도입 버전: v21.11.0
 
-동일한 크기의 두 튜플에서 각 대응 요소를 서로 나눈 결과를 계산합니다.
+같은 크기의 2개 이상의 튜플에 대해 왼쪽에서 오른쪽 순서로 요소별 나눗셈을 수행합니다.
 
 :::note
-0으로 나누는 경우 `inf`를 반환합니다.
+0으로 나누면 `inf`를 반환합니다.
 :::
 
 **구문**
 
 ```sql
-tupleDivide(t1, t2)
+tupleDivide(t1, t2[, tN, ...])
 ```
 
 **인수**
 
-* `t1` — 첫 번째 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 두 번째 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 첫 번째 입력 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 추가 입력 튜플 1개 이상. 모든 튜플의 크기는 같아야 합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **반환 값**
 
-나눗셈 결과가 저장된 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+각 요소를 나눈 몫이 포함된 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**예제**
+**예시**
 
-**기본 사용법**
+**두 개의 튜플**
 
 ```sql title=Query
 SELECT tupleDivide((1, 2), (2, 3))
@@ -201,6 +201,15 @@ SELECT tupleDivide((1, 2), (2, 3))
 (0.5, 0.6666666666666666)
 ```
 
+**세 개의 튜플**
+
+```sql title=Query
+SELECT tupleDivide((100.0, 60.0), (5.0, 3.0), (2.0, 4.0))
+```
+
+```response title=Response
+(10, 5)
+```
 
 ## tupleDivideByNumber \{#tupleDivideByNumber\}
 
@@ -394,30 +403,30 @@ SELECT tupleHammingDistance(wordShingleMinHash(string), wordShingleMinHashCaseIn
 
 ## tupleIntDiv \{#tupleIntDiv\}
 
-도입된 버전: v23.8.0
+도입 버전: v23.8.0
 
-분자 튜플과 분모 튜플에 대해 정수 나눗셈을 수행합니다. 몫으로 이루어진 튜플을 반환합니다.
-두 튜플 중 하나에 정수가 아닌 요소가 포함된 경우, 각 비정수 분자 또는 제수를 가장 가까운 정수로 반올림하여 결과를 계산합니다.
-0으로 나누면 오류가 발생합니다.
+같은 크기의 2개 이상의 튜플에 대해 요소별 정수 나눗셈을 왼쪽에서 오른쪽으로 수행합니다. 결과로 몫으로 구성된 튜플을 반환합니다.
+튜플에 정수가 아닌 요소가 포함된 경우, 각 정수가 아닌 피제수 또는 제수를 가장 가까운 정수로 반올림하여 결과를 계산합니다.
+0으로 나누면 예외가 발생합니다.
 
-**Syntax**
+**구문**
 
 ```sql
-tupleIntDiv(tuple_num, tuple_div)
+tupleIntDiv(t1, t2[, tN, ...])
 ```
 
 **인수**
 
-* `tuple_num` — 분자 값의 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_div` — 분모 값의 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 첫 번째 입력 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 하나 이상의 추가 입력 튜플입니다. 모든 튜플은 크기가 같아야 합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **반환 값**
 
-몫 값의 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+정수 몫으로 구성된 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**예제**
+**예시**
 
-**기본 사용법**
+**두 개의 튜플**
 
 ```sql title=Query
 SELECT tupleIntDiv((15, 10, 5), (5, 5, 5))
@@ -427,7 +436,7 @@ SELECT tupleIntDiv((15, 10, 5), (5, 5, 5))
 (3, 2, 1)
 ```
 
-**소수 사용 시**
+**소수점 포함**
 
 ```sql title=Query
 SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5))
@@ -437,6 +446,15 @@ SELECT tupleIntDiv((15, 10, 5), (5.5, 5.5, 5.5))
 (2, 1, 0)
 ```
 
+**세 개의 튜플**
+
+```sql title=Query
+SELECT tupleIntDiv((120, 60), (4, 3), (2, 4))
+```
+
+```response title=Response
+(15, 5)
+```
 
 ## tupleIntDivByNumber \{#tupleIntDivByNumber\}
 
@@ -488,24 +506,24 @@ SELECT tupleIntDivByNumber((15.2, 10.7, 5.5), 5.8)
 
 도입 버전: v23.8.0
 
-[`tupleIntDiv`](#tupleIntDiv)와 마찬가지로 분자 튜플과 분모 튜플에 대해 정수 나눗셈을 수행하고, 몫의 튜플을 반환합니다.
-0으로 나누는 경우 예외를 발생시키는 대신 몫을 0으로 반환합니다.
-두 튜플 중 하나에 정수가 아닌 요소가 포함되어 있으면, 정수가 아닌 각 분자 또는 제수를 가장 가까운 정수로 반올림한 후 결과를 계산합니다.
+[`tupleIntDiv`](#tupleIntDiv)와 마찬가지로, 크기가 같은 두 개 이상의 튜플에 대해 요소별 정수 나눗셈을 왼쪽에서 오른쪽 순서로 수행합니다.
+0으로 나누는 경우 예외를 발생시키는 대신 해당 요소에 대해 0을 반환합니다.
+어떤 튜플이든 정수가 아닌 요소를 포함하면, 정수가 아닌 각 분자 또는 제수를 가장 가까운 정수로 반올림한 후 결과를 계산합니다.
 
-**문법**
+**구문**
 
 ```sql
-tupleIntDivOrZero(tuple_num, tuple_div)
+tupleIntDivOrZero(t1, t2[, tN, ...])
 ```
 
 **인수**
 
-* `tuple_num` — 분자 값 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_div` — 분모 값 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 첫 번째 입력 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 하나 이상의 추가 입력 튜플. 모든 튜플은 크기가 같아야 합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **반환 값**
 
-몫 튜플을 반환합니다. 분모가 0인 경우 해당 몫은 0을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+정수 몫의 튜플을 반환합니다. 분모가 0인 요소의 몫은 0을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **예시**
 
@@ -519,6 +537,15 @@ SELECT tupleIntDivOrZero((5, 10, 15), (0, 0, 0))
 (0, 0, 0)
 ```
 
+**세 개의 튜플**
+
+```sql title=Query
+SELECT tupleIntDivOrZero((120, 60), (4, 3), (2, 4))
+```
+
+```response title=Response
+(15, 5)
+```
 
 ## tupleIntDivOrZeroByNumber \{#tupleIntDivOrZeroByNumber\}
 
@@ -570,28 +597,28 @@ SELECT tupleIntDivOrZeroByNumber((15, 10, 5), 0)
 
 도입 버전: v21.11.0
 
-동일한 크기의 두 튜플에서 각 위치에 있는 요소들 간의 차이를 계산합니다.
+동일한 크기의 튜플 2개 이상에 대해 각 요소별 차이를 계산합니다. 계산은 왼쪽에서 오른쪽 순서로 적용됩니다.
 
-**문법**
+**구문**
 
 ```sql
-tupleMinus(t1, t2)
+tupleMinus(t1, t2[, tN, ...])
 ```
 
-**별칭(Aliases)**: `vectorDifference`
+**별칭**: `vectorDifference`
 
-**인수(Arguments)**
+**인수**
 
-* `t1` — 첫 번째 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 두 번째 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 첫 번째 입력 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 추가 입력 튜플 1개 이상입니다. 모든 튜플의 크기는 같아야 합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**반환 값(Returned value)**
+**반환 값**
 
-뺄셈 결과를 담은 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+요소별 차이값을 담은 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**예시(Examples)**
+**예시**
 
-**기본 사용법(Basic usage)**
+**두 개의 튜플**
 
 ```sql title=Query
 SELECT tupleMinus((1, 2), (2, 3))
@@ -601,31 +628,40 @@ SELECT tupleMinus((1, 2), (2, 3))
 (-1, -1)
 ```
 
+**세 개의 튜플**
+
+```sql title=Query
+SELECT tupleMinus((10, 10), (3, 4), (2, 1))
+```
+
+```response title=Response
+(5, 5)
+```
 
 ## tupleModulo \{#tupleModulo\}
 
 도입 버전: v23.8.0
 
-두 튜플의 나눗셈 연산에서 각 요소의 나머지(모듈로)를 튜플로 반환합니다.
+같은 크기의 2개 이상의 튜플을 왼쪽에서 오른쪽으로 순차적으로 나눌 때, 각 요소별 나머지를 담은 튜플을 반환합니다.
 
 **구문**
 
 ```sql
-tupleModulo(tuple_num, tuple_mod)
+tupleModulo(t1, t2[, tN, ...])
 ```
 
 **인수**
 
-* `tuple_num` — 분자 값의 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `tuple_mod` — modulus(모듈로, 제수) 값의 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 첫 번째 입력 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 하나 이상의 추가 입력 튜플입니다. 모든 튜플의 크기는 같아야 합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **반환 값**
 
-나눗셈의 나머지 값으로 구성된 튜플을 반환합니다. 0으로 나누면 오류가 발생합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+각 요소별 나머지로 구성된 튜플을 반환합니다. 0으로 나누면 예외가 발생합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **예시**
 
-**기본 사용 예**
+**두 튜플**
 
 ```sql title=Query
 SELECT tupleModulo((15, 10, 5), (5, 3, 2))
@@ -635,6 +671,15 @@ SELECT tupleModulo((15, 10, 5), (5, 3, 2))
 (0, 1, 1)
 ```
 
+**세 개의 튜플**
+
+```sql title=Query
+SELECT tupleModulo((10, 20), (7, 9), (3, 5))
+```
+
+```response title=Response
+(0, 2)
+```
 
 ## tupleModuloByNumber \{#tupleModuloByNumber\}
 
@@ -674,26 +719,26 @@ SELECT tupleModuloByNumber((15, 10, 5), 2)
 
 도입 버전: v21.11.0
 
-동일한 크기의 두 튜플에서 같은 위치에 있는 요소들을 서로 곱한 값을 계산합니다.
+크기가 같은 두 개 이상의 튜플의 요소별 곱을 계산합니다.
 
 **구문**
 
 ```sql
-tupleMultiply(t1, t2)
+tupleMultiply(t1, t2[, tN, ...])
 ```
 
-**인자**
+**인수**
 
-* `t1` — 첫 번째 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 두 번째 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 첫 번째 입력 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 추가 입력 튜플이 하나 이상입니다. 모든 튜플의 크기는 같아야 합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **반환 값**
 
-곱셈 결과가 들어 있는 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+각 요소별 곱을 포함하는 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **예시**
 
-**기본 사용법**
+**두 개의 튜플**
 
 ```sql title=Query
 SELECT tupleMultiply((1, 2), (2, 3))
@@ -703,6 +748,15 @@ SELECT tupleMultiply((1, 2), (2, 3))
 (2, 6)
 ```
 
+**3개의 튜플**
+
+```sql title=Query
+SELECT tupleMultiply((1, 2), (2, 3), (1, 2))
+```
+
+```response title=Response
+(2, 12)
+```
 
 ## tupleMultiplyByNumber \{#tupleMultiplyByNumber\}
 
@@ -804,30 +858,30 @@ SELECT tupleNegate((1, 2))
 
 ## tuplePlus \{#tuplePlus\}
 
-도입 버전: v21.11.0
+Introduced in: v21.11.0
 
-동일한 크기의 두 튜플에서 각 위치에 대응하는 요소의 합을 계산합니다.
+크기가 같은 2개 이상의 튜플의 각 요소별 합을 계산합니다.
 
 **구문**
 
 ```sql
-tuplePlus(t1, t2)
+tuplePlus(t1, t2[, tN, ...])
 ```
 
 **별칭**: `vectorSum`
 
 **인수**
 
-* `t1` — 첫 번째 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
-* `t2` — 두 번째 튜플. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t1` — 첫 번째 입력 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `t2, ..., tN` — 추가 입력 튜플이 하나 이상입니다. 모든 튜플의 크기는 같아야 합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
-**반환값**
+**반환 값**
 
-각 입력 튜플 인자의 동일한 위치에 있는 요소들의 합을 포함하는 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+각 요소의 합을 담은 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
 
 **예시**
 
-**기본 사용법**
+**두 개의 튜플**
 
 ```sql title=Query
 SELECT tuplePlus((1, 2), (2, 3))
@@ -837,6 +891,49 @@ SELECT tuplePlus((1, 2), (2, 3))
 (3, 5)
 ```
 
+**세 개의 튜플**
+
+```sql title=Query
+SELECT tuplePlus((1, 2), (2, 3), (3, 4))
+```
+
+```response title=Response
+(6, 9)
+```
+
+## tuplePositiveModuloByNumber \{#tuplePositiveModuloByNumber\}
+
+도입 버전: v26.4.0
+
+튜플과 지정된 제수에 대한 나눗셈 연산의 양의 모듈로(나머지)로 구성된 튜플을 반환합니다.
+tupleModuloByNumber와 달리 결과는 항상 0 이상입니다.
+
+**구문**
+
+```sql
+tuplePositiveModuloByNumber(tuple_num, div)
+```
+
+**인수**
+
+* `tuple_num` — 분자 값으로 이루어진 튜플입니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+* `div` — 제수 값입니다. [`(U)Int*`](/sql-reference/data-types/int-uint) 또는 [`Float*`](/sql-reference/data-types/float) 또는 [`Decimal`](/sql-reference/data-types/decimal)
+
+**반환값**
+
+음수가 아닌 나머지로 이루어진 튜플을 반환합니다. [`Tuple((U)Int*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Float*)`](/sql-reference/data-types/tuple) 또는 [`Tuple(Decimal)`](/sql-reference/data-types/tuple)
+
+**예시**
+
+**사용법**
+
+```sql title=Query
+SELECT tuplePositiveModuloByNumber((15, 10, 5), 2)
+```
+
+```response title=Response
+(1, 0, 1)
+```
 
 ## tupleToNameValuePairs \{#tupleToNameValuePairs\}
 
@@ -887,7 +984,7 @@ SELECT tupleToNameValuePairs(tuple(3, 2, 1))
 
 ## untuple \{#untuple\}
 
-호출 위치에서 [tuple](/sql-reference/data-types/tuple) 요소를 구문 수준에서 치환합니다.
+호출 위치에서 [튜플](/sql-reference/data-types/tuple) 요소를 구문 수준에서 치환합니다.
 
 결과 컬럼 이름은 구현에 따라 달라지며 변경될 수 있습니다. `untuple` 이후에 특정 컬럼 이름을 가정하지 마십시오.
 
@@ -897,11 +994,11 @@ SELECT tupleToNameValuePairs(tuple(3, 2, 1))
 untuple(x)
 ```
 
-`EXCEPT` 표현식을 사용하여 쿼리 결과에서 특정 컬럼을 제외할 수 있습니다.
+`EXCEPT` 표현식을 사용하여 쿌리 결과에서 특정 컬럼을 제외할 수 있습니다.
 
 **인수**
 
-* `x` — `tuple` 함수, 컬럼, 또는 요소들로 구성된 tuple입니다. [Tuple](../data-types/tuple.md).
+* `x` — `tuple` 함수, 컬럼, 또는 요소들로 구성된 튜플입니다. [Tuple](../data-types/tuple.md).
 
 **반환 값**
 
@@ -923,15 +1020,11 @@ untuple(x)
 
 `Tuple` 타입 컬럼을 `untuple` 함수의 매개변수로 사용하는 예제:
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT untuple(v6) FROM kv;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─_ut_1─┬─_ut_2─┐
 │    33 │ ab    │
 │    44 │ cd    │
@@ -943,15 +1036,11 @@ SELECT untuple(v6) FROM kv;
 
 `EXCEPT` 표현식 사용 예:
 
-쿼리:
-
-```sql
+```sql title="Query"
 SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─key─┬─v1─┬─v4─┬─v5─┬─v6────────┐
 │   1 │ 10 │ 30 │ 15 │ (33,'ab') │
 │   2 │ 25 │ 40 │  6 │ (44,'cd') │
@@ -960,7 +1049,6 @@ SELECT untuple((* EXCEPT (v2, v3),)) FROM kv;
 │   5 │ 30 │ 25 │ 55 │ (77,'kl') │
 └─────┴────┴────┴────┴───────────┘
 ```
-
 
 ## 거리 함수 \{#distance-functions\}
 

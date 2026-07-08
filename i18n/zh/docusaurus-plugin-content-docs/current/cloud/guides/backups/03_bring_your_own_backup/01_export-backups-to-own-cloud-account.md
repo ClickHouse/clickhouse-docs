@@ -6,19 +6,16 @@ description: '说明如何将备份导出到您自己的云账户'
 doc_type: 'guide'
 ---
 
-import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
-
-<EnterprisePlanFeatureBadge />
-
-ClickHouse Cloud 支持将备份写入您自己的云服务提供商（CSP）账户（AWS S3、Google Cloud Storage 或 Azure Blob Storage）。
-关于 ClickHouse Cloud 备份的工作原理（包括“完整”备份与“增量”备份）的详细信息，请参阅 [backups](/cloud/manage/backups/overview) 文档。
+ClickHouse Cloud 支持将备份写入您自己的云服务提供商 (CSP) 账户 (AWS S3、Google Cloud Storage 或 Azure Blob 存储) 。
+关于 ClickHouse Cloud 备份的工作原理 (包括“完整”备份与“增量”备份) 的详细信息，请参阅 [backups](/cloud/manage/backups/overview) 文档。
 
 本指南演示如何将完整和增量备份写入 AWS、GCP、Azure 对象存储，以及如何从这些备份中进行恢复。
 
 :::note
-凡是将备份导出到同一云服务提供商的其他区域的用法，都会产生 [data transfer](/cloud/manage/network-data-transfer) 费用。目前我们尚不支持跨云备份。
-:::
+凡是将备份导出到同一云服务提供商的其他区域的用法，都会产生 [data transfer](/cloud/manage/network-data-transfer) 费用。
 
+跨 Cloud 备份仅支持通过本页概述的 backup/restore 命令进行，不支持通过 UI 进行。
+:::
 
 ## 前提条件 \{#requirements\}
 
@@ -67,7 +64,7 @@ Where:
 
 <hr/>
 
-# 备份与恢复 \{#backup-restore\}
+## 备份与恢复 \{#backup-restore\}
 
 ## 备份 / 恢复到 AWS S3 存储桶 \{#backup--restore-to-aws-s3-bucket\}
 

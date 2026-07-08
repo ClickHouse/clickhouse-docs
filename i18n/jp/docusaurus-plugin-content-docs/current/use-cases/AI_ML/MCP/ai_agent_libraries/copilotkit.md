@@ -1,23 +1,21 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/copilotkit
 sidebar_label: 'CopilotKit を統合する'
-title: 'CopilotKit と ClickHouse MCP Server を使って AI エージェントを構築する方法'
+title: 'CopilotKit と ClickHouse MCPサーバー を使用して AI エージェントを構築する方法'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCP と CopilotKit を使用して、ClickHouse に保存されたデータを活用するエージェント型アプリケーションの構築方法を学びます。'
+description: 'ClickHouse MCP と CopilotKit を使用して、ClickHouse に保存されているデータを利用するエージェント型アプリケーションを構築する方法を学びます'
 keywords: ['ClickHouse', 'MCP', 'copilotkit']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# CopilotKit と ClickHouse MCP Server を使用して AI エージェントを構築する方法 \{#how-to-build-an-ai-agent-with-copilotkit-and-the-clickhouse-mcp-server\}
-
-これは、ClickHouse に保存されているデータを利用してエージェント型アプリケーションを構築する方法の例です。[ClickHouse MCP Server](https://github.com/ClickHouse/mcp-clickhouse) を使用して ClickHouse からデータをクエリし、そのデータに基づいてグラフを生成します。
+これは、ClickHouse に保存されているデータを利用してエージェント型アプリケーションを構築する方法の例です。[ClickHouse MCPサーバー](https://github.com/ClickHouse/mcp-clickhouse) を使用して ClickHouse からデータをクエリし、そのデータに基づいてグラフを生成します。
 
 [CopilotKit](https://github.com/CopilotKit/CopilotKit) は、UI を構築し、ユーザー向けのチャットインターフェースを提供するために使用します。
 
-:::note サンプルコード
-このサンプルのコードは [examples リポジトリ](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit) にあります。
+:::note 例のコード
+この例のコードは [examples リポジトリ](https://github.com/ClickHouse/examples/edit/main/ai/mcp/copilotkit) にあります。
 :::
 
 ## 前提条件 \{#prerequisites\}
@@ -78,11 +76,11 @@ Anthropic 以外の LLM プロバイダーを使用したい場合は、Copilotk
 - `CLICKHOUSE_PASSWORD`
 - `CLICKHOUSE_SECURE`
 
-# アプリケーションを実行する \{#run-the-application\}
+## アプリケーションを実行する \{#run-the-application\}
 
 `npm run dev` を実行して、開発サーバーを起動します。
 
-次のようなプロンプトで Agent をテストできます:
+次のようなプロンプトで エージェント をテストできます:
 
 > 「過去10年間のマンチェスターの価格推移を表示して。」
 

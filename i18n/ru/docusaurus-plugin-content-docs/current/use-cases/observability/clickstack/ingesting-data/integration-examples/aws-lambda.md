@@ -1,10 +1,10 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/aws-lambda
-title: 'Мониторинг логов AWS Lambda в ClickStack с использованием Rotel'
+title: 'Мониторинг логов AWS Lambda с помощью ClickStack с использованием Rotel'
 sidebar_label: 'Логи AWS Lambda'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг логов AWS Lambda в ClickStack с использованием Rotel'
+description: 'Мониторинг логов AWS Lambda с помощью ClickStack с использованием Rotel'
 doc_type: 'guide'
 keywords: ['AWS', 'Lambda', 'OTEL', 'ClickStack', 'logs', 'CloudWatch']
 ---
@@ -15,21 +15,18 @@ import log_view from '@site/static/images/clickstack/lambda/lambda-log-view.png'
 import log from '@site/static/images/clickstack/lambda/lambda-log.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Мониторинг логов AWS Lambda с ClickStack с использованием Rotel \{#lambda-clickstack\}
+:::note[Кратко]
+В этом руководстве показано, как организовать мониторинг функций AWS Lambda с помощью ClickStack, используя Rotel Lambda Extension для сбора и прямой отправки в ClickHouse логов функций, логов расширения и данных OpenTelemetry. Вы узнаете, как:
 
-<CommunityMaintainedBadge/>
+* Развернуть слой Rotel Lambda Extension для ваших функций Lambda
+* Настроить расширение для экспорта логов и трассировок в ClickStack
+* При необходимости отключить CloudWatch Logs, чтобы снизить затраты
 
-:::note[TL;DR]
-В этом руководстве показано, как отслеживать функции AWS Lambda с помощью ClickStack, используя Rotel Lambda Extension для сбора и пересылки логов функций, логов расширения и данных OpenTelemetry напрямую в ClickHouse. Вы узнаете, как:
+Такой подход может существенно снизить ваши затраты на обсервабилити AWS Lambda за счет полного обхода CloudWatch Logs.
 
-- Развернуть слой Rotel Lambda Extension для ваших функций Lambda
-- Настроить расширение для экспорта логов и трейсов в ClickStack
-- При необходимости отключить CloudWatch Logs для снижения затрат
-
-Этот подход может значительно снизить ваши расходы на обсервабилити Lambda за счёт полного отказа от CloudWatch Logs.
-
-Необходимое время: 5–10 минут
+Требуемое время: 5–10 минут
 :::
 
 ## Интеграция с существующими функциями Lambda \{#existing-lambda\}

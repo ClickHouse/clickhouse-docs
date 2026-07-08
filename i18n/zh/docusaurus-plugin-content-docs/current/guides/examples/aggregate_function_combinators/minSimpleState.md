@@ -7,8 +7,6 @@ sidebar_label: 'minSimpleState'
 doc_type: 'reference'
 ---
 
-# minSimpleState \{#minsimplestate\}
-
 ## 描述 \{#description\}
 
 [`SimpleState`](/sql-reference/aggregate-functions/combinators#-simplestate) 组合器可以应用于 [`min`](/sql-reference/aggregate-functions/reference/min)
@@ -145,7 +143,7 @@ ORDER BY location_id;
 现在可以看到预期的结果：
 
 
-```sql
+```response
 ┌─location_id─┬─location_name─┬─min_temp─┬─max_temp─┐
 │           1 │ North         │        3 │        8 │
 │           2 │ South         │       15 │       18 │
@@ -157,7 +155,6 @@ ORDER BY location_id;
 :::note
 使用 `SimpleState` 时，就不需要再使用 `Merge` 组合器来合并部分聚合状态。
 :::
-
 
 ## 另请参阅 \{#see-also\}
 

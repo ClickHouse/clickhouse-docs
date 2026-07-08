@@ -1,5 +1,5 @@
 ---
-title: 'Uploading files'
+title: 'Upload files to Cloud'
 slug: /cloud/migrate/upload-a-csv-file
 description: 'Learn how to upload files to Cloud'
 doc_type: 'guide'
@@ -16,8 +16,6 @@ import csv_07 from '@site/static/images/cloud/migrate/csv_07.png';
 import csv_08 from '@site/static/images/cloud/migrate/csv_08.png';
 import csv_09 from '@site/static/images/cloud/migrate/csv_09.png';
 import csv_10 from '@site/static/images/cloud/migrate/csv_10.png';
-
-# Upload files to Cloud
 
 ClickHouse Cloud provides an easy way to import your files and supports the
 following formats:

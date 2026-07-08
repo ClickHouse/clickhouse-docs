@@ -26,18 +26,15 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
-
-# 从 MySQL 摄取数据到 ClickHouse（使用 CDC） \{#ingesting-data-from-mysql-to-clickhouse-using-cdc\}
-
-<BetaBadge/>
+<BetaBadge />
 
 :::info
-通过 ClickPipes 将 MySQL 数据摄取到 ClickHouse Cloud 目前处于公开测试阶段。
+通过 ClickPipes 从 MySQL 向 ClickHouse Cloud 摄取数据现处于 Public Beta 阶段。
 :::
 
-MySQL ClickPipe 提供了一种完全托管且具备高可用性和容错能力的方式，将 MySQL 和 MariaDB 数据库中的数据摄取到 ClickHouse Cloud。它同时支持用于一次性摄取的**批量加载**以及用于持续摄取的 **CDC（变更数据捕获）**。
+MySQL ClickPipe 提供了一种完全托管且具备弹性的方式，可将 MySQL 和 MariaDB 数据库中的数据摄取到 ClickHouse Cloud。它既支持用于一次性摄取的**批量加载**，也支持用于持续摄取的**CDC (变更数据捕获)&#x20;**。
 
-可以使用 ClickPipes UI 手动部署和管理 MySQL ClickPipes。未来，将可以以编程方式，通过 [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post) 和 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/3.8.1-alpha1/docs/resources/clickpipe) 来部署和管理 MySQL ClickPipes。
+MySQL ClickPipes 既可以通过 ClickPipes UI 手动部署和管理，也可以通过 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式部署和管理。
 
 ## 先决条件 \{#prerequisites\}
 

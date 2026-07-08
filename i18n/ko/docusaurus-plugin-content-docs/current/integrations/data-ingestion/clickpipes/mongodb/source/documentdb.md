@@ -14,8 +14,6 @@ import docdb_parameter_group_status from '@site/static/images/integrations/data-
 import Image from '@theme/IdealImage';
 
 
-# Amazon DocumentDB 소스 설정 가이드 \{#amazon-documentdb-source-setup-guide\}
-
 ## ClickPipes가 지원하는 DocumentDB 버전 \{#supported-documentdb-versions\}
 
 ClickPipes는 DocumentDB 5.0 버전을 지원합니다.

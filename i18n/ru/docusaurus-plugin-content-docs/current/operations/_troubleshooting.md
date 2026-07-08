@@ -1,17 +1,16 @@
+[//]: # "Этот файл включён в раздел FAQ > Устранение неполадок"
 
-[//]: # (Этот файл включён в раздел FAQ > Устранение неполадок)
-
-- [Установка](#troubleshooting-installation-errors)
-- [Подключение к серверу](#troubleshooting-accepts-no-connections)
-- [Обработка запросов](#troubleshooting-does-not-process-queries)
-- [Эффективность обработки запросов](#troubleshooting-too-slow)
+* [Установка](#troubleshooting-installation-errors)
+* [Подключение к серверу](#troubleshooting-accepts-no-connections)
+* [Обработка запросов](#troubleshooting-does-not-process-queries)
+* [Эффективность обработки запросов](#troubleshooting-too-slow)
 
 ## Установка \{#troubleshooting-installation-errors\}
 
 ### Невозможно получить пакеты .deb из репозитория ClickHouse с помощью apt-get \{#you-cannot-get-deb-packages-from-clickhouse-repository-with-apt-get\}
 
 * Проверьте настройки брандмауэра.
-* Если вы по какой-либо причине не можете получить доступ к репозиторию, скачайте пакеты, как описано в статье [install guide](../getting-started/install.md), и установите их вручную с помощью команды `sudo dpkg -i <packages>`. Вам также понадобится пакет `tzdata`.
+* Если вы по какой-либо причине не можете получить доступ к репозиторию, скачайте пакеты, как описано в статье [руководство по установке](../getting-started/install.md), и установите их вручную с помощью команды `sudo dpkg -i <packages>`. Вам также понадобится пакет `tzdata`.
 
 ### Невозможно обновить пакеты .deb из репозитория ClickHouse с помощью apt-get \{#you-cannot-update-deb-packages-from-clickhouse-repository-with-apt-get\}
 
@@ -24,23 +23,23 @@
 * Полные тексты предупреждений могут быть следующими:
 
 ```bash
-N: Пропущено получение настроенного файла 'main/binary-i386/Packages', так как репозиторий 'https://packages.clickhouse.com/deb stable InRelease' не поддерживает архитектуру 'i386'
+N: Skipping acquire of configured file 'main/binary-i386/Packages' as repository 'https://packages.clickhouse.com/deb stable InRelease' doesn't support architecture 'i386'
 ```
 
 ```bash
-E: Не удалось получить https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  Файл имеет неожиданный размер (30451 != 28154). Идёт синхронизация зеркала?
+E: Failed to fetch https://packages.clickhouse.com/deb/dists/stable/main/binary-amd64/Packages.gz  File has unexpected size (30451 != 28154). Mirror sync in progress?
 ```
 
 ```text
-E: Репозиторий 'https://packages.clickhouse.com/deb stable InRelease' изменил значение параметра 'Origin' с 'Artifactory' на 'ClickHouse'
-E: Репозиторий 'https://packages.clickhouse.com/deb stable InRelease' изменил значение параметра 'Label' с 'Artifactory' на 'ClickHouse'
-N: Репозиторий 'https://packages.clickhouse.com/deb stable InRelease' изменил значение параметра 'Suite' с 'stable' на ''
-N: Это изменение должно быть явно подтверждено, прежде чем можно будет применять обновления для этого репозитория. Подробности см. в руководстве apt-secure(8).
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Origin' value from 'Artifactory' to 'ClickHouse'
+E: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Label' value from 'Artifactory' to 'ClickHouse'
+N: Repository 'https://packages.clickhouse.com/deb stable InRelease' changed its 'Suite' value from 'stable' to ''
+N: This must be accepted explicitly before updates for this repository can be applied. See apt-secure(8) manpage for details.
 ```
 
 ```bash
 Err:11 https://packages.clickhouse.com/deb stable InRelease
-  400  Некорректный запрос [IP: 172.66.40.249 443]
+  400  Bad Request [IP: 172.66.40.249 443]
 ```
 
 Чтобы устранить описанную выше проблему, используйте следующий скрипт:
@@ -64,9 +63,9 @@ sudo rm -f /etc/yum.repos.d/clickhouse.repo
 
 После этого следуйте [руководству по установке](../getting-started/install.md#from-rpm-packages)
 
-### Не удаётся запустить Docker-контейнер \{#you-cant-run-docker-container\}
+### Не удается запустить контейнер Docker \{#you-cant-run-docker-container\}
 
-Вы выполняете простой `docker run clickhouse/clickhouse-server`, и он аварийно завершается, выводя трассировку стека, похожую на следующую:
+При запуске простой команды `docker run clickhouse/clickhouse-server` контейнер аварийно завершается, и вы видите стек вызовов, похожий на следующий:
 
 ```bash
 $ docker run -it clickhouse/clickhouse-server
@@ -91,16 +90,14 @@ Poco::Exception. Code: 1000, e.code() = 0, System exception: cannot start thread
 
 Причина — устаревший демон Docker версии ниже `20.10.10`. Исправить это можно либо обновив Docker, либо запустив `docker run [--privileged | --security-opt seccomp=unconfined]`. Второй вариант несет риски для безопасности.
 
-```
-
-## Подключение к серверу {#troubleshooting-accepts-no-connections}
+## Подключение к серверу \{#troubleshooting-accepts-no-connections\}
 
 Возможные проблемы:
 
 * Сервер не запущен.
 * Некорректные или неожиданные параметры конфигурации.
 
-### Сервер не запущен {#server-is-not-running}
+### Сервер не запущен \{#server-is-not-running\}
 
 **Проверьте, запущен ли сервер**
 
@@ -128,29 +125,29 @@ $ sudo service clickhouse-server start
 Если запуск `clickhouse-server` завершился ошибкой конфигурации, вы увидите строку `<Error>` с описанием ошибки. Например:
 
 ```text
-2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Не удалось перезагрузить внешний словарь 'event2id': Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Соединение отклонено, e.what() = Соединение отклонено
+2019.01.11 15:23:25.549505 [ 45 ] {} <Error> ExternalDictionaries: Failed reloading 'event2id' external dictionary: Poco::Exception. Code: 1000, e.code() = 111, e.displayText() = Connection refused, e.what() = Connection refused
 ```
 
 Если в конце файла нет сообщения об ошибке, просмотрите весь файл, начиная со строки:
 
 ```text
-<Information> Приложение: запускается.
+<Information> Application: starting up.
 ```
 
 Если вы попытаетесь запустить второй экземпляр `clickhouse-server` на сервере, вы увидите в логе следующее:
 
 ```text
-2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Запуск ClickHouse 19.1.0, ревизия 54413
-2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Приложение: запускается
-2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: файл состояния ./status уже существует — некорректный перезапуск. Содержимое:
+2019.01.11 15:25:11.151730 [ 1 ] {} <Information> : Starting ClickHouse 19.1.0 with revision 54413
+2019.01.11 15:25:11.154578 [ 1 ] {} <Information> Application: starting up
+2019.01.11 15:25:11.156361 [ 1 ] {} <Information> StatusFile: Status file ./status already exists - unclean restart. Contents:
 PID: 8510
-Запущен: 2019-01-11 15:24:23
-Ревизия: 54413
+Started at: 2019-01-11 15:24:23
+Revision: 54413
 
-2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Приложение: DB::Exception: невозможно заблокировать файл ./status. Другой экземпляр сервера в этом же каталоге уже запущен.
-2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Приложение: завершает работу
-2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Приложение: деинициализация подсистемы: подсистема журналирования
-2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: остановка потока SignalListener
+2019.01.11 15:25:11.156673 [ 1 ] {} <Error> Application: DB::Exception: Cannot lock file ./status. Another server instance in same directory is already running.
+2019.01.11 15:25:11.156682 [ 1 ] {} <Information> Application: shutting down
+2019.01.11 15:25:11.156686 [ 1 ] {} <Debug> Application: Uninitializing subsystem: Logging Subsystem
+2019.01.11 15:25:11.156716 [ 2 ] {} <Information> BaseDaemon: Stop SignalListener thread
 ```
 
 **Просмотр логов systemd**
@@ -169,7 +166,7 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
 Эта команда запускает сервер как интерактивное приложение со стандартными параметрами скрипта автозапуска. В этом режиме `clickhouse-server` выводит все сообщения о событиях в консоль.
 
-### Параметры конфигурации {#configuration-parameters}
+### Параметры конфигурации \{#configuration-parameters\}
 
 Проверьте:
 
@@ -200,20 +197,20 @@ $ sudo -u clickhouse /usr/bin/clickhouse-server --config-file /etc/clickhouse-se
 
   Возможно, вы используете неверное имя пользователя или пароль.
 
-## Обработка запросов {#troubleshooting-does-not-process-queries}
+## Обработка запросов \{#troubleshooting-does-not-process-queries\}
 
 Если ClickHouse не может выполнить запрос, он отправляет описание ошибки клиенту. В `clickhouse-client` вы получаете описание ошибки в консоли. Если вы используете HTTP-интерфейс, ClickHouse отправляет описание ошибки в теле ответа. Например:
 
 ```bash
 $ curl 'http://localhost:8123/' --data-binary "SELECT a"
-Code: 47, e.displayText() = DB::Exception: Неизвестный идентификатор: a. Обратите внимание, что в вашем запросе нет таблиц (секция FROM), контекст: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
+Code: 47, e.displayText() = DB::Exception: Unknown identifier: a. Note that there are no tables (FROM clause) in your query, context: required_names: 'a' source_tables: table_aliases: private_aliases: column_aliases: public_columns: 'a' masked_columns: array_join_columns: source_columns: , e.what() = DB::Exception
 ```
 
 Если запустить `clickhouse-client` с параметром `stack-trace`, ClickHouse вернёт стек вызовов сервера с описанием ошибки.
 
 Вы можете увидеть сообщение об обрыве соединения. В этом случае повторите запрос. Если соединение обрывается каждый раз при выполнении запроса, проверьте журналы сервера на наличие ошибок.
 
-## Эффективность обработки запросов {#troubleshooting-too-slow}
+## Эффективность обработки запросов \{#troubleshooting-too-slow\}
 
 Если вы замечаете, что ClickHouse работает слишком медленно, необходимо выполнить профилирование нагрузки на ресурсы сервера и сеть, создаваемой вашими запросами.
 

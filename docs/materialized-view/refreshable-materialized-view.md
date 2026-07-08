@@ -45,7 +45,7 @@ SYSTEM REFRESH VIEW table_name_mv;
 ```
 
 You can also cancel, stop, or start a view.
-For more details, see the [managing refreshable materialized views](/sql-reference/statements/system#refreshable-materialized-views) documentation.
+For more details, see the [managing refreshable materialized views](/sql-reference/statements/system#managing-refreshable-materialized-views) documentation.
 
 ## When was a refreshable materialized view last refreshed? {#when-was-a-refreshable-materialized-view-last-refreshed}
 
@@ -91,7 +91,9 @@ One use of this feature is to capture snapshots of values at a point in time. Fo
 SELECT *
 FROM events
 LIMIT 10
+```
 
+```response
 Query id: 7662bc39-aaf9-42bd-b6c7-bc94f2881036
 
 ┌──────────────────ts─┬─uuid─┬─count─┐
@@ -118,7 +120,9 @@ FROM events
 GROUP BY ALL
 ORDER BY count DESC
 LIMIT 10
+```
 
+```response
 ┌─uuid─┬───count─┐
 │ c6f  │ 5676468 │
 │ 951  │ 5669731 │
@@ -166,7 +170,9 @@ FROM events_snapshot
 WHERE uuid = 'fff'
 ORDER BY ts ASC
 FORMAT PrettyCompactMonoBlock
+```
 
+```response
 ┌──────────────────ts─┬─uuid─┬───count─┐
 │ 2024-10-01 16:12:56 │ fff  │ 5424711 │
 │ 2024-10-01 16:13:00 │ fff  │ 5424711 │

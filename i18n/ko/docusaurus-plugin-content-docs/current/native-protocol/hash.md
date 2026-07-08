@@ -7,8 +7,6 @@ doc_type: 'reference'
 keywords: ['CityHash', '네이티브 프로토콜 해시', '해시 함수', 'Google CityHash', '프로토콜 해싱']
 ---
 
-# CityHash \{#cityhash\}
-
 ClickHouse는 [Google의 CityHash](https://github.com/google/cityhash) **이전 버전 중 하나**를 사용합니다.
 
 :::info
@@ -29,7 +27,7 @@ CityHash 문서에서는 특정 해시 값에 의존하거나,
 Google의 CityHash 값을 얻기 위해 `farmHash64`를 사용하지 마십시오! [FarmHash](https://opensource.googleblog.com/2014/03/introducing-farmhash.html)는 CityHash의 후속 버전이지만, 완전히 호환되지는 않습니다.
 
 | String                                                     | ClickHouse64         | CityHash64          | FarmHash64           |
-|------------------------------------------------------------|----------------------|---------------------|----------------------|
+| ---------------------------------------------------------- | -------------------- | ------------------- | -------------------- |
 | `Moscow`                                                   | 12507901496292878638 | 5992710078453357409 | 5992710078453357409  |
 | `How can you write a big system without C++?  -Paul Glick` | 6237945311650045625  | 749291162957442504  | 11716470977470720228 |
 

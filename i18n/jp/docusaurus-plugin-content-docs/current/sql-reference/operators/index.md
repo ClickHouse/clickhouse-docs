@@ -7,9 +7,7 @@ title: '演算子'
 doc_type: 'reference'
 ---
 
-# 演算子 \{#operators\}
-
-ClickHouse は、クエリのパース段階で、演算子の優先度、優先順位、および結合性に従って、それらを対応する関数に変換します。
+ClickHouse は、クエリの解析時に、演算子をその優先度、優先順位、および結合性に従って対応する関数へ変換します。
 
 ## アクセス演算子 \{#access-operators\}
 
@@ -113,8 +111,8 @@ SELECT * FROM a AS a1 JOIN a AS a2 ON a1.x <=> a2.x;
 :::
 
 `<=>` 演算子は `NULL` セーフな等価比較演算子であり、`IS NOT DISTINCT FROM` と同等です。
-通常の等価演算子（`=`）と同様に動作しますが、`NULL` 値を互いに比較可能なものとして扱います。
-2 つの `NULL` 値は等しいと見なされ、`NULL` と `NULL` 以外の値を比較した場合は、`NULL` ではなく 0（偽）を返します。
+通常の等価演算子 (`=`) と同様に動作しますが、`NULL` 値を互いに比較可能なものとして扱います。
+2 つの `NULL` 値は等しいと見なされ、`NULL` と `NULL` 以外の値を比較した場合は、`NULL` ではなく 0 (偽) を返します。
 
 ```sql
 SELECT
@@ -127,6 +125,15 @@ SELECT
 │                        0 │                        1 │
 └──────────────────────────┴──────────────────────────┘
 ```
+
+## 文字列を扱うオペレーター \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - `overlay(string, replacement, offset)` 関数です。
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - `overlay(string, replacement, offset, length)` 関数です。
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - `overlayUTF8(string, replacement, offset)` 関数です。
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - `overlayUTF8(string, replacement, offset, length)` 関数です。
 
 ## データセットを扱う演算子 \{#operators-for-working-with-data-sets\}
 
@@ -150,7 +157,7 @@ SELECT
 
 ### in サブクエリ用関数 \{#in-subquery-function\}
 
-`a = ANY (subquery)` – `in(a, subquery)` 関数です。  
+`a = ANY (subquery)` – `in(a, subquery)` 関数です。
 
 ### notIn サブクエリ関数 \{#notin-subquery-function\}
 
@@ -168,13 +175,11 @@ SELECT
 
 ALL を使用したクエリ:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -185,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 ANYを使用したクエリ:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │
@@ -336,7 +339,7 @@ SELECT now() AS current_date_time, current_date_time + INTERVAL '4' day + INTERV
 ```
 
 :::note
-`INTERVAL` 構文または `addDays` 関数の使用を常に推奨します。単純な加算や減算（`now() + ...` のような構文）は、サマータイムなどの時間関連の設定を考慮しません。
+`INTERVAL` 構文または `addDays` 関数の使用を常に推奨します。単純な加算や減算 (`now() + ...` のような構文) は、サマータイムなどの時間関連の設定を考慮しません。
 :::
 
 例:
@@ -356,6 +359,55 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) データ型
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 型変換関数
 
+### 日付と時刻の加算 \{#date-time-addition\}
+
+[Date](../../sql-reference/data-types/date.md) または [Date32](../../sql-reference/data-types/date32.md) の値には、`+` 演算子を使って [Time](../../sql-reference/data-types/time.md) または [Time64](../../sql-reference/data-types/time64.md) の値を加算できます。結果は、指定した時刻の日付を表す [DateTime](../../sql-reference/data-types/datetime.md) または [DateTime64](../../sql-reference/data-types/datetime64.md) になります。この演算は可換です。
+
+結果の型は、オペランドの型によって決まります。
+
+| 左オペランド   | 右オペランド      | 結果の型            |
+| -------- | ----------- | --------------- |
+| `Date`   | `Time`      | `DateTime`      |
+| `Date`   | `Time64(s)` | `DateTime64(s)` |
+| `Date32` | `Time`      | `DateTime64(0)` |
+| `Date32` | `Time64(s)` | `DateTime64(s)` |
+
+:::note
+結果には [session timezone](../../operations/settings/settings.md#session_timezone) が使用されます (session timezone が設定されていない場合は、サーバーのデフォルトタイムゾーンが使用されます) 。[`date_time_overflow_behavior`](../../operations/settings/settings-formats.md#date_time_overflow_behavior) 設定は、結果が表現可能な範囲を超えた場合の動作を制御します。
+:::
+
+例:
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25 │ DateTime       │
+└─────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+┌─────────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+└────────────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toTime64('23:59:59.999', 3) + toDate32('2024-07-15') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 23:59:59.999 │ DateTime64(3)  │
+└─────────────────────────┴────────────────┘
+```
 
 ## 論理AND演算子 \{#logical-and-operator\}
 
@@ -463,3 +515,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) SETTING を有効にすることで最適化できます。`optimize_functions_to_subcolumns = 1` の場合、関数はカラム全体のデータを読み取って処理するのではなく、[null](../../sql-reference/data-types/nullable.md#finding-null) サブカラムのみを読み込みます。クエリ `SELECT n IS NOT NULL FROM table` は `SELECT NOT n.null FROM TABLE` に変換されます。
+
+
+## 真偽値の判定 \{#checking-boolean-values\}
+
+ClickHouse は、`IS TRUE`、`IS FALSE`、`IS UNKNOWN`、`IS NOT TRUE`、`IS NOT FALSE`、および `IS NOT UNKNOWN` 演算子をサポートしています。
+これらは [Bool](../../sql-reference/data-types/boolean.md) および `Nullable(Bool)` の式で使用されます。
+
+* `expr IS TRUE` は、`expr` が `true` の場合にのみ `1` を返します。
+* `expr IS FALSE` は、`expr` が `false` の場合にのみ `1` を返します。
+* `expr IS UNKNOWN` は、`expr` が `NULL` の場合にのみ `1` を返します。
+* `expr IS NOT TRUE` は、`expr` が `false` または `NULL` の場合に `1` を返します。
+* `expr IS NOT FALSE` は、`expr` が `true` または `NULL` の場合に `1` を返します。
+* `expr IS NOT UNKNOWN` は、`expr` が `NULL` ではない場合に `1` を返します。
+
+真偽値式では、`IS UNKNOWN` は `IS NULL` と同等であり、`IS NOT UNKNOWN` は `IS NOT NULL` と同等です。
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

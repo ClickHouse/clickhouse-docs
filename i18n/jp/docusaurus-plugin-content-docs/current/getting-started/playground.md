@@ -1,13 +1,11 @@
 ---
-description: 'ClickHouse Playground では、自分のサーバーやクラスターをセットアップすることなく、すぐにクエリを実行して ClickHouse を試せます。'
-keywords: ['clickhouse', 'playground', 'getting', 'started', 'docs']
-sidebar_label: 'ClickHouse Playground'
+description: 'ClickHouse Playground は、ユーザーが独自のサーバーやクラスターをセットアップすることなく、すぐにクエリを実行して ClickHouse を試せる環境です。'
+keywords: ['clickhouse', 'playground', 'はじめに', 'スタート', 'ドキュメント']
+sidebar_label: 'ClickHouse playground'
 slug: /getting-started/playground
-title: 'ClickHouse Playground'
+title: 'ClickHouse playground'
 doc_type: 'guide'
 ---
-
-# ClickHouse playground \{#clickhouse-playground\}
 
 [ClickHouse Playground](https://sql.clickhouse.com) は、ユーザーが独自のサーバーやクラスターをセットアップすることなく、すぐにクエリを実行して ClickHouse を試せる環境です。
 Playground には、いくつかのサンプルデータセットが用意されています。

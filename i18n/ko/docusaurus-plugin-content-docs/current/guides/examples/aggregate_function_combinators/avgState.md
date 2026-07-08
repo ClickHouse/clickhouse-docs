@@ -7,8 +7,6 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-# avgState \{#avgState\}
-
 ## Description \{#description\}
 
 [`State`](/sql-reference/aggregate-functions/combinators#-state) 결합자(combinator)는 

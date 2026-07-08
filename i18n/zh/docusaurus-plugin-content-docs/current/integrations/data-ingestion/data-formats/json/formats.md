@@ -3,11 +3,9 @@ title: '处理其他 JSON 格式'
 slug: /integrations/data-formats/json/other-formats
 description: '处理其他 JSON 格式'
 sidebar_label: '处理其他格式'
-keywords: ['json', 'formats', 'json formats']
+keywords: ['json', '格式', 'json 格式']
 doc_type: 'guide'
 ---
-
-# 处理其他 JSON 格式 \{#handling-other-json-formats\}
 
 此前的 JSON 数据加载示例假定使用 [`JSONEachRow`](/interfaces/formats/JSONEachRow) (`NDJSON`) 。这种格式会将每一行 JSON 中的键读取为列。例如：
 
@@ -15,7 +13,9 @@ doc_type: 'guide'
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONEachRow)
 LIMIT 5
+```
 
+```response
 ┌───────date─┬─country_code─┬─project────────────┬─type────────┬─installer────┬─python_minor─┬─system─┬─version─┐
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
 │ 2022-11-15 │ CN           │ clickhouse-connect │ bdist_wheel │ bandersnatch │              │        │ 0.2.8   │
@@ -45,7 +45,9 @@ LIMIT 5
 SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/pypi/json/*.json.gz', JSONAsObject)
 LIMIT 5
+```
 
+```response
 ┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
@@ -74,7 +76,9 @@ LIMIT 5;
 SELECT *
 FROM pypi
 LIMIT 2;
+```
 
+```response
 ┌─json─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
 │ {"country_code":"CN","date":"2022-11-15","installer":"bandersnatch","project":"clickhouse-connect","python_minor":"","system":"","type":"bdist_wheel","version":"0.2.8"} │
@@ -88,7 +92,9 @@ LIMIT 2;
 ```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONEachRow')
+```
 
+```response
 Elapsed: 1.198 sec.
 
 Received exception from server (version 24.12.1):
@@ -103,7 +109,9 @@ You can specify the structure manually: (in file/uri bluesky/file_0001.json.gz).
 ```sql
 SELECT count()
 FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.json.gz', 'JSONAsObject')
+```
 
+```response
 ┌─count()─┐
 │ 1000000 │
 └─────────┘
@@ -113,7 +121,7 @@ FROM s3('https://clickhouse-public-datasets.s3.amazonaws.com/bluesky/file_0001.j
 
 ## JSON 对象数组 \{#array-of-json-objects\}
 
-最常见的 JSON 数据形式之一，是在一个 JSON 数组中包含一系列 JSON 对象，就像[这个示例](../assets/list.json)中那样：
+最常见的 JSON 数据形式之一，是在一个 JSON 数组中包含一系列 JSON 对象，就像[这个示例](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list.json)中那样：
 
 ```bash
 > cat list.json
@@ -145,7 +153,7 @@ ENGINE = MergeTree
 ORDER BY tuple(month, path)
 ```
 
-要导入一组 JSON 对象，我们可以使用 [`JSONEachRow`](/interfaces/formats/JSONEachRow) 格式 (从 [list.json](../assets/list.json) 文件中插入数据) ：
+要导入一组 JSON 对象，我们可以使用 [`JSONEachRow`](/interfaces/formats/JSONEachRow) 格式 (从 [list.json](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list.json) 文件中插入数据) ：
 
 ```sql
 INSERT INTO sometable
@@ -170,7 +178,7 @@ FROM sometable
 
 ## JSON 对象键 \{#json-object-keys\}
 
-在某些情况下，JSON 对象的列表可以表示为对象属性，而不是数组元素 (示例参见 [objects.json](../assets/objects.json)) ：
+在某些情况下，JSON 对象的列表可以表示为对象属性，而不是数组元素 (示例参见 [objects.json](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/objects.json)) ：
 
 ```bash
 cat objects.json
@@ -233,7 +241,7 @@ SELECT * FROM file('objects.json', JSONObjectEachRow)
 
 ## JSON 数组 \{#json-arrays\}
 
-有时，为了节省空间，JSON 文件会被编码为数组形式而不是对象。在这种情况下，我们要处理的是一个由 JSON 数组组成的[列表](../assets/arrays.json)：
+有时，为了节省空间，JSON 文件会被编码为数组形式而不是对象。在这种情况下，我们要处理的是一个由 JSON 数组组成的[列表](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/arrays.json)：
 
 ```bash
 cat arrays.json
@@ -261,7 +269,7 @@ SELECT * FROM sometable
 
 ### 从 JSON 数组中导入单个列 \{#importing-individual-columns-from-json-arrays\}
 
-在某些情况下，数据可以按列编码，而不是按行编码。在这种情况下，父 JSON 对象中包含各列及其对应的值。请查看[以下文件](../assets/columns.json)：
+在某些情况下，数据可以按列编码，而不是按行编码。在这种情况下，父 JSON 对象中包含各列及其对应的值。请查看[以下文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/columns.json)：
 
 ```bash
 cat columns.json
@@ -289,7 +297,7 @@ SELECT * FROM file('columns.json', JSONColumns)
 └────────────────────────────┴────────────┴──────┘
 ```
 
-在处理 [列数组](../assets/columns-array.json) 而非对象时，还支持一种更紧凑的格式，即使用 [`JSONCompactColumns`](/interfaces/formats/JSONCompactColumns) 格式：
+在处理 [列数组](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/columns-array.json) 而非对象时，还支持一种更紧凑的格式，即使用 [`JSONCompactColumns`](/interfaces/formats/JSONCompactColumns) 格式：
 
 ```sql
 SELECT * FROM file('columns-array.json', JSONCompactColumns)
@@ -305,7 +313,7 @@ SELECT * FROM file('columns-array.json', JSONCompactColumns)
 
 ## 将 JSON 对象直接保存而不进行解析 \{#saving-json-objects-instead-of-parsing\}
 
-在某些情况下，可能希望将 JSON 对象保存到单个 `String` (或 `JSON`) 列中，而不是对其进行解析。当处理结构各不相同的一组 JSON 对象时，这样做会很有用。以[这个文件](../assets/custom.json)为例，其中在一个父列表中包含多个不同的 JSON 对象：
+在某些情况下，可能希望将 JSON 对象保存到单个 `String` (或 `JSON`) 列中，而不是对其进行解析。当处理结构各不相同的一组 JSON 对象时，这样做会很有用。以[这个文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/custom.json)为例，其中在一个父列表中包含多个不同的 JSON 对象：
 
 ```bash
 cat custom.json
@@ -359,7 +367,7 @@ FROM events
 
 ## 嵌套对象的模式 \{#schema-for-nested-objects\}
 
-在处理[嵌套 JSON 对象](../assets/list-nested.json)时，我们还可以显式定义模式，并使用复杂类型 ([`Array`](/sql-reference/data-types/array.md)、[`JSON`](/integrations/data-formats/json/overview) 或 [`Tuple`](/sql-reference/data-types/tuple.md)) 来加载数据：
+在处理[嵌套 JSON 对象](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list-nested.json)时，我们还可以显式定义模式，并使用复杂类型 ([`Array`](/sql-reference/data-types/array.md)、[`JSON`](/integrations/data-formats/json/overview) 或 [`Tuple`](/sql-reference/data-types/tuple.md)) 来加载数据：
 
 ```sql
 SELECT *
@@ -375,7 +383,7 @@ LIMIT 1
 
 ## 访问嵌套 JSON 对象 \{#accessing-nested-json-objects\}
 
-我们可以通过启用[以下设置选项](/operations/settings/settings-formats.md/#input_format_import_nested_json)来访问[嵌套 JSON 键](../assets/list-nested.json)：
+我们可以通过启用[以下设置选项](/operations/settings/settings-formats.md/#input_format_import_nested_json)来访问[嵌套 JSON 键](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list-nested.json)：
 
 ```sql
 SET input_format_import_nested_json = 1
@@ -411,7 +419,7 @@ ENGINE = MergeTree
 ORDER BY path
 ```
 
-我们仍然可以将这份包含 3 列的[原始 JSON 数据](../assets/list.json)插入到该表中：
+我们仍然可以将这份包含 3 列的[原始 JSON 数据](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/list.json)插入到该表中：
 
 ```sql
 INSERT INTO shorttable FROM INFILE 'list.json' FORMAT JSONEachRow;
@@ -445,7 +453,7 @@ Code: 117. DB::Exception: Unknown field found while parsing JSONEachRow format: 
 
 ClickHouse 允许将数据导出到 [BSON](https://bsonspec.org/) 编码文件，也支持从中导入数据。该格式被一些 DBMS 使用，例如 [MongoDB](https://github.com/mongodb/mongo) 数据库。
 
-要导入 BSON 数据，我们使用 [BSONEachRow](/interfaces/formats/BSONEachRow) 格式。让我们从[这个 BSON 文件](../assets/data.bson)中导入数据：
+要导入 BSON 数据，我们使用 [BSONEachRow](/interfaces/formats/BSONEachRow) 格式。让我们从[这个 BSON 文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.bson)中导入数据：
 
 ```sql
 SELECT * FROM file('data.bson', BSONEachRow)

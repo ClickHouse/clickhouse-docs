@@ -1,18 +1,16 @@
 ---
-description: "arrayJoin 函数文档"
-sidebar_label: "arrayJoin"
+description: 'arrayJoin 函数文档'
+sidebar_label: 'arrayJoin'
 slug: /sql-reference/functions/array-join
-title: "arrayJoin 函数"
-doc_type: "reference"
+title: 'arrayJoin 函数'
+doc_type: 'reference'
 ---
-
-# arrayJoin 函数 \{#arrayjoin-function\}
 
 这是一个比较特殊的函数。
 
-普通函数不会改变行集，只会改变每一行中的值（map）。
-聚合函数会压缩行集（fold 或 reduce）。
-`arrayJoin` 函数则会从每一行生成一组新的行（unfold）。
+普通函数不会改变行集，只会改变每一行中的值 (map) 。
+聚合函数会压缩行集 (fold 或 reduce) 。
+`arrayJoin` 函数则会从每一行生成一组新的行 (unfold) 。
 
 此函数以数组作为参数，并根据数组中元素的数量，将原始行展开为多行。
 除应用此函数的那一列外，其余列中的所有值都会被直接复制；该列的值则会被数组中对应的元素所替代。
@@ -85,12 +83,12 @@ GROUP BY
 
 ### 最佳实践 \{#important-note\}
 
-对同一表达式多次使用 `arrayJoin` 时，由于公用子表达式消除优化，可能无法得到预期结果。
-在这种情况下，可以考虑为重复的数组表达式添加一些不会影响展开结果的额外操作。例如：`arrayJoin(arraySort(arr))`、`arrayJoin(arrayConcat(arr, []))`
+对同一表达式多次使用 `arrayJoin`，由于公共子表达式消除，可能无法产生预期结果。
+在这种情况下，可以考虑为重复的数组表达式添加一些不会影响 join 结果的额外操作。例如， `arrayJoin(arraySort(arr))`、`arrayJoin(arrayConcat(arr, []))`
 
 示例：
 
-```sql
+```sql title="Query"
 SELECT
     arrayJoin(dice) AS first_throw,
     /* arrayJoin(dice) as second_throw */ -- is technically correct, but will annihilate result set
@@ -100,12 +98,12 @@ FROM (
 );
 ```
 
-注意在 SELECT 查询中使用的 [`ARRAY JOIN`](../statements/select/array-join.md) 语法，它提供了更丰富的功能。
-`ARRAY JOIN` 允许一次性转换多个具有相同元素数量的数组。
+请注意 SELECT 查询中的 [`ARRAY JOIN`](../statements/select/array-join.md) 语法，它提供了更多可能性。
+`ARRAY JOIN` 允许你一次转换多个包含相同元素数量的数组。
 
 示例：
 
-```sql
+```sql title="Query"
 SELECT
     sum(1) AS impressions,
     city,
@@ -124,7 +122,7 @@ GROUP BY
     3
 ```
 
-```text
+```text title="Response"
 ┌─impressions─┬─city─────┬─browser─┐
 │           1 │ Istanbul │ Firefox │
 │           1 │ Berlin   │ Chrome  │

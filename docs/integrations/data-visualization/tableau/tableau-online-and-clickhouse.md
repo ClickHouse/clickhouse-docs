@@ -24,8 +24,6 @@ import tableau_desktop_03 from '@site/static/images/integrations/data-visualizat
 import tableau_desktop_04 from '@site/static/images/integrations/data-visualization/tableau_desktop_04.png';
 import tableau_desktop_05 from '@site/static/images/integrations/data-visualization/tableau_desktop_05.png';
 
-# Tableau Online
-
 Tableau Online can connect to ClickHouse Cloud or on-premise ClickHouse setup via MySQL interface using the official MySQL data source.
 
 ## ClickHouse Cloud setup {#clickhouse-cloud-setup}

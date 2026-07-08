@@ -7,7 +7,6 @@ sidebar_label: 'quantilesTimingArrayIf'
 doc_type: 'reference'
 ---
 
-# quantilesTimingArrayIf {#quantilestimingarrayif}
 
 ## Description {#description}
 

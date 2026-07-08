@@ -3,7 +3,7 @@ sidebar_label: 'Spark 네이티브 커넥터'
 sidebar_position: 2
 slug: /integrations/apache-spark/spark-native-connector
 description: 'ClickHouse와 함께 사용하는 Apache Spark 소개'
-keywords: ['clickhouse', 'Apache Spark', '마이그레이션', '데이터']
+keywords: ['ClickHouse', 'Apache Spark', '마이그레이션', '데이터']
 title: 'Spark 커넥터'
 doc_type: 'guide'
 ---
@@ -12,9 +12,6 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
-
-
-# Spark connector \{#spark-connector\}
 
 <ClickHouseSupportedBadge />
 

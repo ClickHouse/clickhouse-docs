@@ -1,13 +1,13 @@
 ---
 slug: /cloud/managed-postgres/migrations/peerdb
 sidebar_label: 'PeerDB'
-title: 'PeerDB を使用して PostgreSQL データを移行する'
+title: 'PeerDB を使用して Managed Postgres に移行する'
 description: 'PeerDB を使用して PostgreSQL データを ClickHouse Managed Postgres に移行する方法について学びます'
 keywords: ['postgres', 'postgresql', 'ロジカルレプリケーション', 'マイグレーション', 'データ転送', 'Managed Postgres', 'peerdb']
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import sourcePeer from '@site/static/images/managed-postgres/peerdb/source-peer.png';
 import targetPeer from '@site/static/images/managed-postgres/peerdb/target-peer.png';
@@ -18,12 +18,9 @@ import initialLoad from '@site/static/images/managed-postgres/peerdb/initial-loa
 import mirrors from '@site/static/images/managed-postgres/peerdb/mirrors.png';
 import settings from '@site/static/images/managed-postgres/peerdb/settings.png';
 
+このガイドでは、PeerDB を使用して PostgreSQL データベースを ClickHouse Managed Postgres に移行する手順を、ステップごとに説明します。
 
-# PeerDB を使用して Managed Postgres に移行する \{#peerdb-migration\}
-
-このガイドでは、PeerDB を使用して PostgreSQL データベースを ClickHouse Managed Postgres に移行するための手順をステップバイステップで説明します。
-
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migration-guide-peerdb" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-guide-peerdb-beta" />
 
 ## 前提条件 \{#migration-peerdb-prerequisites\}
 

@@ -1,18 +1,16 @@
 ---
-description: '字典相关函数文档'
+description: '有关用于处理字典的函数的文档'
 sidebar_label: '字典'
 slug: /sql-reference/functions/ext-dict-functions
-title: '字典相关函数'
+title: '用于处理字典的函数'
 doc_type: 'reference'
 ---
-
-# 用于处理字典的函数 \{#functions-for-working-with-dictionaries\}
 
 :::note
 对于使用 [DDL 查询](../statements/create/dictionary/overview.md) 创建的字典，`dict_name` 参数必须完整写为 `<database>.<dict_name>`。否则，将使用当前数据库。
 :::
 
-有关连接和配置字典的更多信息，请参阅 [Dictionaries](../statements/create/dictionary/overview.md)。
+有关连接和配置字典的更多信息，请参阅 [字典](../statements/create/dictionary/overview.md)。
 
 ## 示例字典 \{#example-dictionary\}
 

@@ -2,7 +2,7 @@
 sidebar_label: 'Vector'
 sidebar_position: 220
 slug: /integrations/vector
-description: 'Как передавать данные из лог-файла в ClickHouse с помощью Vector'
+description: 'Как передавать данные из файла журнала в ClickHouse с помощью Vector'
 title: 'Интеграция Vector с ClickHouse'
 show_related_blogs: true
 doc_type: 'guide'
@@ -18,20 +18,18 @@ import vector01 from '@site/static/images/integrations/data-ingestion/etl-tools/
 import vector02 from '@site/static/images/integrations/data-ingestion/etl-tools/vector_02.png';
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-# Integrating Vector with ClickHouse \{#integrating-vector-with-clickhouse\}
-
 <PartnerBadge />
 
-Возможность анализировать логи в реальном времени критически важна для production-приложений.
-ClickHouse превосходно справляется с хранением и анализом логов благодаря отличному сжатию (до [170x](https://clickhouse.com/blog/log-compression-170x) для логов)
+Возможность анализировать журналы в реальном времени критически важна для приложений в продакшене.
+ClickHouse отлично подходит для хранения и анализа данных журналов благодаря превосходному сжатию (до [170x](https://clickhouse.com/blog/log-compression-170x) для журналов)
 и способности быстро агрегировать большие объемы данных.
 
-Данное руководство показывает, как использовать популярный конвейер данных [Vector](https://vector.dev/docs/about/what-is-vector/) для отслеживания файла логов Nginx и отправки данных в ClickHouse.
-Приведенные ниже шаги аналогичны для отслеживания файлов логов любого типа.
+В этом руководстве показано, как использовать популярный конвейер данных [Vector](https://vector.dev/docs/about/what-is-vector/) для отслеживания файла журнала Nginx и отправки данных в ClickHouse.
+Приведенные ниже шаги также подойдут для отслеживания любого типа файла журнала.
 
 **Предварительные требования:**
 
-* У вас уже установлен и запущен ClickHouse
+* У вас уже развернут и работает ClickHouse
 * У вас установлен Vector
 
 <VerticalStepper headerLevel="h2">

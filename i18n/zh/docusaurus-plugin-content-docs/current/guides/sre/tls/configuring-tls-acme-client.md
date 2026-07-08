@@ -1,9 +1,9 @@
 ---
 slug: /guides/sre/configuring-tls-acme-client
-sidebar_label: '通过 ACME 自动签发 TLS 证书'
+sidebar_label: '通过 ACME 配置自动 TLS 证书签发'
 sidebar_position: 20
-title: '配置 ACME 客户端'
-description: '本指南提供简单且精简的配置，用于让 ClickHouse 使用 OpenSSL 证书验证连接。'
+title: '通过 ACME 配置自动 TLS 证书签发'
+description: '本指南提供简洁的最小化配置，用于将 ClickHouse 配置为使用 OpenSSL 证书验证连接。'
 keywords: ['ACME 配置', 'TLS 设置', 'OpenSSL 证书', '安全连接', 'SRE 指南', 'Let`s Encrypt']
 doc_type: 'guide'
 ---
@@ -13,15 +13,12 @@ import configuringSsl01 from '@site/static/images/guides/sre/configuring-ssl_01.
 import Image from '@theme/IdealImage';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-
-# 通过 ACME 配置自动 TLS 证书签发 \{#configuring-automatic-tls-provisioning-via-acme\}
-
-<ExperimentalBadge/>
+<ExperimentalBadge />
 
 <SelfManaged />
 
-本指南介绍如何将 ClickHouse 配置为使用 [ACME](https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment) 协议（由 [RFC8555](https://www.rfc-editor.org/rfc/rfc8555) 定义）。
-在启用 ACME 支持后，ClickHouse 可以从 [Let's Encrypt](https://letsencrypt.org/) 或 [ZeroSSL](https://zerossl.com/) 等证书提供者自动获取和续订证书。
+本指南介绍如何将 ClickHouse 配置为使用 [ACME](https://en.wikipedia.org/wiki/Automatic_Certificate_Management_Environment) 协议 (由 [RFC8555](https://www.rfc-editor.org/rfc/rfc8555) 定义) 。
+在启用 ACME 支持后，ClickHouse 可以从 [Let&#39;s Encrypt](https://letsencrypt.org/) 或 [ZeroSSL](https://zerossl.com/) 等证书提供者自动获取和续订证书。
 TLS 加密保护客户端与 ClickHouse 服务器之间传输的数据，防止对敏感查询和结果的窃听。
 
 ## 概览 \{#overview\}

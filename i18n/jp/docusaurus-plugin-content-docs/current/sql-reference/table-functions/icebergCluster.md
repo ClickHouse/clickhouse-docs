@@ -1,13 +1,11 @@
 ---
-description: '指定されたクラスタ内の多数のノードから Apache Iceberg のファイルを並列処理できる、iceberg テーブル関数の拡張機能。'
+description: '指定されたクラスタ内の多数のノードで Apache Iceberg のファイルを並列処理できるようにする、iceberg テーブル関数の拡張機能です。'
 sidebar_label: 'icebergCluster'
 sidebar_position: 91
 slug: /sql-reference/table-functions/icebergCluster
 title: 'icebergCluster'
 doc_type: 'reference'
 ---
-
-# icebergCluster テーブル関数 \{#icebergcluster-table-function\}
 
 これは、[iceberg](/sql-reference/table-functions/iceberg.md) テーブル関数の拡張機能です。
 

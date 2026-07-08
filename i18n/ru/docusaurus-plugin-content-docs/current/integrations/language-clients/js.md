@@ -3,7 +3,7 @@ sidebar_label: 'JavaScript'
 sidebar_position: 4
 keywords: ['clickhouse', 'js', 'JavaScript', 'NodeJS', 'web', 'browser', 'Cloudflare', 'workers', 'client', 'connect', 'integrate']
 slug: /integrations/javascript
-description: 'Официальный JS-клиент для подключения к ClickHouse.'
+description: 'Официальный JS‑клиент для подключения к ClickHouse.'
 title: 'ClickHouse JS'
 doc_type: 'reference'
 integration:
@@ -15,8 +15,6 @@ integration:
 import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/current/_snippets/_gather_your_details_http.mdx';
 import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
-# ClickHouse JS \{#clickhouse-js\}
-
 Официальный JS‑клиент для подключения к ClickHouse.
 Клиент написан на TypeScript и предоставляет типы для публичного API клиента.
 
@@ -24,12 +22,21 @@ import ExperimentalBadge from '@theme/badges/ExperimentalBadge';
 
 Существует две разные версии клиента для разных сред:
 
-- `@clickhouse/client` - только для Node.js
-- `@clickhouse/client-web` - браузеры (Chrome/Firefox), Cloudflare Workers
+* `@clickhouse/client` - только для Node.js
+* `@clickhouse/client-web` - браузеры (Chrome/Firefox), Cloudflare Workers
 
 При использовании TypeScript убедитесь, что его версия не ниже [4.5](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html), в которой доступен [синтаксис inline import и export](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names).
 
 Исходный код клиента доступен в [GitHub-репозитории ClickHouse-JS](https://github.com/ClickHouse/clickhouse-js).
+
+:::note навыки агента ИИ
+JS‑клиент поставляется с навыками агента ИИ, которые помогают агентам для программирования работать с клиентом. Установите их с помощью:
+
+```sh
+npm skills add ClickHouse/clickhouse-js
+```
+
+:::
 
 ## Требования к среде (Node.js) \{#environment-requirements-nodejs\}
 
@@ -212,8 +219,7 @@ const client = createClient({
 })
 ```
 
-Репозиторий клиента содержит множество примеров, которые используют переменные окружения, например [создание таблицы в ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts), [использование асинхронных вставок](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert.ts) и многие другие.
-
+Репозиторий клиента содержит множество примеров, которые используют переменные окружения, например [создание таблицы в ClickHouse Cloud](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_cloud.ts), [использование асинхронных вставок](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/async_insert.ts) и многие другие.
 
 #### Пул соединений (только Node.js) \{#connection-pool-nodejs-only\}
 
@@ -226,7 +232,7 @@ const client = createClient({
 ### Идентификатор запроса \{#query-id\}
 
 Каждый метод, который отправляет запрос или оператор (`command`, `exec`, `insert`, `select`), возвращает `query_id` в результате выполнения. Этот уникальный идентификатор назначается клиентом для каждого запроса и может быть полезен для выборки данных из `system.query_log`,
-если он включён в [конфигурации сервера](/operations/server-configuration-parameters/settings), или для отмены долгих запросов (см. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/cancel_query.ts)). При необходимости `query_id` может быть переопределён пользователем в параметрах методов `command`/`query`/`exec`/`insert`.
+если он включён в [конфигурации сервера](/operations/server-configuration-parameters/settings), или для отмены долгих запросов (см. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/troubleshooting/cancel_query.ts)). При необходимости `query_id` может быть переопределён пользователем в параметрах методов `command`/`query`/`exec`/`insert`.
 
 :::tip
 Если вы переопределяете параметр `query_id`, необходимо обеспечить его уникальность для каждого вызова. Хорошим вариантом будет случайный UUID.
@@ -283,7 +289,7 @@ interface ClickHouseClient {
 :::
 
 
-#### Абстракции набора результатов и строк \{#result-set-and-row-abstractions\}
+#### Абстракции результирующего набора и строк \{#result-set-and-row-abstractions\}
 
 `ResultSet` предоставляет несколько вспомогательных методов для обработки данных в вашем приложении.
 
@@ -331,8 +337,8 @@ interface Row {
 }
 ```
 
-**Пример:** (Node.js/Web) Запрос с результирующим набором данных в формате `JSONEachRow`, который полностью считывает поток и разбирает содержимое в объекты JavaScript.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts).
+**Пример:** (Node.js/Web) Запрос с результирующим результирующим набором данных в формате `JSONEachRow`, который полностью считывает поток и разбирает содержимое в объекты JavaScript.
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/array_json_each_row.ts).
 
 ```ts
 const resultSet = await client.query({
@@ -342,7 +348,7 @@ const resultSet = await client.query({
 const dataset = await resultSet.json() // or `row.text` to avoid parsing JSON
 ```
 
-**Пример:** (только для Node.js) потоковое чтение результата запроса в формате `JSONEachRow` с использованием классического подхода `on('data')`. Этот подход взаимозаменяем с синтаксисом `for await const`. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row.ts).
+**Пример:** (только для Node.js) потоковое чтение результата запроса в формате `JSONEachRow` с использованием классического подхода `on('data')`. Этот подход взаимозаменяем с синтаксисом `for await const`. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_json_each_row.ts).
 
 ```ts
 const rows = await client.query({
@@ -365,8 +371,7 @@ await new Promise((resolve, reject) => {
 ```
 
 **Пример:** (только Node.js) Потоковая выборка результата запроса в формате `CSV` с использованием классического подхода `on('data')`. Это эквивалентно использованию синтаксиса `for await const`.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_text_line_by_line.ts)
-
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_text_line_by_line.ts)
 
 ```ts
 const resultSet = await client.query({
@@ -389,7 +394,7 @@ await new Promise((resolve, reject) => {
 ```
 
 **Пример:** (только Node.js) Потоковая выборка результатов запроса как объекты JS в формате `JSONEachRow`, которые обрабатываются с использованием синтаксиса `for await const`. Это взаимозаменяемо с классическим подходом `on('data')`.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_streaming_json_each_row_for_await.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_streaming_json_each_row_for_await.ts).
 
 ```ts
 const resultSet = await client.query({
@@ -448,16 +453,16 @@ interface ClickHouseClient {
 Если оператор INSERT был отправлен на сервер, флаг `executed` будет иметь значение `true`.
 
 
-#### Метод insert и потоковая передача данных в Node.js \{#insert-method-and-streaming-in-nodejs\}
+#### Метод INSERT и потоковая передача данных в Node.js \{#insert-method-and-streaming-in-nodejs\}
 
 Он может работать как с `Stream.Readable`, так и с обычным `Array<T>`, в зависимости от [формата данных](./js.md#supported-data-formats), указанного для метода `insert`. См. также раздел о [потоковой передаче файлов](./js.md#streaming-files-nodejs-only).
 
-Метод insert предназначен для использования с `await`; однако можно передать входной поток и ожидать завершения операции `insert` позже, только после завершения потока (что также приведёт к разрешению промиса `insert`). Это потенциально может быть полезно для обработчиков событий и подобных сценариев, но обработка ошибок при этом может оказаться нетривиальной из‑за большого количества крайних случаев на стороне клиента. Вместо этого рассмотрите использование [асинхронных вставок](/optimize/asynchronous-inserts), как показано в [этом примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/async_insert_without_waiting.ts).
+Метод INSERT предполагает использование await; однако можно указать входной поток и выполнить await операции `insert` позже, только когда поток завершится (что также разрешит промис `insert`). Это может быть полезно для обработчиков событий и подобных сценариев, однако обработка ошибок может быть нетривиальной с множеством граничных случаев на стороне клиента. Вместо этого рассмотрите использование [асинхронных вставок](/optimize/asynchronous-inserts), как показано в [этом примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/async_insert_without_waiting.ts).
 
 :::tip
 Если у вас есть собственный оператор INSERT, который сложно смоделировать с помощью этого метода, рассмотрите использование [метода command](./js.md#command-method).
 
-Вы можете посмотреть, как он используется, в примерах [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_values_and_functions.ts) или [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_from_select.ts).
+Вы можете посмотреть, как он используется, в примерах [INSERT INTO ... VALUES](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_values_and_functions.ts) или [INSERT INTO ... SELECT](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_from_select.ts).
 :::
 
 ```ts
@@ -484,7 +489,7 @@ interface InsertParams<T> extends BaseQueryParams {
 :::
 
 **Пример:** (Node.js/Web) Вставка массива значений.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/array_json_each_row.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/array_json_each_row.ts).
 
 ```ts
 await client.insert({
@@ -499,7 +504,7 @@ await client.insert({
 ```
 
 **Пример:** (только Node.js) Вставка данных из CSV‑файла потоком.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts). См. также: [потоковая передача файлов](./js.md#streaming-files-nodejs-only).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_csv.ts). См. также: [потоковая передача файлов](./js.md#streaming-files-nodejs-only).
 
 ```ts
 await client.insert({
@@ -548,10 +553,9 @@ await client.insert({
 })
 ```
 
-См. [исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_exclude_columns.ts) для получения дополнительных сведений.
+См. [исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_exclude_columns.ts) для получения дополнительной информации.
 
-
-**Пример**: Вставка в другую базу данных, а не ту, что указана в экземпляре клиента. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_into_different_db.ts).
+**Пример**: Вставка в другую базу данных, а не ту, что указана в экземпляре клиента. [Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_into_different_db.ts).
 
 ```ts
 await client.insert({
@@ -612,10 +616,10 @@ interface ClickHouseClient {
 }
 ```
 
-См. также: [Базовые параметры для всех клиентских методов](./js.md#base-parameters-for-all-client-methods).
+См. также: [общий параметр для всех клиентских методов](./js.md#base-parameters-for-all-client-methods).
 
 **Пример:** (Node.js/Web) Создание таблицы в ClickHouse Cloud.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_cloud.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_cloud.ts).
 
 ```ts
 await client.command({
@@ -634,7 +638,7 @@ await client.command({
 ```
 
 **Пример:** (Node.js/Web) создание таблицы в self-hosted экземпляре ClickHouse.
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/create_table_single_node.ts).
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/schema-and-deployments/create_table_single_node.ts).
 
 ```ts
 await client.command({
@@ -658,7 +662,6 @@ await client.command({
 :::important
 Отмена запроса с помощью `abort_signal` не гарантирует, что соответствующий оператор не был выполнен сервером.
 :::
-
 
 ### Метод exec \{#exec-method\}
 
@@ -771,10 +774,10 @@ await client.close()
 
 В клиентском репозитории есть несколько примеров потоковой передачи файлов с популярными форматами данных (NDJSON, CSV, Parquet).
 
-- [Потоковая передача из файла NDJSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_ndjson.ts)
-- [Потоковая передача из файла CSV](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_csv.ts)
-- [Потоковая передача из файла Parquet](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/insert_file_stream_parquet.ts)
-- [Потоковая передача в файл Parquet](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts)
+* [Потоковая передача из файла NDJSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_ndjson.ts)
+* [Потоковая передача из файла CSV](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_csv.ts)
+* [Потоковая передача из файла Parquet](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/insert_file_stream_parquet.ts)
+* [Потоковая передача в файл Parquet](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_parquet_as_file.ts)
 
 Потоковая передача других форматов в файл должна быть аналогична работе с Parquet; единственное отличие будет в формате, используемом при вызове `query` (`JSONEachRow`, `CSV` и т. д.) и имени выходного файла.
 
@@ -823,9 +826,9 @@ await client.close()
 | CustomSeparatedWithNamesAndTypes           | ❌             | ❌              | ✔️                    | ❌             | ✔️             |
 | Parquet                                    | ❌             | ❌              | ✔️                    | ❌             | ✔️❗- см. ниже  |
 
-Для Parquet основным сценарием использования запросов SELECT, скорее всего, будет запись результирующего потока в файл. См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_parquet_as_file.ts) в репозитории клиента.
+Для Parquet основным сценарием использования запросов SELECT, скорее всего, будет запись результирующего потока в файл. См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_parquet_as_file.ts) в репозитории клиента.
 
-`JSONEachRowWithProgress` — это формат только для вывода данных, который поддерживает отчёт о прогрессе в потоке. См. [этот пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/select_json_each_row_with_progress.ts) для получения дополнительной информации.
+`JSONEachRowWithProgress` — это формат только для вывода данных, который поддерживает отчёт о прогрессе в потоке. См. [этот пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/performance/select_json_each_row_with_progress.ts) для получения дополнительной информации.
 
 Полный список входных и выходных форматов ClickHouse доступен
 [здесь](/interfaces/formats).
@@ -836,46 +839,46 @@ await client.close()
 Соответствующий тип JS актуален для любых форматов `JSON*`, кроме тех, которые представляют всё как строку (например, `JSONStringEachRow`).
 :::
 
-| Type                   | Status          | JS type                                |
-|------------------------|-----------------|----------------------------------------|
-| UInt8/16/32            | ✔️              | number                                 |
-| UInt64/128/256         | ✔️ ❗- см. ниже | string                                 |
-| Int8/16/32             | ✔️              | number                                 |
-| Int64/128/256          | ✔️ ❗- см. ниже | string                                 |
-| Float32/64             | ✔️              | number                                 |
-| Decimal                | ✔️ ❗- см. ниже | number                                 |
-| Boolean                | ✔️              | boolean                                |
-| String                 | ✔️              | string                                 |
-| FixedString            | ✔️              | string                                 |
-| UUID                   | ✔️              | string                                 |
-| Date32/64              | ✔️              | string                                 |
-| DateTime32/64          | ✔️ ❗- см. ниже | string                                 |
-| Enum                   | ✔️              | string                                 |
-| LowCardinality         | ✔️              | string                                 |
-| Array(T)               | ✔️              | T[]                                    |
-| (new) JSON             | ✔️              | object                                 |
-| Variant(T1, T2...)     | ✔️              | T (зависит от варианта)                |
-| Dynamic                | ✔️              | T (зависит от варианта)                |
-| Nested                 | ✔️              | T[]                                    |
-| Tuple(T1, T2, ...)     | ✔️              | [T1, T2, ...]                          |
-| Tuple(n1 T1, n2 T2...) | ✔️              | \{ n1: T1; n2: T2; ...}                |
-| Nullable(T)            | ✔️              | тип JS для T или null                  |
-| IPv4                   | ✔️              | string                                 |
-| IPv6                   | ✔️              | string                                 |
-| Point                  | ✔️              | [ number, number ]                     |
-| Ring                   | ✔️              | Array&lt;Point\>                       |
-| Polygon                | ✔️              | Array&lt;Ring\>                        |
-| MultiPolygon           | ✔️              | Array&lt;Polygon\>                     |
-| Map(K, V)              | ✔️              | Record&lt;K, V\>                       |
-| Time/Time64            | ✔️              | string                                 |
+| Type                   | Status         | JS type                          |
+| ---------------------- | -------------- | -------------------------------- |
+| UInt8/16/32            | ✔️             | number                           |
+| UInt64/128/256         | ✔️ ❗- см. ниже | string                           |
+| Int8/16/32             | ✔️             | number                           |
+| Int64/128/256          | ✔️ ❗- см. ниже | string                           |
+| Float32/64             | ✔️             | number                           |
+| Decimal                | ✔️ ❗- см. ниже | number                           |
+| Boolean                | ✔️             | boolean                          |
+| String                 | ✔️             | string                           |
+| FixedString            | ✔️             | string                           |
+| UUID                   | ✔️             | string                           |
+| Date32/64              | ✔️             | string                           |
+| DateTime32/64          | ✔️ ❗- см. ниже | string                           |
+| Enum                   | ✔️             | string                           |
+| LowCardinality         | ✔️             | string                           |
+| Array(T)               | ✔️             | T[]                              |
+| (new) JSON             | ✔️             | object                           |
+| Variant(T1, T2...)     | ✔️             | T (зависит от варианта)          |
+| Dynamic                | ✔️             | T (зависит от варианта)          |
+| Nested                 | ✔️             | T[]                              |
+| Tuple(T1, T2, ...)     | ✔️             | [T1, T2, ...]                    |
+| Tuple(n1 T1, n2 T2...) | ✔️             | &#123; n1: T1; n2: T2; ...&#125; |
+| Nullable(T)            | ✔️             | тип JS для T или null            |
+| IPv4                   | ✔️             | string                           |
+| IPv6                   | ✔️             | string                           |
+| Point                  | ✔️             | [ number, number ]               |
+| Ring                   | ✔️             | Array&lt;Point&gt;               |
+| Polygon                | ✔️             | Array&lt;Ring&gt;                |
+| MultiPolygon           | ✔️             | Array&lt;Polygon&gt;             |
+| Map(K, V)              | ✔️             | Record&lt;K, V&gt;               |
+| Time/Time64            | ✔️             | string                           |
 
-Полный список поддерживаемых типов данных ClickHouse доступен 
+Полный список поддерживаемых форматов ClickHouse доступен
 [здесь](/sql-reference/data-types/).
 
-См. также: 
+См. также:
 
-- [Примеры работы с Dynamic/Variant/JSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/dynamic_variant_json.ts)
-- [Примеры работы с Time/Time64](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/time_time64.ts)
+* [Примеры работы с Dynamic/Variant/JSON](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/dynamic_variant_json.ts)
+* [Примеры работы с Time/Time64](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/time_time64.ts)
 
 ### Особенности типов Date/Date32 \{#datedate32-types-caveats\}
 
@@ -892,8 +895,7 @@ await client.insert({
 })
 ```
 
-Однако, если вы используете столбцы с типом `DateTime` или `DateTime64`, вы можете использовать как строки, так и объекты JS Date. Объекты JS Date можно передавать в `insert` как есть, при значении параметра `date_time_input_format`, установленном в `best_effort`. Подробнее см. в этом [примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_js_dates.ts).
-
+Однако, если вы используете столбцы с типом `DateTime` или `DateTime64`, вы можете использовать как строки, так и объекты JS Date. Объекты JS Date можно передавать в `insert` как есть, при значении параметра `date_time_input_format`, установленном в `best_effort`. Подробнее см. в этом [примере](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_js_dates.ts).
 
 ### Особенности типов Decimal* \{#decimal-types-caveats\}
 
@@ -943,7 +945,7 @@ await client.query({
 })
 ```
 
-См. [этот пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/insert_decimals.ts) для получения дополнительных сведений.
+См. [этот пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/insert_decimals.ts) для получения дополнительных сведений.
 
 ### Целочисленные типы: Int64, Int128, Int256, UInt64, UInt128, UInt256 \{#integral-types-int64-int128-int256-uint64-uint128-uint256\}
 
@@ -1018,8 +1020,9 @@ client.query({
 * `name` — идентификатор плейсхолдера.
 * `data_type` - [Тип данных](/sql-reference/data-types/) значения параметра приложения.
 
-**Пример:** Запрос с параметрами.\
-[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/query_with_parameter_binding.ts).
+**Пример:**: Запрос с параметрами.
+[Исходный код](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/coding/query_with_parameter_binding.ts)
+.
 
 ```ts
 await client.query({
@@ -1032,7 +1035,7 @@ await client.query({
 })
 ```
 
-Дополнительные сведения см. на странице [https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax](https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax).
+Дополнительные сведения см. на странице https://clickhouse.com/docs/interfaces/cli#cli-queries-with-parameters-syntax.
 
 ### Сжатие \{#compression\}
 
@@ -1117,7 +1120,7 @@ const client = createClient({
 Клиент Node.js опционально поддерживает как односторонний (только центр сертификации, Certificate Authority),
 так и взаимный (центр сертификации и клиентские сертификаты, Certificate Authority and client certificates) TLS.
 
-Пример базовой конфигурации TLS, если ваши сертификаты находятся в папке `certs`,
+Пример конфигурации одностороннего TLS, если ваши сертификаты находятся в папке `certs`,
 а имя файла CA — `CA.pem`:
 
 ```ts
@@ -1145,7 +1148,7 @@ const client = createClient({
 })
 ```
 
-Полные примеры конфигурации TLS для режимов [basic](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/basic_tls.ts) и [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/mutual_tls.ts) см. в репозитории.
+Полные примеры конфигурации одностороннего TLS и [mutual](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/mutual_tls.ts) см. в репозитории.
 
 ### Конфигурация Keep-Alive (только для Node.js) \{#keep-alive-configuration-nodejs-only\}
 
@@ -1263,8 +1266,7 @@ const client = createClient({
 })
 ```
 
-См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/read_only_user.ts), где подробнее показаны ограничения пользователя с readonly=1.
-
+См. [пример](https://github.com/ClickHouse/clickhouse-js/blob/main/examples/node/security/read_only_user.ts), где подробнее показаны ограничения пользователя с readonly=1.
 
 ### Прокси с путем (pathname) \{#proxy-with-a-pathname\}
 
@@ -1385,9 +1387,9 @@ const client = createClient({
 
 ## Советы по оптимизации производительности \{#tips-for-performance-optimizations\}
 
-- Чтобы уменьшить потребление памяти приложением, рассмотрите возможность использования потоков для больших вставок (например, из файлов) и выборок, когда это применимо. Для слушателей событий и схожих сценариев использования [асинхронные вставки](/optimize/asynchronous-inserts) могут быть ещё одним хорошим вариантом, позволяя минимизировать или даже полностью избежать батчирования на стороне клиента. Примеры асинхронных вставок доступны в [репозитории клиента](https://github.com/ClickHouse/clickhouse-js/tree/main/examples) — с префиксом `async_insert_` в имени файла.
-- Клиент по умолчанию не использует сжатие запросов или ответов. Однако при выборке или вставке больших наборов данных вы можете рассмотреть возможность включения сжатия через `ClickHouseClientConfigOptions.compression` (либо только для `request` или `response`, либо для обоих).
-- Сжатие даёт существенные накладные расходы. Включение его для `request` или `response` негативно скажется на скорости выборок или вставок соответственно, но уменьшит объём сетевого трафика, передаваемого приложением.
+* Чтобы уменьшить потребление памяти приложением, рассмотрите возможность использования потоков для больших вставок (например, из файлов) и выборок, когда это применимо. Для слушателей событий и схожих сценариев использования [асинхронные вставки](/optimize/asynchronous-inserts) могут быть ещё одним хорошим вариантом, позволяя минимизировать или даже полностью избежать батчирования на стороне клиента. Примеры асинхронных вставок доступны в [репозитории клиента](https://github.com/ClickHouse/clickhouse-js/tree/main/examples/node) — с префиксом `async_insert_` в имени файла.
+* Клиент по умолчанию не использует сжатие запросов или ответов. Однако при выборке или вставке больших наборов данных вы можете рассмотреть возможность включения сжатия через `ClickHouseClientConfigOptions.compression` (либо только для `request` или `response`, либо для обоих).
+* Сжатие даёт существенные накладные расходы. Включение его для `request` или `response` негативно скажется на скорости выборок или вставок соответственно, но уменьшит объём сетевого трафика, передаваемого приложением.
 
 ## Связаться с нами \{#contact-us\}
 

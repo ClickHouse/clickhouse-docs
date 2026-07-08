@@ -21,10 +21,9 @@ import select_destination_db from '@site/static/images/integrations/data-ingesti
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
 
+您可以使用 ClickPipes 将数据从源 Postgres 数据库摄取到 ClickHouse Cloud。源 Postgres 数据库既可以托管在本地，也可以托管在云端，包括 Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase 等。
 
-# 使用 CDC 将数据从 Postgres 摄取到 ClickHouse \{#ingesting-data-from-postgres-to-clickhouse-using-cdc\}
-
-你可以使用 ClickPipes 将源 Postgres 数据库中的数据摄取到 ClickHouse Cloud。源 Postgres 数据库可以托管在本地环境或云端，例如 Amazon RDS、Google Cloud SQL、Azure Database for Postgres、Supabase 等。
+Postgres ClickPipes 可以通过 ClickPipes UI 手动部署和管理，也可以使用 [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) 和 [Terraform](/integrations/clickpipes/programmatic-access/terraform) 以编程方式部署和管理。
 
 ## 前提条件 \{#prerequisites\}
 

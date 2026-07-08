@@ -1,6 +1,6 @@
 ---
 title: '데이터베이스 ClickPipe 재동기화'
-description: '데이터베이스 ClickPipe를 재동기화하는 방법에 대한 문서'
+description: '데이터베이스 ClickPipe를 재동기화하는 방법을 설명하는 문서'
 slug: /integrations/clickpipes/mongodb/resync
 sidebar_label: 'ClickPipe 재동기화'
 doc_type: 'guide'

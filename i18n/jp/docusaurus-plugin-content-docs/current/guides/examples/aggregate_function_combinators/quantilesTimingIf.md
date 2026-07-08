@@ -7,8 +7,6 @@ sidebar_label: 'quantilesTimingIf'
 doc_type: 'reference'
 ---
 
-# quantilesTimingIf \{#quantilestimingif\}
-
 ## 説明 \{#description\}
 
 [`If`](/sql-reference/aggregate-functions/combinators#-if) コンビネーターを [`quantilesTiming`](/sql-reference/aggregate-functions/reference/quantiletiming)

@@ -2,7 +2,7 @@
 sidebar_label: 'Crunchy Bridge Postgres'
 description: 'ClickPipes のソースとして Crunchy Bridge Postgres を設定する'
 slug: /integrations/clickpipes/postgres/source/crunchy-postgres
-title: 'Crunchy Bridge Postgres ソース設定ガイド'
+title: 'Crunchy Bridge Postgres ソースセットアップガイド'
 keywords: ['crunchy bridge', 'postgres', 'clickpipes', 'ロジカルレプリケーション', 'データインジェスト']
 doc_type: 'guide'
 integration:
@@ -14,10 +14,7 @@ import firewall_rules_crunchy_bridge from '@site/static/images/integrations/data
 import add_firewall_rules_crunchy_bridge from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/setup/crunchy-postgres/add_firewall_rules_crunchy_bridge.png'
 import Image from '@theme/IdealImage';
 
-
-# Crunchy Bridge Postgres ソースセットアップガイド \{#crunchy-bridge-postgres-source-setup-guide\}
-
-ClickPipes は Postgres バージョン 12 以降に対応しています。
+ClickPipes は Postgres 12 以降をサポートしています。
 
 ## ロジカルレプリケーションを有効にする \{#enable-logical-replication\}
 

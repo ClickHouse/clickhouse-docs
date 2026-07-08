@@ -7,8 +7,6 @@ title: '집계 함수'
 doc_type: 'reference'
 ---
 
-# 집계 함수 \{#aggregate-functions\}
-
 집계 함수는 데이터베이스 전문가가 기대하는 [일반적인](http://www.sql-tutorial.com/sql-aggregate-functions-sql-tutorial) 방식으로 동작합니다.
 
 ClickHouse는 다음과 같은 기능도 지원합니다.

@@ -1,22 +1,20 @@
 ---
 sidebar_position: 2
-sidebar_label: 'OLAP とは？'
-description: 'OLAP は Online Analytical Processing（オンライン分析処理）の略です。技術面とビジネス面という 2 つの観点から捉えられる包括的な用語です。'
-title: 'OLAP とは？'
+sidebar_label: 'OLAP とは何ですか？'
+description: 'OLAP は Online Analytical Processing（オンライン分析処理）の略です。これは広い意味を持つ用語で、技術的観点とビジネス的観点の 2 つの視点から捉えることができます。'
+title: 'OLAP とは何ですか？'
 slug: /concepts/olap
 keywords: ['OLAP']
 doc_type: 'reference'
 ---
 
-# OLAP とは何ですか？ \{#what-is-olap\}
+[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) は Online Analytical Processing (オンライン分析処理) の略です。これは広い意味を持つ用語で、技術的観点とビジネス的観点の 2 つの視点から捉えることができます。最も抽象的なレベルでは、これらの単語を逆から読むとイメージしやすくなります：
 
-[OLAP](https://en.wikipedia.org/wiki/Online_analytical_processing) は Online Analytical Processing（オンライン分析処理）の略です。これは広い意味を持つ用語で、技術的観点とビジネス的観点の 2 つの視点から捉えることができます。最も抽象的なレベルでは、これらの単語を逆から読むとイメージしやすくなります：
+**Processing (処理)&#x20;**&#x20;— 何らかの元データが処理され…
 
-**Processing（処理）** — 何らかの元データが処理され…
+**Analytical (分析的)&#x20;**&#x20;— …分析レポートや洞察が得られ…
 
-**Analytical（分析的）** — …分析レポートや洞察が得られ…
-
-**Online（オンライン）** — …それがリアルタイムで行われます。
+**Online (オンライン)&#x20;**&#x20;— …それがリアルタイムで行われます。
 
 ## ビジネスの観点から見た OLAP \{#olap-from-the-business-perspective\}
 

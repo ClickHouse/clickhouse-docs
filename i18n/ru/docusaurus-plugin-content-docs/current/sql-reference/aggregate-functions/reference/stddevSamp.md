@@ -25,7 +25,7 @@ doc_type: 'reference'
 stddevSamp(x)
 ```
 
-**Псевдонимы**: `STDDEV_SAMP`
+**Псевдонимы**: `STDDEV_SAMP`, `STDDEV`
 
 **Аргументы**
 

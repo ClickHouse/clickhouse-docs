@@ -14,8 +14,6 @@ import docdb_parameter_group_status from '@site/static/images/integrations/data-
 import Image from '@theme/IdealImage';
 
 
-# Руководство по настройке источника данных Amazon DocumentDB \{#amazon-documentdb-source-setup-guide\}
-
 ## Поддерживаемые версии DocumentDB \{#supported-documentdb-versions\}
 
 ClickPipes поддерживает DocumentDB версии 5.0.

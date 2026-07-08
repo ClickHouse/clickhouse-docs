@@ -22,15 +22,40 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 file([path_to_archive ::] path [,format] [,structure] [,compression])
 ```
 
+对于 `SELECT` 查询，`path` 还可以是一个返回 `Array(String)` 的表达式：
+
+```sql
+file(['file1.csv', 'file2.csv'], 'CSV', 'column1 UInt32, column2 UInt32')
+```
+
 ## 参数 \{#arguments\}
 
-| 参数                | 说明                                                                                                                                                                                                                              |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `path`            | 从 [user&#95;files&#95;path](operations/server-configuration-parameters/settings.md#user_files_path) 开始的相对文件路径。在只读模式下支持以下 [通配符](#globs-in-path)：`*`、`?`、`{abc,def}` (其中 `'abc'` 和 `'def'` 是字符串) 以及 `{N..M}` (其中 `N` 和 `M` 是数字) 。 |
-| `path_to_archive` | 指向 zip/tar/7z 归档文件的相对路径。支持与 `path` 相同的通配符。                                                                                                                                                                                      |
-| `format`          | 文件的[格式](/interfaces/formats)。                                                                                                                                                                                                   |
-| `structure`       | 表结构。格式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                           |
-| `compression`     | 在 `SELECT` 查询中使用时表示现有压缩类型，在 `INSERT` 查询中使用时表示期望的压缩类型。支持的压缩类型有 `gz`、`br`、`xz`、`zst`、`lz4` 和 `bz2`。                                                                                                                               |
+| 参数                | 说明                                                                                                                                                                                                                                                                   |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `path`            | 从 [user&#95;files&#95;path](operations/server-configuration-parameters/settings.md#user_files_path) 开始的相对文件路径，或在 `SELECT` 查询中使用的路径 `Array(String)`。在只读模式下支持以下 [通配符](#globs-in-path)：`*`、`?`、`{abc,def}` (其中 `'abc'` 和 `'def'` 是字符串) 以及 `{N..M}` (其中 `N` 和 `M` 是数字) 。 |
+| `path_to_archive` | 指向 zip/tar/7z 归档文件的相对路径。支持与 `path` 相同的通配符。                                                                                                                                                                                                                           |
+| `format`          | 文件的[格式](/interfaces/formats)。                                                                                                                                                                                                                                        |
+| `structure`       | 表结构。格式：`'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                |
+| `compression`     | 在 `SELECT` 查询中使用时表示现有压缩类型，在 `INSERT` 查询中使用时表示期望的压缩类型。支持的压缩类型有 `gz`、`br`、`xz`、`zst`、`lz4` 和 `bz2`。                                                                                                                                                                    |
+
+:::tip
+省略 `structure` 参数时，ClickHouse 会根据格式本身推断 schema。
+不同格式会生成不同的默认列名和类型。
+要查看特定格式的 schema，请对 [`format`](/sql-reference/table-functions/format) 表函数使用 [`DESC`](/sql-reference/statements/describe-table)。
+
+例如：
+
+```sql
+DESC format(LineAsString, 'Hello\nWorld')
+```
+
+```response
+┌─name─┬─type───┬─default_type─┬─default_expression─┬─comment─┬─codec_expression─┬─ttl_expression─┐
+│ line │ String │              │                    │         │                  │                │
+└──────┴────────┴──────────────┴────────────────────┴─────────┴──────────────────┴────────────────┘
+```
+
+:::
 
 ## 返回值 \{#returned_value\}
 

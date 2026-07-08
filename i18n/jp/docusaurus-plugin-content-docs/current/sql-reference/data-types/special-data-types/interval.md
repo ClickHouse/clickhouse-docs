@@ -1,5 +1,5 @@
 ---
-description: 'Interval 特殊データ型に関するドキュメント'
+description: 'Interval 特殊データ型のドキュメント'
 sidebar_label: 'Interval'
 sidebar_position: 61
 slug: /sql-reference/data-types/special-data-types/interval
@@ -7,16 +7,14 @@ title: 'Interval'
 doc_type: 'reference'
 ---
 
-# Interval \{#interval\}
-
-日時の間隔を表すデータ型のファミリーです。[INTERVAL](/sql-reference/operators#interval) 演算子の結果として得られる型です。
+日時のインターバルを表すデータ型のファミリーです。[INTERVAL](/sql-reference/operators#interval) 演算子の結果として得られる型です。
 
 構造:
 
-* 符号なし整数値として表される時間間隔。
-* 間隔の型。
+* 符号なし整数値として表される時間インターバル。
+* インターバルの型。
 
-サポートされている間隔の種類:
+サポートされているインターバルの種類:
 
 * `NANOSECOND`
 * `MICROSECOND`
@@ -30,7 +28,7 @@ doc_type: 'reference'
 * `QUARTER`
 * `YEAR`
 
-各間隔の種類ごとに、個別のデータ型が定義されています。たとえば、`DAY` 間隔は `IntervalDay` データ型に対応します:
+各インターバルの種類ごとに、個別のデータ型が定義されています。たとえば、`DAY` インターバルは `IntervalDay` データ型に対応します:
 
 ```sql
 SELECT toTypeName(INTERVAL 4 DAY)
@@ -41,7 +39,6 @@ SELECT toTypeName(INTERVAL 4 DAY)
 │ IntervalDay                  │
 └──────────────────────────────┘
 ```
-
 
 ## 使用上の注意 \{#usage-remarks\}
 
@@ -79,6 +76,50 @@ SELECT toIntervalMicrosecond(3600000000) = toIntervalHour(1);
 ┌─less(toIntervalMicrosecond(179999999), toIntervalMinute(3))─┐
 │                                                           1 │
 └─────────────────────────────────────────────────────────────┘
+```
+
+
+## 混合型インターバル \{#mixed-type-intervals\}
+
+複数の時間と複数の分のような混合型インターバルは、`INTERVAL 'value' <from_kind> TO <to_kind>` 構文を使用して作成できます。
+結果は、2 つ以上のインターバルからなるタプルです。
+
+サポートされる組み合わせ:
+
+| 構文                 | 文字列フォーマット | 例                                     |
+| ------------------ | --------- | ------------------------------------- |
+| `YEAR TO MONTH`    | `Y-M`     | `INTERVAL '2-6' YEAR TO MONTH`        |
+| `DAY TO HOUR`      | `D H`     | `INTERVAL '5 12' DAY TO HOUR`         |
+| `DAY TO MINUTE`    | `D H:M`   | `INTERVAL '5 12:30' DAY TO MINUTE`    |
+| `DAY TO SECOND`    | `D H:M:S` | `INTERVAL '5 12:30:45' DAY TO SECOND` |
+| `HOUR TO MINUTE`   | `H:M`     | `INTERVAL '1:30' HOUR TO MINUTE`      |
+| `HOUR TO SECOND`   | `H:M:S`   | `INTERVAL '1:30:45' HOUR TO SECOND`   |
+| `MINUTE TO SECOND` | `M:S`     | `INTERVAL '5:30' MINUTE TO SECOND`    |
+
+先頭以外のフィールドは SQL 標準に従って検証されます。`MONTH` は 0～11、`HOUR` は 0～23、`MINUTE` は 0～59、`SECOND` は 0～59 です。
+
+```sql
+SELECT INTERVAL '1:30' HOUR TO MINUTE;
+```
+
+```text
+┌─(toIntervalHour(1), toIntervalMinute(30))─┐
+│ (1,30)                                     │
+└────────────────────────────────────────────┘
+```
+
+先頭の省略可能な `+` または `-` 符号は、すべての部分に適用されます:
+
+```sql
+SELECT INTERVAL '+1:30' HOUR TO MINUTE;
+-- this is equivalent to:
+-- SELECT INTERVAL '1:30' HOUR TO MINUTE;
+```
+
+```text
+┌─(toIntervalHour(1), toIntervalMinute(30))─┐
+│ (1,30)                                     │
+└────────────────────────────────────────────┘
 ```
 
 

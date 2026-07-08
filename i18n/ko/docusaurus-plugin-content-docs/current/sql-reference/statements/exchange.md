@@ -1,13 +1,11 @@
 ---
-description: 'EXCHANGE SQL 문 문서'
+description: 'EXCHANGE 문에 대한 문서'
 sidebar_label: 'EXCHANGE'
 sidebar_position: 49
 slug: /sql-reference/statements/exchange
-title: 'EXCHANGE SQL 문'
+title: 'EXCHANGE 문'
 doc_type: 'reference'
 ---
-
-# EXCHANGE 문 \{#exchange-statement\}
 
 두 테이블 또는 딕셔너리의 이름을 원자적으로 교환합니다.
 이 작업은 임시 이름을 사용한 [`RENAME`](./rename.md) 쿼리로도 수행할 수 있지만, 그 경우 연산은 원자적이지 않습니다.

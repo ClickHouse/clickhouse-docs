@@ -10,16 +10,13 @@ keywords: ['Redis', 'メトリクス', 'OTel', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/import-redis-metrics-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis-metrics-dashboard.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack による Redis メトリクス監視 \{#redis-metrics-clickstack\}
-
-:::note[TL;DR]
-OTel Redis receiver を使用して、ClickStack で Redis のパフォーマンスメトリクスを監視します。デモ用データセットと事前構築済みダッシュボードが含まれます。
+:::note[要点]
+OTel Redis receiverを使用して、ClickStack で Redis のパフォーマンスメトリクスを監視します。デモ用データセットと事前構築済みダッシュボードが含まれています。
 :::
 
 ## 既存の Redis との統合 \{#existing-redis\}
@@ -292,7 +289,7 @@ ClickStack で Redis の監視を始めるにあたり、Redis Metrics 用の基
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-metrics-dashboard.json')} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-metrics-dashboard.json'} download="redis-metrics-dashboard.json" eventName="docs.redis_metrics_monitoring.dashboard_download">ダッシュボード設定をダウンロード</TrackedLink> {#download}
 
 #### 用意済みダッシュボードをインポートする \{#import-dashboard\}
 

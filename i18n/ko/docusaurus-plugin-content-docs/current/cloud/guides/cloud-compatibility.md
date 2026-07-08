@@ -2,12 +2,10 @@
 slug: /whats-new/cloud-compatibility
 sidebar_label: 'Cloud 호환성'
 title: 'Cloud 호환성'
-description: '이 가이드는 ClickHouse Cloud에서 기능 및 운영 측면에서 무엇을 기대할 수 있는지에 대한 개요를 제공합니다.'
+description: '이 가이드는 ClickHouse Cloud에서 기능 및 운영 측면에서 어떤 점을 기대할 수 있는지에 대한 개요를 제공합니다.'
 keywords: ['ClickHouse Cloud', '호환성']
 doc_type: 'guide'
 ---
-
-# ClickHouse Cloud 호환성 가이드 \{#clickhouse-cloud-compatibility-guide\}
 
 이 가이드는 ClickHouse Cloud에서 기능 및 운영 측면에서 어떤 점을 기대할 수 있는지에 대한 개요를 제공합니다. ClickHouse Cloud는 오픈 소스 ClickHouse 배포판을 기반으로 하지만, 아키텍처와 구현 측면에서 일부 차이가 있을 수 있습니다. 배경 지식으로 참고하기에 유용한 [ClickHouse Cloud를 어떻게 구축했는지](https://clickhouse.com/blog/building-clickhouse-cloud-from-scratch-in-a-year)를 다룬 블로그 글입니다.
 
@@ -88,7 +86,7 @@ SQLite, ODBC, JDBC, Redis, HDFS 및 Hive와 같은 일부 외부 데이터베이
 
 ### User defined functions \{#user-defined-functions\}
 
-ClickHouse Cloud의 사용자 정의 함수는 현재 [비공개 프리뷰(private preview)](https://clickhouse.com/docs/sql-reference/functions/udf) 단계에 있습니다.
+ClickHouse Cloud의 사용자 정의 함수는 현재 [공개 베타(public beta)](https://clickhouse.com/docs/sql-reference/functions/udf) 단계에 있습니다.
 
 #### 설정 동작 \{#udf-settings-behavior\}
 

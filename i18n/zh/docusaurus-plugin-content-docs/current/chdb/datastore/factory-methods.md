@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'factory', 'from_file', 'from_s3', 'uri', 'mysql
 doc_type: 'reference'
 ---
 
-# DataStore 工厂方法 \{#datastore-factory-methods\}
-
-DataStore 提供了超过 20 种工厂方法，可从本地文件、数据库、云存储和数据湖等多种数据源创建实例。
+DataStore 提供了 20 多种工厂方法，可从多种数据源创建实例，包括本地文件、数据库、云存储和数据湖。
 
 ## 通用 URI 接口 \{#uri\}
 

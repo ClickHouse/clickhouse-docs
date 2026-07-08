@@ -6,10 +6,9 @@ title: '备份或恢复的替代方法'
 doc_type: 'reference'
 ---
 
-# 其他备份方法 \{#alternative-backup-methods\}
-
-ClickHouse 将数据存储在磁盘上，而对磁盘进行备份的方法有很多。  
-下面是过去使用过的一些替代方案，可能适合你的使用场景。
+ClickHouse 将数据存储在磁盘上，而磁盘备份有多种方式。
+下面介绍一些过去使用过的替代方法，可能适用于
+你的使用场景。
 
 ### 在其他位置复制源数据 \{#duplicating-source-data-somewhere-else\}
 

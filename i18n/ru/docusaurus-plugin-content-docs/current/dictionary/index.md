@@ -2,7 +2,7 @@
 slug: /dictionary
 title: 'Словарь'
 keywords: ['словарь', 'словари']
-description: 'Словарь представляет данные в формате ключ-значение для быстрого поиска.'
+description: 'Словарь предоставляет представление данных в формате ключ-значение для быстрых операций поиска.'
 doc_type: 'guide'
 ---
 
@@ -10,17 +10,14 @@ import dictionaryUseCases from '@site/static/images/dictionary/dictionary-use-ca
 import dictionaryLeftAnyJoin from '@site/static/images/dictionary/dictionary-left-any-join.png';
 import Image from '@theme/IdealImage';
 
-
-# Словарь \{#dictionary\}
-
-Словарь в ClickHouse предоставляет хранящееся в памяти представление данных в формате [key-value](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) из различных [внутренних и внешних источников](/sql-reference/statements/create/dictionary/sources#dictionary-sources), оптимизированное для операций поиска с крайне низкой задержкой.
+Словарь в ClickHouse предоставляет хранящееся в памяти представление данных в формате [ключ-значение](https://en.wikipedia.org/wiki/Key%E2%80%93value_database) из различных [внутренних и внешних источников](/sql-reference/statements/create/dictionary/sources#dictionary-sources), оптимизированное для операций поиска с крайне низкой задержкой.
 
 Словари полезны для:
 
-- Повышения производительности запросов, особенно при использовании с операциями `JOIN`
-- Обогащения поступающих данных «на лету» без замедления процесса ингестии
+* Повышения производительности запросов, особенно при использовании с операциями `JOIN`
+* Обогащения поступающих данных «на лету» без замедления процесса ингестии
 
-<Image img={dictionaryUseCases} size="lg" alt="Сценарии использования словаря в ClickHouse"/>
+<Image img={dictionaryUseCases} size="lg" alt="Сценарии использования словаря в ClickHouse" />
 
 ## Ускорение соединений с использованием словаря \{#speeding-up-joins-using-a-dictionary\}
 
@@ -69,8 +66,10 @@ INNER JOIN
 WHERE Id IN (PostIds)
 ORDER BY Controversial_ratio ASC
 LIMIT 1
+```
 
-Строка 1:
+```response
+Row 1:
 ──────
 Id:                     25372161
 Title:                  How to add exception handling to SqlDataSource.UpdateCommand
@@ -78,8 +77,8 @@ UpVotes:                13
 DownVotes:              13
 Controversial_ratio: 0
 
-Обработана 1 строка. Затрачено: 1,283 сек. Обработано 418,44 млн строк, 7,23 ГБ (326,07 млн строк/с., 5,63 ГБ/с.)
-Пиковое использование памяти: 3,18 ГиБ.
+1 rows in set. Elapsed: 1.283 sec. Processed 418.44 million rows, 7.23 GB (326.07 million rows/s., 5.63 GB/s.)
+Peak memory usage: 3.18 GiB.
 ```
 
 > **Используйте меньшие наборы данных в правой части `JOIN`**: Этот запрос может показаться более многословным, чем требуется, поскольку фильтрация по `PostId` выполняется как во внешнем, так и во вложенном запросе. Это оптимизация производительности, которая обеспечивает быстрое время ответа. Для оптимальной производительности всегда следите за тем, чтобы правая сторона `JOIN` была меньшим набором данных и оставалась как можно меньше. Советы по оптимизации производительности JOIN и обзору доступных алгоритмов приведены в [этой серии статей в блоге](https://clickhouse.com/blog/clickhouse-fully-supports-joins-part1).
@@ -98,7 +97,9 @@ SELECT table,
 FROM system.columns
 WHERE table IN ('votes')
 GROUP BY table
+```
 
+```response
 ┌─table───────────┬─compressed_size─┬─uncompressed_size─┬─ratio─┐
 │ votes           │ 1.25 GiB        │ 3.79 GiB          │  3.04 │
 └─────────────────┴─────────────────┴───────────────────┴───────┘
@@ -131,7 +132,9 @@ PRIMARY KEY PostId
 SOURCE(CLICKHOUSE(QUERY 'SELECT PostId, countIf(VoteTypeId = 2) AS UpVotes, countIf(VoteTypeId = 3) AS DownVotes FROM votes GROUP BY PostId'))
 LIFETIME(MIN 600 MAX 900)
 LAYOUT(HASHED())
+```
 
+```response
 0 rows in set. Elapsed: 36.063 sec.
 ```
 
@@ -143,7 +146,9 @@ LAYOUT(HASHED())
 SELECT formatReadableSize(bytes_allocated) AS size
 FROM system.dictionaries
 WHERE name = 'votes_dict'
+```
 
+```response
 ┌─size─────┐
 │ 4.00 GiB │
 └──────────┘
@@ -151,16 +156,19 @@ WHERE name = 'votes_dict'
 
 Получить количество голосов «за» и «против» для конкретного `PostId` теперь можно с помощью простого вызова функции `dictGet`. Ниже мы получаем значения для поста `11227902`:
 
-
 ```sql
 SELECT dictGet('votes_dict', ('UpVotes', 'DownVotes'), '11227902') AS votes
+```
 
+```response
 ┌─votes──────┐
 │ (34999,32) │
 └────────────┘
+```
 
-Используя это в нашем предыдущем запросе, можно убрать JOIN:
+Применив это к нашему предыдущему запросу, мы можем убрать JOIN:
 
+```sql
 WITH PostIds AS
 (
         SELECT Id
@@ -175,9 +183,11 @@ FROM posts
 WHERE (Id IN (PostIds)) AND (UpVotes > 10) AND (DownVotes > 10)
 ORDER BY Controversial_ratio ASC
 LIMIT 3
+```
 
-Получено 3 строки. Затрачено: 0.551 сек. Обработано 119.64 млн строк, 3.29 ГБ (216.96 млн строк/сек., 5.97 ГБ/сек.)
-Пиковое использование памяти: 552.26 МиБ.
+```response
+3 rows in set. Elapsed: 0.551 sec. Processed 119.64 million rows, 3.29 GB (216.96 million rows/s., 5.97 GB/s.)
+Peak memory usage: 552.26 MiB.
 ```
 
 Этот запрос не только гораздо проще, но и более чем в два раза быстрее! Его можно дополнительно оптимизировать, загружая в словарь только посты с более чем 10 голосами «за» и «против» и сохраняя только предварительно вычисленное значение степени спорности.
@@ -209,7 +219,9 @@ FROM posts
 WHERE Title ILIKE '%clickhouse%'
 LIMIT 5
 FORMAT PrettyCompactMonoBlock
+```
 
+```response
 ┌───────Id─┬─Title─────────────────────────────────────────────────────────┬─Location──────────────┐
 │ 52296928 │ Comparison between two Strings in ClickHouse                  │ Spain                 │
 │ 52345137 │ How to use a file to migrate data from mysql to a clickhouse? │ 中国江苏省Nanjing Shi   │
@@ -218,8 +230,8 @@ FORMAT PrettyCompactMonoBlock
 │ 55758594 │ ClickHouse create temporary table                             │ Perm', Russia         │
 └──────────┴───────────────────────────────────────────────────────────────┴───────────────────────┘
 
-Получено 5 строк. Затрачено: 0,033 сек. Обработано 4,25 млн строк, 82,84 МБ (130,62 млн строк/с., 2,55 ГБ/с.)
-Пиковое использование памяти: 249,32 МиБ.
+5 rows in set. Elapsed: 0.033 sec. Processed 4.25 million rows, 82.84 MB (130.62 million rows/s., 2.55 GB/s.)
+Peak memory usage: 249.32 MiB.
 ```
 
 Аналогично нашему примеру выше с JOIN, мы можем использовать тот же словарь, чтобы эффективно определить, откуда происходит большинство постов:
@@ -233,7 +245,9 @@ WHERE location != ''
 GROUP BY location
 ORDER BY c DESC
 LIMIT 5
+```
 
+```response
 ┌─location───────────────┬──────c─┐
 │ India                  │ 787814 │
 │ Germany                │ 685347 │
@@ -242,8 +256,8 @@ LIMIT 5
 │ United Kingdom         │ 537699 │
 └────────────────────────┴────────┘
 
-5 строк в наборе. Затрачено: 0.763 сек. Обработано 59.82 млн строк, 239.28 МБ (78.40 млн строк/с., 313.60 МБ/с.)
-Пиковое использование памяти: 248.84 МиБ.
+5 rows in set. Elapsed: 0.763 sec. Processed 59.82 million rows, 239.28 MB (78.40 million rows/s., 313.60 MB/s.)
+Peak memory usage: 248.84 MiB.
 ```
 
 ## Обогащение на этапе вставки (index time) \{#index-time-enrichment\}
@@ -290,7 +304,9 @@ ORDER BY (PostTypeId, toDate(CreationDate), CommentCount)
 
 ```sql
 INSERT INTO posts_with_location SELECT Id, PostTypeId::UInt8, AcceptedAnswerId, CreationDate, Score, ViewCount, Body, OwnerUserId, OwnerDisplayName, LastEditorUserId, LastEditorDisplayName, LastEditDate, LastActivityDate, Title, Tags, AnswerCount, CommentCount, FavoriteCount, ContentLicense, ParentId, CommunityOwnedDate, ClosedDate FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 36.830 sec. Processed 238.98 million rows, 2.64 GB (6.49 million rows/s., 71.79 MB/s.)
 ```
 
@@ -303,7 +319,9 @@ WHERE Location != ''
 GROUP BY Location
 ORDER BY c DESC
 LIMIT 4
+```
 
+```response
 ┌─Location───────────────┬──────c─┐
 │ India                  │ 787814 │
 │ Germany                │ 685347 │
@@ -315,12 +333,9 @@ LIMIT 4
 Peak memory usage: 666.82 MiB.
 ```
 
-
 ## Расширенные темы о словарях \{#advanced-dictionary-topics\}
 
-### Выбор `LAYOUT` словаря \{#choosing-the-dictionary-layout\}
-
-Клауза `LAYOUT` управляет внутренней структурой данных словаря. Существует несколько вариантов, описанных [здесь](/sql-reference/statements/create/dictionary/layouts#storing-dictionaries-in-memory). Некоторые рекомендации по выбору подходящего `LAYOUT` можно найти [здесь](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse#choosing-a-layout).
+Рекомендации по выбору структуры словарей, по тому, когда использовать словари вместо JOIN, и по мониторингу их использования см. в разделе [Лучшие практики работы со словарями](/dictionary/best-practices).
 
 ### Обновление словарей \{#refreshing-dictionaries\}
 
@@ -335,5 +350,6 @@ ClickHouse также поддерживает [иерархические](/sql
 
 ### Дополнительные материалы для чтения \{#more-reading\}
 
-- [Использование словарей для ускорения запросов](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
-- [Расширенная конфигурация словарей](/sql-reference/statements/create/dictionary)
+* [Лучшие практики работы со словарями](/dictionary/best-practices) — выбор layout, словари и JOIN, мониторинг
+* [Использование словарей для ускорения запросов](https://clickhouse.com/blog/faster-queries-dictionaries-clickhouse)
+* [Расширенная конфигурация словарей](/sql-reference/statements/create/dictionary)

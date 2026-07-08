@@ -27,31 +27,28 @@ import azure_pe_remove_private_endpoint from '@site/static/images/cloud/security
 import azure_privatelink_pe_filter from '@site/static/images/cloud/security/azure-privatelink-pe-filter.png';
 import azure_privatelink_pe_dns from '@site/static/images/cloud/security/azure-privatelink-pe-dns.png';
 
-
-# Azure Private Link \{#azure-private-link\}
-
 <ScalePlanFeatureBadge feature="Azure Private Link" />
 
-このガイドでは、Azure Private Link を使用して、Azure (お客様所有のサービスおよび Microsoft パートナーのサービスを含む) と ClickHouse Cloud 間で、仮想ネットワーク経由のプライベート接続を提供する方法を説明します。Azure Private Link はネットワークアーキテクチャを簡素化し、データをパブリックインターネットに公開することなく、Azure 内のエンドポイント間の接続を保護します。
+このガイドでは、Azure Private Link を使用して、Azure (顧客所有サービスおよび Microsoft Partner サービスを含む) と ClickHouse Cloud の間で、仮想ネットワーク経由のプライベート接続を提供する方法を説明します。Azure Private Link は、パブリックインターネットへのデータ露出をなくすことで、ネットワーク アーキテクチャを簡素化し、Azure 内のエンドポイント間の接続を保護します。
 
-<Image img={azure_pe} size="lg" alt="Private Link の概要" background="white" />
+<Image img={azure_pe} size="lg" alt="PrivateLink の概要" background="white" />
 
-Azure は Private Link 経由でリージョンをまたいだ接続をサポートしています。これにより、ClickHouse サービスをデプロイしている異なるリージョンにある VNet 間で接続を確立できます。
+Azure は、プライベートリンクによるクロスリージョン接続をサポートしています。これにより、ClickHouse サービスがデプロイされている異なるリージョンの VNet 間で接続を確立できます。
 
 :::note
 リージョン間トラフィックには追加料金が発生する場合があります。最新の Azure ドキュメントを確認してください。
 :::
 
-**Azure Private Link を有効にするには、次の手順を完了してください。**
+**Azure Private Link を有効にするには、次の手順を実行してください。**
 
-1. Private Link 用の Azure 接続エイリアスを取得する
-2. Azure でプライベート エンドポイントを作成する
-3. プライベート エンドポイントのリソース ID を ClickHouse Cloud の組織に追加する
-4. プライベート エンドポイントのリソース ID をサービスの許可リストに追加する
-5. Private Link を使用して ClickHouse Cloud サービスにアクセスする
+1. プライベートリンク用の Azure 接続エイリアスを取得する
+2. Azure で Private Endpoint を作成する
+3. Private Endpoint の Resource ID を ClickHouse Cloud 組織に追加する
+4. Private Endpoint の Resource ID をサービスの許可リストに追加する
+5. プライベートリンクを使用して ClickHouse Cloud サービスにアクセスする
 
 :::note
-ClickHouse Cloud の Azure PrivateLink は、`resourceGUID` から Resource ID フィルタの利用へ切り替わりました。後方互換性があるため、引き続き `resourceGUID` を使用できますが、Resource ID フィルタへの移行を推奨します。移行するには、Resource ID を使って新しいエンドポイントを作成し、それをサービスに関連付けてから、従来の `resourceGUID` ベースのエンドポイントを削除してください。
+ClickHouse Cloud Azure PrivateLink は、resourceGUID から Resource ID フィルターに切り替わりました。resourceGUID も後方互換性があるため引き続き使用できますが、Resource ID フィルターへの切り替えを推奨します。移行するには、Resource ID を使用して新しいエンドポイントを作成し、それをサービスに関連付けたうえで、古い resourceGUID ベースのエンドポイントを削除してください。
 :::
 
 ## 注意事項 \{#attention\}

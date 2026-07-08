@@ -187,19 +187,54 @@ ORDER BY per_trace_sum ASC
 ## Jemalloc Web UI \{#jemalloc-web-ui\}
 
 :::note
-本节适用于 26.2 及以上版本。
+本节适用于 26.2+ 版本。
 :::
 
-ClickHouse 提供了一个内置的 Web UI，可通过 `/jemalloc` HTTP 端点查看 jemalloc 内存统计信息。
-界面使用图表展示实时内存指标，包括已分配、活动、常驻和映射内存，以及按 arena 和按 bin 的统计信息。
-还可以直接在该 UI 中获取全局和按查询的堆内存剖析（heap profile）。
+ClickHouse 在 `/jemalloc` HTTP 端点提供了内置 Web UI，用于查看 jemalloc 内存统计信息。
+该界面通过图表展示实时内存指标，包括 allocated、active、resident 和 mapped 内存，以及按 arena 和 bin 维度划分的统计信息。
+您还可以直接在 UI 中拉取全局堆内存剖析和按查询划分的堆内存剖析。
 
-要访问它，请在浏览器中打开：
+<Tabs groupId="binary">
+  <TabItem value="clickhouse" label="ClickHouse">
+    ```text
+    http://localhost:8123/jemalloc
+    ```
 
-```text
-http://localhost:8123/jemalloc
-```
+    ClickHouse 服务端 UI 包含所有选项卡：Summary、Allocations、Arenas、Operations、Global Profiler、Query Profiler 和 Raw Output。
+  </TabItem>
 
+  <TabItem value="keeper" label="Keeper">
+    ```text
+    http://localhost:9182/jemalloc
+    ```
+
+    Keeper UI 可通过 HTTP 控制接口端口访问。该端口**默认禁用**，必须在 Keeper 配置中通过设置 `keeper_server.http_control.port` 显式启用：
+
+    ```xml
+    <clickhouse>
+        <keeper_server>
+            <http_control>
+                <port>9182</port>
+            </http_control>
+        </keeper_server>
+    </clickhouse>
+    ```
+
+    启用后，UI 将提供与服务端相同的可视化内容——Summary、Allocations、Arenas、Operations、Global Profiler 和 Raw Output——但不包括 Query Profiler 选项卡，因为它需要 SQL 和 `system.trace_log`。
+
+    :::warning 安全
+    Keeper HTTP 控制接口端口不提供应用层身份验证。不同于 ClickHouse 服务端 jemalloc UI——其所有数据查询都会通过 SQL HTTP handler，并且需要用户/密码凭据——Keeper REST API 端点无需身份验证。这与其他 Keeper HTTP 控制接口端点 (commands、storage、dashboard) 保持一致。
+
+    请使用网络层控制来限制对此端口的访问：将 Keeper 绑定到 localhost、使用防火墙规则，或将其置于带有身份验证的反向代理之后。如果未配置 `listen_host`，Keeper 默认仅监听 localhost。
+    :::
+
+    Keeper 还公开了 REST API 端点，供程序化访问：
+
+    * `GET /jemalloc/stats` — 原始 `malloc_stats_print` 输出
+    * `GET /jemalloc/status` — 以 JSON 返回性能分析状态 (`prof_enabled`, `prof_active`, `thread_active_init`, `lg_sample`) 
+    * `GET /jemalloc/profile?format={collapsed|raw}` — 刷出一个经过服务器端符号化的堆内存剖析，返回适合渲染火焰图的折叠栈 (默认) ，或返回原始 jemalloc 转储
+  </TabItem>
+</Tabs>
 
 ## 通过 SQL 获取堆内存分析配置文件 \{#fetching-heap-profiles-from-sql\}
 

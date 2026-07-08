@@ -3,30 +3,28 @@ sidebar_label: '使用 clickhouse-local'
 keywords: ['clickhouse', 'migrate', 'migration', 'migrating', 'data', 'etl', 'elt', 'clickhouse-local', 'clickhouse-client']
 slug: /cloud/migration/clickhouse-local
 title: '使用 clickhouse-local 迁移到 ClickHouse'
-description: '本指南介绍如何使用 clickhouse-local 迁移到 ClickHouse'
+description: '介绍如何使用 clickhouse-local 迁移到 ClickHouse 的指南'
 doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import CodeBlock from '@theme/CodeBlock';
 import AddARemoteSystem from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_add_remote_ip_access_list_detail.md';
 import ch_local_01 from '@site/static/images/integrations/migration/ch-local-01.png';
 import ch_local_02 from '@site/static/images/integrations/migration/ch-local-02.png';
 import ch_local_03 from '@site/static/images/integrations/migration/ch-local-03.png';
 import ch_local_04 from '@site/static/images/integrations/migration/ch-local-04.png';
 
-# 使用 clickhouse-local 迁移到 ClickHouse \{#migrating-to-clickhouse-using-clickhouse-local\}
+<Image img={ch_local_01} size="lg" alt="迁移自管理 ClickHouse" />
 
-<Image img={ch_local_01} size='lg' alt='迁移自管理 ClickHouse'/>
+你可以使用 ClickHouse，或者更具体地说，[`clickhouse-local`](/operations/utilities/clickhouse-local.md)
+作为 ETL 工具，将数据从当前的数据库系统迁移到 ClickHouse Cloud。前提是当前数据库系统要么有 ClickHouse 提供的相应
+[Integration 表引擎 (integration engine) ](/engines/table-engines/#integration-engines) 或 [表函数 (table function) ](/sql-reference/table-functions/)，要么有系统供应商提供的 JDBC 驱动或 ODBC 驱动可用。
 
-你可以使用 ClickHouse，或者更具体地说，[`clickhouse-local`](/operations/utilities/clickhouse-local.md) 作为 ETL 工具，将数据从当前的数据库系统迁移到 ClickHouse Cloud。前提是当前数据库系统要么有 ClickHouse 提供的相应
-[集成引擎（integration engine）](/engines/table-engines/#integration-engines) 或 [表函数（table function）](/sql-reference/table-functions/)，要么有系统供应商提供的 JDBC 驱动或 ODBC 驱动可用。
+我们有时称这种迁移方法为“枢纽 (pivot) ”方法，因为它使用一个中间的枢纽点或中转跳点，将数据从源数据库移动到目标数据库。例如，如果出于安全要求，在私有或内部网络中只允许向外发起连接，那么就可能需要通过 clickhouse-local 从源数据库拉取数据，然后再将数据推送到目标 ClickHouse 数据库，此时 clickhouse-local 就充当了这个枢纽点。
 
-我们有时称这种迁移方法为“枢纽（pivot）”方法，因为它使用一个中间的枢纽点或中转跳点，将数据从源数据库移动到目标数据库。例如，如果出于安全要求，在私有或内部网络中只允许向外发起连接，那么就可能需要通过 clickhouse-local 从源数据库拉取数据，然后再将数据推送到目标 ClickHouse 数据库，此时 clickhouse-local 就充当了这个枢纽点。
-
-ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL](/engines/table-engines/integrations/postgresql)、[MongoDB](/engines/table-engines/integrations/mongodb) 和 [SQLite](/engines/table-engines/integrations/sqlite) 提供了集成引擎（integration engines）和表函数（table functions，运行时即时创建集成引擎）。对于所有其他流行的数据库系统，系统供应商通常会提供 JDBC 驱动或 ODBC 驱动。
+ClickHouse 为 [MySQL](/engines/table-engines/integrations/mysql/)、[PostgreSQL](/engines/table-engines/integrations/postgresql)、[MongoDB](/engines/table-engines/integrations/mongodb) 和 [SQLite](/engines/table-engines/integrations/sqlite) 提供了Integration 表引擎 (integration engines) 和表函数 (table functions，运行时即时创建集成引擎) 。对于所有其他流行的数据库系统，系统供应商通常会提供 JDBC 驱动或 ODBC 驱动。
 
 ## 什么是 clickhouse-local？ \{#what-is-clickhouse-local\}
 

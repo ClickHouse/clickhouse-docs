@@ -1,18 +1,18 @@
 ---
-sidebar_label: '개요'
-description: '객체 스토리지를 ClickHouse Cloud에 원활하게 연결합니다.'
+sidebar_label: "개요"
+description: "객체 스토리지를 ClickHouse Cloud에 원활하게 연결합니다."
 slug: /integrations/clickpipes/object-storage/abs/overview
 sidebar_position: 1
-title: 'Azure Blob Storage와 ClickHouse Cloud 통합'
-doc_type: 'guide'
+title: "Azure Blob Storage와 ClickHouse Cloud 통합"
+doc_type: "guide"
 ---
 
-import cp_advanced_settings from '@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png';
-import Image from '@theme/IdealImage';
+import cp_advanced_settings from "@site/static/images/integrations/data-ingestion/clickpipes/cp_advanced_settings.png"
+import Image from "@theme/IdealImage"
 
-ABS ClickPipe는 Azure Blob Storage에서 ClickHouse Cloud로 데이터를 수집하기 위한 완전 관리형의 복원력 있는 방법을 제공합니다. **일회성** 및 **지속적인 수집**을 모두 지원하며, 정확히 한 번 의미론을 보장합니다.
+ABS ClickPipe는 Azure Blob Storage에서 ClickHouse Cloud로 데이터를 수집하기 위한 완전 관리형의 복원력 있는 방법을 제공합니다. **일회성** 및 **지속적인 수집**을 모두 지원하며, 정확히 한 번 처리 의미 체계를 보장합니다.
 
-ABS ClickPipes는 ClickPipes UI를 사용해 수동으로 배포 및 관리할 수 있을 뿐만 아니라, [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger#tag/ClickPipes/paths/~1v1~1organizations~1%7BorganizationId%7D~1services~1%7BserviceId%7D~1clickpipes/post)와 [Terraform](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipe)을 사용해 프로그래밍 방식으로도 배포 및 관리할 수 있습니다.
+ABS ClickPipes는 ClickPipes UI를 사용해 수동으로 배포 및 관리할 수 있을 뿐만 아니라, [OpenAPI](/integrations/clickpipes/programmatic-access/openapi)와 [Terraform](/integrations/clickpipes/programmatic-access/terraform)을 사용해 프로그래밍 방식으로도 배포 및 관리할 수 있습니다.
 
 ## 지원되는 형식 \{#supported-formats\}
 
@@ -152,7 +152,7 @@ ClickPipes는 대부분의 사용 사례 요구 사항을 충족하는 합리적
 
 ### 확장 \{#scaling\}
 
-객체 스토리지 ClickPipes는 [수직 자동 확장 설정 구성](/manage/scaling#configuring-vertical-auto-scaling)에 의해 결정되는 최소 ClickHouse 서비스 크기를 기준으로 확장됩니다. ClickPipe의 크기는 파이프를 생성할 때 결정되며, 이후 ClickHouse 서비스 설정을 변경하더라도 ClickPipe 크기에는 영향을 주지 않습니다.
+객체 스토리지 ClickPipes는 [수직 자동 확장 설정 구성](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)에 의해 결정되는 최소 ClickHouse 서비스 크기를 기준으로 확장됩니다. ClickPipe의 크기는 파이프를 생성할 때 결정되며, 이후 ClickHouse 서비스 설정을 변경하더라도 ClickPipe 크기에는 영향을 주지 않습니다.
 
 대규모 수집 작업의 처리량을 높이려면 ClickPipe를 생성하기 전에 ClickHouse 서비스를 먼저 확장할 것을 권장합니다.
 

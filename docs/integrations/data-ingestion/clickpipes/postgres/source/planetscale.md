@@ -14,8 +14,6 @@ import planetscale_wal_level_logical from '@site/static/images/integrations/data
 import planetscale_max_slot_wal_keep_size from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/planetscale/planetscale_max_slot_wal_keep_size.png';
 import Image from '@theme/IdealImage';
 
-# PlanetScale for Postgres source setup guide
-
 :::info
 PlanetScale for Postgres is currently in [early access](https://planetscale.com/postgres).
 :::

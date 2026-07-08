@@ -11,8 +11,8 @@ doc_type: 'reference'
 
 도입 버전: v23.8.0
 
-스택 트레이스 목록을 사용해 [flamegraph](https://www.brendangregg.com/flamegraphs.html)을(를) 생성합니다.
-flamegraph의 SVG를 렌더링하기 위해 [flamegraph.pl](https://github.com/brendangregg/FlameGraph) 유틸리티에서 사용할 수 있는 문자열 배열을 출력합니다.
+스택트레이스 목록을 사용해 [플레임 그래프](https://www.brendangregg.com/flamegraphs.html)을(를) 생성합니다.
+플레임 그래프의 SVG를 렌더링하기 위해 [flamegraph.pl](https://github.com/brendangregg/FlameGraph) 유틸리티에서 사용할 수 있는 문자열 배열을 출력합니다.
 
 :::note
 `ptr != 0`인 경우, flameGraph는 동일한 size와 ptr을 가진 할당(size &gt; 0)과 해제(size &lt; 0)를 서로 매칭합니다.
@@ -28,7 +28,7 @@ flameGraph(traces[, size[, ptr]])
 
 **인수**
 
-* `traces` — 스택 트레이스입니다. [`Array(UInt64)`](/sql-reference/data-types/array)
+* `traces` — 스택트레이스입니다. 원시 주소 또는 이미 심볼화된 문자열(예: `arrayMap(addressToSymbol, trace)`)일 수 있습니다. [`Array(UInt64)`](/sql-reference/data-types/array) 또는 [`Array(String)`](/sql-reference/data-types/array)
 * `size` — 선택적 인수입니다. 메모리 프로파일링을 위한 할당 크기입니다(기본값 1). [`UInt64`](/sql-reference/data-types/int-uint)
 * `ptr` — 선택적 인수입니다. 할당 주소입니다(기본값 0). [`UInt64`](/sql-reference/data-types/int-uint)
 
@@ -38,7 +38,7 @@ flamegraph.pl 유틸리티에서 사용할 문자열 배열을 반환합니다. 
 
 **예시**
 
-**CPU 쿼리 프로파일러를 기반으로 flamegraph를 생성하기**
+**CPU 쿼리 프로파일러를 기반으로 플레임 그래프를 생성하기**
 
 ```sql title=Query
 SET query_profiler_cpu_time_period_ns=10000000;
@@ -49,7 +49,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(arrayReverse(trace))) from system.trace_log where trace_type = 'CPU' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl  > flame_cpu.svg
 ```
 
-**메모리 쿼리 프로파일러를 기반으로 모든 할당을 보여주는 flamegraph 생성하기**
+**메모리 쿼리 프로파일러를 기반으로 모든 할당을 보여주는 플레임 그래프 생성하기**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;
@@ -60,7 +60,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "select arrayJoin(flameGraph(trace, size)) from system.trace_log where trace_type = 'MemorySample' and query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem.svg
 ```
 
-**메모리 쿼리 프로파일러를 기반으로 해제되지 않은 메모리 할당을 보여주는 flamegraph 생성하기**
+**메모리 쿼리 프로파일러를 기반으로 해제되지 않은 메모리 할당을 보여주는 플레임 그래프 생성하기**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1, use_uncompressed_cache=1, merge_tree_max_rows_to_use_cache=100000000000, merge_tree_max_bytes_to_use_cache=1000000000000;
@@ -71,7 +71,7 @@ SELECT SearchPhrase, COUNT(DISTINCT UserID) AS u FROM hits WHERE SearchPhrase <>
 clickhouse client --allow_introspection_functions=1 -q "SELECT arrayJoin(flameGraph(trace, size, ptr)) FROM system.trace_log WHERE trace_type = 'MemorySample' AND query_id = 'xxx'" | ~/dev/FlameGraph/flamegraph.pl --countname=bytes --color=mem > flame_mem_untracked.svg
 ```
 
-**메모리 쿼리 프로파일러를 기반으로, 특정 시점의 활성 메모리 할당을 보여주는 플레임 그래프를 생성합니다**
+**메모리 쿼리 프로파일러를 기반으로 특정 시점의 활성 메모리 할당을 보여주는 플레임 그래프 생성하기**
 
 ```sql title=Query
 SET memory_profiler_sample_probability=1, max_untracked_memory=1;

@@ -25,6 +25,9 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     sed -i '' 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3Cluster.md
     sed -i '' 's|(#cuttofirstsignificantsubdomaincustom)|(#cutToFirstSignificantSubdomainCustom)|g' docs/sql-reference/functions/url-functions.md
     sed -i '' 's|(/cloud/data-sources/secure-s3#setup)|(/cloud/data-sources/secure-s3)|g' docs/sql-reference/table-functions/s3.md
+    sed -i '' 's|(/operations/settings/settings#allow_experimental_paimon_storage_engine)|(/operations/settings/settings)|g' docs/about-us/beta-and-experimental-features.md
+    sed -i '' 's|(/operations/settings/settings#paimon_target_snapshot_id)|(/operations/settings/settings)|g' docs/about-us/beta-and-experimental-features.md
+    sed -i '' 's|(/operations/settings/settings#max_consume_snapshots)|(/operations/settings/settings)|g' docs/about-us/beta-and-experimental-features.md
 else
     # Linux
     sed -i 's|(../../quick-start\.mdx)|(/get-started/quick-start)|g' docs/operations/utilities/clickhouse-local.md
@@ -39,4 +42,7 @@ else
     sed -i 's|(/cloud/security/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|(/cloud/data-sources/secure-s3#access-your-s3-bucket-with-the-clickhouseaccess-role)|g' docs/sql-reference/table-functions/s3Cluster.md
     sed -i 's|(#cuttofirstsignificantsubdomaincustom)|(#cutToFirstSignificantSubdomainCustom)|g' docs/sql-reference/functions/url-functions.md
     sed -i 's|(/cloud/data-sources/secure-s3#setup)|(/cloud/data-sources/secure-s3)|g' docs/sql-reference/table-functions/s3.md
+    sed -i 's|(/operations/settings/settings#allow_experimental_paimon_storage_engine)|(/operations/settings/settings)|g' docs/about-us/beta-and-experimental-features.md
+    sed -i 's|(/operations/settings/settings#paimon_target_snapshot_id)|(/operations/settings/settings)|g' docs/about-us/beta-and-experimental-features.md
+    sed -i 's|(/operations/settings/settings#max_consume_snapshots)|(/operations/settings/settings)|g' docs/about-us/beta-and-experimental-features.md
 fi

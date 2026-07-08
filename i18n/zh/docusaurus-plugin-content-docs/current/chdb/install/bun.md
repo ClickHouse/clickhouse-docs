@@ -7,9 +7,7 @@ keywords: ['chdb', 'bun', 'javascript', 'typescript', 'embedded', 'clickhouse', 
 doc_type: 'guide'
 ---
 
-# Bun 上的 chDB \{#chdb-for-bun\}
-
-chDB-bun 为 chDB 提供了实验性的 FFI（Foreign Function Interface，外部函数接口）绑定，使你能够在你的 Bun 应用中直接运行 ClickHouse 查询，而无需任何外部依赖。
+chDB-bun 为 chDB 提供 Experimental FFI (Foreign Function Interface，外部函数接口) 绑定，使你能够在 Bun 应用程序中直接运行 ClickHouse 查询，且无需任何外部依赖。
 
 ## 安装 \{#installation\}
 
@@ -27,7 +25,7 @@ curl -sL https://lib.chdb.io | bash
 
 你需要在系统上安装 `gcc` 或 `clang` 中的一个：
 
-### 步骤 2：安装 chDB-bun \{#install-chdb-bun\}
+### 第 2 步：安装 chDB-bun \{#install-chdb-bun\}
 
 ```bash
 # Install from the GitHub repository
@@ -40,12 +38,13 @@ bun install
 bun run build
 ```
 
-# 或者在本地克隆并构建 {#install-from-the-github-repository}
+## 用法 \{#usage\}
 
-git clone [https://github.com/chdb-io/chdb-bun.git](https://github.com/chdb-io/chdb-bun.git)
-cd chdb-bun
-bun install
-bun run build
+chDB-bun 支持两种查询模式：用于一次性操作的临时查询，以及用于维护数据库状态的持久会话。
+
+### 临时查询 \{#ephemeral-queries\}
+
+适用于不需要保留状态的简单一次性查询：
 
 ```typescript
 import { query } from 'chdb-bun';
@@ -67,13 +66,9 @@ const systemInfo = query("SELECT * FROM system.functions LIMIT 5", "CSV");
 console.log(systemInfo);
 ```
 
-## 用法
+### 持久会话 \{#persistent-sessions\}
 
-chDB-bun 支持两种查询模式：用于一次性操作的临时查询，以及用于维护数据库状态的持久会话。
-
-### 临时查询 \{#persistent-sessions\}
-
-适用于不需要保留状态的简单一次性查询：
+适用于需要在多个查询之间保持状态的复杂操作：
 
 ```typescript
 import { Session } from 'chdb-bun';

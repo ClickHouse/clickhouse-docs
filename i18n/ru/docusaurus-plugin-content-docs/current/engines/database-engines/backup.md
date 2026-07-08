@@ -7,11 +7,9 @@ title: 'Backup'
 doc_type: 'reference'
 ---
 
-# Backup \{#backup\}
+База данных Backup позволяет мгновенно подключать таблицы и базы данных из [резервных копий](/operations/backup/overview) в режиме только для чтения.
 
-База данных Backup позволяет мгновенно подключить таблицу или базу данных из [резервных копий](/operations/backup/overview) в режиме только для чтения.
-
-База данных Backup работает как с инкрементными, так и с неинкрементными резервными копиями.
+База данных Backup работает как с инкрементными, так и с обычными резервными копиями.
 
 ## Создание базы данных \{#creating-a-database\}
 
@@ -33,7 +31,6 @@ ENGINE = Backup('database_name_inside_backup', Disk('disk_name', 'backup_name'))
 
 * `database_name_inside_backup` — Имя базы данных внутри резервной копии.
 * `backup_destination` — Место размещения резервной копии.
-
 
 ## Пример использования \{#usage-example\}
 

@@ -7,8 +7,6 @@ title: 'ALTER ROW POLICY'
 doc_type: 'reference'
 ---
 
-# ALTER ROW POLICY \{#alter-row-policy\}
-
 修改行策略。
 
 语法：

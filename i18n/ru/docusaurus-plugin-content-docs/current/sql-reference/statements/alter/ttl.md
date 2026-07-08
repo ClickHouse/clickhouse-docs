@@ -1,13 +1,11 @@
 ---
-description: 'Документация по работе с TTL таблицы'
+description: 'Документация по операциям с TTL таблицы'
 sidebar_label: 'TTL'
 sidebar_position: 44
 slug: /sql-reference/statements/alter/ttl
-title: 'Работа с TTL таблицы'
+title: 'Операции с TTL таблицы'
 doc_type: 'reference'
 ---
-
-# Операции с TTL таблицы \{#manipulations-with-table-ttl\}
 
 :::note
 Если вам нужны подробные сведения об использовании TTL для управления старыми данными, ознакомьтесь с руководством [Управление данными с помощью TTL](/guides/developer/ttl.md). В приведённом ниже материале показано, как изменить или удалить существующее правило TTL.

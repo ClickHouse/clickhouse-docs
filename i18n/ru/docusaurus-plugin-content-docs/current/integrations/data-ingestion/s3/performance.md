@@ -17,7 +17,7 @@ import InsertThreads from '@site/static/images/integrations/data-ingestion/s3/in
 import S3Cluster from '@site/static/images/integrations/data-ingestion/s3/s3Cluster.png';
 import HardwareSize from '@site/static/images/integrations/data-ingestion/s3/hardware_size.png';
 
-В этом разделе основное внимание уделяется оптимизации производительности при чтении и вставке данных из S3 с использованием [табличной функции s3](/sql-reference/table-functions/s3).
+В этом разделе основное внимание уделяется оптимизации производительности при чтении и вставке данных из S3 с использованием [табличной функции S3](/sql-reference/table-functions/s3).
 
 :::info
 **Описанный в этом руководстве подход можно применить и к другим реализациям объектного хранилища с собственными табличными функциями, таким, как [GCS](/sql-reference/table-functions/gcs) и [Azure Blob Storage](/sql-reference/table-functions/azureBlobStorage).**
@@ -167,7 +167,9 @@ WHERE OwnerDisplayName NOT IN ('', 'anon')
 GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
+```
 
+```response
 ┌─OwnerDisplayName─┬─num_posts─┐
 │ user330315       │     10344 │
 │ user4039065      │      5316 │
@@ -178,11 +180,15 @@ LIMIT 5
 
 5 rows in set. Elapsed: 3.013 sec. Processed 59.82 million rows, 24.03 GB (19.86 million rows/s., 7.98 GB/s.)
 Peak memory usage: 603.64 MiB.
+```
 
+```sql
 -- Load into posts table
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
+```
 
+```response
 0 rows in set. Elapsed: 191.692 sec. Processed 59.82 million rows, 24.03 GB (312.06 thousand rows/s., 125.37 MB/s.)
 ```
 
@@ -191,7 +197,6 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 :::info
 При чтении результатов запросов начальный запрос может казаться более медленным, чем повторный запуск того же запроса. Это можно объяснить как собственным кэшированием S3, так и [ClickHouse Schema Inference Cache](/operations/system-tables/schema_inference_cache). Этот кэш сохраняет выведенную схему для файлов, что позволяет пропустить этап вывода схемы при последующих обращениях и, таким образом, сократить время выполнения запроса.
 :::
-
 
 ## Использование потоков для чтения \{#using-threads-for-reads\}
 
@@ -216,7 +221,9 @@ GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
 SETTINGS max_threads = 16
+```
 
+```response
 ┌─OwnerDisplayName─┬─num_posts─┐
 │ user330315       │     10344 │
 │ user4039065      │      5316 │
@@ -227,22 +234,29 @@ SETTINGS max_threads = 16
 
 5 rows in set. Elapsed: 1.505 sec. Processed 59.82 million rows, 24.03 GB (39.76 million rows/s., 15.97 GB/s.)
 Peak memory usage: 178.58 MiB.
+```
 
+```sql
 SETTINGS max_threads = 32
+```
 
+```response
 5 rows in set. Elapsed: 0.779 sec. Processed 59.82 million rows, 24.03 GB (76.81 million rows/s., 30.86 GB/s.)
 Peak memory usage: 369.20 MiB.
+```
 
+```sql
 SETTINGS max_threads = 64
+```
 
+```response
 5 rows in set. Elapsed: 0.674 sec. Processed 59.82 million rows, 24.03 GB (88.81 million rows/s., 35.68 GB/s.)
 Peak memory usage: 639.99 MiB.
 ```
 
-
 ## Настройка потоков и размера блоков для вставок \{#tuning-threads-and-block-size-for-inserts\}
 
-Чтобы достичь максимальной производительности ингестии, необходимо выбрать (1) размер блока вставки и (2) соответствующий уровень параллелизма вставки на основе (3) количества доступных ядер CPU и объёма доступной RAM. Вкратце:
+Чтобы достичь максимальной производительности ингестии, необходимо выбрать (1) размер блока вставки и (2) соответствующий уровень параллелизма вставки на основе (3) количества доступных ядер CPU и объёма доступной оперативной памяти. Вкратце:
 
 * Чем больше мы [задаём размер блока вставки](#insert-block-size), тем меньше частей ClickHouse должен создать и тем меньше требуется [дисковых операций ввода-вывода](https://en.wikipedia.org/wiki/Category:Disk_file_systems) и [фоновых слияний](https://clickhouse.com/blog/supercharge-your-clickhouse-data-loads-part1#more-parts--more-background-part-merges).
 * Чем выше мы задаём [число параллельных потоков вставки](#insert-parallelism), тем быстрее будут обрабатываться данные.
@@ -271,12 +285,13 @@ min_insert_block_size_bytes = peak_memory_usage_in_bytes / (~3 * max_insert_thre
 ```sql
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 128.566 sec. Processed 59.82 million rows, 24.03 GB (465.28 thousand rows/s., 186.92 MB/s.)
 ```
 
 Как видно, настройка этих параметров повысила скорость вставки более чем на `33%`. Предлагаем читателю попытаться ещё больше повысить производительность отдельного узла.
-
 
 ## Масштабирование по ресурсам и узлам \{#scaling-with-resources-and-nodes\}
 
@@ -289,9 +304,13 @@ FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow
 ```sql
 INSERT INTO posts SELECT *
 FROM s3('https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=8, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 67.294 sec. Processed 59.82 million rows, 24.03 GB (888.93 thousand rows/s., 357.12 MB/s.)
+```
 
+```sql
 SELECT
     OwnerDisplayName,
     count() AS num_posts
@@ -301,14 +320,15 @@ GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
 SETTINGS max_threads = 92
+```
 
+```response
 5 rows in set. Elapsed: 0.421 sec. Processed 59.82 million rows, 24.03 GB (142.08 million rows/s., 57.08 GB/s.)
 ```
 
 :::note
 Отдельные узлы также могут становиться узким местом из‑за ограничений сети и запросов S3 GET, что мешает линейно наращивать производительность при вертикальном масштабировании.
 :::
-
 
 ### Горизонтальное масштабирование \{#horizontal-scaling\}
 
@@ -334,7 +354,9 @@ GROUP BY OwnerDisplayName
 ORDER BY num_posts DESC
 LIMIT 5
 SETTINGS max_threads = 16
+```
 
+```response
 ┌─OwnerDisplayName─┬─num_posts─┐
 │ user330315       │     10344 │
 │ user4039065      │      5316 │
@@ -352,7 +374,9 @@ Peak memory usage: 176.74 MiB.
 ```sql
 INSERT INTO posts SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet') SETTINGS min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 171.202 sec. Processed 59.82 million rows, 24.03 GB (349.41 thousand rows/s., 140.37 MB/s.)
 ```
 
@@ -365,13 +389,14 @@ INSERT INTO posts
 SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows=0, max_insert_threads=4, min_insert_block_size_bytes=2863311530
+```
 
+```response
 0 rows in set. Elapsed: 54.571 sec. Processed 59.82 million rows, 24.03 GB (1.10 million rows/s., 440.38 MB/s.)
 Peak memory usage: 11.75 GiB.
 ```
 
 Как и ожидалось, это снижает производительность операций вставки в 3 раза.
-
 
 ## Дополнительная настройка \{#further-tuning\}
 
@@ -387,11 +412,12 @@ SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0,
 SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0, max_insert_threads = 4, min_insert_block_size_bytes = 2863311530, insert_deduplicate = 0
+```
 
+```response
 0 rows in set. Elapsed: 52.992 sec. Processed 59.82 million rows, 24.03 GB (1.13 million rows/s., 453.50 MB/s.)
 Peak memory usage: 26.57 GiB.
 ```
-
 
 ### Оптимизация при вставке \{#optimize-on-insert\}
 
@@ -403,10 +429,11 @@ Peak memory usage: 26.57 GiB.
 SELECT *
 FROM s3Cluster('default', 'https://datasets-documentation.s3.eu-west-3.amazonaws.com/stackoverflow/parquet/posts/by_month/*.parquet')
 SETTINGS parallel_distributed_insert_select = 2, min_insert_block_size_rows = 0, max_insert_threads = 4, min_insert_block_size_bytes = 2863311530, insert_deduplicate = 0, optimize_on_insert = 0
-
-0 rows in set. Elapsed: 49.688 sec. Processed 59.82 million rows, 24.03 GB (1.20 million rows/s., 483.66 MB/s.)
 ```
 
+```response
+0 rows in set. Elapsed: 49.688 sec. Processed 59.82 million rows, 24.03 GB (1.20 million rows/s., 483.66 MB/s.)
+```
 
 ## Прочие заметки \{#misc-notes\}
 

@@ -52,7 +52,11 @@ ORDER BY
 ```
 
 :::note
-如果没有 `system.query_log` 表，则很可能尚未启用查询日志。请参阅 [`query_log` 设置](https://clickhouse.com/docs/operations/server-configuration-parameters/settings#server_configuration_parameters-query-log) 以了解如何启用它。
+如果没有 `system.query_log` 表，则很可能尚未启用查询日志。请参阅 [`query_log` 设置](/operations/server-configuration-parameters/settings#query_log) 以了解如何启用它。
+:::
+
+:::note[`query_log` 包含的不仅仅是你提交的查询]
+一次提交的查询可能会显示为多行：初始查询 (`is_initial_query = 1`) 以及派生步骤或内部步骤 (`is_initial_query = 0`) ，例如用于分布式执行的二级查询，或用于计算视图的内部查询。这些内部行各自都有自己的 `query_id` 值——由 ClickHouse 分配，有时还会包含类似 `queryView...` 的标签——因此，不要假设每个 `query_id` 都与客户端报告的一致。若要将资源使用归因到你实际运行的查询，请过滤 `is_initial_query = 1`，或匹配 `query_id = initial_query_id`。详见[如何识别开销最高的查询](/knowledgebase/find-expensive-queries#initial_query_id-vs-query_id) 和 [`query_log` 参考](/operations/system-tables/query_log)。
 :::
 
 如果没有集群，可以直接查询单个 `system.query_log` 表：

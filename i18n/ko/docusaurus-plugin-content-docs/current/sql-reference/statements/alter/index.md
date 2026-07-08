@@ -1,5 +1,5 @@
 ---
-description: 'ALTER SQL 문에 대한 문서'
+description: 'ALTER 문서'
 sidebar_label: 'ALTER'
 sidebar_position: 35
 slug: /sql-reference/statements/alter/
@@ -7,12 +7,10 @@ title: 'ALTER'
 doc_type: 'reference'
 ---
 
-# ALTER \{#alter\}
-
 대부분의 `ALTER TABLE` 쿼리는 테이블 설정이나 데이터를 수정합니다:
 
-| Modifier                                                                            |
-|-------------------------------------------------------------------------------------|
+| Modifier                                                                    |
+| --------------------------------------------------------------------------- |
 | [COLUMN](/sql-reference/statements/alter/column.md)                         |
 | [PARTITION](/sql-reference/statements/alter/partition.md)                   |
 | [DELETE](/sql-reference/statements/alter/delete.md)                         |
@@ -26,29 +24,29 @@ doc_type: 'reference'
 | [APPLY PATCHES](/sql-reference/statements/alter/apply-patches.md)           |
 
 :::note
-대부분의 `ALTER TABLE` 쿼리는 [\*MergeTree](/engines/table-engines/mergetree-family/index.md), [Merge](/engines/table-engines/special/merge.md), [Distributed](/engines/table-engines/special/distributed.md) 테이블에서만 지원됩니다.
+대부분의 `ALTER TABLE` 쿼리는 [*MergeTree](/engines/table-engines/mergetree-family/index.md), [Merge](/engines/table-engines/special/merge.md), [Distributed](/engines/table-engines/special/distributed.md) 테이블에서만 지원됩니다.
 :::
 
 다음 `ALTER` SQL 문은 뷰를 변경합니다:
 
-| Statement                                                                           | Description                                                                          |
-|-------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| [ALTER TABLE ... MODIFY QUERY](/sql-reference/statements/alter/view.md)     | [materialized view](/sql-reference/statements/create/view) 구조를 수정합니다.                                       |
+| Statement                                                               | Description                                                           |
+| ----------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| [ALTER TABLE ... MODIFY QUERY](/sql-reference/statements/alter/view.md) | [materialized view](/sql-reference/statements/create/view) 구조를 수정합니다. |
 
 다음 `ALTER` SQL 문은 역할 기반 접근 제어와 관련된 개체를 수정합니다:
 
-| Statement                                                                       |
-|---------------------------------------------------------------------------------|
+| Statement                                                               |
+| ----------------------------------------------------------------------- |
 | [USER](/sql-reference/statements/alter/user.md)                         |
 | [ROLE](/sql-reference/statements/alter/role.md)                         |
 | [QUOTA](/sql-reference/statements/alter/quota.md)                       |
 | [ROW POLICY](/sql-reference/statements/alter/row-policy.md)             |
 | [SETTINGS PROFILE](/sql-reference/statements/alter/settings-profile.md) |
 
-| Statement                                                                             | Description                                                                               |
-|---------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | 이전에 주석이 설정되어 있었는지와 상관없이 테이블의 주석을 추가, 수정 또는 제거합니다. |
-| [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | [Named Collections](/operations/named-collections.md)를 수정합니다.                   |
+| Statement                                                                     | Description                                                   |
+| ----------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| [ALTER TABLE ... MODIFY COMMENT](/sql-reference/statements/alter/comment.md)  | 이전에 주석이 설정되어 있었는지와 상관없이 테이블의 주석을 추가, 수정 또는 제거합니다.             |
+| [ALTER NAMED COLLECTION](/sql-reference/statements/alter/named-collection.md) | [Named Collections](/operations/named-collections.md)를 수정합니다. |
 
 ## 뮤테이션 \{#mutations\}
 

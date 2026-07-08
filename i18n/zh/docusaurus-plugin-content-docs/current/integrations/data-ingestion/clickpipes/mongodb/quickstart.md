@@ -2,15 +2,13 @@
 title: '在 ClickHouse 中处理 JSON'
 sidebar_label: '处理 JSON'
 slug: /integrations/clickpipes/mongodb/quickstart
-description: '经由 ClickPipes 将来自 MongoDB 的 JSON 数据复制到 ClickHouse 后的常见处理模式'
-doc_type: '指南'
+description: '通过 ClickPipes 将 MongoDB 中复制到 ClickHouse 的 JSON 数据的常见处理模式'
+doc_type: 'guide'
 keywords: ['clickpipes', 'mongodb', 'cdc', '数据摄取', '实时同步']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
-
-# 在 ClickHouse 中处理 JSON \{#working-with-json-in-clickhouse\}
 
 本指南介绍在使用 ClickPipes 将 MongoDB 中的 JSON 数据复制到 ClickHouse 时的一些常见模式。
 

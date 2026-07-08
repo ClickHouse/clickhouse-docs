@@ -2,7 +2,7 @@
 description: 'Более 150 млн отзывов покупателей о товарах Amazon'
 sidebar_label: 'Отзывы покупателей Amazon'
 slug: /getting-started/example-datasets/amazon-reviews
-title: 'Отзывы покупателей Amazon'
+title: 'Отзыв покупателя Amazon'
 doc_type: 'guide'
 keywords: ['отзывы Amazon', 'датасет с отзывами покупателей', 'данные электронной коммерции', 'пример датасета', 'начало работы']
 ---

@@ -1,10 +1,10 @@
 ---
-sidebar_label: 'SQL Server CDC для ClickHouse'
+sidebar_label: 'SQL Server CDC (фиксация изменений данных) для ClickHouse'
 sidebar_position: 13
 keywords: ['clickhouse', 'Streamkap', 'CDC', 'sql server', 'подключение', 'интеграция', 'etl', 'интеграция данных', 'фиксация изменений данных']
 slug: /integrations/data-ingestion/etl-tools/sql-server-clickhouse
 description: 'Потоковая передача данных из SQL Server в ClickHouse для быстрой аналитики'
-title: 'Потоковая передача данных из SQL Server в ClickHouse для быстрой аналитики'
+title: 'Потоковая передача данных из SQL Server в ClickHouse для быстрой аналитики: пошаговое руководство'
 doc_type: 'guide'
 ---
 
@@ -14,10 +14,7 @@ import image1 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 import image2 from '@site/static/images/integrations/data-ingestion/etl-tools/image2.png';
 import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/image3.png';
 
-
-# Потоковая передача данных из SQL Server в ClickHouse для высокоскоростной аналитики: пошаговое руководство \{#streaming-data-from-sql-server-to-clickhouse-for-fast-analytics-step-by-step-guide\}
-
-В этой статье мы пошагово покажем, как организовать потоковую передачу данных из SQL Server в ClickHouse. ClickHouse идеально подходит, если вам нужна сверхбыстрая аналитика для внутренних отчётных панелей или клиентских дашбордов. Мы по шагам пройдём подготовку обеих баз данных, настройку соединения между ними и, наконец, покажем, как использовать [Streamkap](https://streamkap.com) для потоковой передачи ваших данных. Если SQL Server обслуживает ваши повседневные операции, а для аналитики вам нужна скорость и мощь ClickHouse, вы обратились по адресу.
+В этой статье мы пошагово покажем, как организовать потоковую передачу данных из SQL Server в ClickHouse. ClickHouse идеально подходит, если вам нужна сверхбыстрая аналитика для внутренних отчётных панелей или клиентских панелей мониторинга. Мы по шагам пройдём подготовку обеих баз данных, настройку соединения между ними и, наконец, покажем, как использовать [Streamkap](https://streamkap.com) для потоковой передачи ваших данных. Если SQL Server обслуживает ваши повседневные операции, а для аналитики вам нужна скорость и мощь ClickHouse, вы обратились по адресу.
 
 ## Зачем передавать потоковые данные из SQL Server в ClickHouse? \{#why-stream-data-from-sql-server-to-clickhouse\}
 

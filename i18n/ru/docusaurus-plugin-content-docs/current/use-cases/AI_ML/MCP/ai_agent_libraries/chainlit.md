@@ -1,26 +1,25 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/chainlit
 sidebar_label: 'Интеграция с Chainlit'
-title: 'Как создать ИИ-агента с помощью Chainlit и сервера ClickHouse MCP'
+title: 'Как создать ИИ-агента с помощью Chainlit и MCP-сервера ClickHouse'
 pagination_prev: null
 pagination_next: null
-description: 'Узнайте, как использовать Chainlit для создания чат-приложений на базе LLM совместно с сервером ClickHouse MCP'
+description: 'Узнайте, как использовать Chainlit для создания чат-приложений на базе LLM совместно с MCP-сервером ClickHouse'
 keywords: ['ClickHouse', 'MCP', 'Chainlit']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# Как создать AI-агента с помощью Chainlit и ClickHouse MCP Server \{#how-to-build-an-ai-agent-with-chainlit-and-the-clickhouse-mcp-server\}
-
-В этом руководстве показано, как объединить мощный фреймворк чат-интерфейсов Chainlit 
-с сервером ClickHouse Model Context Protocol (MCP) для создания интерактивных 
-приложений для работы с данными. Chainlit позволяет создавать диалоговые интерфейсы для ИИ‑приложений
-с минимальным количеством кода, а сервер ClickHouse MCP обеспечивает бесшовную интеграцию 
-с высокопроизводительной колоночной базой данных ClickHouse.
+В этом руководстве рассматривается, как объединить мощный фреймворк Chainlit для создания чат-интерфейсов
+с сервером ClickHouse Model Context Protocol (MCP), чтобы создавать интерактивные
+приложения для работы с данными. Chainlit позволяет создавать диалоговые интерфейсы для ИИ-
+приложений с минимальным количеством кода, а MCP-сервер ClickHouse обеспечивает удобную
+интеграцию с высокопроизводительной колоночной базой данных ClickHouse.
 
 ## Предварительные требования \{#prerequisites\}
-- Вам потребуется ключ API Anthropic
-- У вас должен быть установлен [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
+
+* Вам потребуется ключ API Anthropic
+* У вас должен быть установлен [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 
 ## Базовое приложение Chainlit \{#basic-chainlit-app\}
 
@@ -32,9 +31,9 @@ uv run --with anthropic --with chainlit chainlit run chat_basic.py -w -h
 
 Затем откройте в браузере `http://localhost:8000`
 
-## Добавление ClickHouse MCP Server \{#adding-clickhouse-mcp-server\}
+## Добавление сервера ClickHouse MCP \{#adding-clickhouse-mcp-server\}
 
-Дело становится интереснее, если мы добавим ClickHouse MCP Server.
+Дело становится интереснее, если мы добавим сервер ClickHouse MCP.
 Вам нужно обновить файл `.chainlit/config.toml`, чтобы позволить использовать команду `uv`:
 
 ```toml
@@ -50,13 +49,13 @@ uv run --with anthropic --with chainlit chainlit run chat_basic.py -w -h
 Полный файл `config.toml` можно найти в [репозитории с примерами](https://github.com/ClickHouse/examples/blob/main/ai/mcp/chainlit/.chainlit/config.toml)
 :::
 
-Для интеграции MCP Servers с Chainlit требуется немного вспомогательного кода, поэтому для запуска Chainlit нужно выполнить следующую команду:
+Чтобы MCP-серверы работали с Chainlit, требуется немного вспомогательного кода, поэтому для запуска Chainlit нужно выполнить следующую команду:
 
 ```sh
 uv run --with anthropic --with chainlit chainlit run chat_mcp.py -w -h
 ```
 
-Чтобы добавить MCP Server, нажмите на значок штекера в интерфейсе чата, а затем
+Чтобы добавить MCP-сервер, нажмите на значок штекера в интерфейсе чата, а затем
 добавьте следующую команду для подключения и использования ClickHouse SQL Playground:
 
 ```sh

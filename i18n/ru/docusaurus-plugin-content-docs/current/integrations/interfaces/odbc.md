@@ -1,13 +1,11 @@
 ---
-description: 'Документация по драйверу ODBC для ClickHouse'
-sidebar_label: 'Драйвер ODBC'
+description: 'Документация по ODBC-драйверу ClickHouse'
+sidebar_label: 'ODBC-драйвер'
 sidebar_position: 35
 slug: /interfaces/odbc
-title: 'Драйвер ODBC'
+title: 'ODBC-драйвер'
 doc_type: 'reference'
 ---
-
-# ODBC-драйвер \{#odbc-driver\}
 
 ODBC-драйвер ClickHouse предоставляет интерфейс, соответствующий стандартам, для подключения ODBC-совместимых приложений к
 ClickHouse. Он реализует ODBC API и позволяет приложениям, BI-инструментам и скриптовым средам выполнять SQL-запросы,

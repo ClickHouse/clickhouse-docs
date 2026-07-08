@@ -1,9 +1,9 @@
 ---
-sidebar_title: 'Query API Endpoints'
+sidebar_title: 'Query API endpoints'
 slug: /cloud/get-started/query-endpoints
 description: 'Easily spin up REST API endpoints from your saved queries'
 keywords: ['api', 'query api endpoints', 'query endpoints', 'query rest api']
-title: 'Query API Endpoints'
+title: 'Setting up query API endpoints'
 doc_type: 'guide'
 ---
 
@@ -16,8 +16,6 @@ import endpoints_curltest from '@site/static/images/cloud/sqlconsole/endpoints-c
 import endpoints_monitoring from '@site/static/images/cloud/sqlconsole/endpoints-monitoring.png';
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-
-# Setting up query API endpoints
 
 The **Query API Endpoints** feature allows you to create an API endpoint directly from any saved SQL query in the ClickHouse Cloud console. You'll be able to access API endpoints via HTTP to execute your saved queries without needing to connect to your ClickHouse Cloud service via a native driver.
 
@@ -540,7 +538,7 @@ fetch(
 </TabItem>
 </Tabs>
 
-### Request and parse the response as a stream` {#request-and-parse-the-response-as-a-stream}
+### Request and parse the response as a stream {#request-and-parse-the-response-as-a-stream}
 
 **Query API Endpoint SQL:**
 

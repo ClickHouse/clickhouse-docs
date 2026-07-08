@@ -1,19 +1,19 @@
 ---
-description: 'Набор данных, содержащий 1,3 миллиона записей исторических данных о
+description: 'Датасет, содержащий 1,3 миллиона записей исторических данных о
   меню гостиниц, ресторанов и кафе с блюдами и их ценами.'
-sidebar_label: 'Набор данных New York Public Library "what''s on the menu?"'
+sidebar_label: 'Датасет New York Public Library "what''s on the menu?"'
 slug: /getting-started/example-datasets/menus
-title: 'Набор данных New York Public Library "What''s on the Menu?"'
+title: 'Датасет New York Public Library "What''s on the Menu?"'
 doc_type: 'guide'
-keywords: ['пример набора данных', 'меню', 'исторические данные', 'демонстрационные данные', 'nypl']
+keywords: ['пример датасета', 'меню', 'исторические данные', 'демонстрационные данные', 'nypl']
 ---
 
-Набор данных создан New York Public Library. Он содержит исторические данные о меню гостиниц, ресторанов и кафе с блюдами и их ценами.
+Датасет создан New York Public Library. Он содержит исторические данные о меню гостиниц, ресторанов и кафе с блюдами и их ценами.
 
-Источник: http://menus.nypl.org/data  
+Источник: http://menus.nypl.org/data
 Данные находятся в общественном достоянии.
 
-Данные взяты из архива библиотеки, поэтому они могут быть неполными и неудобными для статистического анализа. Тем не менее, они ещё и очень «аппетитные».  
+Данные взяты из архива библиотеки, поэтому они могут быть неполными и неудобными для статистического анализа. Тем не менее, они ещё и очень «аппетитные».
 Объём составляет всего 1,3 миллиона записей о блюдах в меню — это очень небольшой объём данных для ClickHouse, но всё же это хороший пример.
 
 ## Загрузите набор данных \{#download-dataset\}
@@ -186,15 +186,11 @@ FROM menu_item
 
 ## Проверьте данные \{#validate-data\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT count() FROM menu_item_denorm;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌─count()─┐
 │ 1329175 │
 └─────────┘
@@ -204,9 +200,7 @@ SELECT count() FROM menu_item_denorm;
 
 ### Средние исторические цены на блюда \{#query-averaged-historical-prices\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -218,9 +212,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 100, 100)─┐
 │ 1850 │     618 │                  1.5 │ █▍                           │
 │ 1860 │    1634 │                 1.29 │ █▎                           │
@@ -246,9 +238,7 @@ ORDER BY d ASC;
 
 ### Цены на бургеры \{#query-burger-prices\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -260,9 +250,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)───────────┐
 │ 1880 │       2 │                 0.42 │ ▋                                     │
 │ 1890 │       7 │                 0.85 │ █▋                                    │
@@ -283,9 +271,7 @@ ORDER BY d ASC;
 
 ### Водка \{#query-vodka\}
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -297,9 +283,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)─┐
 │ 1910 │       2 │                    0 │                             │
 │ 1920 │       1 │                  0.3 │ ▌                           │
@@ -319,9 +303,7 @@ ORDER BY d ASC;
 
 Выведем цены на икру, а также название любого блюда с икрой.
 
-Запрос:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -334,9 +316,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-Результат:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)──────┬─any(dish_name)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 1090 │       1 │                    0 │                                  │ Caviar                                                                                                                              │
 │ 1880 │       3 │                    0 │                                  │ Caviar                                                                                                                              │

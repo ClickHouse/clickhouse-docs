@@ -279,16 +279,21 @@ SELECT base32Encode('Encoded')
 
 [Base58](https://datatracker.ietf.org/doc/html/draft-msporny-base58-03#section-3)로 인코딩된 문자열을 디코딩합니다.
 문자열이 유효한 Base58 인코딩 형식이 아니면 예외가 발생합니다.
+최적화된 고정 크기 디코더를 선택하기 위해 선택 사항인 두 번째 인수 `expected_size`를 지정할 수 있습니다.
+현재 지원되는 값은 32와 64입니다. 다른 값에는 일반 디코더가 사용됩니다.
+최적화된 디코더를 선택했지만 입력을 정확히 해당 바이트 수로 디코딩할 수 없는 경우,
+이 함수는 예외를 발생시키거나(`tryBase58Decode`의 경우 빈 문자열을 반환합니다) 합니다.
 
 **구문**
 
 ```sql
-base58Decode(encoded)
+base58Decode(encoded[, expected_size])
 ```
 
 **인수**
 
 * `encoded` — 디코딩할 String 컬럼 또는 상수입니다. [`String`](/sql-reference/data-types/string)
+* `expected_size` — 선택 사항. 예상 디코딩 크기(바이트 단위)입니다. 32 또는 64인 경우 최적화된 디코더를 사용하고, 그 외의 값에는 일반 디코더를 사용합니다. [`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -1219,7 +1224,7 @@ SELECT endsWith('ClickHouse', 'House');
 
 ## endsWithCaseInsensitive \{#endsWithCaseInsensitive\}
 
-도입 버전: v25.9.0
+도입 버전: v25.10.0
 
 문자열이 주어진 접미사로 끝나는지 대소문자를 구분하지 않고 확인합니다.
 
@@ -1252,16 +1257,15 @@ SELECT endsWithCaseInsensitive('ClickHouse', 'HOUSE');
 └─────────────────────────────────────────┘
 ```
 
-
 ## endsWithCaseInsensitiveUTF8 \{#endsWithCaseInsensitiveUTF8\}
 
-도입 버전: v25.9.0
+도입 버전: v25.10.0
 
 문자열 `s`가 대소문자를 구분하지 않고 `suffix`로 끝나는지 여부를 반환합니다.
 문자열이 올바른 UTF-8로 인코딩된 텍스트를 포함한다고 가정합니다.
 이 가정이 위반되더라도 예외는 발생하지 않으며 결과는 정의되지 않습니다.
 
-**문법**
+**구문**
 
 ```sql
 endsWithCaseInsensitiveUTF8(s, suffix)
@@ -1289,7 +1293,6 @@ SELECT endsWithCaseInsensitiveUTF8('данных', 'ых');
 │                                           1 │
 └─────────────────────────────────────────────┘
 ```
-
 
 ## endsWithUTF8 \{#endsWithUTF8\}
 
@@ -2035,7 +2038,7 @@ münchen
 
 ## naturalSortKey \{#naturalSortKey\}
 
-도입 버전: v25.11.0
+도입 버전: v26.3.0
 
 이 함수는 자연 정렬에 사용됩니다.
 
@@ -2069,7 +2072,6 @@ SELECT s FROM t ORDER BY naturalSortKey(s)
 | a02 │
 └─────┘
 ```
-
 
 ## normalizeUTF8NFC \{#normalizeUTF8NFC\}
 
@@ -2375,6 +2377,61 @@ SELECT
 └──────────────────────────────────────────────┴──────────────────────────────────────────────┴──────────────────────────────────────────────┴───────────────────────────────────────────┘
 ```
 
+
+## regexpPosition \{#regexpPosition\}
+
+도입 버전: v26.5.0
+
+바이트 위치 `position`부터 검색을 시작하여, `haystack`에서 `pattern`의 `occurrence`번째 일치 항목의 바이트 위치(1부터 시작)를 반환합니다.
+
+`return_option`이 0(기본값)인 경우 일치 항목의 첫 번째 바이트 위치를 반환합니다. 1인 경우 일치 항목 *다음* 첫 번째 바이트 위치를 반환합니다.
+
+`subexpression`이 0보다 크면 전체 일치 항목이 아니라 해당 캡처 그룹의 위치를 반환합니다.
+
+일치 항목을 찾지 못했거나 요청한 캡처 그룹이 일치에 포함되지 않은 경우 0을 반환합니다.
+
+PostgreSQL의 `regexp_instr`와의 호환성을 위해 제공됩니다(해당 별칭으로도 제공됨). 위치는 다른 ClickHouse 정규식 함수와 마찬가지로 바이트 기준입니다. PostgreSQL의 `regexp_instr`는 문자 기준이라는 점에 유의하십시오.
+
+**구문**
+
+```sql
+regexpPosition(haystack, pattern[, position[, occurrence[, return_option[, flags[, subexpression]]]]])
+```
+
+**별칭**: `regexpInstr`, `regexp_instr`
+
+**인수**
+
+* `haystack` — 검색할 문자열입니다. [`String`](/sql-reference/data-types/string)
+* `pattern` — 정규 표현식 패턴입니다. [`const String`](/sql-reference/data-types/string)
+* `position` — 선택 사항입니다. 검색을 시작할 1 기반 바이트 위치입니다. 기본값: 1. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `occurrence` — 선택 사항입니다. 반환할 일치 항목의 순서입니다. 기본값: 1. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `return_option` — 선택 사항입니다. 0이면 일치 시작 위치를 반환하고, 1이면 일치 직후 위치를 반환합니다. 기본값: 0. [`(U)Int*`](/sql-reference/data-types/int-uint)
+* `flags` — 선택 사항입니다. 정규식 플래그입니다. 지원: `i` (대소문자 구분 안 함), `c` (대소문자 구분), `m`/`n` (멀티라인 앵커), `s` (점이 줄바꿈과 일치). 기본값: 빈 문자열. [`const String`](/sql-reference/data-types/string)
+* `subexpression` — 선택 사항입니다. 위치를 반환할 캡처 그룹의 인덱스입니다. 0은 전체 일치를 의미합니다. 기본값: 0. [`(U)Int*`](/sql-reference/data-types/int-uint)
+
+**반환 값**
+
+일치 항목의 바이트 위치를 반환하며, 찾지 못하면 0을 반환합니다. [`UInt64`](/sql-reference/data-types/int-uint)
+
+**예시**
+
+**기본 사용법**
+
+```sql title=Query
+SELECT
+    regexpPosition('hello world', 'world'),
+    regexpPosition('aXbXcXd', 'X', 1, 2),
+    regexpPosition('aXbXcXd', 'X', 1, 2, 1),
+    regexpPosition('Hello WORLD', 'world', 1, 1, 0, 'i'),
+    regexpPosition('foo123bar456', '([a-z]+)([0-9]+)', 1, 2, 0, '', 2);
+```
+
+```response title=Response
+┌─...─┬─...─┬─...─┬─...─┬─...─┐
+│   7 │   4 │   5 │   7 │  10 │
+└─────┴─────┴─────┴─────┴─────┘
+```
 
 ## removeDiacriticsUTF8 \{#removeDiacriticsUTF8\}
 
@@ -2740,15 +2797,15 @@ SELECT space(3) AS res, length(res);
 **구문**
 
 ```sql
-sparseGrams(s[, min_ngram_length, max_ngram_length])
+sparseGrams(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
 **인수**
 
 * `s` — 입력 문자열입니다. [`String`](/sql-reference/data-types/string)
-* `min_ngram_length` — 선택 사항입니다. 추출되는 n그램의 최소 길이입니다. 기본값이자 최소값은 3입니다. [`UInt*`](/sql-reference/data-types/int-uint)
-* `max_ngram_length` — 선택 사항입니다. 추출되는 n그램의 최대 길이입니다. 기본값은 100입니다. `min_ngram_length`보다 작아서는 안 됩니다. [`UInt*`](/sql-reference/data-types/int-uint)
-* `min_cutoff_length` — 선택 사항입니다. 지정된 경우, 길이가 `min_cutoff_length` 이상인 n그램만 반환합니다. 기본값은 `min_ngram_length`와 동일합니다. `min_ngram_length`보다 작아서는 안 되며, `max_ngram_length`보다 커서도 안 됩니다. [`UInt*`](/sql-reference/data-types/int-uint)
+* `min_ngram_length` — 선택 사항입니다. 추출되는 n-그램의 최소 길이입니다. 기본값이자 최소값은 3입니다. [`UInt*`](/sql-reference/data-types/int-uint)
+* `max_ngram_length` — 선택 사항입니다. 추출되는 n-그램의 최대 길이입니다. 기본값은 100입니다. `min_ngram_length`보다 작아서는 안 됩니다. [`UInt*`](/sql-reference/data-types/int-uint)
+* `min_cutoff_length` — 선택 사항입니다. 지정된 경우, 길이가 `min_cutoff_length` 이상인 n-그램만 반환합니다. 기본값은 `min_ngram_length`와 동일합니다. `min_ngram_length`보다 작아서는 안 되며, `max_ngram_length`보다 커서도 안 됩니다. [`UInt*`](/sql-reference/data-types/int-uint)
 
 **반환 값**
 
@@ -2767,7 +2824,6 @@ SELECT sparseGrams('alice', 3)
 │ ['ali','lic','lice','ice']         │
 └────────────────────────────────────┘
 ```
-
 
 ## sparseGramsHashes \{#sparseGramsHashes\}
 
@@ -2861,10 +2917,10 @@ SELECT sparseGramsHashesUTF8('алиса', 3)
 **구문**
 
 ```sql
-sparseGramsUTF8(s[, min_ngram_length, max_ngram_length])
+sparseGramsUTF8(s[, min_ngram_length[, max_ngram_length[, min_cutoff_length]]])
 ```
 
-**인자**
+**인수**
 
 * `s` — 입력 문자열입니다. [`String`](/sql-reference/data-types/string)
 * `min_ngram_length` — 선택 사항입니다. 추출되는 n-그램의 최소 길이입니다. 기본값이자 최소값은 3입니다. [`UInt*`](/sql-reference/data-types/int-uint)
@@ -2888,7 +2944,6 @@ SELECT sparseGramsUTF8('алиса', 3)
 │ ['али','лис','иса']         │
 └─────────────────────────────┘
 ```
-
 
 ## startsWith \{#startsWith\}
 
@@ -2928,7 +2983,7 @@ SELECT startsWith('ClickHouse', 'Click');
 
 ## startsWithCaseInsensitive \{#startsWithCaseInsensitive\}
 
-도입 버전: v25.9.0
+도입 버전: v25.10.0
 
 문자열이 대소문자를 구분하지 않고 지정된 문자열로 시작하는지 확인합니다.
 
@@ -2961,10 +3016,9 @@ SELECT startsWithCaseInsensitive('ClickHouse', 'CLICK');
 └─────────────────────────────────────────┘
 ```
 
-
 ## startsWithCaseInsensitiveUTF8 \{#startsWithCaseInsensitiveUTF8\}
 
-도입된 버전: v25.9.0
+도입 버전: v25.10.0
 
 문자열이 대소문자를 구분하지 않는 지정된 접두사로 시작하는지 확인합니다.
 문자열이 유효한 UTF-8 인코딩 텍스트를 포함한다고 가정합니다.
@@ -2998,7 +3052,6 @@ SELECT startsWithCaseInsensitiveUTF8('приставка', 'при')
 │                        1 │
 └──────────────────────────┘
 ```
-
 
 ## startsWithUTF8 \{#startsWithUTF8\}
 
@@ -3566,12 +3619,13 @@ SELECT tryBase32Decode('IVXGG33EMVSA====');
 **구문**
 
 ```sql
-tryBase58Decode(encoded)
+tryBase58Decode(encoded[, expected_size])
 ```
 
-**인자**
+**인수**
 
 * `encoded` — String 컬럼 또는 상수입니다. 문자열이 올바른 Base58로 인코딩된 것이 아니면, 오류 발생 시 빈 문자열을 반환합니다. [`String`](/sql-reference/data-types/string)
+* `expected_size` — 선택 사항입니다. 디코딩된 예상 크기(바이트 단위)입니다. 32 또는 64인 경우 최적화된 디코더가 사용되며, 그 외의 값에는 일반 디코더가 사용됩니다. [`UInt8, UInt16, UInt32, or UInt64`](/sql-reference/data-types/int-uint)
 
 **반환값**
 
@@ -3590,7 +3644,6 @@ SELECT tryBase58Decode('3dc8KtHrwM') AS res, tryBase58Decode('invalid') AS res_i
 │ Encoded │             │
 └─────────┴─────────────┘
 ```
-
 
 ## tryBase64Decode \{#tryBase64Decode\}
 

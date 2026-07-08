@@ -27,16 +27,12 @@ CREATE [OR REPLACE] FUNCTION name [ON CLUSTER cluster] AS (parameter0, ...) -> e
 
 **예시**
 
-쿼리:
-
-```sql
+```sql title="Query"
 CREATE FUNCTION linear_equation AS (x, k, b) -> k*x + b;
 SELECT number, linear_equation(number, 2, 1) FROM numbers(3);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─number─┬─plus(multiply(2, number), 1)─┐
 │      0 │                            1 │
 │      1 │                            3 │
@@ -44,16 +40,14 @@ SELECT number, linear_equation(number, 2, 1) FROM numbers(3);
 └────────┴──────────────────────────────┘
 ```
 
-다음 쿼리에서는 사용자 정의 FUNCTION 내에서 [조건 함수](../../../sql-reference/functions/conditional-functions.md)가 호출됩니다:
+다음 쿼리에서는 사용자 정의 함수 내에서 [조건 함수](../../../sql-reference/functions/conditional-functions.md)가 호출됩니다:
 
-```sql
+```sql title="Query"
 CREATE FUNCTION parity_str AS (n) -> if(n % 2, 'odd', 'even');
 SELECT number, parity_str(number) FROM numbers(3);
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─number─┬─if(modulo(number, 2), 'odd', 'even')─┐
 │      0 │ even                                 │
 │      1 │ odd                                  │
@@ -63,16 +57,14 @@ SELECT number, parity_str(number) FROM numbers(3);
 
 기존 UDF 교체하기:
 
-```sql
+```sql title="Query"
 CREATE FUNCTION exampleReplaceFunction AS frame -> frame;
 SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
 CREATE OR REPLACE FUNCTION exampleReplaceFunction AS frame -> frame + 1;
 SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─create_query─────────────────────────────────────────────┐
 │ CREATE FUNCTION exampleReplaceFunction AS frame -> frame │
 └──────────────────────────────────────────────────────────┘
@@ -81,7 +73,6 @@ SELECT create_query FROM system.functions WHERE name = 'exampleReplaceFunction';
 │ CREATE FUNCTION exampleReplaceFunction AS frame -> (frame + 1) │
 └────────────────────────────────────────────────────────────────┘
 ```
-
 
 ## 관련 문서 \{#related-content\}
 

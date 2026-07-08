@@ -7,8 +7,6 @@ sidebar_label: 'minMap'
 doc_type: 'reference'
 ---
 
-# minMap \{#minmap\}
-
 ## 描述 \{#description\}
 
 可以将 [`Map`](/sql-reference/aggregate-functions/combinators#-map) 组合器应用于 [`min`](/sql-reference/aggregate-functions/reference/min)

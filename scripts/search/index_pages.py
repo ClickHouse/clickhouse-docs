@@ -20,22 +20,32 @@ LOCALE_CONFIG = {
     'en': {
         'base_path': '',  # docs/ and knowledgebase/ at root
         'url_prefix': '',
-        'index_suffix': ''
+        'index_suffix': '',
+        'algolia_language': 'en'
     },
     'jp': {
         'base_path': 'i18n/jp/docusaurus-plugin-content-docs/current',
         'url_prefix': '/jp',
-        'index_suffix': '-jp'
+        'index_suffix': '-jp',
+        'algolia_language': 'ja'
     },
     'zh': {
         'base_path': 'i18n/zh/docusaurus-plugin-content-docs/current',
         'url_prefix': '/zh',
-        'index_suffix': '-zh'
+        'index_suffix': '-zh',
+        'algolia_language': 'zh'
     },
     'ru': {
         'base_path': 'i18n/ru/docusaurus-plugin-content-docs/current',
         'url_prefix': '/ru',
-        'index_suffix': '-ru'
+        'index_suffix': '-ru',
+        'algolia_language': 'ru'
+    },
+    'ko': {
+        'base_path': 'i18n/ko/docusaurus-plugin-content-docs/current',
+        'url_prefix': '/ko',
+        'index_suffix': '-ko',
+        'algolia_language': 'ko'
     }
 }
 
@@ -71,12 +81,17 @@ def read_metadata(text):
     for part in parts:
         parts = part.split(":")
         if len(parts) == 2:
-            if parts[0] in ['title', 'description', 'slug', 'keywords', 'score', 'doc_type']:
+            if parts[0] in ['title', 'description', 'slug', 'keywords', 'score', 'doc_type', 'unlisted', 'draft']:
                 value = parts[1].strip()
                 # Strip quotes only from doc_type
                 if parts[0] == 'doc_type':
                     value = value.strip("'\"")
-                metadata[parts[0]] = int(value) if parts[0] == 'score' else value
+                if parts[0] == 'score':
+                    metadata[parts[0]] = int(value)
+                elif parts[0] in ['unlisted', 'draft']:
+                    metadata[parts[0]] = value.strip("'\"").lower() == 'true'
+                else:
+                    metadata[parts[0]] = value
     return metadata
 
 
@@ -413,6 +428,12 @@ def process_markdown_directory(directory, base_directory, base_url):
                 if md_file_path not in files_processed:
                     files_processed.add(md_file_path)
                     metadata, content = parse_metadata_and_content(directory, base_directory, md_file_path)
+                    # Skip pages hidden from search via frontmatter. `unlisted` pages are
+                    # excluded from the sidebar and tagged `noindex` by Docusaurus; `draft`
+                    # pages are dropped from production builds entirely. Neither should be
+                    # indexed, but they remain reachable by direct URL.
+                    if metadata.get('unlisted') or metadata.get('draft'):
+                        continue
                     for sub_doc in parse_markdown_content(metadata, content, base_url):
                         url_without_anchor, anchor = split_url_and_anchor(sub_doc['url'])
                         sub_doc['url_without_anchor'] = url_without_anchor
@@ -451,15 +472,22 @@ def compute_page_rank(link_data, damping_factor=0.85, max_iter=100, tol=1e-6):
     return page_rank
 
 
-def create_new_index(client, index_name):
+def create_new_index(client, index_name, locale='en'):
     try:
         client.delete_index(index_name)
         print(f"Temporary index '{index_name}' deleted successfully.")
     except:
         print(f"Temporary index '{index_name}' does not exist or could not be deleted")
-    client.set_settings(index_name, settings['settings'])
+    locale_config = LOCALE_CONFIG.get(locale, LOCALE_CONFIG['en'])
+    algolia_language = locale_config['algolia_language']
+    index_settings = settings['settings'].copy()
+    index_settings['indexLanguages'] = [algolia_language]
+    index_settings['queryLanguages'] = [algolia_language]
+    if algolia_language != 'en':
+        index_settings.pop('optionalWords', None)
+    client.set_settings(index_name, index_settings)
     client.save_rules(index_name, settings['rules'])
-    print(f"Settings applied to temporary index '{index_name}'.")
+    print(f"Settings applied to temporary index '{index_name}' (language: {algolia_language}).")
 
 
 def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
@@ -475,7 +503,7 @@ def main(base_directory, algolia_app_id, algolia_api_key, algolia_index_name,
     temp_index_name = f"{algolia_index_name}_temp"
     client = SearchClientSync(algolia_app_id, algolia_api_key)
     if not dry_run:
-        create_new_index(client, temp_index_name)
+        create_new_index(client, temp_index_name, locale=locale)
     docs = []
     
     # For non-English locales, use the locale-specific path
@@ -544,7 +572,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--locale',
         default='en',
-        choices=['en', 'jp', 'zh', 'ru'],
+        choices=['en', 'jp', 'zh', 'ru', 'ko'],
         help='Locale to index (default: en)'
     )
     args = parser.parse_args()

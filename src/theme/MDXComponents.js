@@ -7,10 +7,12 @@ import MDXComponents from '@theme-original/MDXComponents';
 import VStepper from '@site/src/components/Stepper/Stepper';
 import GlossaryTooltip from '@site/src/components/GlossaryTooltip/GlossaryTooltip';
 import KapaLink from '@site/src/components/KapaAI/KapaLink';
+import AgentPrompt from '@site/src/components/AgentPrompt';
 
 // Define the enhanced components
 const enhancedComponents = {
     ...MDXComponents,
+    AgentPrompt,
     KapaLink,
     GlossaryTooltip,
     ul: (props) => <ul className="custom-ul" {...props} />,

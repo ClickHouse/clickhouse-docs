@@ -1,5 +1,5 @@
 ---
-description: 'Документация по клиентской библиотеке C++ для ClickHouse и интеграции
+description: 'Документация по клиентской библиотеке ClickHouse C++ и интеграции
   с фреймворком u-server'
 sidebar_label: 'C++'
 sidebar_position: 24
@@ -8,13 +8,11 @@ title: 'Клиентская библиотека C++'
 doc_type: 'reference'
 ---
 
-# Клиентская библиотека C++ \{#c-client-library\}
-
 `clickhouse-cpp` — это официальная клиентская библиотека C++ для ClickHouse, обеспечивающая
 быстрый и типобезопасный интерфейс к ClickHouse с использованием его нативного бинарного протокола.
 
 Инструкции по сборке, примеры использования и дополнительная документация доступны в репозитории
-проекта на GitHub: [https://github.com/ClickHouse/clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp). 
+проекта на GitHub: [https://github.com/ClickHouse/clickhouse-cpp](https://github.com/ClickHouse/clickhouse-cpp).
 
 :::note
 Библиотека активно развивается. Хотя она уже поддерживает основную функциональность

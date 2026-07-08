@@ -1,13 +1,11 @@
 ---
-title: 'Справочник по Python API chDB'
+title: 'Справочник по API Python chDB'
 sidebar_label: 'Python API'
 slug: /chdb/api/python
-description: 'Полный справочник по Python API chDB'
+description: 'Полный справочник по API Python chDB'
 keywords: ['chdb', 'embedded', 'clickhouse-lite', 'python', 'api', 'reference']
 doc_type: 'reference'
 ---
-
-# Справочник по API Python \{#python-api-reference\}
 
 ## Основные функции запросов \{#core-query-functions\}
 

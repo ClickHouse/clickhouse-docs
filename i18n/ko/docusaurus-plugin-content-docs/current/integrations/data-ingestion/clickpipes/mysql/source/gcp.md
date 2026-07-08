@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cloud SQL for MySQL 소스 설정 가이드'
+sidebar_label: 'Cloud SQL for MySQL'
 description: 'Cloud SQL for MySQL을 ClickPipes 소스로 설정하는 단계별 가이드'
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL 소스 설정 가이드'
@@ -18,10 +18,7 @@ import gcp_mysql_cert from '@site/static/images/integrations/data-ingestion/clic
 import rootca from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/rootca.png';
 import Image from '@theme/IdealImage';
 
-
-# Cloud SQL for MySQL 소스 설정 가이드 \{#cloud-sql-for-mysql-source-setup-guide\}
-
-MySQL ClickPipe를 통해 데이터를 복제할 수 있도록 Cloud SQL for MySQL 인스턴스를 구성하는 단계별 가이드입니다.
+MySQL ClickPipe를 통해 데이터를 복제할 수 있도록 Cloud SQL for MySQL 인스턴스를 구성하는 방법에 대한 단계별 가이드입니다.
 
 ## 바이너리 로그 보존 활성화 \{#enable-binlog-retention-gcp\}
 

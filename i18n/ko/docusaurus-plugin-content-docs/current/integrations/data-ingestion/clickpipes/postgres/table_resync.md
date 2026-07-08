@@ -1,16 +1,14 @@
 ---
-title: '특정 테이블 재동기화'
-description: 'Postgres ClickPipe에서 특정 테이블을 재동기화하기'
+title: '특정 테이블 다시 동기화하기'
+description: 'Postgres ClickPipe에서 특정 테이블 다시 동기화하기'
 slug: /integrations/clickpipes/postgres/table_resync
-sidebar_label: '테이블 재동기화'
+sidebar_label: '테이블 다시 동기화'
 doc_type: 'guide'
-keywords: ['clickpipes', 'postgresql', 'cdc', '데이터 수집', '실시간 동기화']
+keywords: ['clickpipes', 'postgresql', 'CDC', '데이터 수집', '실시간 동기화']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
-
-# 특정 테이블 다시 동기화하기 \{#resync-tables\}
 
 파이프에서 특정 테이블만 다시 동기화해야 하는 것이 유용한 여러 시나리오가 있습니다. 예를 들어 Postgres에서의 주요 스키마 변경이나 ClickHouse에서의 데이터 모델 재설계와 같은 경우입니다.
 

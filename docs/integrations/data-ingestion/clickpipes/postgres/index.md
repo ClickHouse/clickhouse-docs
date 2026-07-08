@@ -2,7 +2,7 @@
 sidebar_label: 'Ingesting data from Postgres to ClickHouse'
 description: 'Seamlessly connect your Postgres to ClickHouse Cloud.'
 slug: /integrations/clickpipes/postgres
-title: 'Ingesting Data from Postgres to ClickHouse (using CDC)'
+title: 'Ingesting data from Postgres to ClickHouse (using CDC)'
 keywords: ['PostgreSQL', 'ClickPipes', 'CDC', 'change data capture', 'database replication']
 doc_type: 'guide'
 integration:
@@ -20,10 +20,11 @@ import select_replication_slot from '@site/static/images/integrations/data-inges
 import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-destination-db.jpg'
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
 import Image from '@theme/IdealImage';
-
-# Ingesting data from Postgres to ClickHouse (using CDC)
+import ChangingTLSSettings from '@site/docs/_snippets/clickpipes/_changing_tls_settings.md';
 
 You can use ClickPipes to ingest data from your source Postgres database into ClickHouse Cloud. The source Postgres database can be hosted on-premises or in the cloud including Amazon RDS, Google Cloud SQL, Azure Database for Postgres, Supabase and others.
+
+Postgres ClickPipes can be deployed and managed manually using the ClickPipes UI, as well as programmatically using [OpenAPI](/integrations/clickpipes/programmatic-access/openapi) and [Terraform](/integrations/clickpipes/programmatic-access/terraform).
 
 ## Prerequisites {#prerequisites}
 
@@ -90,6 +91,10 @@ Make sure you're logged in to your ClickHouse Cloud account. If you don't have a
 You can use AWS Private Link to connect to your source Postgres database if it is hosted on AWS. This is useful if you
 want to keep your data transfer private.
 You can follow the [setup guide to set up the connection](/integrations/clickpipes/aws-privatelink).
+
+#### (Optional) Changing TLS settings {#optional-changing-tls-settings}
+
+<ChangingTLSSettings/>
 
 #### (Optional) Setting up SSH tunneling {#optional-setting-up-ssh-tunneling}
 

@@ -7,9 +7,7 @@ keywords: ['chdb', '嵌入式', 'clickhouse-lite', 'rust', '安装', 'ffi', '绑
 doc_type: 'guide'
 ---
 
-# 适用于 Rust 的 chDB \{#chdb-for-rust\}
-
-chDB-rust 为 chDB 提供了实验性的 FFI（外部函数接口）绑定，使你可以在 Rust 应用程序中直接运行 ClickHouse 查询，而无需任何外部依赖。
+chDB-rust 提供适用于 chDB 的 Experimental FFI (外部函数接口) 绑定，让您无需任何外部依赖，即可在 Rust 应用程序中直接运行 ClickHouse 查询。
 
 ## 安装 \{#installation\}
 
@@ -51,9 +49,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
-### 有状态使用（会话） \{#stateful-usage-sessions\}
+### 有状态使用 (会话) \{#stateful-usage-sessions\}
 
-对于需要持久状态（例如数据库和数据表）的查询：
+对于需要持久状态 (例如数据库和数据表) 的查询：
 
 ```rust
 use chdb_rust::{

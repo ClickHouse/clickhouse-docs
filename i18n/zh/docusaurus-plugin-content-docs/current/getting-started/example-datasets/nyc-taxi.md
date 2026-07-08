@@ -10,16 +10,16 @@ keywords: ['示例数据集', 'NYC 出租车', '教程', '示例数据', '快速
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-纽约出租车数据样本包含自 2009 年以来在纽约市出发的 30 亿多次出租车和网约车（Uber、Lyft 等）行程。本入门指南使用的是一个包含 300 万行记录的样本。
+纽约出租车数据样本包含自 2009 年以来在纽约市出发的 30 亿多次出租车和网约车 (Uber、Lyft 等) 行程。本入门指南使用的是一个包含 300 万行记录的样本。
 
 可以通过以下几种方式获取完整数据集：
 
 * 直接从 S3 或 GCS 将数据插入到 ClickHouse Cloud 中
-* 下载已准备好的分区
+* 下载预先生成的分区
 * 或者，你也可以在我们的演示环境中查询完整数据集：[sql.clickhouse.com](https://sql.clickhouse.com/?query=U0VMRUNUIGNvdW50KCkgRlJPTSBueWNfdGF4aS50cmlwcw\&chart=eyJ0eXBlIjoibGluZSIsImNvbmZpZyI6eyJ0aXRsZSI6IlRlbXBlcmF0dXJlIGJ5IGNvdW50cnkgYW5kIHllYXIiLCJ4YXhpcyI6InllYXIiLCJ5YXhpcyI6ImNvdW50KCkiLCJzZXJpZXMiOiJDQVNUKHBhc3Nlbmdlcl9jb3VudCwgJ1N0cmluZycpIn19)。
 
 :::note
-下面的示例查询是在 ClickHouse Cloud 的 **生产** 实例上执行的。有关详细信息，请参见
+下面的示例查询是在 ClickHouse Cloud 的 **生产** 实例上执行的。更多信息，请参阅
 [&quot;Playground 规格说明&quot;](/getting-started/playground#specifications)。
 :::
 

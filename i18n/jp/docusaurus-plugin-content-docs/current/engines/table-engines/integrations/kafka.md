@@ -38,6 +38,7 @@ SETTINGS
     [kafka_sasl_mechanism = '',]
     [kafka_sasl_username = '',]
     [kafka_sasl_password = '',]
+    [kafka_autodetect_client_rack = '',]
     [kafka_schema = '',]
     [kafka_num_consumers = N,]
     [kafka_max_block_size = 0,]
@@ -51,6 +52,7 @@ SETTINGS
     [kafka_thread_per_consumer = 0,]
     [kafka_handle_error_mode = 'default',]
     [kafka_commit_on_select = false,]
+    [kafka_consumer_acquire_timeout_ms = 30000,]
     [kafka_max_rows_per_message = 1,]
     [kafka_compression_codec = '',]
     [kafka_compression_level = -1];
@@ -58,36 +60,48 @@ SETTINGS
 
 必須パラメータ：
 
-* `kafka_broker_list` — ブローカーのカンマ区切りリスト（例：`localhost:9092`）。
+* `kafka_broker_list` — ブローカーのカンマ区切りリスト (例：`localhost:9092`) 。
 * `kafka_topic_list` — Kafka トピックのリスト。
 * `kafka_group_name` — Kafka コンシューマーのグループ。読み取りオフセットはグループごとに個別に追跡されます。クラスター内でメッセージを重複処理させたくない場合は、同じグループ名を一貫して使用してください。
 * `kafka_format` — メッセージ形式。SQL の `FORMAT` 関数と同じ指定方法を使用し、`JSONEachRow` などを指定します。詳細については、[Formats](../../../interfaces/formats.md) セクションを参照してください。
 
 オプションパラメータ：
 
-- `kafka_security_protocol` - ブローカーとの通信に使用するプロトコル。指定可能な値: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`。
-- `kafka_sasl_mechanism` - 認証に使用する SASL メカニズム。指定可能な値: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`。
-- `kafka_sasl_username` - `PLAIN` および `SASL-SCRAM-..` メカニズムで使用する SASL ユーザー名。
-- `kafka_sasl_password` - `PLAIN` および `SASL-SCRAM-..` メカニズムで使用する SASL パスワード。
-- `kafka_schema` — フォーマットがスキーマ定義を必要とする場合に使用しなければならないパラメータ。たとえば [Cap'n Proto](https://capnproto.org/) では、スキーマファイルへのパスと、ルート `schema.capnp:Message` オブジェクトの名前が必要です。
-- `kafka_schema_registry_skip_bytes` — スキーマレジストリでエンベロープヘッダーを使用する際に、各メッセージの先頭からスキップするバイト数 (例: 19 バイトのエンベロープを含む AWS Glue Schema Registry)。範囲: `[0, 255]`。デフォルト: `0`。
-- `kafka_num_consumers` — テーブルごとのコンシューマー数。1 つのコンシューマーのスループットが不十分な場合は、より多くのコンシューマーを指定します。コンシューマーの総数はトピック内のパーティション数を超えてはいけません。各パーティションには 1 つのコンシューマーしか割り当てられず、また ClickHouse がデプロイされているサーバー上の物理コア数を超えてはなりません。デフォルト: `1`。
-- `kafka_max_block_size` — poll 時のバッチサイズ (メッセージ数の上限)。デフォルト: [max_insert_block_size](../../../operations/settings/settings.md#max_insert_block_size)。
-- `kafka_skip_broken_messages` — 1 ブロックあたりのスキーマ非互換メッセージに対する Kafka メッセージパーサーの許容度。`kafka_skip_broken_messages = N` の場合、エンジンはパースできない *N* 個の Kafka メッセージをスキップします (1 メッセージは 1 行のデータに相当)。デフォルト: `0`。
-- `kafka_commit_every_batch` — ブロック全体を書き込んだ後に 1 回だけコミットするのではなく、消費・処理された各バッチごとにコミットします。デフォルト: `0`。
-- `kafka_client_id` — クライアント識別子。デフォルトでは空文字列。
-- `kafka_poll_timeout_ms` — Kafka からの 1 回のポーリングのタイムアウト。デフォルト: [stream_poll_timeout_ms](../../../operations/settings/settings.md#stream_poll_timeout_ms)。
-- `kafka_poll_max_batch_size` — 1 回の Kafka ポーリングで取得されるメッセージ数の上限。デフォルト: [max_block_size](/operations/settings/settings#max_block_size)。
-- `kafka_flush_interval_ms` — Kafka からデータをフラッシュする間隔のタイムアウト。デフォルト: [stream_flush_interval_ms](/operations/settings/settings#stream_flush_interval_ms)。
-- `kafka_consumer_reschedule_ms` — Kafka ストリーム処理が停止している (例: 消費可能なメッセージが存在しない) 場合の再スケジュール間隔。この設定は、コンシューマーがポーリングを再試行するまでの遅延を制御します。`kafka_consumers_pool_ttl_ms` を超えてはなりません。デフォルト: `500` ミリ秒。
-- `kafka_thread_per_consumer` — 各コンシューマーごとに独立したスレッドを割り当てます。有効な場合、各コンシューマーは独立して並列にデータをフラッシュします (無効な場合は、複数コンシューマーからの行をまとめて 1 ブロックを形成)。デフォルト: `0`。
-- `kafka_handle_error_mode` — Kafka エンジンのエラー処理方法。指定可能な値: `default` (メッセージのパースに失敗した場合に例外をスローする)、`stream` (例外メッセージと生のメッセージを仮想カラム `_error` および `_raw_message` に保存する)、`dead_letter_queue` (エラー関連データを `system.dead_letter_queue` に保存する)。
-- `kafka_commit_on_select` — `SELECT` クエリが実行された際にメッセージをコミットします。デフォルト: `false`。
-- `kafka_max_rows_per_message` — 行ベースフォーマットにおいて、1 つの Kafka メッセージに書き込まれる行数の上限。デフォルト: `1`。
-- `kafka_compression_codec` — メッセージ生成に使用される圧縮コーデック。サポートされる値: 空文字列, `none`, `gzip`, `snappy`, `lz4`, `zstd`。空文字列が指定された場合、テーブルによって圧縮コーデックは設定されず、設定ファイルからの値または `librdkafka` のデフォルト値が使用されます。デフォルト: 空文字列。
-- `kafka_compression_level` — `kafka_compression_codec` で選択されたアルゴリズムの圧縮レベル。値を大きくするほど圧縮率は向上しますが、CPU 使用率も増加します。利用可能な範囲はアルゴリズム依存です: `gzip` の場合 `[0-9]`; `lz4` の場合 `[0-12]`; `snappy` は `0` のみ; `zstd` の場合 `[0-12]`; `-1` = コーデック依存のデフォルト圧縮レベル。デフォルト: `-1`。
+* `kafka_security_protocol` - ブローカーとの通信に使用するプロトコル。指定可能な値: `plaintext`, `ssl`, `sasl_plaintext`, `sasl_ssl`。
+* `kafka_sasl_mechanism` - 認証に使用する SASL メカニズム。指定可能な値: `GSSAPI`, `PLAIN`, `SCRAM-SHA-256`, `SCRAM-SHA-512`, `OAUTHBEARER`。
+* `kafka_sasl_username` - `PLAIN` および `SASL-SCRAM-..` メカニズムで使用する SASL ユーザー名。
+* `kafka_sasl_password` - `PLAIN` および `SASL-SCRAM-..` メカニズムで使用する SASL パスワード。
+* `kafka_schema` — フォーマットがスキーマ定義を必要とする場合に使用しなければならないパラメータ。たとえば [Cap&#39;n Proto](https://capnproto.org/) では、スキーマファイルへのパスと、ルート `schema.capnp:Message` オブジェクトの名前が必要です。
+* `kafka_schema_registry_skip_bytes` — スキーマレジストリでエンベロープヘッダーを使用する際に、各メッセージの先頭からスキップするバイト数 (例: 19 バイトのエンベロープを含む AWS Glue Schema Registry)。範囲: `[0, 255]`。デフォルト: `0`。
+* `kafka_num_consumers` — テーブルごとのコンシューマー数。1 つのコンシューマーのスループットが不十分な場合は、より多くのコンシューマーを指定します。コンシューマーの総数はトピック内のパーティション数を超えてはいけません。各パーティションには 1 つのコンシューマーしか割り当てられず、また ClickHouse がデプロイされているサーバー上の物理コア数を超えてはなりません。デフォルト: `1`。
+* `kafka_max_block_size` — poll 時のバッチサイズ (メッセージ数の上限)。デフォルト: [max&#95;insert&#95;block&#95;size](../../../operations/settings/settings.md#max_insert_block_size)。
+* `kafka_skip_broken_messages` — 1 ブロックあたりのスキーマ非互換メッセージに対する Kafka メッセージパーサーの許容度。`kafka_skip_broken_messages = N` の場合、エンジンはパースできない *N* 個の Kafka メッセージをスキップします (1 メッセージは 1 行のデータに相当)。デフォルト: `0`。
+* `kafka_commit_every_batch` — ブロック全体を書き込んだ後に 1 回だけコミットするのではなく、消費・処理された各バッチごとにコミットします。デフォルト: `0`。
+* `kafka_client_id` — クライアント識別子。デフォルトでは空文字列。
+* `kafka_poll_timeout_ms` — Kafka からの 1 回のポーリングのタイムアウト。デフォルト: [stream&#95;poll&#95;timeout&#95;ms](../../../operations/settings/settings.md#stream_poll_timeout_ms)。
+* `kafka_poll_max_batch_size` — 1 回の Kafka ポーリングで取得されるメッセージ数の上限。デフォルト: [max&#95;block&#95;size](/operations/settings/settings#max_block_size).
+* `kafka_flush_interval_ms` — Kafka からデータをフラッシュする間隔のタイムアウト。デフォルト: [stream&#95;flush&#95;interval&#95;ms](/operations/settings/settings#stream_flush_interval_ms).
+* `kafka_consumer_reschedule_ms` — Kafka ストリーム処理が停止している (例: 消費可能なメッセージが存在しない) 場合の再スケジュール間隔。この設定は、コンシューマーがポーリングを再試行するまでの遅延を制御します。`kafka_consumers_pool_ttl_ms` を超えてはなりません。デフォルト: `500` ミリ秒。
+* `kafka_thread_per_consumer` — 各コンシューマーごとに独立したスレッドを割り当てます。有効な場合、各コンシューマーは独立して並列にデータをフラッシュします (無効な場合は、複数コンシューマーからの行をまとめて 1 ブロックを形成)。デフォルト: `0`。
+* `kafka_handle_error_mode` — Kafka エンジンのエラー処理方法。設定可能な値: default (メッセージのパースに失敗した場合に例外をスローする), stream (例外メッセージと生のメッセージを仮想カラム `_error` および `_raw_message` に保存する), dead&#95;letter&#95;queue (エラー関連データを system.dead&#95;letter&#95;queue に保存する)。
+* `kafka_commit_on_select` — `SELECT` クエリが実行された際にメッセージをコミットします。デフォルト: `false`。
+* `kafka_consumer_acquire_timeout_ms` — Keeper ベースのオフセット保存を使用する `Kafka2` テーブルに対する直接 `SELECT` クエリで、Kafka コンシューマーを取得する際のタイムアウト (ミリ秒)。同じテーブルに対して複数の同時実行の直接 `SELECT` クエリを実行する場合、各クエリはコンシューマーが利用可能になるまで待機する必要があります。このタイムアウトにより、クエリがそれぞれ異なるコンシューマーの部分集合を保持している場合に発生するデッドロックを防止します。デフォルト: `30000`。
+* `kafka_max_rows_per_message` — 行ベースフォーマットにおいて、1 つの Kafka メッセージに書き込まれる行数の上限。デフォルト: `1`。
+* `kafka_autodetect_client_rack` — 最寄りの Kafka レプリカを優先するために、`librdkafka` の `client.rack` パラメータを自動的に設定します。
+  サポートされるソース:
+  AWS IMDSv2 のアベイラビリティゾーン ID には `AWS_ZONE_ID` (例: `euc1-az1`);
+  AWS IMDSv2 のアベイラビリティゾーン名には `AWS_ZONE_NAME` (例: `eu-central-1a`);
+  GCP メタデータサービスのゾーンには `GCP_ZONE` (例: `europe-central2-a`);
+  Cloud メタデータまたは設定に依存する可能性がある ClickHouse の内部検出を使用するには `CLICKHOUSE`;
+  まず `AWS_ZONE_NAME` を試し、次に `GCP_ZONE` を試すには `AWS_ZONE_NAME_THEN_GCP_ZONE`。
+  デフォルト: 空文字列、無効。
+  ヒント: アベイラビリティゾーンの形式は環境によって異なります。Amazon MSK では通常ゾーン ID が使用されるため、`AWS_ZONE_ID` を推奨します。Confluent Cloud では通常ゾーン名が使用されるため、`AWS_ZONE_NAME` を推奨します。判断に迷う場合は、`AWS_ZONE_NAME_THEN_GCP_ZONE` を使用するか、クラスター上の `broker.rack` の値を確認してください。
+  注意: Kafka ブローカーでは、`broker.rack` および `replica.selector.class=org.apache.kafka.common.replica.RackAwareReplicaSelector` を設定しておく必要があります。
+* `kafka_compression_codec` — メッセージ生成に使用される圧縮コーデック。サポートされる値: 空文字列, `none`, `gzip`, `snappy`, `lz4`, `zstd`。空文字列が指定された場合、テーブルによって圧縮コーデックは設定されず、設定ファイルからの値または `librdkafka` のデフォルト値が使用されます。デフォルト: 空文字列。
+* `kafka_compression_level` — `kafka&#95;compression&#95;codec` で選択されたアルゴリズムの圧縮レベル。値を大きくするほど圧縮率は向上しますが、CPU 使用率も増加します。利用可能な範囲はアルゴリズム依存です: `gzip` の場合 `[0-9]`; `lz4` の場合 `[0-12]`; `snappy` は `0` のみ; `zstd` の場合 `[0-12]`; `-1` = コーデック依存のデフォルト圧縮レベル。デフォルト: `-1`。
+* `kafka_map_virtual_columns_on_write` — 有効にすると、テーブル schema 内で `_key`、`_timestamp`、`_headers.name`、`_headers.value` という特別な名前を持つカラムは、`INSERT` 時に対応する Kafka メッセージメタデータに対応付けられ、メッセージペイロードからは除外されます。[Kafka メッセージメタデータへのカラムの対応付け](#mapping-columns-to-kafka-message-metadata) を参照してください。デフォルト: `false`。
 
-Examples:
+例:
 
 ```sql
   CREATE TABLE queue (
@@ -131,7 +145,7 @@ Examples:
 </details>
 
 :::info
-Kafka テーブルエンジンは、[default value](/sql-reference/statements/create/table#default_values) を持つカラムをサポートしていません。default value を持つカラムが必要な場合は、materialized view 側で追加できます（下記参照）。
+Kafka テーブルエンジンは、[default value](/sql-reference/statements/create/table#default_values) を持つカラムをサポートしていません。default value を持つカラムが必要な場合は、materialized view 側で追加できます (下記参照) 。
 :::
 
 ## 説明 \{#description\}
@@ -264,6 +278,43 @@ ClickHouse は keytab ファイルを使用して Kerberos 資格情報を管理
 
 注意: `_raw_message` と `_error` の仮想カラムに値が入るのは、パース中に例外が発生した場合のみです。メッセージが正常にパースされた場合は常に空になります。
 
+## カラムと Kafka メッセージメタデータの対応 \{#mapping-columns-to-kafka-message-metadata\}
+
+`INSERT INTO` でメッセージを生成する際、Kafka エンジンは、テーブルにそれらのカラムが存在する場合、常に `_key` という名前のカラム (型は `String`) を Kafka メッセージキーとして、`_timestamp` という名前のカラム (型は `DateTime`) を Kafka メッセージのタイムスタンプとして使用します。デフォルトでは、これらのカラムは他のカラムとともに、生成されるメッセージのペイロードにも含まれます。
+
+`kafka_map_virtual_columns_on_write = 1` を指定すると、動作は次のように変わります。
+
+* `_key`  (型は `String`) — Kafka メッセージキーに対応付けられます。
+* `_timestamp`  (型は `DateTime`) — Kafka メッセージのタイムスタンプに対応付けられます。
+* `_headers.name`  (型は `Array(String)`) と `_headers.value`  (型は `Array(String)`) — Kafka メッセージヘッダーに対応付けられます。各 `(_headers.name[i], _headers.value[i])` の組が 1 つの Kafka ヘッダーになります。`_headers.name` と `_headers.value` は `_headers` という Nested プレフィックスを共有しているため、ClickHouse ではすべての行で両方の配列のサイズが同じである必要があります。
+
+これらの名前を持つカラムが**メッセージペイロードから除外**されるのは、その型が上記のものと一致する場合のみです。それ以外の場合はペイロードに残るため、無関係なデータにたまたまこれらの名前を使っている schema でも引き続き動作します。
+
+例:
+
+```sql
+CREATE TABLE kafka_out
+(
+    event_json String,
+    `_key` String,
+    `_timestamp` DateTime,
+    `_headers.name` Array(String),
+    `_headers.value` Array(String)
+)
+ENGINE = Kafka
+SETTINGS
+    kafka_broker_list = 'broker:9092',
+    kafka_topic_list = 'events',
+    kafka_group_name = 'events-producer',
+    kafka_format = 'JSONEachRow',
+    kafka_map_virtual_columns_on_write = 1;
+
+INSERT INTO kafka_out VALUES
+    ('{"a":1}', 'session-42', now(), ['source', 'trace_id'], ['api', 'abc-123']);
+```
+
+生成されるKafkaメッセージには、ペイロード `{"event_json":"{\"a\":1}"}`、キー `session-42`、現在のタイムスタンプ、ヘッダー `source=api` と `trace_id=abc-123` の 2 つが含まれます。
+
 ## データ形式のサポート \{#data-formats-support\}
 
 Kafka エンジンは、ClickHouse でサポートされているすべての[フォーマット](../../../interfaces/formats.md)をサポートします。
@@ -298,13 +349,11 @@ SETTINGS allow_experimental_kafka_offsets_storage_in_keeper=1;
 
 新しいエンジンは実験的なものであり、まだ本番運用の準備ができていません。実装には、いくつか既知の制限があります。
 
-- 最大の制限は、エンジンが直接読み取りをサポートしていないことです。マテリアライズドビューを使ってエンジンから読み取り、エンジンへ書き込むことはできますが、直接読み取りはできません。その結果、すべての直接的な `SELECT` クエリは失敗します。
-- テーブルを短時間に繰り返し削除および再作成したり、同じ ClickHouse Keeper のパスを異なるエンジンに指定したりすると問題が発生する可能性があります。ベストプラクティスとして、パスの衝突を回避するために `kafka_keeper_path` に `{uuid}` を使用することを推奨します。
-- 再現可能な読み取りを行うためには、1 つのスレッドで複数パーティションからメッセージを消費することはできません。一方で、Kafka コンシューマは生存させるために定期的にポーリングする必要があります。これら 2 つの要件の結果として、`kafka_thread_per_consumer` が有効な場合にのみ複数のコンシューマの作成を許可することにしました。そうでない場合は、コンシューマを定期的にポーリングすることに関する問題を回避するのがあまりにも複雑になるためです。
-- 新しいストレージエンジンによって作成されたコンシューマは、[`system.kafka_consumers`](../../../operations/system-tables/kafka_consumers.md) テーブルには表示されません。
+* テーブルを短時間に繰り返し削除および再作成したり、同じ ClickHouse Keeper のパスを異なるエンジンに指定したりすると問題が発生する可能性があります。ベストプラクティスとして、パスの衝突を回避するために `kafka_keeper_path` に `{uuid}` を使用することを推奨します。
+* 再現可能な読み取りを行うためには、1 つのスレッドで複数パーティションからメッセージを消費することはできません。一方で、Kafka コンシューマーは生存させるために定期的にポーリングする必要があります。これら 2 つの要件の結果として、`kafka_thread_per_consumer` が有効な場合にのみ複数のコンシューマーの作成を許可することにしました。そうでない場合は、コンシューマーを定期的にポーリングすることに関する問題を回避するのがあまりにも複雑になるためです。
 
 **関連項目**
 
-- [仮想カラム](../../../engines/table-engines/index.md#table_engines-virtual_columns)
-- [background_message_broker_schedule_pool_size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
-- [system.kafka_consumers](../../../operations/system-tables/kafka_consumers.md)
+* [仮想カラム](../../../engines/table-engines/index.md#table_engines-virtual_columns)
+* [background&#95;message&#95;broker&#95;schedule&#95;pool&#95;size](/operations/server-configuration-parameters/settings#background_message_broker_schedule_pool_size)
+* [system.kafka&#95;consumers](../../../operations/system-tables/kafka_consumers.md)

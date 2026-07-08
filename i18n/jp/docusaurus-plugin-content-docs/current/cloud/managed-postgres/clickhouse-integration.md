@@ -7,20 +7,21 @@ keywords: ['postgres', 'clickhouse 連携', 'cdc', 'レプリケーション', '
 doc_type: 'guide'
 ---
 
-import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
+import BetaBadge from '@theme/badges/BetaBadge';
 import Image from '@theme/IdealImage';
 import chIntegrationIntro from '@site/static/images/managed-postgres/clickhouse-integration-intro.png';
 import replicationServiceStep from '@site/static/images/managed-postgres/replication-service-step.png';
+import integrationReplicationSettings from '@site/static/images/managed-postgres/integration-replication-settings.png';
 import selectTablesStep from '@site/static/images/managed-postgres/select-tables-step.png';
 import integrationRunning from '@site/static/images/managed-postgres/integration-running.png';
 
-<PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="clickhouse-integration" />
+<BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.clickhouse-integration-beta" />
 
 すべての Managed Postgres インスタンスには、任意の ClickHouse サービスへの組み込みの CDC (変更データキャプチャ) 機能が付属しています。これにより、Postgres インスタンス上のデータの一部またはすべてを ClickHouse に移行し、Postgres 上のデータ変更を継続的かつほぼリアルタイムに ClickHouse に反映させることができます。これは内部的には [ClickPipes](/integrations/clickpipes) によって実現されています。
 
-この機能にアクセスするには、Postgres インスタンスのサイドバーで **ClickHouse Integration** をクリックします。
+この機能にアクセスするには、Postgres インスタンスのサイドバーで **ClickHouse 連携** をクリックします。
 
-<Image img={chIntegrationIntro} alt="サイドバーに統合オプションが表示されている ClickHouse インテグレーションのランディングページ" size="md" border />
+<Image img={chIntegrationIntro} alt="サイドバーに統合オプションが表示されている ClickHouse 連携のランディングページ" size="md" border />
 
 :::note
 続行する前に、Postgres サービスが ClickPipes サービスからアクセス可能であることを確認してください。通常はデフォルトで満たされていますが、IP アクセスを制限している場合は、**ClickHouse service** が存在するリージョンに基づいて、[この](/integrations/clickpipes#list-of-static-ips) リストにある一部の送信元 IP からのアクセスを許可する必要がある場合があります。
@@ -37,11 +38,25 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
   * **ClickHouse service**: 既存の ClickHouse Cloud サービスを選択するか、新規に作成します
   * **Postgres database**: レプリケーション元となるソースデータベース
   * **Replication method**: 次のいずれかを選択します:
-    * **Initial load + CDC**: 既存データをインポートし、新しい変更でテーブルを更新し続けます (推奨) 
+    * **Initial load + CDC**: 既存データをインポートし、新しい変更でテーブルを更新し続けます (推奨)
     * **Initial load only**: 既存データのスナップショットを 1 回だけ取得し、その後の更新は行いません
     * **CDC only**: 初期スナップショットをスキップし、以降の新しい変更のみを取り込みます
 
   <Image img={replicationServiceStep} alt="統合名、宛先サービス、およびレプリケーション方法オプションを示すレプリケーションサービスの設定画面" size="md" border />
+
+  **Next** をクリックして進みます。
+
+  ## レプリケーション設定を構成する \{#replication-settings\}
+
+  データのレプリケーション方法を詳細に調整します：
+
+  * **Sync interval (seconds)**: Postgres から変更を取得する頻度 (デフォルト: 60)
+  * **Parallel threads for initial load**: 初期スナップショット中に使用されるスレッド数 (デフォルト: 4)
+  * **Pull batch size**: レプリケーション中にバッチごとに取得する行数 (デフォルト: 100000)
+  * **Snapshot number of rows per partition**: 初期スナップショット時のパーティションごとの行数 (デフォルト: 100000)
+  * **Snapshot number of tables in parallel**: 同時にスナップショットを取得するテーブル数 (デフォルト: 1)
+
+  <Image img={integrationReplicationSettings} alt="同期間隔、並列スレッド数、プルバッチサイズ、およびスナップショット設定オプションを示すレプリケーション設定ステップ" size="md" border />
 
   **Next** をクリックして進みます。
 
@@ -64,7 +79,7 @@ import integrationRunning from '@site/static/images/managed-postgres/integration
 
   ClickPipe が開始されると、同じメニューに一覧表示されます。すべてのデータの初回スナップショットは、テーブルサイズに応じて時間がかかる場合があります。
 
-  <Image img={integrationRunning} alt="宛先サービスとステータスを持つ実行中の ClickPipe が表示された ClickHouse インテグレーション一覧" size="md" border />
+  <Image img={integrationRunning} alt="宛先サービスとステータスを持つ実行中の ClickPipe が表示された ClickHouse 連携一覧" size="md" border />
 
   インテグレーション名をクリックすると、詳細なステータスの表示、進行状況の監視、エラーの確認、および ClickPipe の管理が行えます。ClickPipe が取りうるさまざまな状態については、[Lifecycle of a Postgres ClickPipe](/integrations/clickpipes/postgres/lifecycle) を参照してください。
 </VerticalStepper>

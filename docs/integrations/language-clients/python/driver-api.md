@@ -8,7 +8,6 @@ title: 'ClickHouse Connect driver API'
 doc_type: 'reference'
 ---
 
-# ClickHouse Connect driver API {#clickhouse-connect-driver-api}
 
 :::note
 Passing keyword arguments is recommended for most api methods given the number of possible arguments, most of which are optional.
@@ -253,7 +252,7 @@ ClickHouse Connect Client `query*` and `command` methods accept an optional `par
 
 #### Server-side binding {#server-side-binding}
 
-ClickHouse supports [server side binding](/interfaces/cli.md#cli-queries-with-parameters) for most query values, where the bound value is sent separate from the query as an HTTP query parameter. ClickHouse Connect will add the appropriate query parameters if it detects a binding expression of the form `{<name>:<datatype>}`. For server side binding, the `parameters` argument should be a Python dictionary.
+ClickHouse supports [server side binding](/interfaces/client#cli-queries-with-parameters) for most query values, where the bound value is sent separate from the query as an HTTP query parameter. ClickHouse Connect will add the appropriate query parameters if it detects a binding expression of the form `{<name>:<datatype>}`. For server side binding, the `parameters` argument should be a Python dictionary.
 
 - Server-side binding with Python dictionary, DateTime value, and string value
 

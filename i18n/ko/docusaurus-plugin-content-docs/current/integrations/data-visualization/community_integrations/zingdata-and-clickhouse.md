@@ -25,12 +25,9 @@ import zing_08 from '@site/static/images/integrations/data-visualization/zing_08
 import zing_09 from '@site/static/images/integrations/data-visualization/zing_09.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
+<CommunityMaintainedBadge />
 
-# Zing Data를 ClickHouse에 연결하기 \{#connect-zing-data-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
-
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a>는 데이터 탐색 및 시각화를 위한 플랫폼입니다. Zing Data는 ClickHouse에서 제공하는 JS 드라이버를 사용하여 ClickHouse에 연결합니다.
+<a href="https://www.zingdata.com/" target="_blank">Zing Data</a>는 데이터 탐색 및 시각화 플랫폼입니다. Zing Data는 ClickHouse에서 제공하는 JS 드라이버를 사용해 ClickHouse에 연결합니다.
 
 ## 연결 방법 \{#how-to-connect\}
 

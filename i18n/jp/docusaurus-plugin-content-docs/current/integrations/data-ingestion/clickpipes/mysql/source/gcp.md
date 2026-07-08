@@ -1,5 +1,5 @@
 ---
-sidebar_label: 'Cloud SQL for MySQL ソース設定ガイド'
+sidebar_label: 'Cloud SQL for MySQL'
 description: 'Cloud SQL for MySQL を ClickPipes のソースとしてセットアップするためのステップバイステップガイド'
 slug: /integrations/clickpipes/mysql/source/gcp
 title: 'Cloud SQL for MySQL ソース設定ガイド'
@@ -18,10 +18,7 @@ import gcp_mysql_cert from '@site/static/images/integrations/data-ingestion/clic
 import rootca from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/gcp/rootca.png';
 import Image from '@theme/IdealImage';
 
-
-# Cloud SQL for MySQL ソース設定ガイド \{#cloud-sql-for-mysql-source-setup-guide\}
-
-このガイドでは、MySQL ClickPipe 経由でデータをレプリケートできるようにするために、Cloud SQL for MySQL インスタンスを構成する手順をステップバイステップで解説します。
+これは、Cloud SQL for MySQL インスタンスを設定して、MySQL ClickPipe 経由でデータをレプリケートするためのステップバイステップガイドです。
 
 ## バイナリログの保持を有効にする \{#enable-binlog-retention-gcp\}
 

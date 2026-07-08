@@ -7,9 +7,7 @@ title: 'Команды TRUNCATE'
 doc_type: 'reference'
 ---
 
-# Команды TRUNCATE \{#truncate-statements\}
-
-Команда `TRUNCATE` в ClickHouse используется для быстрого удаления всех данных из таблицы или базы данных при сохранении их структуры.
+Оператор `TRUNCATE` в ClickHouse используется для быстрого удаления всех данных из таблицы или базы данных с сохранением их структуры.
 
 ## TRUNCATE TABLE \{#truncate-table\}
 

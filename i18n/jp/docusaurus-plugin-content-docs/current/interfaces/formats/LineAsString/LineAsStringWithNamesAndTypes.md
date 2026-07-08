@@ -1,6 +1,6 @@
 ---
 alias: []
-description: 'LineAsStringWithNamesAndTypes 形式に関するドキュメント'
+description: 'LineAsStringWithNamesAndTypes フォーマットに関するドキュメント'
 input_format: false
 keywords: ['LineAsStringWithNamesAndTypes']
 output_format: true
@@ -10,8 +10,8 @@ doc_type: 'reference'
 ---
 
 | 入力 | 出力 | 別名 |
-|-------|--------|-------|
-| ✗     | ✔      |       |
+| -- | -- | -- |
+| ✗  | ✔  |    |
 
 ## 説明 \{#description\}
 
@@ -20,7 +20,7 @@ doc_type: 'reference'
 
 ## 使用例 \{#example-usage\}
 
-```sql
+```sql title="Query"
 CREATE TABLE example (
     name String,
     value Int32

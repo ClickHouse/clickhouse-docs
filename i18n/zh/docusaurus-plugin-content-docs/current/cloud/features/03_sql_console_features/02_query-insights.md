@@ -14,10 +14,7 @@ import insights_recent from '@site/static/images/cloud/sqlconsole/insights_recen
 import insights_drilldown from '@site/static/images/cloud/sqlconsole/insights_drilldown.png';
 import insights_query_info from '@site/static/images/cloud/sqlconsole/insights_query_info.png';
 
-
-# 查询洞察 \{#query-insights\}
-
-**查询洞察** 功能通过可视化和表格，使 ClickHouse 内置的查询日志更易于使用。ClickHouse 的 `system.query_log` 表是进行查询优化、调试以及监控整个集群健康状况和性能的关键信息来源。
+The **查询洞察**功能通过可视化和表格，让 ClickHouse 的内置查询日志更易于使用。ClickHouse 的 `system.query_log` 表是查询优化、调试以及监控整体集群健康状况和性能的关键信息来源。
 
 ## 查询概览 \{#query-overview\}
 

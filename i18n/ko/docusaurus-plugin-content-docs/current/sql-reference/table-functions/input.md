@@ -1,13 +1,11 @@
 ---
-description: '지정된 구조로 서버에 전송된 데이터를 다른 구조의 테이블에 효율적으로 변환하여 삽입할 수 있게 해주는 테이블 FUNCTION입니다.'
+description: '특정 구조로 서버에 전송된 데이터를 다른 구조의 테이블로 효율적으로 변환하여 삽입할 수 있게 해주는 테이블 함수입니다.'
 sidebar_label: 'input'
 sidebar_position: 95
 slug: /sql-reference/table-functions/input
 title: 'input'
 doc_type: 'reference'
 ---
-
-# input Table Function \{#input-table-function\}
 
 `input(structure)` - 특정 구조를 가진 채 서버로 전송된 데이터를 다른 구조의 테이블로 효율적으로 변환하여 삽입할 수 있게 해 주는 테이블 함수입니다.
 

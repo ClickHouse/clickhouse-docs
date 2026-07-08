@@ -1,0 +1,7 @@
+position: 500
+label: 'Integration development'
+collapsible: true
+collapsed: true
+link:
+  type: doc
+  id: integrations/integration-development/index

@@ -7,18 +7,10 @@ sidebar_label: 'anyIf'
 doc_type: 'reference'
 ---
 
-
-
-# anyIf \{#avgif\}
-
-
-
 ## 설명 \{#description\}
 
-[`If`](/sql-reference/aggregate-functions/combinators#-if) 결합자는 [`any`](/sql-reference/aggregate-functions/reference/any)
+[`If`](/sql-reference/aggregate-functions/combinators#-if) 조합자는 [`any`](/sql-reference/aggregate-functions/reference/any)
 집계 함수에 적용하여 지정된 컬럼에서 주어진 조건을 만족하는 첫 번째 요소를 선택할 수 있습니다.
-
-
 
 ## 사용 예시 \{#example-usage\}
 
@@ -58,7 +50,7 @@ FROM sales;
 └────────────┴────────────┘
 ```
 
-
 ## 함께 보기 \{#see-also\}
-- [`any`](/sql-reference/aggregate-functions/reference/any)
-- [`If combinator`](/sql-reference/aggregate-functions/combinators#-if)
+
+* [`any`](/sql-reference/aggregate-functions/reference/any)
+* [`If 조합자`](/sql-reference/aggregate-functions/combinators#-if)

@@ -17,13 +17,9 @@ import datagrip_1 from '@site/static/images/integrations/sql-clients/datagrip-1.
 import datagrip_5 from '@site/static/images/integrations/sql-clients/datagrip-5.png';
 import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.png';
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
-// Компонент CommunityMaintainedBadge обозначает материалы, поддерживаемые сообществом
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# Подключение DataGrip к ClickHouse \{#connecting-datagrip-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## Запустите DataGrip или скачайте его \{#start-or-download-datagrip\}
 

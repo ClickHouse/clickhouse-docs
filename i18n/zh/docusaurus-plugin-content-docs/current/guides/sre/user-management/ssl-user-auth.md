@@ -2,30 +2,27 @@
 sidebar_label: 'SSL 用户证书身份验证'
 sidebar_position: 3
 slug: /guides/sre/ssl-user-auth
-title: '配置用于身份验证的 SSL 用户证书'
-description: '本指南提供配置基于 SSL 用户证书的身份验证所需的简洁、最小化设置。'
+title: '身份验证用 SSL 用户证书配置'
+description: '本指南提供了通过 SSL 用户证书配置身份验证所需的简单且最小化的配置。'
 doc_type: 'guide'
 keywords: ['ssl', '身份验证', '安全', '证书', '用户管理']
 ---
-
-# 配置用于身份验证的 SSL 用户证书 \{#configuring-ssl-user-certificate-for-authentication\}
 
 import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_snippets/_self_managed_only_no_roadmap.md';
 
 <SelfManaged />
 
-本指南提供了通过 SSL 用户证书配置认证所需的简单且最小化的配置。该教程建立在[配置 TLS 用户指南](../tls/configuring-tls.md)的基础之上。
+本指南提供了通过 SSL 用户证书配置身份验证所需的简单且最小化的配置。该教程建立在[配置 TLS 用户指南](../tls/configuring-tls.md)的基础之上。
 
 :::note
-在使用 `https`、`native`、`mysql` 和 `postgresql` 接口时支持 SSL 用户认证。
+在使用 `https`、`native`、`mysql` 和 `postgresql` 接口时支持 SSL 用户身份验证。
 
-为实现安全认证，ClickHouse 节点需要将 `<verificationMode>strict</verificationMode>` 进行严格模式配置（尽管 `relaxed` 可用于测试目的）。
+为实现安全身份验证，ClickHouse 节点需要将 `<verificationMode>strict</verificationMode>` 进行严格模式配置 (尽管 `relaxed` 可用于测试目的) 。
 
 如果你在 MySQL 接口前使用 AWS NLB，则必须联系 AWS 支持启用以下未公开的选项：
 
 > 我希望能够将我们的 NLB proxy protocol v2 配置为如下所示：`proxy_protocol_v2.client_to_server.header_placement,Value=on_first_ack`。
 > :::
-
 
 ## 1. 创建 SSL 用户证书 \{#1-create-ssl-user-certificates\}
 
@@ -94,27 +91,27 @@ import SelfManaged from '@site/i18n/zh/docusaurus-plugin-content-docs/current/_s
 
 ## 3. 测试 \{#3-testing\}
 
-1. 将用户证书、用户密钥和 CA 证书复制到某个远程节点。
+1. 将用户证书、用户私钥和 CA 证书复制到某个远程节点。
 
-2. 在 ClickHouse 的 [客户端配置](/interfaces/cli.md#configuration_files) 中使用证书及其路径配置 OpenSSL。
+2. 在 ClickHouse 的 [客户端配置](/interfaces/client#configuration_files) 中使用证书及其路径配置 OpenSSL。
 
-    ```xml
-    <openSSL>
-        <client>
-            <certificateFile>my_cert_name.crt</certificateFile>
-            <privateKeyFile>my_cert_name.key</privateKeyFile>
-            <caConfig>my_ca_cert.crt</caConfig>
-        </client>
-    </openSSL>
-    ```
+   ```xml
+   <openSSL>
+       <client>
+           <certificateFile>my_cert_name.crt</certificateFile>
+           <privateKeyFile>my_cert_name.key</privateKeyFile>
+           <caConfig>my_ca_cert.crt</caConfig>
+       </client>
+   </openSSL>
+   ```
 
 3. 运行 `clickhouse-client`。
-    ```bash
-    clickhouse-client --user <my_user> --query 'SHOW TABLES'
-    ```
-    :::note
-    请注意，当在配置中指定了证书时，传递给 clickhouse-client 的密码会被忽略。
-    :::
+   ```bash
+   clickhouse-client --user <my_user> --query 'SHOW TABLES'
+   ```
+   :::note
+   请注意，当在配置中指定了证书时，传递给 clickhouse-client 的密码会被忽略。
+   :::
 
 ## 4. 测试 HTTP \{#4-testing-http\}
 

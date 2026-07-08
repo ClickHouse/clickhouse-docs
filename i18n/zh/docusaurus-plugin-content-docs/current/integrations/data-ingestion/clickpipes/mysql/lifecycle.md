@@ -4,15 +4,13 @@ description: '各类 ClickPipe 状态及其含义'
 slug: /integrations/clickpipes/mysql/lifecycle
 title: 'MySQL ClickPipe 的生命周期'
 doc_type: 'guide'
-keywords: ['clickpipes', 'MySQL', 'CDC', '数据摄取', '实时同步']
+keywords: ['clickpipes', 'MySQL', 'CDC（变更数据捕获）', '数据摄取', '实时同步']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
 ---
 
-# MySQL ClickPipe 的生命周期 \{#lifecycle\}
-
-本文档介绍 MySQL ClickPipe 在生命周期中的各个阶段、可能出现的不同状态及其含义。请注意，这同样适用于 MariaDB。
+本文档介绍 MySQL ClickPipe 的各个阶段、可能出现的不同状态及其含义。请注意，这也适用于 MariaDB。
 
 ## 预配 \{#provisioning\}
 

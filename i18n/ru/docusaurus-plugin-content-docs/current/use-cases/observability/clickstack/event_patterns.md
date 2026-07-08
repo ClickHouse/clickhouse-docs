@@ -1,12 +1,12 @@
 ---
 slug: /use-cases/observability/clickstack/event_patterns
-title: 'Паттерны событий в ClickStack'
-sidebar_label: 'Паттерны событий'
+title: 'Шаблоны событий в ClickStack'
+sidebar_label: 'Шаблоны событий'
 pagination_prev: null
 pagination_next: null
-description: 'Паттерны событий в ClickStack'
+description: 'Шаблоны событий в ClickStack'
 doc_type: 'guide'
-keywords: ['clickstack', 'паттерны событий', 'анализ журналов', 'сопоставление паттернов', 'наблюдаемость']
+keywords: ['clickstack', 'шаблоны событий', 'анализ логов', 'сопоставление паттернов', 'обсервабилити']
 ---
 
 import Image from '@theme/IdealImage';
@@ -24,11 +24,11 @@ import event_patterns_highlight from '@site/static/images/use-cases/observabilit
 
 ## Доступ к шаблонам событий \{#accessing-event-patterns\}
 
-Шаблоны событий доступны напрямую через панель **Search** в ClickStack.  
+Шаблоны событий доступны напрямую через панель **Search** в ClickStack.
 
-В селекторе **Analysis Mode** в левом верхнем углу выберите **Event Patterns**, чтобы переключиться со стандартной таблицы результатов на кластеризованный вид похожих событий.  
+В селекторе **Analysis Mode** в левом верхнем углу выберите **Event patterns**, чтобы переключиться со стандартной таблицы результатов на кластеризованный вид похожих событий.
 
-<Image img={event_patterns_highlight} alt="Event patterns" size="lg"/>
+<Image img={event_patterns_highlight} alt="Event patterns" size="lg" />
 
 Это является альтернативой настройке по умолчанию **Results Table**, при которой можно просматривать каждый отдельный лог или трейс.
 

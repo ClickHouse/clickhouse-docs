@@ -4,7 +4,7 @@ sidebar_position: 6
 keywords: ['clickhouse', 'cs', 'c#', '.net', 'dotnet', 'csharp', 'client', 'driver', 'connect', 'integrate']
 slug: /integrations/csharp
 description: '用于连接 ClickHouse 的官方 C# 客户端。'
-title: 'ClickHouse C# 驱动'
+title: 'ClickHouse C# 客户端'
 doc_type: 'guide'
 integration:
   - support_level: 'core'
@@ -16,18 +16,15 @@ import Image from '@theme/IdealImage';
 import cloud_connect_button from '@site/static/images/_snippets/cloud-connect-button.png';
 import connection_details_csharp from '@site/static/images/_snippets/connection-details-csharp.png';
 
-
-# ClickHouse C# 客户端 \{#clickhouse-c-client\}
-
 用于连接 ClickHouse 的官方 C# 客户端。
 客户端源代码托管在 [GitHub 仓库](https://github.com/ClickHouse/clickhouse-cs) 中。
 最初由 [Oleg V. Kozlyuk](https://github.com/DarkWanderer) 开发。
 
 该库提供两个主要 API：
 
-- **`ClickHouseClient`**（推荐）：一个为单例使用设计的高级、线程安全客户端。提供用于查询和批量插入的简单异步 API。适用于大多数应用程序。
+* **`ClickHouseClient`** (推荐) ：一个为单例使用设计的高级、线程安全客户端。提供用于查询和批量插入的简单异步 API。适用于大多数应用程序。
 
-- **ADO.NET**（`ClickHouseDataSource`、`ClickHouseConnection`、`ClickHouseCommand`）：标准 .NET 数据库抽象。用于 ORM 集成（Dapper、Linq2db）以及在需要与 ADO.NET 兼容的场景中。`ClickHouseBulkCopy` 是一个辅助类，用于通过 ADO.NET 连接高效插入数据。`ClickHouseBulkCopy` 已被弃用，并将在未来版本中移除；请改用 `ClickHouseClient.InsertBinaryAsync`。
+* **ADO.NET** (`ClickHouseDataSource`、`ClickHouseConnection`、`ClickHouseCommand`) ：标准 .NET 数据库抽象。用于 ORM 集成 (Dapper、Linq2db) 以及在需要与 ADO.NET 兼容的场景中。`ClickHouseBulkCopy` 是一个辅助类，用于通过 ADO.NET 连接高效插入数据。`ClickHouseBulkCopy` 已被弃用，并将在未来版本中移除；请改用 `ClickHouseClient.InsertBinaryAsync`。
 
 这两种 API 共享相同的底层 HTTP 连接池，并且可以在同一个应用程序中同时使用。
 
@@ -100,14 +97,15 @@ Console.WriteLine(version);
 
 ### 数据格式与序列化 \{#data-format-serialization\}
 
-| 属性 | 类型 | 默认值 | 连接字符串键名 | 描述 |
-|----------|------|---------|----------------------|-------------|
-| UseCompression | `bool` | `true` | `Compression` | 为数据传输启用 gzip 压缩 |
-| UseCustomDecimals | `bool` | `true` | `UseCustomDecimals` | 使用 `ClickHouseDecimal` 处理任意精度小数；如果为 false，则使用 .NET `decimal`（128 位上限） |
-| ReadStringsAsByteArrays | `bool` | `false` | `ReadStringsAsByteArrays` | 将 `String` 和 `FixedString` 列读取为 `byte[]` 而不是 `string`；适用于二进制数据 |
-| UseFormDataParameters | `bool` | `false` | `UseFormDataParameters` | 将参数以表单数据的形式发送，而不是作为 URL 查询字符串 |
-| JsonReadMode | `JsonReadMode` | `Binary` | `JsonReadMode` | JSON 数据的返回方式：`Binary`（返回 `JsonObject`）或 `String`（返回原始 JSON 字符串） |
-| JsonWriteMode | `JsonWriteMode` | `String` | `JsonWriteMode` | JSON 数据的发送方式：`String`（通过 `JsonSerializer` 序列化，接受所有输入）或 `Binary`（仅支持带类型提示的已注册 POCO） |
+| 属性                      | 类型                       | 默认值      | 连接字符串键                   | 描述                                                                                     |
+| ----------------------- | ------------------------ | -------- | ------------------------- | -------------------------------------------------------------------------------------- |
+| UseCompression          | `bool`                   | `true`   | `Compression`             | 为数据传输启用 gzip 压缩                                                                        |
+| UseCustomDecimals       | `bool`                   | `true`   | `UseCustomDecimals`       | 使用 `ClickHouseDecimal` 处理任意精度小数；如果为 false，则使用 .NET `decimal` (128 位上限)                 |
+| ReadStringsAsByteArrays | `bool`                   | `false`  | `ReadStringsAsByteArrays` | 将 `String` 和 `FixedString` 列读取为 `byte[]` 而不是 `string`；适用于二进制数据                         |
+| UseFormDataParameters   | `bool`                   | `false`  | `UseFormDataParameters`   | 将参数以表单数据的形式发送，而不是作为 URL 查询字符串                                                          |
+| ParameterTypeResolver   | `IParameterTypeResolver` | `null`   | —                         | 用于 `@` 风格参数类型对照的自定义解析器；请参见[自定义参数类型对照](#parameter-type-mapping)                         |
+| JsonReadMode            | `JsonReadMode`           | `Binary` | `JsonReadMode`            | JSON 数据的返回方式：`Binary` (返回 `JsonObject`) 或 `String` (返回原始 JSON 字符串)                     |
+| JsonWriteMode           | `JsonWriteMode`          | `String` | `JsonWriteMode`           | JSON 数据的发送方式：`String` (通过 `JsonSerializer` 序列化，接受所有输入) 或 `Binary` (仅支持带类型提示的已注册 POCO)  |
 
 ### 会话管理 \{#session-management\}
 
@@ -178,19 +176,20 @@ Host=localhost;set_max_threads=4;set_readonly=1;set_max_memory_usage=10000000000
 
 ### QueryOptions \{#query-options\}
 
-`QueryOptions` 允许你在每个查询的基础上覆盖客户端级别的设置。所有属性都是可选的，只有在显式指定时才会覆盖客户端默认值。
+`QueryOptions` 允许你在每个查询的基础上重写客户端级别的设置。所有属性都是可选的，只有在显式指定时才会重写客户端默认值。
 
-| Property         | Type                          | Description                                           |
-| ---------------- | ----------------------------- | ----------------------------------------------------- |
-| QueryId          | `string`                      | 用于在 `system.query_log` 中进行跟踪或取消操作的自定义查询标识符            |
-| Database         | `string`                      | 覆盖此查询的默认数据库                                           |
-| Roles            | `IReadOnlyList<string>`       | 覆盖此查询的客户端角色                                           |
-| CustomSettings   | `IDictionary<string, object>` | 此查询的 ClickHouse 服务器设置（例如 `max_threads`）               |
-| CustomHeaders    | `IDictionary<string, string>` | 此查询的附加 HTTP 头部                                        |
-| UseSession       | `bool?`                       | 覆盖此查询的会话行为                                            |
-| SessionId        | `string`                      | 此查询的会话 ID（需要 `UseSession = true`）                     |
-| BearerToken      | `string`                      | 覆盖此查询的身份验证令牌                                          |
-| MaxExecutionTime | `TimeSpan?`                   | 服务器端查询超时时间（作为 `max_execution_time` 设置传递）；若超时则由服务器取消查询 |
+| Property              | Type                          | Description                                                       |
+| --------------------- | ----------------------------- | ----------------------------------------------------------------- |
+| QueryId               | `string`                      | 用于在 `system.query_log` 中进行跟踪或取消操作的自定义查询标识符                        |
+| Database              | `string`                      | 重写此查询的默认数据库                                                       |
+| Roles                 | `IReadOnlyList<string>`       | 重写此查询的客户端角色                                                       |
+| CustomSettings        | `IDictionary<string, object>` | 此查询的 ClickHouse 服务器设置 (例如 `max_threads`)                          |
+| CustomHeaders         | `IDictionary<string, string>` | 此查询的附加 HTTP 头部                                                    |
+| UseSession            | `bool?`                       | 重写此查询的会话行为                                                        |
+| SessionId             | `string`                      | 此查询的会话 ID (需要 `UseSession = true`)                                |
+| BearerToken           | `string`                      | 重写此查询的身份验证令牌                                                      |
+| ParameterTypeResolver | `IParameterTypeResolver`      | 重写客户端级别的 `@` 样式参数类型对照解析器；请参见 [自定义参数类型对照](#parameter-type-mapping) |
+| MaxExecutionTime      | `TimeSpan?`                   | 服务器端查询超时时间 (作为 `max_execution_time` 设置传递) ；若超时则由服务器取消查询           |
 
 **示例：**
 
@@ -215,7 +214,6 @@ var reader = await client.ExecuteReaderAsync(
 ```
 
 ***
-
 
 ### InsertOptions \{#insert-options\}
 
@@ -443,8 +441,75 @@ var options = new InsertOptions
 * 如果希望服务端为未提供的列应用 DEFAULT 默认值，请在 `InsertOptions.Format` 中使用 `RowBinaryFormat.RowBinaryWithDefaults`。
   :::
 
-***
+#### POCO 插入 \{#poco-insert\}
 
+无需构造 `object[]` 数组，您可以直接插入强类型的 POCO 对象。只需注册一次该类型，然后传入 `IEnumerable<T>`：
+
+```csharp
+// Define a POCO matching your table columns
+public class SensorReading
+{
+    public ulong Id { get; set; }
+    public string SensorName { get; set; }
+    public double Value { get; set; }
+    public DateTime Timestamp { get; set; }
+}
+
+// Register the type (once per client lifetime)
+client.RegisterBinaryInsertType<SensorReading>();
+
+// Insert directly — column names are derived from property names
+var readings = Enumerable.Range(0, 100_000)
+    .Select(i => new SensorReading
+    {
+        Id = (ulong)i,
+        SensorName = $"sensor_{i % 10}",
+        Value = Random.Shared.NextDouble() * 100,
+        Timestamp = DateTime.UtcNow,
+    });
+
+long rowsInserted = await client.InsertBinaryAsync("sensors", readings);
+```
+
+默认情况下，所有公开的可读取属性都会通过严格区分大小写的名称匹配对照到列。您可以使用特性来自定义这种对照关系：
+
+```csharp
+public class Event
+{
+    [ClickHouseColumn(Name = "event_id")]     // Map to a differently-named column
+    public ulong Id { get; set; }
+
+    [ClickHouseColumn(Type = "LowCardinality(String)")]  // Explicit ClickHouse type
+    public string Category { get; set; }
+
+    public string Payload { get; set; }
+
+    [ClickHouseNotMapped]                     // Exclude from insert
+    public string InternalTag { get; set; }
+}
+```
+
+| Attribute                          | 作用                 |
+| ---------------------------------- | ------------------ |
+| `[ClickHouseColumn(Name = "...")]` | 重写目标列名             |
+| `[ClickHouseColumn(Type = "...")]` | 显式声明 ClickHouse 类型 |
+| `[ClickHouseNotMapped]`            | 将该属性排除在 insert 之外  |
+
+当**所有**已映射属性都显式指定了 `Type` 时，会完全跳过 schema 探测查询。若只有部分属性显式指定了类型，驱动程序则会回退为针对完整列集执行 schema 探测。
+
+`InsertBinaryAsync<T>` 支持与 `object[]` 重载相同的 `InsertOptions` (批次、并行和 schema 缓存) 。
+
+:::note
+与 `object[]` 重载不同，`InsertBinaryAsync<T>` 不接受显式列列表。列由已注册类型的映射属性决定。要控制插入哪些列，请使用 `[ClickHouseNotMapped]` 排除属性，或使用 `[ClickHouseColumn(Name = "...")]` 重命名列。
+
+如果在 `InsertOptions` 中设置了 `ColumnTypes`，它们会重写 POCO 特性。
+:::
+
+#### schema 演进 \{#poco-insert-schema-evolution\}
+
+在注册类型之后，即使向目标表新增列，POCO insert 仍可无缝工作。由于驱动程序只会 insert POCO 映射的列，任何带有 `DEFAULT` (或其他默认 expression) 的新列都会由服务器自动自动填充。无需修改代码，也无需重新注册。
+
+***
 
 ### 读取数据 \{#reading-data\}
 
@@ -520,6 +585,67 @@ var reader = await client.ExecuteReaderAsync(
 
 ***
 
+
+### 自定义参数类型映射 \{#parameter-type-mapping\}
+
+使用 `@` 风格的参数时 (例如 `WHERE id = @id`) ，驱动程序会根据 .NET 值的类型自动推断对应的 ClickHouse 类型。例如，`int` 对应 `Int32`，`DateTime` 对应 `DateTime`。
+
+若要重写这些默认值，请在 `ClickHouseClientSettings` 中设置 `ParameterTypeResolver`。当你希望所有 `DateTime` 参数都使用 `DateTime64(3)` 以实现毫秒精度，或希望所有 decimal 都使用特定的小数位精度，而无需为每个参数单独设置 `ClickHouseType` 时，这样做就很有用。
+
+**使用 `DictionaryParameterTypeResolver` 进行简单的类型映射：**
+
+```csharp
+using ClickHouse.Driver.ADO.Parameters;
+
+var settings = new ClickHouseClientSettings("Host=localhost")
+{
+    ParameterTypeResolver = new DictionaryParameterTypeResolver(new Dictionary<Type, string>
+    {
+        [typeof(DateTime)] = "DateTime64(3)",
+        [typeof(decimal)] = "Decimal64(4)",
+    }),
+};
+using var client = new ClickHouseClient(settings);
+
+var parameters = new ClickHouseParameterCollection();
+parameters.AddParameter("dt", DateTime.UtcNow);     // Mapped to DateTime64(3)
+parameters.AddParameter("amount", 99.1234m);         // Mapped to Decimal64(4)
+
+await client.ExecuteReaderAsync("SELECT @dt, @amount", parameters);
+```
+
+**用于进阶场景的自定义 `IParameterTypeResolver`：**
+
+对于按值或按名称进行解析的场景，请直接实现 `IParameterTypeResolver` 接口。返回 `null` 以回退到默认推断：
+
+```csharp
+public class SmartDecimalResolver : IParameterTypeResolver
+{
+    public string ResolveType(Type clrType, object value, string parameterName)
+    {
+        if (clrType != typeof(decimal))
+            return null; // Fall through to default
+
+        var scale = (decimal.GetBits((decimal)value)[3] >> 16) & 0x7F;
+        return scale <= 4 ? $"Decimal64({scale})" : $"Decimal128({scale})";
+    }
+}
+```
+
+您也可以通过 `QueryOptions.ParameterTypeResolver` 为单个查询设置解析器。设置后，它会优先于客户端级别的解析器。
+
+**类型解析优先级：**
+
+解析器只是优先级链中的一环。从高到低依次为：
+
+1. 在参数上显式设置的 `ClickHouseType`
+2. 查询中通过 `{name:Type}` 语法指定的 SQL 类型提示
+3. `IParameterTypeResolver` (来自 `QueryOptions.ParameterTypeResolver`，未设置时回退到 `ClickHouseClientSettings.ParameterTypeResolver`) 
+4. 内置类型推断 (`TypeConverter.ToClickHouseType`) 
+
+解析器同样适用于 ADO.NET 的 `ClickHouseConnection` 路径——由客户端创建的连接会继承这些设置。
+
+***
 
 ### 原始数据流 \{#raw-streaming\}
 
@@ -1816,14 +1942,14 @@ await table.BulkCopyAsync(options, products);
 
 ### Entity Framework Core \{#orm-support-ef-core\}
 
-ClickHouse 的官方 Entity Framework Core 提供程序。可将 C# 类映射到 ClickHouse 表，使用 LINQ 进行查询，并通过 `SaveChanges` 插入数据——全部遵循熟悉的 EF Core 模式。
+ClickHouse 的官方 Entity Framework Core 提供商。可将 C# 类映射到 ClickHouse 表，使用 LINQ 进行查询，并通过 `SaveChanges` 插入数据——全部遵循熟悉的 EF Core 模式。
 
 * **NuGet**: [`ClickHouse.EntityFrameworkCore`](https://www.nuget.org/packages/ClickHouse.EntityFrameworkCore)
 * **源码**: [GitHub](https://github.com/ClickHouse/ClickHouse.EntityFrameworkCore)
 
 :::note
-该提供程序仍处于早期开发阶段。目前支持**只读查询**和**插入**。UPDATE、DELETE、迁移、JOINs 和子查询尚未实现。
-:::
+该提供商正在积极开发中。当前版本支持 LINQ 查询 (包括连接、子查询和集合操作) 、通过 `SaveChanges` / `BulkInsertAsync` 执行 `INSERT`、支持完整 DDL (CREATE / ALTER / DROP) 的迁移，以及 ClickHouse 特有的表引擎配置。不支持 `UPDATE` / `DELETE`。
+:::”
 
 #### 安装 \{#ef-core-installation\}
 
@@ -1872,39 +1998,59 @@ var topPages = await ctx.PageViews
 
 #### 支持的类型 \{#ef-core-types\}
 
-| 类别          | ClickHouse 类型                                                                           | CLR 类型                                                             |
-| ----------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| **整数**      | `Int8`–`Int64`, `UInt8`–`UInt64`                                                        | `sbyte`, `short`, `int`, `long`, `byte`, `ushort`, `uint`, `ulong` |
-| **大整数**     | `Int128`, `Int256`, `UInt128`, `UInt256`                                                | `BigInteger`                                                       |
-| **浮点数**     | `Float32`, `Float64`, `BFloat16`                                                        | `float`, `double`                                                  |
-| **十进制数**    | `Decimal(P,S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)`                         | `decimal` 或 `ClickHouseDecimal`                                    |
-| **布尔值**     | `Bool`                                                                                  | `bool`                                                             |
-| **字符串**     | `String`, `FixedString(N)`                                                              | `string`                                                           |
-| **枚举**      | `Enum8(...)`, `Enum16(...)`                                                             | `string` 或 C# `enum`                                               |
-| **日期/时间**   | `Date`, `Date32`, `DateTime`, `DateTime64(P, 'TZ')`                                     | `DateOnly`, `DateTime`                                             |
-| **时间**      | `Time`, `Time64(N)`                                                                     | `TimeSpan`                                                         |
-| **UUID**    | `UUID`                                                                                  | `Guid`                                                             |
-| **网络**      | `IPv4`, `IPv6`                                                                          | `IPAddress`                                                        |
-| **数组**      | `Array(T)`                                                                              | `T[]` 或 `List<T>`                                                  |
-| **映射**      | `Map(K, V)`                                                                             | `Dictionary<K,V>`                                                  |
-| **元组**      | `Tuple(T1, ...)`                                                                        | `Tuple<...>` 或 `ValueTuple<...>`                                   |
-| **Variant** | `Variant(T1, T2, ...)`                                                                  | `object`                                                           |
-| **Dynamic** | `Dynamic`                                                                               | `object`                                                           |
-| **JSON**    | `Json`                                                                                  | `JsonNode` 或 `string`                                              |
-| **地理空间类型**  | `Point`, `Ring`, `LineString`, `Polygon`, `MultiLineString`, `MultiPolygon`, `Geometry` | `Tuple<double,double>` 及其数组；`Geometry` 使用 `object`                 |
-| **包装器类型**   | `Nullable(T)`, `LowCardinality(T)`                                                      | 自动解包                                                               |
+| 类别          | ClickHouse 类型                                                                           | CLR 类型                                                                                                         |
+| ----------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| **整数**      | `Int8`–`Int64`, `UInt8`–`UInt64`                                                        | `sbyte`, `short`, `int`, `long`, `byte`, `ushort`, `uint`, `ulong`                                             |
+| **大整数**     | `Int128`, `Int256`, `UInt128`, `UInt256`                                                | `BigInteger`                                                                                                   |
+| **浮点数**     | `Float32`, `Float64`, `BFloat16`                                                        | `float`, `double`                                                                                              |
+| **十进制数**    | `Decimal(P,S)`, `Decimal32(S)`, `Decimal64(S)`, `Decimal128(S)`                         | `decimal` 或 `ClickHouseDecimal`                                                                                |
+| **布尔值**     | `Bool`                                                                                  | `bool`                                                                                                         |
+| **字符串**     | `String`, `FixedString(N)`                                                              | `string`                                                                                                       |
+| **枚举**      | `Enum8(...)`, `Enum16(...)`                                                             | `string` 或 C# `enum`                                                                                           |
+| **日期/时间**   | `Date`, `Date32`, `DateTime`, `DateTime64(P, 'TZ')`                                     | `DateOnly`, `DateTime`                                                                                         |
+| **时间**      | `Time`, `Time64(N)`                                                                     | `TimeSpan`                                                                                                     |
+| **UUID**    | `UUID`                                                                                  | `Guid`                                                                                                         |
+| **网络**      | `IPv4`, `IPv6`                                                                          | `IPAddress`                                                                                                    |
+| **数组**      | `Array(T)`                                                                              | `T[]`, `List<T>`, `IList<T>`, `ICollection<T>`, `IReadOnlyList<T>`, `IReadOnlyCollection<T>`, `IEnumerable<T>` |
+| **映射**      | `Map(K, V)`                                                                             | `Dictionary<K,V>`                                                                                              |
+| **元组**      | `Tuple(T1, ...)`                                                                        | `Tuple<...>` 或 `ValueTuple<...>`                                                                               |
+| **Variant** | `Variant(T1, T2, ...)`                                                                  | `object`                                                                                                       |
+| **Dynamic** | `Dynamic`                                                                               | `object`                                                                                                       |
+| **JSON**    | `Json`                                                                                  | `JsonNode` 或 `string`                                                                                          |
+| **地理空间类型**  | `Point`, `Ring`, `LineString`, `Polygon`, `MultiLineString`, `MultiPolygon`, `Geometry` | `Tuple<double,double>` 及其数组；`Geometry` 使用 `object`                                                             |
+| **包装器类型**   | `Nullable(T)`, `LowCardinality(T)`                                                      | 自动解包                                                                                                           |
 
 需要 `Decimal128`/`Decimal256` 列的完整精度时，请使用 `ClickHouseDecimal` (来自 `ClickHouse.Driver.Numerics`) 而不是 `decimal`——.NET `decimal` 最多仅支持 28–29 位有效数字。
 
 #### 支持的 LINQ 操作 \{#ef-core-linq\}
 
-**查询：** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `Count`, `Distinct`, `AsNoTracking`
+**查询：** `Where`, `OrderBy`, `Take`, `Skip`, `Select`, `First`, `Single`, `Any`, `All`, `Count`, `Distinct`, `AsNoTracking`
 
-**GROUP BY 和聚合：** `GroupBy` 配合 `Count`、`LongCount`、`Sum`、`Average`、`Min`、`Max`——包括 `HAVING` (在 `.GroupBy()` 之后调用 `.Where()`) 、在单个投影中使用多个聚合，以及按聚合结果进行 `OrderBy` 排序。
+**GROUP BY 与聚合：** `GroupBy` 配合 `Count`, `LongCount`, `Sum`, `Average`, `Min`, `Max`——包括 `HAVING` (在 `.GroupBy()` 之后使用 `.Where()`) 、在单个投影中使用多个聚合，以及按聚合结果执行 `OrderBy`。
 
-**字符串方法：** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat` (以及 `+` 运算符) 
+**连接：** `Join` (INNER) 、`GroupJoin`/`SelectMany` 模式 (LEFT 和 CROSS) 。LEFT JOIN 会为未匹配的行返回实际的 `null` 值 (参见下方的 [LEFT JOIN null semantics](#ef-core-join-nulls)) 。
 
-**数学函数：** 标准 `Math` 和 `MathF` 方法会被转换为对应的 ClickHouse 函数，包括算术、对数、三角和实用函数。
+**子查询：** 关联 `Contains` / `IN`、`Any` / `EXISTS`、`All`，以及投影中的标量子查询。
+
+**集合操作：** `Concat` (→ `UNION ALL`) 、`Union` (→ `UNION DISTINCT`) 、`Intersect`、`Except`。
+
+**内联本地集合：** 针对内存中集合 (`int[]`, `List<T>` 等) 的连接和 `Contains` 会被转换为一系列 UNION。
+
+**字符串方法：** `Contains`, `StartsWith`, `EndsWith`, `IndexOf`, `Replace`, `Substring`, `Trim`/`TrimStart`/`TrimEnd`, `ToLower`, `ToUpper`, `Length`, `IsNullOrEmpty`, `Concat` (以及 `+` 运算符) 。
+
+**数学函数：** 标准 `Math` 和 `MathF` 方法会被转换为对应的 ClickHouse 函数——包括算术、对数、三角和实用函数。
+
+##### LEFT JOIN 的 null 语义 \{#ef-core-join-nulls\}
+
+该提供商会自动在每个连接路径中注入 `set_join_use_nulls=1`，以使 JOIN 的行为符合 Entity Framework 的预期。
+
+如果你的 ClickHouse 服务端或 profile 不允许修改此设置 (例如 `readonly=1` profile) ，请使用以下方式禁用：
+
+```csharp
+optionsBuilder.UseClickHouse(connectionString, o => o.DisableJoinNullSemantics());
+```
+
+启用 opt-out 后，LEFT JOIN 会返回 ClickHouse 的列默认值，EF 的基于 null 的导航检测将无法再按预期工作。请改为显式与 `0` / `""` 比较，而不要使用 `== null`。
 
 #### 插入数据 \{#ef-core-insert\}
 
@@ -2149,20 +2295,94 @@ entity.Property(e => e.Data).HasColumnType("Json");
   :::
 
 
-#### 限制 \{#ef-core-limitations\}
+#### 表引擎 \{#ef-core-engines\}
 
-| 功能                                             | 状态                                |
-| ---------------------------------------------- | --------------------------------- |
-| SELECT / WHERE / ORDER BY / GROUP BY           | 支持                                |
-| 通过 `SaveChanges` / `BulkInsertAsync` 执行 INSERT | 支持                                |
-| UPDATE / DELETE                                | 尚不支持 (ClickHouse 变更是异步的，不兼容 OLTP)  |
-| 迁移                                             | 尚不支持                               |
-| JOINs、子查询、集合运算                                 | 尚不支持                               |
-| 事务                                             | 空操作 (ClickHouse 不支持 ACID 事务)      |
-| 服务器生成的值 (自增)                                   | 尚不支持                               |
-| 嵌套类型                                           | 尚不支持                               |
-| JSON 路径查询转换 (LINQ 中的 `.Data["key"]`)           | 尚不支持                               |
-| 作为 JSON 的拥有实体 (`.ToJson()`)                    | 尚不支持                               |
+通过 `ToTable(name, t => ...)` 链式 API 配置 ClickHouse 表引擎及引擎特定子句。未配置引擎时，提供商默认使用 `MergeTree`，并根据实体的主键生成 `ORDER BY`。
+
+```csharp
+modelBuilder.Entity<Event>(e =>
+{
+    e.ToTable("events", t => t
+        .HasMergeTreeEngine()
+        .WithOrderBy("UserId", "Timestamp")
+        .WithPartitionBy("toYYYYMM(Timestamp)")
+        .WithPrimaryKey("UserId")
+        .WithSettings("index_granularity = 8192"));
+});
+```
+
+支持的引擎系列：
+
+| 引擎                                      | 链式方法                                                                                                     | 说明                          |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------- | --------------------------- |
+| `MergeTree`                             | `HasMergeTreeEngine()`                                                                                   | 未配置时默认使用                    |
+| `ReplacingMergeTree`                    | `HasReplacingMergeTreeEngine("Version", "IsDeleted")` 或 `HasReplacingMergeTreeEngine<T>(e => e.Version)` | `Version` / `IsDeleted` 列可选 |
+| `SummingMergeTree`                      | `HasSummingMergeTreeEngine(…)` 或 `HasSummingMergeTreeEngine<T>(e => new { … })`                          | 可选的求和列                      |
+| `AggregatingMergeTree`                  | `HasAggregatingMergeTreeEngine()`                                                                        | —                           |
+| `CollapsingMergeTree`                   | `HasCollapsingMergeTreeEngine("Sign")` 或 `HasCollapsingMergeTreeEngine<T>(e => e.Sign)`                  | `Sign` 列必须为 `Int8`          |
+| `VersionedCollapsingMergeTree`          | `HasVersionedCollapsingMergeTreeEngine("Sign", "Version")` 或 `<T>(e => e.Sign, e => e.Version)`          | —                           |
+| `GraphiteMergeTree`                     | `HasGraphiteMergeTreeEngine("config_section")`                                                           | —                           |
+| `Log`, `TinyLog`, `StripeLog`, `Memory` | `HasLogEngine()`, `HasTinyLogEngine()`, `HasStripeLogEngine()`, `HasMemoryEngine()`                      | 不支持 ORDER BY / PARTITION BY |
+
+**引擎子句：** `WithOrderBy`, `WithPartitionBy`, `WithPrimaryKey`, `WithSampleBy`, `WithTtl`, `WithSettings`。这些方法都会附加到 `HasXxxEngine()` 返回的引擎构建器上。
+
+**列级特性：** `HasCodec`, `HasTtl`, `HasComment`, `HasDefault` — 全部都会参与迁移。
+
+**跳过索引** — 通过 `HasIndex(...).HasSkippingIndexType(...)`：
+
+```csharp
+modelBuilder.Entity<Event>()
+    .HasIndex(e => e.UserId)
+    .HasSkippingIndexType("minmax")
+    .HasGranularity(4);
+
+// Index with parameters (e.g. bloom_filter, tokenbf_v1):
+modelBuilder.Entity<Event>()
+    .HasIndex(e => e.Tag)
+    .HasSkippingIndexType("bloom_filter")
+    .HasSkippingIndexParams("0.01")
+    .HasGranularity(1);
+```
+
+标准 (非跳过) 索引会被静默忽略，因为 ClickHouse 没有对应的实现。唯一索引会抛出异常，因为 ClickHouse 不保证唯一性。
+
+#### 迁移 \{#ef-core-migrations\}
+
+标准 EF Core 迁移工作流程：
+
+```bash
+dotnet ef migrations add InitialCreate
+dotnet ef database update
+```
+
+支持的操作：
+
+| 操作                                     | 输出                                                               |
+| -------------------------------------- | ---------------------------------------------------------------- |
+| `CREATE TABLE`                         | 包含引擎子句、ORDER BY、PARTITION BY、SETTINGS，以及列的编解码器/生存时间 (TTL)/注释/默认值 |
+| `ALTER TABLE ADD COLUMN`               | —                                                                |
+| `ALTER TABLE DROP COLUMN`              | —                                                                |
+| `ALTER TABLE MODIFY COLUMN`            | 处理类型修改，以及附加属性的添加/移除 (CODEC、TTL、COMMENT、DEFAULT)                  |
+| `ALTER TABLE RENAME COLUMN`            | —                                                                |
+| `RENAME TABLE`                         | —                                                                |
+| `ALTER TABLE ADD INDEX` / `DROP INDEX` | 仅支持跳过索引                                                          |
+| `CREATE DATABASE` / `DROP DATABASE`    | 通过 `EnsureCreated` / `EnsureDeleted` 和迁移操作                       |
+
+#### 迁移限制 \{#ef-core-limitations\}
+
+| Feature                      | Reason                                                                                      |
+| ---------------------------- | ------------------------------------------------------------------------------------------- |
+| 外键                           | ClickHouse 不强制执行外键约束。迁移会拒绝 `AddForeignKey`；模型验证器会在模型构建时发出警告。                                |
+| 唯一约束 / 唯一索引                  | ClickHouse 不强制保证唯一性。唯一索引会在迁移时抛出错误。                                                          |
+| 服务器生成的值 (自动递增 / `IDENTITY`)  | ClickHouse 没有等效机制。                                                                          |
+| `Nested(…)` 列                | 尚不支持将其映射为 CLR 类型。                                                                           |
+| 作为 JSON 的拥有实体 (`.ToJson()`)  | 尚未实现拥有实体的结构化 JSON 映射。请改为在 `Json` 列上使用 `JsonNode` / `string` (请参见 [JSON 列](#ef-core-json)) 。 |
+
+除了迁移限制外，该提供程序目前还不支持：
+
+* **`UPDATE` / `DELETE`**
+* **事务**：`BeginTransaction` 是空操作。ClickHouse 不支持 ACID 事务。
+* **JSON 路径查询转换**：LINQ 中的 `entity.Data["key"]` 不会被转换为 ClickHouse 的 `data.key` SQL 语法。请改为基于非 JSON 列进行筛选，并在内存中检查 JSON。
 
 ## 限制 \{#limitations\}
 

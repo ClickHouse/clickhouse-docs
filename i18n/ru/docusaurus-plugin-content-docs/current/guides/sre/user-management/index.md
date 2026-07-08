@@ -2,35 +2,34 @@
 slug: /operations/access-rights
 sidebar_position: 1
 sidebar_label: 'Пользователи и роли'
-title: 'Контроль доступа и управление учетными записями'
-keywords: ['ClickHouse Cloud', 'Контроль доступа', 'Управление пользователями', 'RBAC', 'Безопасность']
-description: 'Описывает контроль доступа и управление учетными записями в ClickHouse Cloud'
+title: 'Управление доступом и учетными записями'
+keywords: ['ClickHouse Cloud', 'Управление доступом', 'Управление пользователями', 'RBAC', 'Безопасность']
+description: 'Описывает управление доступом и учетными записями в ClickHouse Cloud'
 doc_type: 'guide'
 ---
-
-# Создание пользователей и ролей в ClickHouse \{#creating-users-and-roles-in-clickhouse\}
 
 ClickHouse поддерживает управление доступом на основе подхода [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control).
 
 Объекты управления доступом в ClickHouse:
-- [Учетная запись пользователя](#user-account-management)
-- [Роль](#role-management)
-- [Политика строк (Row Policy)](#row-policy-management)
-- [Профиль настроек (Settings Profile)](#settings-profiles-management)
-- [Квота](#quotas-management)
 
-Вы можете настраивать объекты доступа с помощью:
+* [Учетная запись пользователя](#user-account-management)
+* [Роль](#role-management)
+* [Политика строк (ROW POLICY)](#row-policy-management)
+* [Профиль настроек (Settings Profile)](#settings-profiles-management)
+* [Квота](#quotas-management)
 
-- SQL-ориентированного подхода.
+Вы можете настраивать объекты управления доступом с помощью:
 
-    Для этого необходимо [включить](#enabling-access-control) эту функциональность.
+* SQL-ориентированного подхода.
 
-- [Конфигурационных файлов](/operations/configuration-files.md) сервера `users.xml` и `config.xml`.
+  Для этого необходимо [включить](#enabling-access-control) эту функциональность.
+
+* [Конфигурационных файлов](/operations/configuration-files.md) сервера `users.xml` и `config.xml`.
 
 Мы рекомендуем использовать SQL-ориентированный подход. Оба метода конфигурации работают одновременно, поэтому, если вы используете конфигурационные файлы сервера для управления учетными записями и правами доступа, вы можете безболезненно перейти на подход, основанный на SQL.
 
 :::note
-Нельзя управлять одной и той же сущностью доступа одновременно с помощью обоих методов конфигурации.
+Нельзя управлять одним и тем же объектом управления доступом одновременно с помощью обоих методов конфигурации.
 :::
 
 :::note

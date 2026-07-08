@@ -7,13 +7,13 @@ doc_type: 'guide'
 keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 ---
 
-このデータセットは New York Public Library（ニューヨーク公共図書館）によって作成されたものです。ホテル、レストラン、カフェのメニューに関する履歴データが含まれており、料理名とその価格が記録されています。
+このデータセットは New York Public Library (ニューヨーク公共図書館) によって作成されたものです。ホテル、レストラン、カフェのメニューに関する履歴データが含まれており、料理名とその価格が記録されています。
 
-出典: http://menus.nypl.org/data  
+出典: http://menus.nypl.org/data
 データはパブリックドメインです。
 
-このデータは図書館アーカイブ由来であるため、不完全であったり、統計解析には扱いづらい場合があります。それでも、とても「おいしい」データです。  
-メニューに掲載された料理に関するレコードはわずか130万件で、ClickHouse にとってはごく小さなデータ量ですが、良いサンプルとして利用できます。
+このデータは図書館アーカイブ由来であるため、不完全であったり、統計解析には扱いづらい場合があります。それでも、とても「おいしい」データです。
+メニューに掲載された料理に関するレコードはわずか130万件で、ClickHouse にとってはごく小さなデータ量ですが、良い例として利用できます。
 
 ## データセットをダウンロードする \{#download-dataset\}
 
@@ -185,15 +185,11 @@ FROM menu_item
 
 ## データを検証する \{#validate-data\}
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT count() FROM menu_item_denorm;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌─count()─┐
 │ 1329175 │
 └─────────┘
@@ -203,9 +199,7 @@ SELECT count() FROM menu_item_denorm;
 
 ### 料理の過去平均価格 \{#query-averaged-historical-prices\}
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -217,9 +211,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 100, 100)─┐
 │ 1850 │     618 │                  1.5 │ █▍                           │
 │ 1860 │    1634 │                 1.29 │ █▎                           │
@@ -245,9 +237,7 @@ ORDER BY d ASC;
 
 ### ハンバーガーの価格 \{#query-burger-prices\}
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -259,9 +249,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果:
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)───────────┐
 │ 1880 │       2 │                 0.42 │ ▋                                     │
 │ 1890 │       7 │                 0.85 │ █▋                                    │
@@ -282,9 +270,7 @@ ORDER BY d ASC;
 
 ### ウォッカ \{#query-vodka\}
 
-クエリ：
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -296,9 +282,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)─┐
 │ 1910 │       2 │                    0 │                             │
 │ 1920 │       1 │                  0.3 │ ▌                           │
@@ -318,9 +302,7 @@ ORDER BY d ASC;
 
 キャビアの価格を表示しましょう。また、キャビア料理の名前をひとつ表示しましょう。
 
-クエリ:
-
-```sql
+```sql title="Query"
 SELECT
     round(toUInt32OrZero(extract(menu_date, '^\\d{4}')), -1) AS d,
     count(),
@@ -333,9 +315,7 @@ GROUP BY d
 ORDER BY d ASC;
 ```
 
-結果：
-
-```text
+```text title="Response"
 ┌────d─┬─count()─┬─round(avg(price), 2)─┬─bar(avg(price), 0, 50, 100)──────┬─any(dish_name)──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │ 1090 │       1 │                    0 │                                  │ Caviar                                                                                                                              │
 │ 1880 │       3 │                    0 │                                  │ Caviar                                                                                                                              │

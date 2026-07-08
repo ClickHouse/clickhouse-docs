@@ -1,14 +1,12 @@
 ---
 sidebar_position: 1
-sidebar_label: '테이블 생성'
-title: 'ClickHouse에서 테이블 생성'
+sidebar_label: '테이블 생성하기'
+title: 'ClickHouse에서 테이블 생성하기'
 slug: /guides/creating-tables
 description: 'ClickHouse에서 테이블 생성에 대해 알아보기'
-keywords: ['테이블 생성', 'CREATE TABLE', '테이블 생성', '데이터베이스 가이드', 'MergeTree 엔진']
-doc_type: '가이드'
+keywords: ['테이블 생성하기', 'CREATE TABLE', '테이블 생성', '데이터베이스 가이드', 'MergeTree 엔진']
+doc_type: 'guide'
 ---
-
-# ClickHouse에서 테이블 생성하기 \{#creating-tables-in-clickhouse\}
 
 대부분의 데이터베이스와 마찬가지로 ClickHouse는 테이블을 논리적으로 **데이터베이스** 단위로 그룹화합니다. ClickHouse에서 새 데이터베이스를 생성하려면 `CREATE DATABASE` 명령을 사용하십시오.
 
@@ -49,7 +47,6 @@ CREATE DATABASE IF NOT EXISTS helloworld
 
 선택할 수 있는 엔진은 여러 종류가 있지만, 단일 노드 ClickHouse 서버에서 사용하는 간단한 테이블에는 [MergeTree](/engines/table-engines/mergetree-family/mergetree.md)가 주로 사용됩니다.
 :::
-
 
 ## 기본 키에 대한 간단한 소개 \{#a-brief-intro-to-primary-keys\}
 

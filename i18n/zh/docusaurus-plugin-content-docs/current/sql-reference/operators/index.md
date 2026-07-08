@@ -7,9 +7,7 @@ title: '运算符'
 doc_type: 'reference'
 ---
 
-# 运算符 \{#operators\}
-
-在查询解析阶段，ClickHouse 会根据运算符的优先级、先后次序和结合性，将其转换为相应的函数。
+ClickHouse 会在查询解析阶段，根据运算符的优先级、结合性和运算顺序，将其转换为对应的函数。
 
 ## 访问运算符 \{#access-operators\}
 
@@ -113,8 +111,8 @@ SELECT * FROM a AS a1 JOIN a AS a2 ON a1.x <=> a2.x;
 :::
 
 `<=>` 运算符是 `NULL` 安全相等运算符，等同于 `IS NOT DISTINCT FROM`。
-它的行为类似常规相等运算符（`=`），但会将 `NULL` 值视为可参与比较。
-两个 `NULL` 值被视为相等，将 `NULL` 与任意非 `NULL` 值比较时，返回 0（false），而不是 `NULL`。
+它的行为类似常规相等运算符 (`=`) ，但会将 `NULL` 值视为可参与比较。
+两个 `NULL` 值被视为相等，将 `NULL` 与任意非 `NULL` 值比较时，返回 0 (false) ，而不是 `NULL`。
 
 ```sql
 SELECT
@@ -127,6 +125,15 @@ SELECT
 │                        0 │                        1 │
 └──────────────────────────┴──────────────────────────┘
 ```
+
+## 字符串处理运算符 \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - `overlay(string, replacement, offset)` 函数。
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - `overlay(string, replacement, offset, length)` 函数。
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - `overlayUTF8(string, replacement, offset)` 函数。
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - `overlayUTF8(string, replacement, offset, length)` 函数。
 
 ## 用于处理数据集的运算符 \{#operators-for-working-with-data-sets\}
 
@@ -150,7 +157,7 @@ SELECT
 
 ### in 子查询函数 \{#in-subquery-function\}
 
-`a = ANY (subquery)` 等同于 `in (a, subquery)` 函数。  
+`a = ANY (subquery)` 等同于 `in (a, subquery)` 函数。
 
 ### notIn subquery function \{#notin-subquery-function\}
 
@@ -168,13 +175,11 @@ SELECT
 
 带 ALL 的查询：
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-结果:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -185,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 使用 ANY 的查询：
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-结果:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │
@@ -336,7 +339,7 @@ SELECT now() AS current_date_time, current_date_time + INTERVAL '4' day + INTERV
 ```
 
 :::note
-始终优先使用 `INTERVAL` 语法或 `addDays` 函数。简单的加减运算（例如 `now() + ...` 这样的语法）不会考虑时间相关设置，例如夏令时。
+始终优先使用 `INTERVAL` 语法或 `addDays` 函数。简单的加减运算 (例如 `now() + ...` 这样的语法) 不会考虑时间相关设置，例如夏令时。
 :::
 
 示例:
@@ -356,6 +359,55 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) 数据类型
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 类型转换函数
 
+### 日期和时间加法 \{#date-time-addition\}
+
+可以使用 `+` 运算符将 [Date](../../sql-reference/data-types/date.md) 或 [Date32](../../sql-reference/data-types/date32.md) 值与 [Time](../../sql-reference/data-types/time.md) 或 [Time64](../../sql-reference/data-types/time64.md) 值相加。结果为一个 [DateTime](../../sql-reference/data-types/datetime.md) 或 [DateTime64](../../sql-reference/data-types/datetime64.md)，表示该日期在一天中给定时间点对应的日期时间。该运算满足交换律。
+
+结果类型取决于操作数类型：
+
+| Left operand | Right operand | Result type     |
+| ------------ | ------------- | --------------- |
+| `Date`       | `Time`        | `DateTime`      |
+| `Date`       | `Time64(s)`   | `DateTime64(s)` |
+| `Date32`     | `Time`        | `DateTime64(0)` |
+| `Date32`     | `Time64(s)`   | `DateTime64(s)` |
+
+:::note
+结果使用[会话时区](../../operations/settings/settings.md#session_timezone) (如果未设置会话时区，则使用服务器默认时区) 。[`date_time_overflow_behavior`](../../operations/settings/settings-formats.md#date_time_overflow_behavior) 设置用于控制结果超出可表示范围时的行为。
+:::
+
+示例：
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25 │ DateTime       │
+└─────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+┌─────────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+└────────────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toTime64('23:59:59.999', 3) + toDate32('2024-07-15') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 23:59:59.999 │ DateTime64(3)  │
+└─────────────────────────┴────────────────┘
+```
 
 ## 逻辑 AND 运算符 \{#logical-and-operator\}
 
@@ -463,3 +515,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 可以通过启用 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 设置来优化。启用 `optimize_functions_to_subcolumns = 1` 后，函数只会读取 [null](../../sql-reference/data-types/nullable.md#finding-null) 子列，而不是读取并处理整列数据。查询 `SELECT n IS NOT NULL FROM table` 会被转换为 `SELECT NOT n.null FROM TABLE`。
+
+
+## 检查布尔值 \{#checking-boolean-values\}
+
+ClickHouse 支持 `IS TRUE`、`IS FALSE`、`IS UNKNOWN`、`IS NOT TRUE`、`IS NOT FALSE` 和 `IS NOT UNKNOWN` 运算符。
+这些运算符可用于 [Bool](../../sql-reference/data-types/boolean.md) 和 `Nullable(Bool)` 表达式。
+
+* `expr IS TRUE` 仅当 `expr` 为 `true` 时返回 `1`。
+* `expr IS FALSE` 仅当 `expr` 为 `false` 时返回 `1`。
+* `expr IS UNKNOWN` 仅当 `expr` 为 `NULL` 时返回 `1`。
+* `expr IS NOT TRUE` 在 `expr` 为 `false` 或 `NULL` 时返回 `1`。
+* `expr IS NOT FALSE` 在 `expr` 为 `true` 或 `NULL` 时返回 `1`。
+* `expr IS NOT UNKNOWN` 在 `expr` 不为 `NULL` 时返回 `1`。
+
+对于布尔表达式，`IS UNKNOWN` 等同于 `IS NULL`，`IS NOT UNKNOWN` 等同于 `IS NOT NULL`。
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

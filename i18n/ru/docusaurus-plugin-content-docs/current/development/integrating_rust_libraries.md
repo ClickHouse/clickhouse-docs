@@ -1,12 +1,10 @@
 ---
-description: 'Руководство по интеграции библиотек на Rust в ClickHouse'
+description: 'Руководство по интеграции библиотек Rust в ClickHouse'
 sidebar_label: 'Библиотеки Rust'
 slug: /development/integrating_rust_libraries
-title: 'Интеграция библиотек на Rust'
+title: 'Интеграция библиотек Rust'
 doc_type: 'guide'
 ---
-
-# Библиотеки Rust \{#rust-libraries\}
 
 Интеграция библиотеки Rust будет описана на примере интеграции хеш-функции BLAKE3.
 

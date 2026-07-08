@@ -9,7 +9,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/redis/redis-import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis/redis-logs-dashboard.png';
@@ -17,10 +16,8 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# Мониторинг логов Redis с помощью ClickStack \{#redis-clickstack\}
-
 :::note[Кратко]
-Собирайте и визуализируйте серверные логи Redis в ClickStack с помощью приёмника OTel `filelog`. Включает демо-набор данных и готовую панель мониторинга.
+Собирайте и визуализируйте журналы сервера Redis в ClickStack с помощью OTel-приемника `filelog`. Включает демонстрационный набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующим Redis \{#existing-redis\}
@@ -274,7 +271,7 @@ HyperDX отображает временные метки в локальном
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-logs-dashboard.json'} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда {#download}
 
 #### Импорт готового дашборда \{#import-dashboard\}
 

@@ -4,29 +4,27 @@ sidebar_position: 1
 sidebar_label: 'ユーザーとロール'
 title: 'アクセス制御とアカウント管理'
 keywords: ['ClickHouse Cloud', 'アクセス制御', 'ユーザー管理', 'RBAC', 'セキュリティ']
-description: 'ClickHouse Cloud におけるアクセス制御とアカウント管理について説明します。'
+description: 'ClickHouse Cloud におけるアクセス制御とアカウント管理について説明します'
 doc_type: 'guide'
 ---
-
-# ClickHouse でのユーザーとロールの作成 \{#creating-users-and-roles-in-clickhouse\}
 
 ClickHouse は、[RBAC](https://en.wikipedia.org/wiki/Role-based_access_control) に基づくアクセス制御をサポートしています。
 
 ClickHouse のアクセスエンティティ:
 
-- [User account](#user-account-management)
-- [Role](#role-management)
-- [Row Policy](#row-policy-management)
-- [Settings Profile](#settings-profiles-management)
-- [Quota](#quotas-management)
+* [ユーザーアカウント](#user-account-management)
+* [ロール](#role-management)
+* [Row Policy](#row-policy-management)
+* [Settings Profile](#settings-profiles-management)
+* [Quota](#quotas-management)
 
 アクセスエンティティは次の方法で設定できます:
 
-- SQL 駆動のワークフロー。
+* SQL 駆動のワークフロー。
 
-    この機能を利用するには、事前に[有効化](#enabling-access-control)する必要があります。
+  この機能を利用するには、事前に[有効化](#enabling-access-control)する必要があります。
 
-- サーバーの[設定ファイル](/operations/configuration-files.md) `users.xml` および `config.xml`。
+* サーバーの[設定ファイル](/operations/configuration-files.md) `users.xml` および `config.xml`。
 
 SQL 駆動のワークフローを使用することを推奨します。どちらの設定方法も同時に動作するため、アカウントやアクセス権限の管理にサーバー設定ファイルを使用している場合でも、SQL 駆動のワークフローへスムーズに移行できます。
 

@@ -2,22 +2,20 @@
 slug: /cloud/guides/data-masking
 sidebar_label: 'データマスキング'
 title: 'ClickHouse におけるデータマスキング'
-description: 'ClickHouse におけるデータマスキングに関するガイド'
+description: 'ClickHouse におけるデータマスキングのガイド'
 keywords: ['データマスキング']
 doc_type: 'guide'
 ---
-
-# ClickHouse におけるデータマスキング \{#data-masking-in-clickhouse\}
 
 データマスキングはデータ保護のための手法であり、元のデータの形式や構造は維持したまま、個人を特定できる情報 (PII) や機密情報を取り除いた別バージョンのデータに置き換えるものです。
 
 このガイドでは、ClickHouse でデータをマスクするために利用できるいくつかのアプローチを説明します。
 
-- **Masking policies** (ClickHouse Cloud, 25.12+): クエリ実行時に特定のユーザーやロールに対して適用されるネイティブな動的マスキング
-- **String replacement functions**: 組み込み関数による基本的なマスキング
-- **Masked views**: 変換ロジックを組み込んだマスク済みビューの作成
-- **Materialized columns**: 元データと並行してマスク済みデータを保持するマテリアライズドカラム
-- **Query masking rules**: ログ内の機密データをマスクするためのクエリマスキングルール (ClickHouse OSS)
+* **マスキングポリシー** (ClickHouse Cloud, 25.12+): クエリ実行時に特定のユーザーやロールに対して適用されるネイティブな動的マスキング
+* **文字列置換関数**: 組み込み関数による基本的なマスキング
+* **マスクされたビュー**: 変換ロジックを組み込んだマスク済みビューの作成
+* **マテリアライズドカラム**: 元データと並行してマスク済みデータを保持するマテリアライズドカラム
+* **クエリマスキングルール**: ログ内の機密データをマスクするためのクエリマスキングルール (ClickHouse OSS)
 
 ## マスキングポリシーを使用する (ClickHouse Cloud) \{#masking-policies\}
 

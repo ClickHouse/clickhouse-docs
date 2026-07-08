@@ -1,17 +1,15 @@
 ---
-title: 'ストレージ効率 - タイムシリーズ'
+title: 'ストレージ効率 - 時系列データ'
 sidebar_label: 'ストレージ効率'
-description: 'タイムシリーズデータのストレージ効率を向上させる'
+description: '時系列データのストレージ効率を向上させる'
 slug: /use-cases/time-series/storage-efficiency
-keywords: ['タイムシリーズ', 'ストレージ効率', '圧縮', 'データ保持期間', 'TTL', 'ストレージ最適化', 'ディスク使用量']
+keywords: ['時系列データ', 'ストレージ効率', '圧縮', 'データ保持期間', 'TTL', 'ストレージ最適化', 'ディスク使用量']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 時系列データのストレージ効率 \{#time-series-storage-efficiency\}
-
-Wikipedia 統計データセットのクエリ方法を一通り見てきたところで、次は ClickHouse におけるストレージ効率の最適化に焦点を当てます。
-このセクションでは、クエリ性能を維持しつつ、ストレージ要件を削減するための実践的な手法を紹介します。
+Wikipedia 統計データセットのクエリ方法を確認したので、次は ClickHouse でのストレージ効率の最適化に焦点を当てます。
+このセクションでは、クエリ性能を維持しながらストレージ要件を削減するための実践的な手法を紹介します。
 
 ## 型の最適化 \{#time-series-type-optimization\}
 
@@ -60,7 +58,6 @@ MODIFY COLUMN `hits` UInt32;
 ```
 
 これにより、このカラムのメモリ上のサイズは少なくとも半分になります。圧縮によりディスク上のサイズは変わらない点に注意してください。ただし、小さすぎるデータ型は選ばないよう注意してください。
-
 
 ## 専用コーデック \{#time-series-specialized-codecs\}
 

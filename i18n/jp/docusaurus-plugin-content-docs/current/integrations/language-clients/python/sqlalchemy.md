@@ -8,7 +8,7 @@ title: 'SQLAlchemy サポート'
 doc_type: 'reference'
 ---
 
-ClickHouse Connect には、コアドライバ上に実装された SQLAlchemy ダイアレクト（`clickhousedb`）が含まれています。これは SQLAlchemy Core API を対象としており、SQLAlchemy 1.4.40 以降および 2.0.x をサポートします。
+ClickHouse Connect には、コアドライバ上に実装された SQLAlchemy ダイアレクト (`clickhousedb`) が含まれています。これは SQLAlchemy Core API を対象としており、SQLAlchemy 1.4.40 以降および 2.0.x をサポートします。
 
 ## SQLAlchemy で接続する \{#sqlalchemy-connect\}
 

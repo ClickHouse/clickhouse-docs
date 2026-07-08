@@ -1,22 +1,19 @@
 ---
 sidebar_label: 'Estuary'
 slug: /integrations/estuary
-description: 'Организуйте потоковую передачу данных из различных источников в ClickHouse с помощью интеграции Estuary'
+description: 'Передавайте данные из самых разных источников в ClickHouse с помощью интеграции Estuary'
 title: 'Подключение Estuary к ClickHouse'
 doc_type: 'guide'
 integration:
   - support_level: 'partner'
   - category: 'data_ingestion'
   - website: 'https://estuary.dev'
-keywords: ['estuary', 'ингестия данных', 'etl', 'pipeline', 'интеграция данных', 'clickpipes']
+keywords: ['estuary', 'data ingestion', 'etl', 'pipeline', 'data integration', 'clickpipes']
 ---
 
 import PartnerBadge from '@theme/badges/PartnerBadge';
 
-
-# Подключение Estuary к ClickHouse \{#connect-estuary-with-clickhouse\}
-
-<PartnerBadge/>
+<PartnerBadge />
 
 [Estuary](https://estuary.dev/) — это платформа для своевременной работы с данными, которая гибко объединяет потоковые и пакетные данные в простые в настройке ETL-конвейеры. Благодаря корпоративному уровню безопасности и гибким вариантам развертывания Estuary обеспечивает надежные потоки данных из SaaS-систем, баз данных и стриминговых источников в различные целевые системы, включая ClickHouse.
 

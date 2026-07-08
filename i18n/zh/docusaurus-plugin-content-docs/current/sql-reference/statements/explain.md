@@ -127,7 +127,7 @@ EXPLAIN AST ALTER TABLE t1 DELETE WHERE date = today();
 
 ### EXPLAIN SYNTAX \{#explain-syntax\}
 
-在语法分析之后显示查询的抽象语法树（AST）。
+在语法分析之后显示查询的抽象语法树 (AST) 。
 
 该过程通过解析查询、构建查询 AST 和查询树，可选地运行查询分析器和优化 pass，随后将查询树转换回查询 AST 来完成。
 
@@ -139,13 +139,11 @@ Settings:
 
 Examples:
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-输出结果：
-
-```sql
+```sql title="Response"
 SELECT *
 FROM system.numbers AS a, system.numbers AS b, system.numbers AS c
 WHERE (a.number = b.number) AND (b.number = c.number)
@@ -153,13 +151,11 @@ WHERE (a.number = b.number) AND (b.number = c.number)
 
 使用 `run_query_tree_passes`：
 
-```sql
+```sql title="Query"
 EXPLAIN SYNTAX run_query_tree_passes = 1 SELECT * FROM system.numbers AS a, system.numbers AS b, system.numbers AS c WHERE a.number = b.number AND b.number = c.number;
 ```
 
-输出结果：
-
-```sql
+```sql title="Response"
 SELECT
     __table1.number AS `a.number`,
     __table2.number AS `b.number`,
@@ -333,15 +329,15 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-当 `indexes` = 1 时，会添加 `Indexes` 键。该键包含一个已使用索引的数组。每个索引以 JSON 形式描述，包含 `Type` 键 (字符串 `MinMax`、`Partition`、`PrimaryKey` 或 `Skip`) ，以及可选的键：
+当 `indexes` = 1 时，会添加 `Indexes` 键。该键包含一个已使用索引的数组。每个索引以 JSON 形式描述，包含 `Type` 键 (字符串 `Partition Min-Max`、`Partition`、`Statistics`、`PrimaryKey` 或 `Skip`) ，以及可选的键：
 
 * `Name` — 索引名称 (目前仅对 `Skip` 索引使用) 。
 * `Keys` — 索引所使用列的数组。
 * `Condition` — 实际使用的条件。
 * `Description` — 索引描述 (目前仅对 `Skip` 索引使用) 。
 * `Parts` — 应用索引前后分区片段的数量。
-* `Granules` — 应用索引前后粒度单元的数量。
-* `Ranges` — 应用索引后粒度单元区间的数量。
+* `Granules` — 应用索引前后粒度的数量。
+* `Ranges` — 应用索引后粒度区间的数量。
 
 示例：
 
@@ -349,7 +345,7 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 "Node Type": "ReadFromMergeTree",
 "Indexes": [
   {
-    "Type": "MinMax",
+    "Type": "Partition Min-Max",
     "Keys": ["y"],
     "Condition": "(y in [1, +inf))",
     "Parts": 4/5,
@@ -387,12 +383,12 @@ EXPLAIN json = 1, description = 0, header = 1 SELECT 1, 2 + dummy;
 ]
 ```
 
-当 `projections` = 1 时，会添加 `Projections` 键。它包含一个已分析的 PROJECTION 数组。每个 PROJECTION 以包含以下键的 JSON 进行描述：
+当 `projections` = 1 时，会添加 `Projections` 键。它包含一个已分析的投影数组。每个投影以包含以下键的 JSON 进行描述：
 
-* `Name` — PROJECTION 名称。
-* `Condition` — 使用的 PROJECTION 主键条件。
-* `Description` — 关于该 PROJECTION 使用方式的描述 (例如分区片段级过滤) 。
-* `Selected Parts` — 该 PROJECTION 选中的分区片段数量。
+* `Name` — 投影 名称。
+* `Condition` — 使用的投影 主键条件。
+* `Description` — 关于该 投影 使用方式的描述 (例如分区片段级过滤) 。
+* `Selected Parts` — 该 投影 选中的分区片段数量。
 * `Selected Marks` — 选中的标记数量。
 * `Selected Ranges` — 选中的范围数量。
 * `Selected Rows` — 选中的行数量。
@@ -549,8 +545,35 @@ Expression ((Project names + Projection))
 
 在这两个示例中，查询计划显示了整个执行流程，包括本地和远程步骤。
 
-当 `pretty` = 1 时，查询计划树将使用画线字符而不是缩进来显示：
+当 `pretty` = 1 时，查询计划树将使用画线字符而不是缩进来显示，并为关键步骤显示附加信息：
 
+* **查询输出列** 显示在计划顶部。
+* **表达式**在过滤条件、聚合键、排序描述和窗口函数中会以易于理解的类 SQL 表示法显示 (例如显示为 `a + 1 > 5`，而不是 `greater(plus(a, 1), 5)`) 。为便于理解，内部列标识符前缀 (例如 `__table1.`) 会被移除。
+* **源步骤** (例如 `ReadFromMergeTree`) 会显示其输出列。
+* **过滤步骤**会以 SQL 表示法显示过滤条件。当存在运行时连接过滤条件时，它们会单独显示。
+* **聚合步骤**会显示键和聚合函数及其参数 (例如 `sum(c)`、`count()`) 。
+* 来自元组字面量的 **IN 集合** 会显示其值 (对于大型集合会截断) ，基于子查询的集合会标记为 `subquery1`、`subquery2` 等，而来自 `Set` 引擎表的集合会显示表名。
+* **Join 步骤**会以数学符号表示连接关系、预估结果行数，
+  以及哪些输出列来自左侧、哪些来自右侧。以下符号用于
+  表示不同的连接类型：
+
+| 符号                     | 连接类型 |
+| ---------------------- | ---- |
+| `⋈`                    | 内连接  |
+| `⟕`                    | 左连接  |
+| `⟖`                    | 右连接  |
+| `⟗`                    | 全连接  |
+| `⋉`                    | 左半连接 |
+| `⋊`                    | 右半连接 |
+| `⋉` with strikethrough | 左反连接 |
+| `⋊` with strikethrough | 右反连接 |
+| `×`                    | 交叉连接 |
+
+例如，`t1 ⟕ t2` 表示表 `t1` 与 `t2` 之间的左连接。
+表名后方括号中的数字 (例如 `t1[100]`) 表示预估行数，
+前提是表统计信息可用。
+
+`pretty` 选项与 `compact = 1` 搭配使用效果很好，它会隐藏 `Expression` 步骤和详细的操作信息，使计划更易于阅读。
 
 ```sql
 EXPLAIN pretty = 1 SELECT sum(number) FROM numbers(10) GROUP BY number % 4 FORMAT Raw;
@@ -563,16 +586,56 @@ Expression ((Project names + Projection))
       └──ReadFromSystemNumbers
 ```
 
+一个包含 JOIN 的更详细示例：
+
+```sql
+CREATE TABLE t1 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+CREATE TABLE t2 (id UInt64, value String) ENGINE = MergeTree ORDER BY id;
+INSERT INTO t1 SELECT number, toString(number) FROM numbers(100);
+INSERT INTO t2 SELECT number, toString(number) FROM numbers(100);
+
+EXPLAIN actions = 1, compact = 1, pretty = 1
+SELECT * FROM t1 INNER JOIN t2 ON t1.id = t2.id FORMAT Raw;
+```
+
+```text
+Output: id, value, t2.id, t2.value
+
+Join (JOIN FillRightFirst)
+│  t1[100] ⋈ t2[100]
+│  Type: inner | Strictness: all | Algorithm: ConcurrentHashJoin
+│  Result rows: 100
+│  Output:
+│    Left:  id, value
+│    Right: id, value
+│  Join conditions: id = id
+├──ReadFromMergeTree (default.t1)
+│     Read type: Default
+│     Parts: 1 | Granules: 1
+│     Output: id, value
+└──ReadFromMergeTree (default.t2)
+      Read type: Default
+      Parts: 1 | Granules: 1
+      Output: id, value
+```
 
 ### EXPLAIN PIPELINE \{#explain-pipeline\}
 
 设置：
 
-* `header` — 为每个输出端口输出表头。默认值：0。
+* `header` — 为每个输出端口输出请求头。默认值：0。
 * `graph` — 使用 [DOT](https://en.wikipedia.org/wiki/DOT_\(graph_description_language\)) 图描述语言输出图形。默认值：0。
 * `compact` — 当启用 `graph` 设置时，以紧凑模式输出图形。默认值：1。
+* `compact_repeated_processor_chains` — 在文本输出中，将相邻重复的处理器链压缩显示为一份副本并标注重复次数。例如，当相同的处理器链多次出现时 (如在 joins 中) ，这可以让并行管道更易于阅读。它不会影响图形输出。默认值：0。
 
-当 `compact=0` 且 `graph=1` 时，processor 名称会包含一个带有唯一 processor 标识符的额外后缀。
+```text
+Resize 16 → 1
+  FillingRightJoinSide          │
+    SimpleSquashingTransform    │ × 16
+      Resize 1 → 16
+```
+
+当 `compact=0` 且 `graph=1` 时，处理器名称会包含一个带有唯一处理器标识符的额外后缀。
 
 示例：
 
@@ -596,7 +659,6 @@ ExpressionTransform
             NumbersRange × 2 0 → 1
 ```
 
-
 ### EXPLAIN ESTIMATE \{#explain-estimate\}
 
 显示在处理查询时预计将从表中读取的行数、标记数和分区片段数。适用于 [MergeTree](/engines/table-engines/mergetree-family/mergetree) 系列表。
@@ -605,21 +667,17 @@ ExpressionTransform
 
 创建一个表：
 
-```sql
+```sql title="Query"
 CREATE TABLE ttt (i Int64) ENGINE = MergeTree() ORDER BY i SETTINGS index_granularity = 16, write_final_mark = 0;
 INSERT INTO ttt SELECT number FROM numbers(128);
 OPTIMIZE TABLE ttt;
 ```
 
-查询：
-
-```sql
+```sql title="Query"
 EXPLAIN ESTIMATE SELECT * FROM ttt;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─database─┬─table─┬─parts─┬─rows─┬─marks─┐
 │ default  │ ttt   │     1 │  128 │     8 │
 └──────────┴───────┴───────┴──────┴───────┘
@@ -634,21 +692,19 @@ EXPLAIN ESTIMATE SELECT * FROM ttt;
 
 假设你有一个远程的 MySQL 表，如下所示：
 
-```sql
+```sql title="Query"
 CREATE TABLE db.tbl (
     id INT PRIMARY KEY,
     created DATETIME DEFAULT now()
 )
 ```
 
-```sql
+```sql title="Query"
 EXPLAIN TABLE OVERRIDE mysql('127.0.0.1:3306', 'db', 'tbl', 'root', 'clickhouse')
 PARTITION BY toYYYYMM(assumeNotNull(created))
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─explain─────────────────────────────────────────────────┐
 │ PARTITION BY uses columns: `created` Nullable(DateTime) │
 └─────────────────────────────────────────────────────────┘

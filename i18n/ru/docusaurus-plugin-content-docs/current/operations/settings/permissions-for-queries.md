@@ -1,21 +1,19 @@
 ---
-description: 'Настройки прав на запросы.'
-sidebar_label: 'Права на запросы'
+description: 'Настройки прав для запросов.'
+sidebar_label: 'Права для запросов'
 sidebar_position: 58
 slug: /operations/settings/permissions-for-queries
-title: 'Права на запросы'
+title: 'Права для запросов'
 doc_type: 'reference'
 ---
 
-# Права для запросов \{#permissions-for-queries\}
-
 Запросы в ClickHouse можно разделить на несколько типов:
 
-1.  Запросы на чтение данных: `SELECT`, `SHOW`, `DESCRIBE`, `EXISTS`.
-2.  Запросы на запись данных: `INSERT`, `OPTIMIZE`.
-3.  Запросы на изменение настроек: `SET`, `USE`.
-4.  Запросы [DDL](https://en.wikipedia.org/wiki/Data_definition_language): `CREATE`, `ALTER`, `RENAME`, `ATTACH`, `DETACH`, `DROP`, `TRUNCATE`.
-5.  `KILL QUERY`.
+1. Запросы на чтение данных: `SELECT`, `SHOW`, `DESCRIBE`, `EXISTS`.
+2. Запросы на запись данных: `INSERT`, `OPTIMIZE`.
+3. Запросы на изменение настроек: `SET`, `USE`.
+4. Запросы [DDL](https://en.wikipedia.org/wiki/Data_definition_language): `CREATE`, `ALTER`, `RENAME`, `ATTACH`, `DETACH`, `DROP`, `TRUNCATE`.
+5. `KILL QUERY`.
 
 Следующие настройки регулируют права пользователей в зависимости от типа запроса:
 

@@ -19,10 +19,7 @@ import datagrip_6 from '@site/static/images/integrations/sql-clients/datagrip-6.
 import datagrip_7 from '@site/static/images/integrations/sql-clients/datagrip-7.png';
 import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
-
-# 在 DataGrip 中连接 ClickHouse \{#connecting-datagrip-to-clickhouse\}
-
-<CommunityMaintainedBadge/>
+<CommunityMaintainedBadge />
 
 ## 启动或下载 DataGrip \{#start-or-download-datagrip\}
 

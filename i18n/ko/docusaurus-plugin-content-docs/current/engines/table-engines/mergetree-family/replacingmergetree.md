@@ -1,15 +1,11 @@
 ---
-description: '정렬 키 값이 같은(`ORDER BY` 테이블 섹션, `PRIMARY KEY` 아님) 중복 항목을 제거한다는 점에서 MergeTree와 다릅니다.'
+description: '동일한 정렬 키 값(`ORDER BY` 테이블 섹션, `PRIMARY KEY` 아님)을 가진 중복 레코드를 제거한다는 점에서 MergeTree와 다릅니다.'
 sidebar_label: 'ReplacingMergeTree'
 sidebar_position: 40
 slug: /engines/table-engines/mergetree-family/replacingmergetree
 title: 'ReplacingMergeTree 테이블 엔진'
-doc_type: 'reference'
+doc_type: '참고'
 ---
-
-
-
-# ReplacingMergeTree 테이블 엔진 \{#replacingmergetree-table-engine\}
 
 이 엔진은 동일한 [정렬 키](../../../engines/table-engines/mergetree-family/mergetree.md) 값(`ORDER BY` 테이블 섹션, `PRIMARY KEY` 아님)을 가진 중복 레코드를 제거한다는 점에서 [MergeTree](/engines/table-engines/mergetree-family/versionedcollapsingmergetree)와 다릅니다.
 
@@ -20,8 +16,6 @@ doc_type: 'reference'
 :::note
 모범 사례와 성능 최적화 방법을 포함한 ReplacingMergeTree에 대한 상세 가이드는 [여기](/guides/replacing-merge-tree)에서 확인할 수 있습니다.
 :::
-
-
 
 ## 테이블 생성 \{#creating-a-table\}
 
@@ -44,7 +38,6 @@ CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
 :::note
 행의 고유성은 `PRIMARY KEY`가 아니라 테이블의 `ORDER BY` 절에 의해 결정됩니다.
 :::
-
 
 ## ReplacingMergeTree 매개변수 \{#replacingmergetree-parameters\}
 
@@ -138,62 +131,53 @@ SETTINGS allow_experimental_replacing_merge_with_cleanup = 1;
 
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 0);
 INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 01:01:01', 1);
-```
-
 
 select * from myThirdReplacingMT final;
 
-0개의 행. 경과 시간: 0.003초.
+0 rows in set. Elapsed: 0.003 sec.
 
--- is&#95;deleted가 설정된 행을 삭제합니다
+-- delete rows with is_deleted
 OPTIMIZE TABLE myThirdReplacingMT FINAL CLEANUP;
 
-INSERT INTO myThirdReplacingMT Values (1, &#39;first&#39;, &#39;2020-01-01 00:00:00&#39;, 0);
+INSERT INTO myThirdReplacingMT Values (1, 'first', '2020-01-01 00:00:00', 0);
 
 select * from myThirdReplacingMT final;
 
-┌─key─┬─someCol─┬───────────eventTime─┬─is&#95;deleted─┐
+┌─key─┬─someCol─┬───────────eventTime─┬─is_deleted─┐
 │   1 │ first   │ 2020-01-01 00:00:00 │          0 │
 └─────┴─────────┴─────────────────────┴────────────┘
-
 ```
-```
-
 
 ## 쿼리 절 \{#query-clauses\}
 
 `ReplacingMergeTree` 테이블을 생성할 때는 `MergeTree` 테이블을 생성할 때와 동일한 [절](../../../engines/table-engines/mergetree-family/mergetree.md)이 필요합니다.
 
 <details markdown="1">
+  <summary>사용이 중단된 테이블 생성 방법</summary>
 
-<summary>사용이 중단된 테이블 생성 방법</summary>
+  :::note
+  새 프로젝트에서는 이 방법을 사용하지 말고, 가능하다면 기존 프로젝트도 위에서 설명한 방법으로 전환하십시오.
+  :::
 
-:::note
-새 프로젝트에서는 이 방법을 사용하지 말고, 가능하다면 기존 프로젝트도 위에서 설명한 방법으로 전환하십시오.
-:::
+  ```sql
+  CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
+  (
+      name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
+      name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
+      ...
+  ) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
+  ```
 
-```sql
-CREATE TABLE [IF NOT EXISTS] [db.]table_name [ON CLUSTER cluster]
-(
-    name1 [type1] [DEFAULT|MATERIALIZED|ALIAS expr1],
-    name2 [type2] [DEFAULT|MATERIALIZED|ALIAS expr2],
-    ...
-) ENGINE [=] ReplacingMergeTree(date-column [, sampling_expression], (primary, key), index_granularity, [ver])
-```
+  `ver`를 제외한 모든 매개변수는 `MergeTree`에서와 동일한 의미를 가집니다.
 
-`ver`를 제외한 모든 매개변수는 `MergeTree`에서와 동일한 의미를 가집니다.
-
-- `ver` - 버전 정보를 담는 컬럼입니다. 선택적 매개변수입니다. 설명은 위의 본문을 참조하십시오.
-
+  * `ver` - 버전 정보를 담는 컬럼입니다. 선택적 매개변수입니다. 설명은 위의 본문을 참조하십시오.
 </details>
-
-
 
 ## 쿼리 시점 중복 제거 &amp; FINAL \{#query-time-de-duplication--final\}
 
-병합 시점에 ReplacingMergeTree는 `ORDER BY` 컬럼(테이블 생성에 사용된 컬럼)의 값을 고유 식별자로 사용하여 중복된 행을 식별하고, 가장 높은 버전만 유지합니다. 그러나 이는 시간이 지나 최종적으로만 올바른 상태를 제공할 뿐이며, 행이 반드시 중복 제거된다고 보장하지 않으므로 이에 의존해서는 안 됩니다. 따라서 업데이트 및 삭제 행이 쿼리에 함께 포함되면서 잘못된 결과를 반환할 수 있습니다.
+머지 시점에 ReplacingMergeTree는 `ORDER BY` 컬럼(테이블 생성에 사용된 컬럼)의 값을 고유 식별자로 사용하여 중복된 행을 식별하고, 가장 높은 버전만 유지합니다. 그러나 이는 시간이 지나 최종적으로만 올바른 상태를 제공할 뿐이며, 행이 반드시 중복 제거된다고 보장하지 않으므로 이에 의존해서는 안 됩니다. 따라서 업데이트 및 삭제 행이 쿼리에 함께 포함되면서 잘못된 결과를 반환할 수 있습니다.
 
-정확한 결과를 얻으려면, 백그라운드 병합에 더해 쿼리 시점 중복 제거 및 삭제 행 제거를 함께 수행해야 합니다. 이는 `FINAL` 연산자를 사용하여 달성할 수 있습니다. 예를 들어, 다음 예를 보십시오:
+정확한 결과를 얻으려면, 백그라운드 머지에 더해 쿼리 시점 중복 제거 및 삭제 행 제거를 함께 수행해야 합니다. 이는 `FINAL` 연산자를 사용하여 달성할 수 있습니다. 예를 들어, 다음 예를 보십시오:
 
 ```sql
 CREATE TABLE rmt_example
@@ -209,7 +193,7 @@ FROM numbers(1000000000)
 0 rows in set. Elapsed: 19.958 sec. Processed 1.00 billion rows, 8.00 GB (50.11 million rows/s., 400.84 MB/s.)
 ```
 
-`FINAL` 없이 쿼리하면 잘못된 개수가 반환됩니다(정확한 값은 병합 상태에 따라 달라집니다):
+`FINAL` 없이 쿼리하면 잘못된 개수가 반환됩니다(정확한 값은 머지 상태에 따라 달라집니다):
 
 ```sql
 SELECT count()

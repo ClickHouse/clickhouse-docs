@@ -10,7 +10,6 @@ keywords: ['systemd', 'journald', 'journal', 'OTEL', 'ClickStack', 'system logs'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/systemd/finish-import-systemd.png';
@@ -19,10 +18,8 @@ import search_view from '@site/static/images/clickstack/systemd/systemd-search-v
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# 使用 ClickStack 监控 systemd 日志 \{#systemd-logs-clickstack\}
-
 :::note[TL;DR]
-借助 OpenTelemetry Collector 的 journald 接收器，在 ClickStack 中收集并可视化 systemd journal 日志。包含演示数据集和预构建仪表板。
+使用 OpenTelemetry Collector 的 journald receiver 在 ClickStack 中收集并可视化 systemd journal 日志。包含演示数据集和预构建的仪表盘。
 :::
 
 :::
@@ -287,7 +284,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据覆盖的时
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/systemd-logs-dashboard.json')} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/systemd-logs-dashboard.json'} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">下载</TrackedLink> 仪表盘配置 \{#download\}
 
 #### 导入预配置的仪表盘 \{#import-dashboard\}
 

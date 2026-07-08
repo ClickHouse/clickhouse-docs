@@ -1,16 +1,15 @@
 ---
 slug: /use-cases/observability/clickstack/integrations/systemd-logs
-title: 'Мониторинг журналов systemd с помощью ClickStack'
-sidebar_label: 'Журналы systemd/journald'
+title: 'Мониторинг логов systemd с помощью ClickStack'
+sidebar_label: 'Логи systemd/journald'
 pagination_prev: null
 pagination_next: null
-description: 'Мониторинг журналов systemd и journald с помощью ClickStack'
+description: 'Мониторинг логов systemd и journald с помощью ClickStack'
 doc_type: 'guide'
 keywords: ['systemd', 'journald', 'journal', 'OTEL', 'ClickStack', 'system logs', 'systemctl']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/systemd/finish-import-systemd.png';
@@ -19,11 +18,8 @@ import search_view from '@site/static/images/clickstack/systemd/systemd-search-v
 import log_view from '@site/static/images/clickstack/systemd/systemd-log-view.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-
-# Мониторинг логов systemd с помощью ClickStack \{#systemd-logs-clickstack\}
-
 :::note[Кратко]
-Собирайте и визуализируйте логи журнала systemd в ClickStack с помощью приёмника journald в OpenTelemetry Collector. Включает демо-набор данных и готовую панель мониторинга.
+Собирайте и визуализируйте логи journald в ClickStack с помощью приёмника journald в OpenTelemetry Collector. Включает демо-набор данных и готовую панель мониторинга.
 :::
 
 ## Интеграция с существующими системами \{#existing-systems\}
@@ -287,7 +283,7 @@ HyperDX отображает временные метки в локальном
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/systemd-logs-dashboard.json')} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/systemd-logs-dashboard.json'} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
 
 #### Импорт готового дашборда \{#import-dashboard\}
 

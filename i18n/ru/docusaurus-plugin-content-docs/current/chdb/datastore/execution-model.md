@@ -2,14 +2,12 @@
 title: 'Модель выполнения DataStore'
 sidebar_label: 'Модель выполнения'
 slug: /chdb/datastore/execution-model
-description: 'Разбор отложенных вычислений, механизмов запуска выполнения и кэширования в DataStore'
+description: 'Разбор отложенных вычислений, триггеров выполнения и кэширования в DataStore'
 keywords: ['chdb', 'datastore', 'lazy', 'evaluation', 'execution', 'caching']
 doc_type: 'guide'
 ---
 
-# Модель выполнения DataStore \{#datastore-execution-model\}
-
-Понимание модели ленивых вычислений DataStore — ключ к его эффективному использованию и достижению оптимальной производительности.
+Понимание модели отложенных вычислений в DataStore необходимо для его эффективного использования и достижения оптимальной производительности.
 
 ## Отложенное вычисление \{#lazy-evaluation\}
 
@@ -176,7 +174,7 @@ result = (ds
 
 Используйте `explain()`, чтобы увидеть, что именно будет выполнено:
 
-```python
+```python title="Query"
 ds = pd.read_csv("sales.csv")
 
 query = (ds
@@ -189,9 +187,7 @@ query = (ds
 query.explain()
 ```
 
-Вывод:
-
-```text
+```text title="Response"
 Pipeline:
   1. Source: file('sales.csv', 'CSVWithNames')
   2. Filter: amount > 1000
@@ -214,7 +210,6 @@ query.explain(verbose=True)
 Полную документацию см. в разделе [Отладка: explain()](../debugging/explain.md).
 
 ***
-
 
 ## Кеширование \{#caching\}
 

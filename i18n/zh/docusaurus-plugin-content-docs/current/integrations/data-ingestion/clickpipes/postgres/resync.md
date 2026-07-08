@@ -1,10 +1,10 @@
 ---
 title: '重新同步数据库 ClickPipe'
-description: '关于重新同步数据库 ClickPipe 的文档'
+description: '用于重新同步数据库 ClickPipe 的文档'
 slug: /integrations/clickpipes/postgres/resync
 sidebar_label: '重新同步 ClickPipe'
 doc_type: 'guide'
-keywords: ['clickpipes', 'postgresql', 'cdc', '数据摄取', '实时同步']
+keywords: ['clickpipes', 'postgresql', 'CDC', '数据摄取', '实时同步']
 integration:
   - support_level: 'core'
   - category: 'clickpipes'
@@ -13,41 +13,41 @@ integration:
 import resync_button from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/resync_button.png'
 import Image from '@theme/IdealImage';
 
-### Resync 有什么作用？ \{#what-postgres-resync-do\}
+### 重新同步 会执行什么操作？ \{#what-postgres-resync-do\}
 
-Resync 会按以下顺序执行操作：
+重新同步 会按顺序执行以下操作：
 
-1. 删除现有的 ClickPipe，并启动一个新的“resync” ClickPipe。这样，在你执行 resync 时，对源表结构的更改会被捕获。
-2. resync ClickPipe 会创建（或替换）一组新的目标表，这些表与原始表同名，但会多一个 `_resync` 后缀。
-3. 对 `_resync` 表执行初始加载。
-4. 然后将 `_resync` 表与原始表进行交换。在交换前，会将原始表中的软删除行转移到 `_resync` 表中。
+1. 现有的 ClickPipe 会被删除，并启动一个新的“重新同步” ClickPipe。因此，当你执行 重新同步 时，源表结构的变更也会一并同步。
+2. 重新同步 ClickPipe 会创建 (或替换) 一组新的目标表，这些表的名称与原始表相同，只是添加了 `_resync` 后缀。
+3. 对 `_resync` 表执行初始导入。
+4. 随后会将 `_resync` 表与原始表交换。在交换之前，原始表中被软删除的行会转移到 `_resync` 表中。
 
-原始 ClickPipe 的所有设置都会保留在 resync ClickPipe 中。原始 ClickPipe 的统计信息会在 UI 中被清除。
+原始 ClickPipe 的所有 settings 都会保留在 重新同步 ClickPipe 中。原始 ClickPipe 的 statistics 会在 UI 中清空。
 
-### 何时需要对 ClickPipe 进行 Resync \{#use-cases-postgres-resync\}
+### 重新同步 ClickPipe 的使用场景 \{#use-cases-postgres-resync\}
 
-以下是几种典型场景：
+以下是几个场景：
 
-1. 你可能需要在源表上执行重大 schema 变更，这会导致现有 ClickPipe 出错，需要重新启动。这种情况下，只需在完成变更后点击 Resync 即可。
-2. 尤其是对于 ClickHouse，你可能需要更改目标表上的 ORDER BY 键。你可以通过 Resync 将数据重新填充到带有正确排序键的新表中。
-3. ClickPipe 的 replication slot 失效：Resync 会在源数据库上创建一个新的 ClickPipe 和一个新的 replication slot。
+1. 你可能需要对源表执行重大的 schema 变更，这会导致现有 ClickPipe 无法继续工作，并且需要重新开始。完成这些变更后，只需点击“重新同步”。
+2. 对于 ClickHouse，可能需要更改目标表的 ORDER BY 键。你可以通过重新同步将数据重新填充到具有正确排序键的新表中。
+3. ClickPipe 的复制 slot 已失效：重新同步会创建一个新的 ClickPipe，并在源数据库上创建一个新的 slot。
 
 :::note
-你可以多次执行 Resync 操作，但每次 Resync 时请考虑对源数据库的负载，
-因为每次都会涉及使用并行线程的初始加载。
+你可以多次重新同步，但请注意重新同步对源数据库造成的负载，
+因为每次都会执行带并行线程数量的初始导入。
 :::
 
-### Resync ClickPipe 指南 \{#guide-postgres-resync\}
+### 重新同步 ClickPipe 指南 \{#guide-postgres-resync\}
 
-1. 在 Data Sources 选项卡中，点击你想要执行 resync 的 Postgres ClickPipe。
-2. 进入 **Settings** 选项卡。
-3. 点击 **Resync** 按钮。
+1. 在 **Data Sources** 选项卡中，点击要重新同步的 Postgres ClickPipe。
+2. 转到 **Settings** 选项卡。
+3. 点击 **重新同步** 按钮。
 
 <Image img={resync_button} border size="md" />
 
-4. 会弹出一个确认对话框。再次点击 Resync。
-5. 前往 **Metrics** 选项卡。
-6. 大约 5 秒后（或刷新页面后），该 pipe 的状态应为 **Setup** 或 **Snapshot**。
-7. 可以在 **Tables** 选项卡的 **Initial Load Stats** 区域监控 resync 的初始加载过程。
-8. 一旦初始加载完成，pipe 会以原子方式将 `_resync` 表与原始表进行交换。交换期间，状态会显示为 **Resync**。
-9. 交换完成后，pipe 会进入 **Running** 状态，并在启用的情况下执行 CDC（变更数据捕获）。
+4. 此时应会出现确认对话框。再次点击 **重新同步**。
+5. 转到 **Metrics** 选项卡。
+6. 大约 5 秒后 (以及刷新页面后) ，管道状态应为 **Setup** 或 **Snapshot**。
+7. 可在 **Tables** 选项卡的 **Initial Load Stats** 部分查看重新同步的初始导入进度。
+8. 初始导入完成后，管道会以原子方式将 `_resync` 表与原始表进行交换。交换期间，状态将为 **重新同步**。
+9. 交换完成后，管道将进入 **Running** 状态，并在启用时执行 CDC。

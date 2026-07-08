@@ -9,8 +9,6 @@ show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 进阶教程 \{#advanced-tutorial\}
-
 ## 概述 \{#overview\}
 
 了解如何使用纽约市出租车示例数据集在 ClickHouse 中摄取和查询数据。 

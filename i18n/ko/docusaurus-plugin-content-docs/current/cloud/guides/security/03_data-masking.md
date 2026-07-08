@@ -1,23 +1,21 @@
 ---
 slug: /cloud/guides/data-masking
 sidebar_label: '데이터 마스킹'
-title: 'ClickHouse에서의 데이터 마스킹'
-description: 'ClickHouse에서의 데이터 마스킹에 대한 가이드'
+title: 'ClickHouse에서 데이터 마스킹'
+description: 'ClickHouse에서 데이터 마스킹을 위한 가이드'
 keywords: ['데이터 마스킹']
-doc_type: '가이드'
+doc_type: 'guide'
 ---
-
-# ClickHouse에서 데이터 마스킹 \{#data-masking-in-clickhouse\}
 
 데이터 마스킹은 데이터 보호를 위한 기법으로, 원본 데이터를 개인 식별 정보(PII)나 민감 정보를 제거하면서 형식과 구조는 유지하는 데이터 버전으로 대체하는 방법입니다.
 
 이 가이드는 ClickHouse에서 다음과 같은 여러 가지 방법으로 데이터를 마스킹하는 방법을 설명합니다:
 
-- **마스킹 정책** (ClickHouse Cloud, 25.12+): 특정 사용자/역할에 대해 쿼리 시점에 적용되는 네이티브 동적 마스킹
-- **문자열 치환 함수**: 내장 함수를 사용한 기본적인 마스킹
-- **마스킹 뷰**: 변환 로직이 포함된 뷰 생성
-- **materialized 컬럼**(materialized columns): 원본 데이터와 함께 마스킹된 버전을 저장
-- **쿼리 마스킹 규칙**: 로그에서 민감 데이터를 마스킹 (ClickHouse OSS)
+* **마스킹 정책** (ClickHouse Cloud, 25.12+): 특정 사용자/역할에 대해 쿼리 시점에 적용되는 네이티브 동적 마스킹
+* **문자열 치환 함수**: 내장 함수를 사용한 기본적인 마스킹
+* **마스킹 뷰**: 변환 로직이 포함된 뷰 생성
+* **materialized 컬럼**(materialized columns): 원본 데이터와 함께 마스킹된 버전을 저장
+* **쿼리 마스킹 규칙**: 로그에서 민감 데이터를 마스킹 (ClickHouse OSS)
 
 ## 마스킹 정책 사용하기 (ClickHouse Cloud) \{#masking-policies\}
 

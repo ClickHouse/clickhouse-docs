@@ -7,8 +7,6 @@ title: 'hdfsCluster'
 doc_type: 'reference'
 ---
 
-# hdfsCluster 表函数 \{#hdfscluster-table-function\}
-
 允许在指定集群的多个节点上并行处理来自 HDFS 的文件。在发起节点上，它会与集群中所有节点建立连接，展开 HDFS 文件路径中的星号通配符，并动态分派每个文件。在工作节点上，它会向发起节点请求下一个要处理的任务并对其进行处理。该过程会重复进行，直到所有任务都完成。
 
 ## 语法 \{#syntax\}
@@ -19,12 +17,12 @@ hdfsCluster(cluster_name, URI, format, structure)
 
 ## 参数 \{#arguments\}
 
-| Argument       | Description                                                                                                                                                                                                                                                                                      |
-|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `cluster_name` | 用于构建到远程和本地服务器的一组地址和连接参数的集群名称。                                                                                                                                                                                                                                      |
+| Argument       | Description                                                                                                                                                                               |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cluster_name` | 用于构建到远程和本地服务器的一组地址和连接参数的集群名称。                                                                                                                                                             |
 | `URI`          | 指向单个文件或一组文件的 URI。只读模式下支持以下通配符：`*`、`**`、`?`、`{'abc','def'}` 和 `{N..M}`，其中 `N`、`M` 为数字，`abc`、`def` 为字符串。更多信息参见 [路径中的通配符](../../engines/table-engines/integrations/s3.md#wildcards-in-path)。 |
-| `format`       | 文件的[格式](/sql-reference/formats)。                                                                                                                                                                                                                                                          |
-| `structure`    | 表的结构。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                                                                                                                |
+| `format`       | 文件的[格式](/sql-reference/formats)。                                                                                                                                                          |
+| `structure`    | 表的结构。格式为 `'column1_name column1_type, column2_name column2_type, ...'`。                                                                                                                   |
 
 ## 返回值 \{#returned_value\}
 
@@ -61,5 +59,5 @@ FROM hdfsCluster('cluster_simple', 'hdfs://hdfs1:9000/{some,another}_dir/*', 'TS
 
 ## 相关内容 \{#related\}
 
-- [HDFS 引擎](../../engines/table-engines/integrations/hdfs.md)
-- [HDFS 表函数](../../sql-reference/table-functions/hdfs.md)
+* [HDFS 引擎](../../engines/table-engines/integrations/hdfs.md)
+* [HDFS 表函数](../../sql-reference/table-functions/hdfs.md)

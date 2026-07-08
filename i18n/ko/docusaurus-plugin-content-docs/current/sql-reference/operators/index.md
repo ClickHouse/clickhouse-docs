@@ -7,9 +7,7 @@ title: '연산자'
 doc_type: 'reference'
 ---
 
-# 연산자 \{#operators\}
-
-ClickHouse는 연산자의 우선순위(priority), 우선도(precedence), 결합 방향(associativity)에 따라 쿼리 파싱 단계에서 각 연산자를 해당 함수로 변환합니다.
+ClickHouse는 쿼리 파싱 단계에서 연산자의 우선도, 우선순위, 결합 방향에 따라 해당 함수로 변환합니다.
 
 ## Access 연산자 \{#access-operators\}
 
@@ -128,6 +126,14 @@ SELECT
 └──────────────────────────┴──────────────────────────┘
 ```
 
+## 문자열 작업을 위한 연산자 \{#operators-for-working-with-strings\}
+
+### OVERLAY \{#overlay\}
+
+* `OVERLAY(string PLACING replacement FROM offset)` - `overlay(string, replacement, offset)` 함수입니다.
+* `OVERLAY(string PLACING replacement FROM offset FOR length)` - `overlay(string, replacement, offset, length)` 함수입니다.
+* `OVERLAYUTF8(string PLACING replacement FROM offset)` - `overlayUTF8(string, replacement, offset)` 함수입니다.
+* `OVERLAYUTF8(string PLACING replacement FROM offset FOR length)` - `overlayUTF8(string, replacement, offset, length)` 함수입니다.
 
 ## 데이터 Set 작업을 위한 연산자 \{#operators-for-working-with-data-sets\}
 
@@ -149,9 +155,9 @@ SELECT
 
 `a GLOBAL NOT IN ...` – `globalNotIn(a, b)` 함수입니다.
 
-### in 서브쿼리 함수 \{#in-subquery-function\}
+### in 서브쿼리 FUNCTION \{#in-subquery-function\}
 
-`a = ANY (subquery)` – `in(a, subquery)` 함수와 동일합니다.  
+`a = ANY (subquery)` – `in(a, subquery)` FUNCTION와 동일합니다.
 
 ### notIn 서브쿼리 함수 \{#notin-subquery-function\}
 
@@ -161,21 +167,19 @@ SELECT
 
 `a = ALL (subquery)` – `a IN (SELECT singleValueOrNull(*) FROM subquery)`와 동일합니다.
 
-### notIn 서브쿼리 함수 \{#notin-subquery-function-1\}
+### notIn 서브쿼리 FUNCTION \{#notin-subquery-function-1\}
 
-`a != ALL (subquery)` – `notIn(a, subquery)` 함수입니다.
+`a != ALL (subquery)` – `notIn(a, subquery)` FUNCTION입니다.
 
 **예시**
 
 ALL을 사용하는 쿼리:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3, 3));
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 6 │
 │ 7 │
@@ -186,13 +190,11 @@ SELECT number AS a FROM numbers(10) WHERE a > ALL (SELECT number FROM numbers(3,
 
 ANY를 사용하는 쿼리:
 
-```sql
+```sql title="Query"
 SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3, 3));
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─a─┐
 │ 4 │
 │ 5 │
@@ -202,7 +204,6 @@ SELECT number AS a FROM numbers(10) WHERE a > ANY (SELECT number FROM numbers(3,
 │ 9 │
 └───┘
 ```
-
 
 ## 날짜 및 시간 처리를 위한 연산자 \{#operators-for-working-with-dates-and-times\}
 
@@ -357,6 +358,55 @@ SELECT toDateTime('2014-10-26 00:00:00', 'Asia/Istanbul') AS time, time + 60 * 6
 * [Interval](../../sql-reference/data-types/special-data-types/interval.md) 데이터 형식
 * [toInterval](/sql-reference/functions/type-conversion-functions#toIntervalYear) 변환 함수
 
+### 날짜 및 시간 덧셈 \{#date-time-addition\}
+
+[Date](../../sql-reference/data-types/date.md) 또는 [Date32](../../sql-reference/data-types/date32.md) 값은 `+` 연산자를 사용해 [Time](../../sql-reference/data-types/time.md) 또는 [Time64](../../sql-reference/data-types/time64.md) 값과 더할 수 있습니다. 결과는 해당 날짜의 지정된 시각을 나타내는 [DateTime](../../sql-reference/data-types/datetime.md) 또는 [DateTime64](../../sql-reference/data-types/datetime64.md)입니다. 이 연산은 교환법칙이 성립합니다.
+
+결과 타입은 피연산자 타입에 따라 달라집니다.
+
+| Left operand | Right operand | Result type     |
+| ------------ | ------------- | --------------- |
+| `Date`       | `Time`        | `DateTime`      |
+| `Date`       | `Time64(s)`   | `DateTime64(s)` |
+| `Date32`     | `Time`        | `DateTime64(0)` |
+| `Date32`     | `Time64(s)`   | `DateTime64(s)` |
+
+:::note
+결과에는 [세션 시간대](../../operations/settings/settings.md#session_timezone)가 사용됩니다(세션 시간대가 설정되지 않은 경우 서버 기본 시간대가 사용됩니다). [`date_time_overflow_behavior`](../../operations/settings/settings-formats.md#date_time_overflow_behavior) 설정은 결과가 표현 가능한 범위를 벗어날 때의 동작을 제어합니다.
+:::
+
+예시:
+
+```sql
+SET use_legacy_to_time = 0;
+SELECT toDate('2024-07-15') + toTime('14:30:25') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25 │ DateTime       │
+└─────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toDate('2024-07-15') + toTime64('14:30:25.123456', 6) AS dt, toTypeName(dt);
+```
+
+```text
+┌─────────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 14:30:25.123456 │ DateTime64(6)  │
+└────────────────────────────┴────────────────┘
+```
+
+```sql
+SELECT toTime64('23:59:59.999', 3) + toDate32('2024-07-15') AS dt, toTypeName(dt);
+```
+
+```text
+┌──────────────────────dt─┬─toTypeName(dt)─┐
+│ 2024-07-15 23:59:59.999 │ DateTime64(3)  │
+└─────────────────────────┴────────────────┘
+```
 
 ## 논리 AND 연산자 \{#logical-and-operator\}
 
@@ -466,3 +516,35 @@ SELECT * FROM t_null WHERE y IS NOT NULL
 ```
 
 [optimize&#95;functions&#95;to&#95;subcolumns](/operations/settings/settings#optimize_functions_to_subcolumns) 설정을 활성화하여 최적화할 수 있습니다. `optimize_functions_to_subcolumns = 1`인 경우 함수는 전체 컬럼 데이터를 읽고 처리하는 대신 [null](../../sql-reference/data-types/nullable.md#finding-null) 서브컬럼만 읽습니다. `SELECT n IS NOT NULL FROM table` 쿼리는 `SELECT NOT n.null FROM TABLE`로 변환됩니다.
+
+
+## 불리언 값 확인 \{#checking-boolean-values\}
+
+ClickHouse는 `IS TRUE`, `IS FALSE`, `IS UNKNOWN`, `IS NOT TRUE`, `IS NOT FALSE`, `IS NOT UNKNOWN` 연산자를 지원합니다.
+이 연산자들은 [Bool](../../sql-reference/data-types/boolean.md) 및 `Nullable(Bool)` 표현식에 사용됩니다.
+
+* `expr IS TRUE`는 `expr`가 `true`일 때에만 `1`을 반환합니다.
+* `expr IS FALSE`는 `expr`가 `false`일 때에만 `1`을 반환합니다.
+* `expr IS UNKNOWN`는 `expr`가 `NULL`일 때에만 `1`을 반환합니다.
+* `expr IS NOT TRUE`는 `expr`가 `false` 또는 `NULL`이면 `1`을 반환합니다.
+* `expr IS NOT FALSE`는 `expr`가 `true` 또는 `NULL`이면 `1`을 반환합니다.
+* `expr IS NOT UNKNOWN`는 `expr`가 `NULL`이 아닐 때 `1`을 반환합니다.
+
+불리언 표현식에서는 `IS UNKNOWN`가 `IS NULL`과 동일하고, `IS NOT UNKNOWN`는 `IS NOT NULL`과 동일합니다.
+
+{/* */ }
+
+```sql
+CREATE TABLE t_bool (x Nullable(Bool)) ENGINE = Memory;
+INSERT INTO t_bool VALUES (true), (false), (NULL);
+
+SELECT
+    x,
+    x IS TRUE,
+    x IS FALSE,
+    x IS UNKNOWN,
+    x IS NOT TRUE,
+    x IS NOT FALSE,
+    x IS NOT UNKNOWN
+FROM t_bool;
+```

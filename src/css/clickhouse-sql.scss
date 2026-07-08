@@ -1,0 +1,72 @@
+/**
+ * Color palette for ClickHouse-native SQL syntax highlighting.
+ *
+ * These are the exact colors used by ClickHouse's `programs/server/play.html`,
+ * which are themselves modelled after `clickhouse-client`. The token classes
+ * (`q-kw`, `q-id`, ...) are produced by the WASM lexer in
+ * `src/components/CodeViewer/clickhouse-sql/highlighter.ts` and rendered by the
+ * swizzled `src/theme/CodeBlock/Content/String.js`.
+ *
+ * The rules are keyed on `html[data-theme='light' | 'dark']` and use
+ * `!important` so they reliably win over the legacy `code`/`code .token.*`
+ * overrides in `custom.scss` (which themselves use `!important`).
+ *
+ * Keywords and operators intentionally have no explicit color: like in
+ * play.html they use the default code text color (keywords just bold), which is
+ * black on the light theme and the prism foreground color on the dark theme.
+ */
+
+/* Structural styles (theme-independent). */
+.ch-sql {
+  .q-kw {
+    font-weight: bold !important;
+  }
+  .q-com {
+    font-style: italic !important;
+  }
+}
+
+/* Light-theme palette, modelled after `clickhouse-client` in a light terminal. */
+html[data-theme='light'] .ch-sql {
+  .q-id {
+    color: #00838f !important; /* identifier — CYAN */
+  }
+  .q-fn {
+    color: #875f00 !important; /* function — BROWN */
+  }
+  .q-num {
+    color: #008700 !important; /* number */
+  }
+  .q-str {
+    color: #006400 !important; /* string — GREEN */
+  }
+  .q-qid {
+    color: #008b8b !important; /* quoted identifier / alias — teal */
+  }
+  .q-com {
+    color: #757575 !important; /* comment */
+  }
+}
+
+/* Dark-theme palette uses the actual xterm 16-color values that
+   `clickhouse-client` renders to in a dark terminal. */
+html[data-theme='dark'] .ch-sql {
+  .q-id {
+    color: #00cdcd !important; /* identifier — CYAN */
+  }
+  .q-fn {
+    color: #cdcd00 !important; /* function — yellow */
+  }
+  .q-num {
+    color: #00d700 !important; /* number */
+  }
+  .q-str {
+    color: #00cd00 !important; /* string — GREEN */
+  }
+  .q-qid {
+    color: #00d7d7 !important; /* quoted identifier / alias */
+  }
+  .q-com {
+    color: #9e9e9e !important; /* comment */
+  }
+}

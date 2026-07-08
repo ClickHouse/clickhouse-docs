@@ -4,10 +4,8 @@ sidebar_label: 'INSERT INTO'
 sidebar_position: 33
 slug: /sql-reference/statements/insert-into
 title: 'INSERT INTO 语句'
-doc_type: '参考'
+doc_type: 'reference'
 ---
-
-# INSERT INTO 语句 \{#insert-into-statement\}
 
 将数据插入表中。
 
@@ -17,7 +15,7 @@ doc_type: '参考'
 INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] [SETTINGS ...] VALUES (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-你可以使用 `(c1, c2, c3)` 指定要插入的列列表。你也可以使用带有列[匹配器](../../sql-reference/statements/select/index.md#asterisk)（例如 `*`）和/或[修饰符](../../sql-reference/statements/select/index.md#select-modifiers)（如 [APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier)）的表达式。
+你可以使用 `(c1, c2, c3)` 指定要插入的列列表。你也可以使用带有列[匹配器](../../sql-reference/statements/select/index.md#asterisk) (例如 `*`) 和/或[修饰符](../../sql-reference/statements/select/index.md#select-modifiers) (如 [APPLY](/sql-reference/statements/select/apply-modifier)、[EXCEPT](/sql-reference/statements/select/except-modifier)、[REPLACE](/sql-reference/statements/select/replace-modifier)) 的表达式。
 
 例如，考虑如下所示的表：
 
@@ -40,7 +38,7 @@ ORDER BY a
 INSERT INTO insert_select_testtable (*) VALUES (1, 'a', 1) ;
 ```
 
-如果你想向除列 `b` 之外的所有列插入数据，可以使用 `EXCEPT` 关键字。参考上面的语法，你需要确保插入的值个数（`VALUES (v11, v13)`）与指定的列数（`(c1, c3)`）一致：
+如果你想向除列 `b` 之外的所有列插入数据，可以使用 `EXCEPT` 关键字。参考上面的语法，你需要确保插入的值个数 (`VALUES (v11, v13)`) 与指定的列数 (`(c1, c3)`) 一致：
 
 ```sql
 INSERT INTO insert_select_testtable (* EXCEPT(b)) Values (2, 2);
@@ -82,7 +80,7 @@ INSERT INTO [db.]table [(c1, c2, c3)] FORMAT format_name data_set
 INSERT INTO [db.]table [(c1, c2, c3)] FORMAT Values (v11, v12, v13), (v21, v22, v23), ...
 ```
 
-ClickHouse 会在数据之前移除所有前导空格以及一个换行符（如果存在）。在构造查询时，我们建议将数据放在查询语句中运算符之后的下一行，这在数据以空格开头时尤为重要。
+ClickHouse 会在数据之前移除所有前导空格以及一个换行符 (如果存在) 。在构造查询时，我们建议将数据放在查询语句中运算符之后的下一行，这在数据以空格开头时尤为重要。
 
 示例：
 
@@ -103,10 +101,49 @@ INSERT INTO table SETTINGS ... FORMAT format_name data_set
 
 :::
 
-
 ## 约束 \{#constraints\}
 
 如果表定义了[约束](../../sql-reference/statements/create/table.md#constraints)，则会针对插入数据的每一行检查相应的约束表达式。如果任一约束未被满足，服务器将抛出一个包含约束名称和表达式的异常，并停止执行该查询。
+
+## 数据类型验证 \{#data-type-validation\}
+
+ClickHouse 仅在创建表 (`CREATE TABLE`) 和修改 schema (`ALTER TABLE`) 时验证允许的数据类型 (由 `enable_time_time64_type`、`allow_suspicious_low_cardinality_types`、`allow_suspicious_fixed_string_types` 等设置控制) ，而不会在执行 `INSERT` 时进行验证。
+
+这意味着，如果一张包含不允许的数据类型的表已经存在，即使服务器上禁用了相应设置，仍然可以向其中插入数据。这是刻意如此的设计——表一旦创建完成，插入操作就不应被控制类型创建的设置阻止。
+
+例如：
+
+```sql
+SET enable_time_time64_type = 1;
+
+CREATE TABLE events
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id;
+
+SET enable_time_time64_type = 0;
+
+-- This works even though the setting is now disabled.
+-- The table already exists, so inserts are not blocked.
+INSERT INTO events VALUES (1, '14:30:25');
+
+-- But creating a new table with the Time type will fail.
+CREATE TABLE events_new
+(
+    `id` UInt64,
+    `event_time` Time
+)
+ENGINE = MergeTree()
+ORDER BY id; -- ERR: TYPE_TIME_TIME64_IS_NOT_ENABLED
+```
+
+:::note
+因此，较新版本的客户端 (其中某项设置默认启用) 可以向较旧版本的服务器 (其中该设置已禁用) 插入带有不允许的数据类型的数据，前提是目标表中已存在相应类型的列。校验是在 DDL 层面实施的，而不是在 DML 层面。
+:::
+
 
 ## 插入 SELECT 查询结果 \{#inserting-the-results-of-select\}
 
@@ -147,31 +184,28 @@ INSERT INTO [TABLE] [db.]table [(c1, c2, c3)] FROM INFILE file_name [COMPRESSION
 
 支持压缩文件。压缩类型通过文件名扩展名自动检测，也可以在 `COMPRESSION` 子句中显式指定。支持的类型包括：`'none'`、`'gzip'`、`'deflate'`、`'br'`、`'xz'`、`'zstd'`、`'lz4'`、`'bz2'`。
 
-此功能可在[命令行客户端](../../interfaces/cli.md)和 [clickhouse-local](../../operations/utilities/clickhouse-local.md) 中使用。
+此功能可在[命令行客户端](../../interfaces/client.md)和 [clickhouse-local](../../operations/utilities/clickhouse-local.md) 中使用。
 
 **示例**
 
 
 ### 使用 FROM INFILE 的单个文件 \{#single-file-with-from-infile\}
 
-使用 [命令行客户端](../../interfaces/cli.md) 执行以下查询：
+使用 [命令行客户端](../../interfaces/client.md) 执行以下查询：
 
-```bash
+```bash title="Query"
 echo 1,A > input.csv ; echo 2,B >> input.csv
 clickhouse-client --query="CREATE TABLE table_from_file (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;"
 clickhouse-client --query="INSERT INTO table_from_file FROM INFILE 'input.csv' FORMAT CSV;"
 clickhouse-client --query="SELECT * FROM table_from_file FORMAT PrettyCompact;"
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌─id─┬─text─┐
 │  1 │ A    │
 │  2 │ B    │
 └────┴──────┘
 ```
-
 
 ### 使用通配符的多文件 FROM INFILE \{#multiple-files-with-from-infile-using-globs\}
 
@@ -210,21 +244,18 @@ INSERT INTO [TABLE] FUNCTION table_func ...
 
 在以下查询中使用 [remote](/sql-reference/table-functions/remote) 表函数：
 
-```sql
+```sql title="Query"
 CREATE TABLE simple_table (id UInt32, text String) ENGINE=MergeTree() ORDER BY id;
 INSERT INTO TABLE FUNCTION remote('localhost', default.simple_table)
     VALUES (100, 'inserted via remote()');
 SELECT * FROM simple_table;
 ```
 
-结果：
-
-```text
+```text title="Response"
 ┌──id─┬─text──────────────────┐
 │ 100 │ inserted via remote() │
 └─────┴───────────────────────┘
 ```
-
 
 ## 在 ClickHouse Cloud 中插入数据 \{#inserting-into-clickhouse-cloud\}
 

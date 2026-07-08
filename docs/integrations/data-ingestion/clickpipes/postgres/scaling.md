@@ -1,6 +1,6 @@
 ---
 title: 'Scaling DB ClickPipes via OpenAPI'
-description: 'Doc for scaling DB ClickPipes via OpenAPI'
+description: 'How to scale Postgres ClickPipes via OpenAPI'
 slug: /integrations/clickpipes/postgres/scaling
 sidebar_label: 'Scaling'
 doc_type: 'guide'
@@ -62,13 +62,13 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 }
 ```
 
-Set the desired scaling. Supported configurations include 1-24 CPU cores with memory (GB) set to 4× the core count:
+Set the desired scaling. Supported configurations include 1-32 CPU cores with memory (GB) set to 4× the core count:
 
 ```bash
 cat <<EOF | tee cdc_scaling.json
 {
-  "replicaCpuMillicores": 24000,
-  "replicaMemoryGb": 96
+  "replicaCpuMillicores": 32000,
+  "replicaMemoryGb": 128
 }
 EOF
 
@@ -88,8 +88,8 @@ https://api.clickhouse.cloud/v1/organizations/$ORG_ID/services/$SERVICE_ID/click
 # example result:
 {
   "result": {
-    "replicaCpuMillicores": 24000,
-    "replicaMemoryGb": 96
+    "replicaCpuMillicores": 32000,
+    "replicaMemoryGb": 128
   },
   "requestId": "5a76d642-d29f-45af-a857-8c4d4b947bf0",
   "status": 200

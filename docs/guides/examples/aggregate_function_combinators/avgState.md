@@ -7,7 +7,6 @@ sidebar_label: 'avgState'
 doc_type: 'reference'
 ---
 
-# avgState {#avgState}
 
 ## Description {#description}
 

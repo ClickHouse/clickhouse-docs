@@ -1,5 +1,5 @@
 ---
-title: Resolving SSL Certificate Verify Error in ClickHouse
+title: Resolving SSL certificate verify error in ClickHouse
 description: Learn how to resolve the SSL Exception CERTIFICATE_VERIFY_FAILED error.
 date: 2023-05-02
 tags: ['Security and Authentication', 'Errors and Exceptions']
@@ -41,6 +41,35 @@ Here is an example configuration:
         </invalidCertificateHandler>
     </client>
 </openSSL>
+```
+
+## Python clients on macOS \{#python-clients-on-macos\}
+
+Python clients report this error differently, typically as:
+
+`ssl.SSLCertVerificationError: [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate`
+
+On macOS, the Python build from python.org verifies certificates through OpenSSL's default paths rather than the system keychain. On a fresh install, those paths point to no root certificate bundle: the installer ships [certifi](https://pypi.org/project/certifi/) but doesn't link it into OpenSSL's default location until you run the bundled `Install Certificates.command` script. Until then, the client can't validate the ClickHouse Cloud server certificate, even though that certificate is valid. This affects python.org macOS builds generally (Python 3.6 and later), not just Python 3.11.
+
+Run `Install Certificates.command` to link certifi into OpenSSL's default certificate path (adjust the version in the path to match your install):
+
+```bash
+open "/Applications/Python 3.11/Install Certificates.command"
+```
+
+Alternatively, point your client at the certifi bundle directly. [clickhouse-connect](/integrations/python) doesn't fall back to certifi on its own, so pass the bundle through the `ca_cert` parameter:
+
+```python
+import certifi
+import clickhouse_connect
+
+client = clickhouse_connect.get_client(
+    host='HOSTNAME.clickhouse.cloud',
+    port=8443,
+    username='default',
+    password='YOUR_SECRET_PASSWORD',
+    ca_cert=certifi.where(),
+)
 ```
 
 ## Additional resources \{#additional-resources\}

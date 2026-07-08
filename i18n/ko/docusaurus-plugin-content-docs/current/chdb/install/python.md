@@ -286,7 +286,7 @@ result = sess.query("""
 """, "JSON")
 ```
 
-참고: 자세한 내용은 [test&#95;stateful.py](https://github.com/chdb-io/chdb/blob/main/tests/test_stateful.py)을(를) 참조하십시오.
+참고: 자세한 내용은 [test&#95;stateful.py](https://github.com/chdb-io/chdb-core/blob/main/tests/test_stateful.py)을(를) 참조하십시오.
 
 
 ### Python DB-API 2.0 인터페이스 \{#python-db-api-20\}

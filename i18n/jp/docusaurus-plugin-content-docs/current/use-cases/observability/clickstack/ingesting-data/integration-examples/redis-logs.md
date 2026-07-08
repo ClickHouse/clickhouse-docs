@@ -9,7 +9,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/redis/redis-import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis/redis-logs-dashboard.png';
@@ -17,10 +16,8 @@ import log_view from '@site/static/images/clickstack/redis/redis-log-view.png';
 import log from '@site/static/images/clickstack/redis/redis-log.png';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 
-# ClickStack による Redis ログの監視 \{#redis-clickstack\}
-
 :::note[TL;DR]
-OTel の `filelog` レシーバーを使用して Redis サーバーログを収集し、ClickStack で可視化します。デモ用データセットと事前構築済みのダッシュボードが含まれています。
+OTel `filelog` レシーバーを使用して、Redis サーバーのログを ClickStack に収集し、可視化します。デモ用データセットと事前構築済みダッシュボードが含まれています。
 :::
 
 ## 既存の Redis との統合 \{#existing-redis\}
@@ -273,7 +270,7 @@ ClickStack で Redis を監視し始める際に役立つように、Redis Logs 
 
 <VerticalStepper headerLevel="h4">
 
-#### ダッシュボード構成を<TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">ダウンロード</TrackedLink> {#download}
+#### ダッシュボード構成を<TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-logs-dashboard.json'} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">ダウンロード</TrackedLink> {#download}
 
 #### あらかじめ用意されたダッシュボードをインポート \{#import-dashboard\}
 

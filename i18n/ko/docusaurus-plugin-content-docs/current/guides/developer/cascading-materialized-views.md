@@ -1,14 +1,12 @@
 ---
 slug: /guides/developer/cascading-materialized-views
-title: '연쇄 materialized view'
-description: '소스 테이블에서 여러 개의 materialized view를 사용하는 방법.'
+title: '캐스케이딩 materialized view'
+description: '소스 테이블의 여러 materialized view를 사용하는 방법.'
 keywords: ['materialized view', '집계']
 doc_type: 'guide'
 ---
 
-# 계단식 materialized view \{#cascading-materialized-views\}
-
-이 예제에서는 먼저 materialized view를 생성하는 방법과, 그 위에 첫 번째 materialized view를 소스로 사용하는 두 번째 materialized view를 계단식으로 연결하는 방법을 보여줍니다. 이 페이지에서는 구현 방법, 다양한 가능성, 그리고 한계를 살펴봅니다. 서로 다른 사용 사례는 첫 번째 materialized view를 소스로 사용하는 두 번째 materialized view를 생성하여 해결할 수 있습니다.
+이 예제에서는 먼저 materialized view를 생성하는 방법과, 그 위에 첫 번째 materialized view를 소스로 사용하는 두 번째 materialized view를 캐스케이딩으로 연결하는 방법을 보여줍니다. 이 페이지에서는 구현 방법, 다양한 가능성, 그리고 한계를 살펴봅니다. 서로 다른 사용 사례는 첫 번째 materialized view를 소스로 사용하는 두 번째 materialized view를 생성하여 해결할 수 있습니다.
 
 <iframe width="1024" height="576" src="https://www.youtube.com/embed/QDAJTKZT8y4?si=1KqPNHHfaKfxtPat" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen />
 
@@ -337,7 +335,7 @@ VALUES ('clickhouse.com', '2019-01-01 00:00:00'),
 ;
 ```
 
-`Target` 테이블에서 결합된 노출 수와 클릭 수는 다음과 같습니다:`
+`Target` 테이블에서 결합된 노출 수와 클릭 수는 다음과 같습니다:&#96;
 
 ```sql
 SELECT

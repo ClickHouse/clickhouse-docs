@@ -1,5 +1,5 @@
 ---
-title: 'BigQuery と ClickHouse Cloud の比較'
+title: 'ClickHouse Cloud と BigQuery の比較'
 slug: /migrations/bigquery/biquery-vs-clickhouse-cloud
 description: 'BigQuery と ClickHouse Cloud の違い'
 keywords: ['BigQuery']
@@ -10,9 +10,6 @@ doc_type: 'guide'
 
 import bigquery_1 from '@site/static/images/migrations/bigquery-1.png';
 import Image from '@theme/IdealImage';
-
-
-# ClickHouse Cloud と BigQuery の比較  \{#comparing-clickhouse-cloud-and-bigquery\}
 
 ## リソースの構成 \{#resource-organization\}
 
@@ -42,9 +39,9 @@ ClickHouse はテーブルを論理的にデータベースにグループ化し
 
 ### BigQuery Slot reservations と Quotas \{#bigquery-slot-reservations-and-quotas\}
 
-BigQuery の slot reservation と同様に、ClickHouse Cloud では [垂直および水平のオートスケーリングを構成](/manage/scaling#configuring-vertical-auto-scaling)できます。垂直オートスケーリングでは、service のコンピュートノードに対してメモリおよび CPU コアの最小値と最大値を設定できます。service はその範囲内で必要に応じてスケールします。これらの設定は、service の初期作成フローの際にも指定できます。service 内の各コンピュートノードは同じサイズです。[水平スケーリング](/manage/scaling#manual-horizontal-scaling)により、service 内のコンピュートノード数を変更できます。
+BigQuery の slot reservation と同様に、ClickHouse Cloud では [垂直および水平のオートスケーリングを構成](/cloud/features/autoscaling/vertical#configuring-vertical-auto-scaling)できます。垂直オートスケーリングでは、service のコンピュートノードに対してメモリおよび CPU コアの最小値と最大値を設定できます。service はその範囲内で必要に応じてスケールします。これらの設定は、service の初期作成フローの際にも指定できます。service 内の各コンピュートノードは同じサイズです。[水平スケーリング](/cloud/features/autoscaling/horizontal#manual-horizontal-scaling)により、service 内のコンピュートノード数を変更できます。
 
-さらに、BigQuery の quota と同様に、ClickHouse Cloud は同時実行制御、メモリ使用量の制限、および I/O スケジューリングを提供し、クエリをワークロードクラスに分離できるようにします。特定のワークロードクラスに対して共有リソース（CPU コア、DRAM、ディスクおよびネットワーク I/O）の上限を設定することで、それらのクエリがほかの重要なビジネスクエリに影響を与えないようにします。同時実行制御により、多数の同時クエリが存在するシナリオでスレッドの過剰割り当てを防ぎます。
+さらに、BigQuery の quota と同様に、ClickHouse Cloud は同時実行制御、メモリ使用量の制限、および I/O スケジューリングを提供し、クエリをワークロードクラスに分離できるようにします。特定のワークロードクラスに対して共有リソース (CPU コア、DRAM、ディスクおよびネットワーク I/O) の上限を設定することで、それらのクエリがほかの重要なビジネスクエリに影響を与えないようにします。同時実行制御により、多数の同時クエリが存在するシナリオでスレッドの過剰割り当てを防ぎます。
 
 ClickHouse はメモリアロケーションのバイトサイズをサーバー、ユーザー、およびクエリレベルで追跡し、柔軟なメモリ使用量制限を可能にします。メモリオーバーコミットにより、クエリは保証メモリを超えて未使用メモリを追加で利用できますが、ほかのクエリに対するメモリ制限は維持されます。加えて、集約、ソート、結合句で使用されるメモリを制限でき、メモリ上限を超えた場合には外部アルゴリズムへのフォールバックが可能です。
 
@@ -160,7 +157,7 @@ ClickHouse は、分析タスクにより適したものとなるよう、多く
 
 BigQuery の配列関数が 8 個であるのに対して、ClickHouse には 80 個以上の[組み込み配列関数](/sql-reference/functions/array-functions)があり、幅広い問題をエレガントかつシンプルにモデリング・解決できます。
 
-ClickHouse における典型的な設計パターンは、[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 集約関数を使用して、テーブル内の特定の行の値を（一時的に）配列に変換することです。これにより配列関数で効率的に処理でき、その結果は [`arrayJoin`](/sql-reference/functions/array-join) 集約関数を使って再び個々のテーブル行に変換できます。
+ClickHouse における典型的な設計パターンは、[`groupArray`](/sql-reference/aggregate-functions/reference/grouparray) 集約関数を使用して、テーブル内の特定の行の値を (一時的に) 配列に変換することです。これにより配列関数で効率的に処理でき、その結果は [`arrayJoin`](/sql-reference/functions/array-join) 集約関数を使って再び個々のテーブル行に変換できます。
 
 ClickHouse SQL は[高階ラムダ関数](/sql-reference/functions/overview#arrow-operator-and-lambda)をサポートしているため、多くの高度な配列操作は、BigQuery でよく[必要となる](https://cloud.google.com/bigquery/docs/arrays)ような、一時的に配列をテーブルへ戻す処理を行わなくても、高階の組み込み配列関数を 1 つ呼び出すだけで実現できます。たとえば、配列の[フィルタリング](https://cloud.google.com/bigquery/docs/arrays#filtering_arrays)や[zip 結合](https://cloud.google.com/bigquery/docs/arrays#zipping_arrays)などです。ClickHouse では、これらの操作はそれぞれ高階関数 [`arrayFilter`](/sql-reference/functions/array-functions#arrayFilter) と [`arrayZip`](/sql-reference/functions/array-functions#arrayZip) を呼び出すだけです。
 
@@ -207,6 +204,9 @@ FROM
     UNION ALL
     SELECT 3
 )
+```
+
+```response
    ┌─new_array─┐
 1. │ [1,2,3]   │
    └───────────┘
@@ -242,7 +242,6 @@ ORDER BY offset;
 *ClickHouse*
 
 [ARRAY JOIN](/sql-reference/statements/select/array-join) 句
-
 
 ```sql
 WITH ['foo', 'bar', 'baz', 'qux', 'corge', 'garply', 'waldo', 'fred'] AS values
@@ -286,7 +285,9 @@ SELECT GENERATE_DATE_ARRAY('2016-10-05', '2016-10-08') AS example;
 
 ```sql
 SELECT arrayMap(x -> (toDate('2016-10-05') + x), range(toUInt32((toDate('2016-10-08') - toDate('2016-10-05')) + 1))) AS example
+```
 
+```response
    ┌─example───────────────────────────────────────────────┐
 1. │ ['2016-10-05','2016-10-06','2016-10-07','2016-10-08'] │
    └───────────────────────────────────────────────────────┘
@@ -315,7 +316,9 @@ SELECT GENERATE_TIMESTAMP_ARRAY('2016-10-05 00:00:00', '2016-10-07 00:00:00',
 
 ```sql
 SELECT arrayMap(x -> (toDateTime('2016-10-05 00:00:00') + toIntervalDay(x)), range(dateDiff('day', toDateTime('2016-10-05 00:00:00'), toDateTime('2016-10-07 00:00:00')) + 1)) AS timestamp_array
+```
 
+```response
 Query id: b324c11f-655b-479f-9337-f4d34fd02190
 
    ┌─timestamp_array─────────────────────────────────────────────────────┐
@@ -353,7 +356,6 @@ FROM Sequences;
 
 [arrayFilter](/sql-reference/functions/array-functions#arrayFilter) 関数
 
-
 ```sql
 WITH Sequences AS
     (
@@ -365,6 +367,9 @@ WITH Sequences AS
     )
 SELECT arrayMap(x -> (x * 2), arrayFilter(x -> (x < 5), some_numbers)) AS doubled_less_than_five
 FROM Sequences;
+```
+
+```response
    ┌─doubled_less_than_five─┐
 1. │ [0,2,2,4,6]            │
    └────────────────────────┘
@@ -376,7 +381,7 @@ FROM Sequences;
    └────────────────────────┘
 ```
 
-**配列のジップ（zipping）**
+**配列のジップ (zipping)&#x20;**
 
 *BigQuery*
 
@@ -424,6 +429,9 @@ WITH Combinations AS
     )
 SELECT arrayZip(letters, arrayResize(numbers, length(letters))) AS pairs
 FROM Combinations;
+```
+
+```response
    ┌─pairs─────────────┐
 1. │ [('a',1),('b',2)] │
    └───────────────────┘
@@ -458,7 +466,6 @@ FROM Sequences AS s;
 
 [arraySum](/sql-reference/functions/array-functions#arraySum)、[arrayAvg](/sql-reference/functions/array-functions#arrayAvg) などの関数、または 90 を超える既存の集約関数名のいずれかを [arrayReduce](/sql-reference/functions/array-functions#arrayReduce) 関数の引数として使用できます
 
-
 ```sql
 WITH Sequences AS
     (
@@ -472,6 +479,9 @@ SELECT
     some_numbers,
     arraySum(some_numbers) AS sums
 FROM Sequences;
+```
+
+```response
    ┌─some_numbers──┬─sums─┐
 1. │ [0,1,1,2,3,5] │   12 │
    └───────────────┴──────┘

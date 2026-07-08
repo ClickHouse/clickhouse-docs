@@ -7,20 +7,13 @@ keywords: ['APPLY', '수정자']
 doc_type: 'reference'
 ---
 
-
-
-# APPLY 수정자 \{#apply\}
-
-> 쿼리의 바깥쪽 테이블 식이 반환하는 각 행에 대해 임의의 함수를 호출할 수 있도록 합니다.
-
-
+> 쿼리의 외부 테이블 표현식이 반환한 각 행에 대해 함수를 호출할 수 있습니다.
 
 ## 구문 \{#syntax\}
 
 ```sql
 SELECT <expr> APPLY( <func> ) FROM [db.]table_name
 ```
-
 
 ## 예제 \{#example\}
 

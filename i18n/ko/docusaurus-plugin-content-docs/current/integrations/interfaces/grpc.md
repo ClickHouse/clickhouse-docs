@@ -7,8 +7,6 @@ title: 'gRPC 인터페이스'
 doc_type: 'reference'
 ---
 
-# gRPC 인터페이스 \{#grpc-interface\}
-
 ## 소개 \{#grpc-interface-introduction\}
 
 ClickHouse는 [gRPC](https://grpc.io/) 인터페이스를 지원합니다. gRPC는 HTTP/2와 [Protocol Buffers](https://en.wikipedia.org/wiki/Protocol_Buffers)를 사용하는 오픈 소스 원격 프로시저 호출 시스템입니다. ClickHouse의 gRPC 구현은 다음 기능을 지원합니다:
@@ -70,7 +68,7 @@ gRPC 인터페이스를 사용하려면 기본 [서버 구성](../../operations/
 
 * `--help` – 도움말 메시지를 표시하고 종료합니다.
 * `--host HOST, -h HOST` – 서버 이름입니다. 기본값: `localhost`. IPv4 또는 IPv6 주소도 사용할 수 있습니다.
-* `--port PORT` – 연결할 포트입니다. 이 포트는 ClickHouse 서버 설정에서 활성화되어 있어야 합니다(`grpc_port` 참조). 기본값: `9100`.
+* `--port PORT` – 연결할 포트입니다. 이 포트는 ClickHouse 서버 구성에서 활성화되어 있어야 합니다(`grpc_port` 참조). 기본값: `9100`.
 * `--user USER_NAME, -u USER_NAME` – 사용자 이름입니다. 기본값: `default`.
 * `--password PASSWORD` – 비밀번호입니다. 기본값: 빈 문자열입니다.
 * `--query QUERY, -q QUERY` – 비대화형 모드에서 처리할 쿼리입니다.
@@ -86,7 +84,7 @@ gRPC 인터페이스를 사용하려면 기본 [서버 구성](../../operations/
 
 다음 예에서는 테이블을 생성한 후 CSV 파일에서 데이터를 로드합니다. 그런 다음 테이블의 내용을 쿼리합니다.
 
-```bash
+```bash title="Query"
 ./clickhouse-grpc-client.py -q "CREATE TABLE grpc_example_table (id UInt32, text String) ENGINE = MergeTree() ORDER BY id;"
 echo -e "0,Input data for\n1,gRPC protocol example" > a.csv
 cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMAT CSV"
@@ -94,9 +92,7 @@ cat a.csv | ./clickhouse-grpc-client.py -q "INSERT INTO grpc_example_table FORMA
 ./clickhouse-grpc-client.py --format PrettyCompact -q "SELECT * FROM grpc_example_table;"
 ```
 
-결과:
-
-```text
+```text title="Response"
 ┌─id─┬─text──────────────────┐
 │  0 │ Input data for        │
 │  1 │ gRPC protocol example │

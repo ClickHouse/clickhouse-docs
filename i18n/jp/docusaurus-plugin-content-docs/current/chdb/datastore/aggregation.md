@@ -1,5 +1,5 @@
 ---
-title: 'DataStore 集約関数'
+title: 'DataStore の集約関数'
 sidebar_label: '集約'
 slug: /chdb/datastore/aggregation
 description: 'DataStore における集約関数、ウィンドウ関数、F ネームスペース'
@@ -7,9 +7,7 @@ keywords: ['chdb', 'datastore', 'aggregation', 'window', 'groupby', 'sum', 'mean
 doc_type: 'reference'
 ---
 
-# DataStore の集約関数 \{#datastore-aggregation-functions\}
-
-DataStore は、ClickHouse の強力な SQL 集約機能を活用し、集約関数およびウィンドウ関数を包括的にサポートします。
+DataStore は、ClickHouse の強力な SQL 集約機能を活用し、集約機能とウィンドウ関数を幅広くサポートしています。
 
 ## 基本的な集約 \{#basic\}
 

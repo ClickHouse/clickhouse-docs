@@ -1,21 +1,20 @@
 ---
 slug: /use-cases/AI/MCP/ai-agent-libraries/langchain
 sidebar_label: 'LangChain 통합'
-title: 'ClickHouse MCP Server를 사용해 LangChain/LangGraph AI 에이전트를 구축하는 방법'
+title: 'ClickHouse MCP 서버를 사용해 LangChain/LangGraph AI 에이전트를 구축하는 방법'
 pagination_prev: null
 pagination_next: null
-description: 'ClickHouse MCP Server를 사용하여 ClickHouse의 SQL playground와 상호 작용할 수 있는 LangChain/LangGraph AI 에이전트를 구축하는 방법을 알아봅니다.'
+description: 'ClickHouse MCP 서버를 사용하여 ClickHouse의 SQL 플레이그라운드와 상호 작용할 수 있는 LangChain/LangGraph AI 에이전트를 구축하는 방법을 알아봅니다.'
 keywords: ['ClickHouse', 'MCP', 'LangChain', 'LangGraph']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# ClickHouse MCP Server를 사용하여 LangChain/LangGraph AI 에이전트를 구축하는 방법 \{#how-to-build-a-langchainlanggraph-ai-agent-using-clickhouse-mcp-server\}
+이 가이드에서는 [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI 에이전트를 구축하여
+[ClickHouse의 SQL 플레이그라운드](https://sql.clickhouse.com/)와 [ClickHouse MCP 서버](https://github.com/ClickHouse/mcp-clickhouse) 간에 상호 작용하도록 하는 방법을 알아봅니다.
 
-이 가이드에서는 [ClickHouse의 MCP Server](https://github.com/ClickHouse/mcp-clickhouse)를 사용하여 [ClickHouse의 SQL playground](https://sql.clickhouse.com/)와 상호 작용할 수 있는 [LangChain/LangGraph](https://github.com/langchain-ai/langgraph) AI 에이전트를 구축하는 방법을 알아봅니다.
-
-:::note 예제 노트북
-이 예제는 [examples 저장소](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb)에 있는 노트북으로 제공됩니다.
+:::note 예시 노트북
+이 예시는 [examples 저장소](https://github.com/ClickHouse/examples/blob/main/ai/mcp/langchain/langchain.ipynb)에서 노트북 형태로 확인할 수 있습니다.
 :::
 
 ## 사전 준비 사항 \{#prerequisites\}
@@ -56,7 +55,7 @@ doc_type: 'guide'
 
   ## MCP 서버 초기화하기
 
-  이제 ClickHouse MCP Server를 ClickHouse SQL 플레이그라운드에 연결하도록 구성하세요:
+  이제 ClickHouse MCP 서버를 ClickHouse SQL 플레이그라운드에 연결하도록 구성하세요:
 
   ```python
   from mcp import ClientSession, StdioServerParameters

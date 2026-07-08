@@ -6,10 +6,6 @@ title: 'ARRAY JOIN 절'
 doc_type: 'reference'
 ---
 
-
-
-# ARRAY JOIN 절 \{#array-join-clause\}
-
 배열 컬럼을 포함하는 테이블에서는, 원래 컬럼의 각 개별 배열 원소마다 하나의 행을 갖는 새 테이블을 만들고 다른 컬럼의 값들은 그대로 복제하는 작업이 흔히 필요합니다. 이것이 `ARRAY JOIN` 절이 수행하는 기본적인 동작입니다.
 
 이 이름은 이를 배열이나 중첩 데이터 구조와 `JOIN`을 수행하는 것으로 볼 수 있다는 데서 비롯되었습니다. 의도는 [arrayJoin](/sql-reference/functions/array-join) 함수와 유사하지만, 절의 기능은 더 광범위합니다.
@@ -29,8 +25,7 @@ FROM <left_subquery>
 * `ARRAY JOIN` - 기본적으로 빈 배열은 `JOIN` 결과에 포함되지 않습니다.
 * `LEFT ARRAY JOIN` - `JOIN` 결과에 빈 배열을 가진 행이 포함됩니다. 빈 배열의 값은 배열 요소 타입의 기본값(일반적으로 0, 빈 문자열 또는 NULL)으로 설정됩니다.
 
-
-## 기본 ARRAY JOIN 예제 \{#basic-array-join-examples\}
+## 기본 ARRAY JOIN 예시 \{#basic-array-join-examples\}
 
 ### ARRAY JOIN과 LEFT ARRAY JOIN \{#array-join-left-array-join-examples\}
 
@@ -151,7 +146,6 @@ ORDER BY Reaches DESC
 LIMIT 10
 ```
 
-
 ```text
 ┌──GoalID─┬─Reaches─┬─Visits─┐
 │   53225 │    3214 │   1097 │
@@ -166,7 +160,6 @@ LIMIT 10
 │ 3271094 │    2256 │    812 │
 └─────────┴─────────┴────────┘
 ```
-
 
 ## 별칭 사용하기 \{#using-aliases\}
 
@@ -254,7 +247,6 @@ FROM arrays_test ARRAY JOIN arr AS a, [['a','b'],['c']] AS b
 SETTINGS enable_unaligned_array_join = 1;
 ```
 
-
 ```response
 ┌─s───────┬─arr─────┬─a─┬─b─────────┐
 │ Hello   │ [1,2]   │ 1 │ ['a','b'] │
@@ -266,7 +258,6 @@ SETTINGS enable_unaligned_array_join = 1;
 │ Goodbye │ []      │ 0 │ ['c']     │
 └─────────┴─────────┴───┴───────────┘
 ```
-
 
 ## 중첩 데이터 구조에서의 ARRAY JOIN \{#array-join-with-nested-data-structure\}
 
@@ -371,7 +362,6 @@ FROM nested_test
 ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 ```
 
-
 ```response
 ┌─s─────┬─n.x─┬─n.y─┬─nest.x──┬─nest.y─────┬─num─┐
 │ Hello │   1 │  10 │ [1,2]   │ [10,20]    │   1 │
@@ -381,7 +371,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 │ World │   5 │  50 │ [3,4,5] │ [30,40,50] │   3 │
 └───────┴─────┴─────┴─────────┴────────────┴─────┘
 ```
-
 
 ## 구현 세부 정보 \{#implementation-details\}
 
@@ -393,8 +382,6 @@ ARRAY JOIN nest AS n, arrayEnumerate(`nest.x`) AS num;
 
 `arrayJoin`은 항상 실행되며 short-circuit function evaluation을 지원하지 않습니다. 이는 쿼리 분석 및 실행 과정에서 다른 모든 함수와는 별도로 처리되는 고유한 함수이고, short-circuit function evaluation과 호환되지 않는 추가적인 로직이 필요하기 때문입니다. 결과의 행 수가 `arrayJoin` 결과에 따라 달라지며, `arrayJoin`의 지연 실행(lazy execution)을 구현하는 것은 너무 복잡하고 비용이 많이 듭니다.
 
-
-
 ## 관련 콘텐츠 \{#related-content\}
 
-- 블로그: [ClickHouse에서 시계열 데이터 및 함수 활용하기](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)
+* 블로그: [ClickHouse에서 시계열 데이터 및 함수 활용하기](https://clickhouse.com/blog/working-with-time-series-data-and-functions-ClickHouse)

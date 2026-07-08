@@ -11,8 +11,6 @@ import PlayUI from '@site/static/images/play.png';
 import Image from '@theme/IdealImage';
 
 
-# HTTP インターフェース \{#http-interface\}
-
 ## 前提条件 \{#prerequisites\}
 
 この記事の例を試すには、次のものが必要です：
@@ -630,7 +628,7 @@ __exception__
 
 ## パラメータ付きクエリ \{#cli-queries-with-parameters\}
 
-パラメータ付きのクエリを作成し、対応する HTTP リクエストのパラメータから値を渡すことができます。詳細については、[CLI でのパラメータ付きクエリ](../../interfaces/cli.md#cli-queries-with-parameters)を参照してください。
+パラメータ付きのクエリを作成し、対応する HTTP リクエストのパラメータから値を渡すことができます。詳細については、[CLI でのパラメータ付きクエリ](/interfaces/client#cli-queries-with-parameters)を参照してください。
 
 ### 例 \{#example-3\}
 

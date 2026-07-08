@@ -1,8 +1,8 @@
 ---
-sidebar_label: 'Универсальный Postgres'
+sidebar_label: 'Общий Postgres'
 description: 'Настройка любого экземпляра Postgres в качестве источника для ClickPipes'
 slug: /integrations/clickpipes/postgres/source/generic
-title: 'Руководство по настройке универсального источника Postgres'
+title: 'Общее руководство по настройке источника Postgres'
 doc_type: 'guide'
 keywords: ['postgres', 'clickpipes', 'logical replication', 'pg_hba.conf', 'wal level']
 integration:
@@ -10,15 +10,13 @@ integration:
    - category: 'clickpipes'
 ---
 
-# Общее руководство по настройке источника Postgres \{#generic-postgres-source-setup-guide\}
-
 :::info
 
-Если вы используете одного из поддерживаемых провайдеров (см. боковую панель), обратитесь к соответствующему руководству по этому провайдеру.
+Если вы используете одного из поддерживаемых провайдеров (см. боковую панель), обратитесь к руководству для этого провайдера.
 
 :::
 
-ClickPipes поддерживает Postgres версии 12 и новее.
+ClickPipes поддерживает Postgres версии 12 или новее.
 
 ## Включение логической репликации \{#enable-logical-replication\}
 

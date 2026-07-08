@@ -1,20 +1,18 @@
 ---
 slug: /use-cases/AI_ML/AIChat/semantic-layer
 sidebar_label: '使用语义层自定义 ClickHouse Assistant 聊天'
-title: '使用语义层优化 ClickHouse Assistant Agent 对话'
+title: '使用语义层优化 ClickHouse Assistant 对话'
 pagination_prev: null
 pagination_next: null
-description: '使用 AGENTS.md 为 ClickHouse Assistant 聊天 Agent 提供自定义业务逻辑和数据相关指令的指南'
+description: '使用 AGENTS.md 为 ClickHouse Assistant 聊天代理 提供自定义业务逻辑和数据相关指令的指南'
 keywords: ['AI', 'ClickHouse Cloud', 'Agent', 'AGENTS.md', 'Semantic Layer', 'Custom Instructions', 'System Prompt']
 show_related_blogs: true
 doc_type: 'guide'
 ---
 
-# 使用语义层自定义 ClickHouse Assistant 聊天 \{#customize-clickhouse-assistant-chat-with-a-semantic-layer\}
+ClickHouse Assistant 聊天代理 可以通过 **AGENTS.md** 进行自定义，从而理解您特定的业务逻辑、数据结构和领域知识——它是一种特殊的已保存查询，可作为该 agent 系统提示之上的语义层。
 
-ClickHouse Assistant 聊天代理可以通过 **AGENTS.md** 进行自定义，从而理解你特定的业务逻辑、数据结构和领域知识——这是一条特殊的已保存查询，用作代理系统提示的语义层。
-
-通过创建一个 AGENTS.md 文件，你可以提供自定义指令，这些指令会在每次对话开始时被注入，用于根据你组织独特的需求、计算方式和约定来引导 SQL 查询生成和数据分析。
+通过创建 AGENTS.md 文件，您可以提供自定义指令，这些指令会在每次对话开始时注入，以便根据您组织独有的需求、计算逻辑和约定来指导 SQL 查询生成和数据分析。
 
 ## 工作原理 \{#how-it-works\}
 

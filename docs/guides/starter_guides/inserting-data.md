@@ -164,7 +164,7 @@ If you need help inserting large datasets or encounter any errors when importing
 - `clickhouse-server` is running
 - You have access to a terminal with `wget`, `zcat` and `curl`
 
-In this example you'll see how to insert a CSV file into ClickHouse from the command line using clickhouse-client in batch mode. For more information and examples of inserting data via command line using clickhouse-client in batch mode, see ["Batch mode"](/interfaces/cli#batch-mode).
+In this example you'll see how to insert a CSV file into ClickHouse from the command line using clickhouse-client in batch mode. For more information and examples of inserting data via command line using clickhouse-client in batch mode, see ["Batch mode"](/interfaces/client#batch-mode).
 
 We'll be using the [Hacker News dataset](/getting-started/example-datasets/hacker-news) for this example, which contains 28 million rows of Hacker News data.
 

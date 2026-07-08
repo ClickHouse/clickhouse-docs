@@ -7,15 +7,13 @@ title: '查询权限'
 doc_type: 'reference'
 ---
 
-# 查询权限 \{#permissions-for-queries\}
-
 ClickHouse 中的查询可以分为几种类型：
 
-1.  读数据查询：`SELECT`、`SHOW`、`DESCRIBE`、`EXISTS`。
-2.  写数据查询：`INSERT`、`OPTIMIZE`。
-3.  更改设置查询：`SET`、`USE`。
-4.  [DDL](https://en.wikipedia.org/wiki/Data_definition_language) 查询：`CREATE`、`ALTER`、`RENAME`、`ATTACH`、`DETACH`、`DROP`、`TRUNCATE`。
-5.  `KILL QUERY`。
+1. 读取数据查询：`SELECT`、`SHOW`、`DESCRIBE`、`EXISTS`。
+2. 写入数据查询：`INSERT`、`OPTIMIZE`。
+3. 修改设置查询：`SET`、`USE`。
+4. [DDL](https://en.wikipedia.org/wiki/Data_definition_language) 查询：`CREATE`、`ALTER`、`RENAME`、`ATTACH`、`DETACH`、`DROP`、`TRUNCATE`。
+5. `KILL QUERY`。
 
 以下设置用于按查询类型控制用户权限：
 

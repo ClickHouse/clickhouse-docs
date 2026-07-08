@@ -1,0 +1,266 @@
+---
+title: '操作手册：JSON schema'
+description: '为 ClickHouse 中的 JSON 数据选择合适的 schema 方案——类型化列、混合方案、原生 JSON 或 String 存储'
+date: 2026-03-20
+tags: ['操作手册', '数据建模']
+keywords: ['JSON', 'JSON type', 'schema 设计', '类型提示', 'max_dynamic_paths', '半结构化数据', '动态 schema', 'JSONAsObject']
+---
+
+import Details from '@theme/Details';
+
+{frontMatter.description}
+
+{/* 此处省略 */}
+
+:::note
+从 ClickHouse 25.3+ 开始，JSON 列类型已可在生产环境中使用。更早版本不建议用于生产环境。
+:::
+
+你的数据会以 JSON 形式到达。ClickHouse 提供了多种存储方式，从完全类型化列到原始 String。应如何选择，取决于你的 schema 是否足够稳定，以及你是否需要按字段进行查询。
+
+**范围：** 本页面介绍存储 JSON 数据时的 schema 设计取舍。不涵盖 [JSON 输入/输出格式](/interfaces/formats/JSON)、[JSON 函数](/sql-reference/functions/json-functions) 或查询语法。有关 JSON 列类型本身的背景信息，请参见 [在适当情况下使用 JSON](/best-practices/use-json-where-appropriate)。
+
+**前提：** 你应熟悉 [ClickHouse 表创建](/sql-reference/statements/create/table)、[MergeTree](/engines/table-engines/mergetree-family/mergetree) 的基础知识以及列类型语法。
+
+## 快速决策 \{#quick-decision\}
+
+* **如果**每个字段都有已知且稳定的类型，并且 schema 很少发生变化
+  **→** [类型化列](#typed-columns)
+* **如果**大多数字段都很稳定，但某一部分是动态的或不可预测的
+  **→** [混合 (类型化列 + JSON) ](#hybrid)
+* **如果**整个结构都是动态的，并且键会在不同记录中出现或消失
+  **→** [原生 JSON 列](#native-json)
+* **如果**动态字段是键值对，且值类型一致 (例如字符串标签、数值指标) 
+  **→** [`Map`](#when-map-fits-better) 而不是 JSON
+* **如果**您只是存储和读取 JSON blob，而不进行字段级查询
+  **→** [不透明 String 存储](#opaque-storage)
+
+:::note
+不要混淆 JSON *格式* 和 JSON *列类型*。您可以将 JSON 格式的数据 (通过 `JSONEachRow` 等) 插入到类型化列中，而完全不使用 `JSON` 列类型。这里的决策针对的是列类型，而不是输入格式。
+:::
+
+## 方案详情 \{#approach-details\}
+
+### 类型化列 \{#typed-columns\}
+
+**适用时机：** JSON 结构在设计阶段就已完全明确。字段和类型在不同记录之间不会发生变化。即使是复杂的嵌套结构 (对象数组、嵌套映射) ，也可以用 [`Array`](/sql-reference/data-types/array)、[`Tuple`](/sql-reference/data-types/tuple) 和 [`Nested`](/sql-reference/data-types/nested-data-structures/nested) 类型来表示。
+
+**权衡：** schema 变更需要执行 `ALTER TABLE`。除非更新 schema，否则在插入时遇到的非预期字段会被静默丢弃。
+
+<Details summary="设置、验证和注意事项">
+  **设置**
+
+  ```sql
+  CREATE TABLE events
+  (
+      `timestamp` DateTime,
+      `service`   LowCardinality(String),
+      `level`     Enum8('DEBUG' = 1, 'INFO' = 2, 'WARN' = 3, 'ERROR' = 4),
+      `message`   String,
+      `host`      LowCardinality(String),
+      `duration_ms` UInt32
+  )
+  ENGINE = MergeTree
+  ORDER BY (service, timestamp)
+  ```
+
+  **验证**
+
+  ```sql
+  -- 确认列类型符合预期
+  DESCRIBE TABLE events FORMAT Vertical
+
+  -- 通过插入和查询来验证 schema 能否正确处理你的数据
+  INSERT INTO events FORMAT JSONEachRow
+  {"timestamp":"2025-03-19 10:00:00","service":"api","level":"INFO","message":"request handled","host":"node-1","duration_ms":42}
+
+  SELECT service, level, duration_ms FROM events WHERE service = 'api'
+  ```
+
+  **注意**
+
+  * 如果你使用 `JSONEachRow` 插入 JSON 数据，而 JSON 中包含 schema 里不存在的字段，ClickHouse 默认会静默丢弃这些字段。如果你希望改为报错，请将 [`input_format_skip_unknown_fields`](/operations/settings/formats#input_format_skip_unknown_fields) 设置为 `0`。
+</Details>
+
+***
+
+### 混合 (类型化列 + JSON)  \{#hybrid\}
+
+**使用时机：** 一组核心字段是稳定的 (`timestamp`、ID、状态码) ，但数据负载中的一部分是动态的。例如用户自定义属性、标签、元数据，或不同记录之间会变化的扩展字段。
+
+**权衡：** 类型化列可提供完整性能，JSON 列则提供灵活性。不过，JSON 列中动态部分仍会带来插入开销和存储成本。
+
+<Details summary="设置、验证和注意事项">
+  **设置**
+
+  ```sql
+  CREATE TABLE events
+  (
+      `timestamp`  DateTime,
+      `service`    LowCardinality(String),
+      `level`      Enum8('DEBUG' = 1, 'INFO' = 2, 'WARN' = 3, 'ERROR' = 4),
+      `message`    String,
+      `host`       LowCardinality(String),
+      `duration_ms` UInt32,
+      `attributes` JSON(
+          max_dynamic_paths = 256,
+          `http.status_code` UInt16,
+          `http.method` LowCardinality(String),
+          SKIP REGEXP 'debug\..*'
+      )
+  )
+  ENGINE = MergeTree
+  ORDER BY (service, timestamp)
+  ```
+
+  **验证**
+
+  ```sql
+  -- 插入示例数据并检查推断出的路径
+  INSERT INTO events FORMAT JSONEachRow
+  {"timestamp":"2025-03-19 10:00:00","service":"api","level":"INFO","message":"request handled","host":"node-1","duration_ms":42,"attributes":{"http.status_code":200,"http.method":"GET","user.region":"eu-west","custom_tag":"abc"}}
+
+  SELECT JSONAllPathsWithTypes(attributes)
+  FROM events
+  FORMAT PrettyJSONEachRow
+  ```
+
+  **注意事项**
+
+  * 对于你能提前确定的 JSON 路径，使用 [类型提示](/sql-reference/data-types/newjson)。类型提示会绕过判别列，并将该路径像普通类型化列一样存储，性能相同且没有额外开销。
+  * 对于你永远不会查询的路径 (如调试元数据、内部 tracing ID) ，使用 `SKIP` 或 `SKIP REGEXP` 以节省存储并减少子列 数量。
+  * 将 `max_dynamic_paths` 设置为与你实际查询的不同路径数量相适应的值。默认值 (1024) 适用于大多数场景。如果动态部分较少，可适当调低。
+  * 不要将 `max_dynamic_paths` 设置到 10,000 以上。较高的值会增加资源消耗并降低效率。
+
+  :::note 点号键
+  默认情况下，带点号的键 (例如 `http.status_code`) 会被视为嵌套路径，因此 `{"http.status_code": 200}` 的存储方式与 `{"http": {"status_code": 200}}` 相同。这在 OTel 属性中很常见。可使用类型提示来控制带点路径的存储方式，或者启用 `json_type_escape_dots_in_keys` (25.8+) 。
+  :::
+</Details>
+
+***
+
+### 原生 JSON 列 \{#native-json\}
+
+**适用场景：** 当数据结构确实难以预测，不同记录中的键会不断出现或消失时使用。适合用户生成的 schema、插件系统，或无法控制上游 schema 的数据湖摄取场景。
+
+**权衡取舍：** 插入速度比显式类型的列更慢。读取完整对象也比 String 更慢。子列管理会带来额外的存储开销。但对于针对特定路径的字段级查询，效果很好。
+
+<Details summary="设置、验证和注意事项">
+  **设置**
+
+  ```sql
+  CREATE TABLE dynamic_events
+  (
+      `id`   UInt64,
+      `ts`   DateTime DEFAULT now(),
+      `data` JSON(
+          max_dynamic_paths = 512,
+          `event_type` LowCardinality(String),
+          `version` UInt8
+      )
+  )
+  ENGINE = MergeTree
+  ORDER BY (data.event_type, ts)
+  ```
+
+  将完整的 JSON 文档插入 JSON 列时，请使用 [`JSONAsObject`](/interfaces/formats/JSONAsObject) 格式。它会将每一行输入视为一个完整的 JSON 对象，并映射到该列。
+
+  **验证**
+
+  ```sql
+  INSERT INTO dynamic_events (id, data) FORMAT JSONEachRow
+  {"id": 1, "data": {"event_type": "click", "version": 2, "page": "/home", "button_id": "cta-1"}}
+  {"id": 2, "data": {"event_type": "purchase", "version": 1, "item_id": "SKU-99", "amount": 49.99, "currency": "USD"}}
+
+  -- 检查 ClickHouse 检测到了哪些路径及其类型
+  SELECT JSONAllPathsWithTypes(data) FROM dynamic_events FORMAT PrettyJSONEachRow
+
+  -- 查询特定路径
+  SELECT data.page FROM dynamic_events WHERE data.event_type = 'click'
+  ```
+
+  **注意事项**
+
+  * 如果没有类型提示，ClickHouse 会根据首次看到的值按路径推断类型。如果某条记录中的 `score` 是 `"10"` (字符串) ，而另一条记录中是 `10` (整数) ，该路径就会获得一个判别列，查询也会变慢。对于已知类型的路径，请添加类型提示。
+  * 当路径数量超过 `max_dynamic_paths` 时，溢出的值会移动到[共享数据结构](/sql-reference/data-types/newjson#shared-data-structure)中，查询性能会下降。可使用 [`JSONDynamicPaths()`](/sql-reference/data-types/newjson#introspection-functions) 进行监控，并将该限制控制在 10,000 以下。
+  * 每个动态路径最多支持 `max_dynamic_types` (默认 32) 种不同的数据类型。如果单个路径超过该数量，额外类型会回退到共享的 Variant 存储。除非同一字段在数据中存在高度不一致的类型，否则这通常不是大问题。
+</Details>
+
+***
+
+### 不透明 String 存储 \{#opaque-storage\}
+
+**适用场景：** JSON 文档以整体形式存储和读取，然后传递给应用程序、归档，或转发到下游。在 ClickHouse 中不进行字段级过滤或聚合。
+
+**权衡：** 插入速度最快，schema 也最简单。但如果不在运行时解析 (`JSONExtract` 系列) ，就无法进行字段级查询，而这种方式在大规模场景下性能较差。
+
+<Details summary="设置、验证和注意事项">
+  **设置**
+
+  ```sql
+  CREATE TABLE raw_events
+  (
+      `id`        UInt64,
+      `received`  DateTime DEFAULT now(),
+      `payload`   String
+  )
+  ENGINE = MergeTree
+  ORDER BY (received)
+  ```
+
+  **验证**
+
+  ```sql
+  INSERT INTO raw_events (id, payload) VALUES
+  (1, '{"type":"click","page":"/home"}'),
+  (2, '{"type":"purchase","item":"SKU-99","amount":49.99}')
+
+  -- 确认数据往返后保持完整
+  SELECT payload FROM raw_events WHERE id = 1
+
+  -- 验证在需要时仍可临时解析字段
+  SELECT JSONExtractString(payload, 'type') AS event_type FROM raw_events
+  ```
+
+  **注意事项**
+
+  * 如果需求发生变化，后续需要进行字段级查询，您就需要使用类型化列或 JSON 列创建新表，并回填数据。如果有任何可能需要查询单个字段，请改为从[混合方案](#hybrid)开始。
+  * `JSONExtract` 函数会在每次查询时解析字符串。适合临时探索，不适合用于生产环境仪表板或高 QPS 工作负载。
+  * 如果 JSON 负载较大，可考虑在 String 列上使用压缩编解码器 (`ZSTD`) ——它的压缩效果通常很好。
+</Details>
+
+## 对比 \{#comparison\}
+
+| 维度             | 类型化列                   | 混合                       | 原生 JSON            | String      |
+| -------------- | ---------------------- | ------------------------ | ------------------ | ----------- |
+| **插入处理量**      | 最快                     | 快                        | 中等                 | 最快          |
+| **字段级查询**      | 最快                     | 快 (强类型) ；较好 (带提示的 JSON)  | 较好 (带提示) ；较慢 (动态)  | 慢 (运行时解析)   |
+| **完整对象读取**     | 快                      | 中等                       | 慢                  | 最快          |
+| **存储效率**       | 最佳                     | 较好                       | 中等                 | 较好 (压缩效果好)  |
+| **schema 灵活性** | 无 (仅能用 `ALTER TABLE`)  | 部分 (核心固定，尾部灵活)           | 完全                 | 完全          |
+| **复杂度**        | 低                      | 中                        | 中–高                | 低           |
+
+## 何时 Map 更合适 \{#when-map-fits-better\}
+
+如果动态字段是同构的键值对——也就是所有值都属于同一种类型——那么 [`Map(String, T)`](/sql-reference/data-types/map) 比 JSON 列更简单，也更高效。常见示例包括：字符串标签 (`Map(String, String)`) 、数值指标 (`Map(String, Float64)`) 以及特性开关 (`Map(String, Bool)`) 。
+
+```sql
+CREATE TABLE tagged_events
+(
+    `timestamp` DateTime,
+    `service`   LowCardinality(String),
+    `tags`      Map(String, String)  -- e.g., {"env": "prod", "region": "us-east-1", "team": "platform"}
+)
+ENGINE = MergeTree
+ORDER BY (service, timestamp)
+```
+
+`Map` 支持按键级别过滤 (`tags['env'] = 'prod'`) ，存储成本低于 JSON，也可避免 JSON type 的子列开销。请注意，默认情况下，键查找会线性扫描整个 `Map`——对于较小的标签集，这样做没问题；但如果 `Map` 包含 100+ 个键，则建议考虑使用 [`with_buckets` 序列化](/sql-reference/data-types/map#bucketed-map-serialization)。当值包含混合类型或结构存在嵌套时，请使用 JSON；当数据是扁平的、值类型统一的键值对时，请使用 `Map`。
+
+## 相关资源 \{#related-resources\}
+
+* [在适当情况下使用 JSON](/best-practices/use-json-where-appropriate) — 何时应使用 JSON 列类型而非其他方案
+* [JSON 数据类型参考](/sql-reference/data-types/newjson) — `类型提示`、SKIP、max&#95;dynamic&#95;paths 和内省函数的完整语法
+* [选择数据类型](/best-practices/select-data-types) — 通用的数据类型选择指南
+* [A New Powerful JSON Data Type for ClickHouse](https://clickhouse.com/blog/a-new-powerful-json-data-type-for-clickhouse) — 深入介绍 JSON 类型的存储架构
+* [JSON 格式参考](/interfaces/formats/JSON) — JSON 数据的输入/输出格式 (JSONEachRow、JSONAsObject 等)
