@@ -1,6 +1,5 @@
 ---
 title: 'Data lake best practices'
-
 sidebar_label: 'Best practices'
 slug: /use-cases/data-lake/best-practices
 sidebar_position: 5
@@ -71,7 +70,7 @@ SELECT count() FROM my_lake.`analytics.events`
 This scales better than creating individual table definitions when you manage many tables or multiple catalogs. See [Connecting to catalogs](/use-cases/data-lake/getting-started/connecting-catalogs) and the [catalog guides](/use-cases/data-lake/reference).
 
 :::note Backticks for multi-part table names
-Catalogs often use `database.table` naming. Wrap the full name in backticks: `my_lake.`analytics.events`` .
+Catalogs often use `database.table` naming. Surround the database-qualified name with backticks, as in the example above.
 :::
 
 ## Required settings {#required-settings}
@@ -279,7 +278,11 @@ Lake queries that are slow or return unexpected results usually trace back to me
 CHECK DATABASE my_lake;
 ```
 
-On earlier versions, confirm connectivity with `SHOW TABLES FROM my_lake` and inspect the error message. Use `SHOW CREATE TABLE my_lake.`db.table` to verify the resolved storage path and engine type.
+On earlier versions, confirm connectivity with `SHOW TABLES FROM my_lake` and inspect the error message. Use `SHOW CREATE TABLE` with a backtick-quoted table name to verify the resolved storage path and engine type:
+
+```sql
+SHOW CREATE TABLE my_lake.`db.table`;
+```
 
 If catalog tables don't appear in `system.tables`, enable [show_data_lake_catalogs_in_system_tables](/operations/settings/settings#show_data_lake_catalogs_in_system_tables) (25.8+). Catalog tables are hidden from system introspection by default.
 
