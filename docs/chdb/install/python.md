@@ -327,7 +327,7 @@ cursor.executemany(
 )
 ```
 
-### Python UDF (User-Defined Functions) {#user-defined-functions}
+### Python user-defined functions (UDF) {#user-defined-functions}
 
 chDB supports native in-process Python UDFs with full type safety, automatic type inference, and configurable NULL/exception handling.
 
@@ -343,7 +343,7 @@ result = query("SELECT add(2, 3)")
 print(result)  # 5
 ```
 
-For the complete guide covering registration methods, type system, NULL handling, exception handling, and DateTime support, see the [Python UDF Guide](/chdb/guides/python-udf). For the full API reference, see the [Python UDF API reference](/chdb/api/python#user-defined-functions). The older `@chdb_udf` decorator is still available but superseded by this API — see [Legacy API](/chdb/api/python#legacy-udf).
+For the complete guide covering registration methods, type system, NULL handling, exception handling, and DateTime support, see the [Python UDF guide](/chdb/guides/python-udf). For the full API reference, see the [Python UDF API reference](/chdb/api/python#user-defined-functions). The older `@chdb_udf` decorator is still available but superseded by this API — see [Legacy API](/chdb/api/python#legacy-udf).
 
 ### Streaming query processing {#streaming-queries}
 

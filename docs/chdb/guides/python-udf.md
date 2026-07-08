@@ -1,16 +1,17 @@
 ---
-title: Python User-Defined Functions (UDF)
-sidebar_label: Python UDF
+title: 'Python user-defined functions (UDF)'
+sidebar_label: 'Python UDF'
 slug: /chdb/guides/python-udf
-description: Create native Python UDFs in chDB with full type safety, NULL handling, and exception control.
-keywords: [chdb, udf, python, user-defined function]
+description: 'Create native Python UDFs in chDB with full type safety, NULL handling, and exception control.'
+keywords: ['chdb', 'udf', 'python', 'user-defined function']
+doc_type: 'guide'
 ---
 
-# Python User-Defined Functions (UDF)
+# Python user-defined functions (UDF)
 
 chDB allows you to register Python functions as SQL-callable UDFs. These run natively in-process — no subprocess spawning, no serialization overhead. Functions are type-safe, support automatic type inference from Python annotations, and offer configurable NULL and exception handling.
 
-## Quick Start {#quick-start}
+## Quick start {#quick-start}
 
 ```python
 from chdb import query, func
@@ -24,9 +25,13 @@ result = query("SELECT add(2, 3)")
 print(result)  # 5
 ```
 
-## Registration Methods {#registration-methods}
+:::note
+Examples in this guide show `query()` results in the default CSV output format: `NULL` prints as `\N`, and string or date values are printed with CSV quoting (for example `"Hello, world!"`).
+:::
 
-### `@func` Decorator {#func-decorator}
+## Registration methods {#registration-methods}
+
+### `@func` decorator {#func-decorator}
 
 The simplest way to register a UDF. The function's `__name__` becomes the SQL function name.
 
@@ -44,7 +49,7 @@ def add(a, b):
 def multiply(a: int, b: int) -> int:
     return a * b
 
-# Partial: explicit return_type, arg_types inferred
+# Explicit return_type, arg_types inferred from annotations
 @func(return_type=STRING)
 def greet(name: str):
     return f"Hello, {name}!"
@@ -74,7 +79,7 @@ query("SELECT double(21)")  # 42
 
 ### `drop_function` {#drop-function}
 
-Remove a registered UDF:
+Remove a registered UDF. Dropping a name that is not registered does nothing, so it is safe to call unconditionally:
 
 ```python
 from chdb import drop_function
@@ -83,9 +88,13 @@ drop_function("strlen")
 # query("SELECT strlen('hello')")  # Error: function not found
 ```
 
-## Type System {#type-system}
+:::note
+Registering a name that is already registered raises an error — UDFs are not silently replaced. Call `drop_function(name)` first to re-register a function, for example when re-running a notebook cell.
+:::
 
-### Available Types {#available-types}
+## Type system {#type-system}
+
+### Available types {#available-types}
 
 All types are importable from `chdb.sqltypes`:
 
@@ -106,7 +115,7 @@ from chdb.sqltypes import (
 )
 ```
 
-### Specifying Types {#specifying-types}
+### Specifying types {#specifying-types}
 
 Types can be provided in four ways:
 
@@ -115,7 +124,7 @@ Types can be provided in four ways:
 | `ChdbType` constant | `INT64`, `STRING` | Imported from `chdb.sqltypes` |
 | ClickHouse type string | `"Int64"`, `"String"` | Standard ClickHouse type names |
 | Parameterized string | `"DateTime('UTC')"`, `"DateTime64(6)"` | For types with parameters |
-| Python annotation | `int`, `str`, `float` | Used via type hints on function signature |
+| Python type | `int`, `str`, `float` | Passed directly in `arg_types`/`return_type`, or used as type hints on the function signature |
 
 ```python
 from chdb import create_function, func
@@ -124,13 +133,14 @@ from chdb.sqltypes import INT64
 # All equivalent:
 create_function("f1", lambda x: x * 2, arg_types=[INT64], return_type=INT64)
 create_function("f2", lambda x: x * 2, arg_types=["Int64"], return_type="Int64")
+create_function("f3", lambda x: x * 2, arg_types=[int], return_type=int)
 
 @func()
-def f3(x: int) -> int:
+def f4(x: int) -> int:
     return x * 2
 ```
 
-### Automatic Type Inference {#automatic-type-inference}
+### Automatic type inference {#automatic-type-inference}
 
 When `arg_types` or `return_type` is omitted, chDB infers types from Python type annotations:
 
@@ -158,7 +168,9 @@ def process(name: str, age: int) -> str:
 If `arg_types` is provided explicitly, it must cover **all** parameters — partial explicit + partial inferred is not supported. This applies to both `create_function` and the `@func` decorator: either specify types for all parameters, or omit them entirely and let chDB infer from annotations.
 :::
 
-## NULL Handling {#null-handling}
+A return type is always required: if `return_type` is omitted and the function has no return annotation, registration fails. Argument annotations, by contrast, are optional — a parameter with neither an explicit type nor an annotation accepts any supported input type dynamically.
+
+## NULL handling {#null-handling}
 
 The `on_null` parameter controls behavior when any input argument is NULL.
 
@@ -169,7 +181,7 @@ The `on_null` parameter controls behavior when any input argument is NULL.
 
 You can also use the enum: `chdb.NullHandling.SKIP` / `chdb.NullHandling.PASS`.
 
-### Example: Default (skip) {#null-skip}
+### Example: default (skip) {#null-skip}
 
 ```python
 @func(return_type="Int64")
@@ -180,7 +192,7 @@ query("SELECT increment(NULL)")  # NULL
 query("SELECT increment(5)")     # 6
 ```
 
-### Example: Pass NULL as None {#null-pass}
+### Example: pass NULL as `None` {#null-pass}
 
 ```python
 @func(return_type="Int64", on_null="pass")
@@ -191,7 +203,7 @@ query("SELECT null_to_zero(NULL)")  # 0
 query("SELECT null_to_zero(5)")     # 6
 ```
 
-### With Multiple Arguments {#null-multiple-args}
+### With multiple arguments {#null-multiple-args}
 
 ```python
 @func(arg_types=["Int64", "Int64"], return_type="Int64", on_null="pass")
@@ -203,7 +215,7 @@ query("SELECT add_or_zero(NULL, NULL)") # 0
 query("SELECT add_or_zero(3, 7)")       # 10
 ```
 
-## Exception Handling {#exception-handling}
+## Exception handling {#exception-handling}
 
 The `on_error` parameter controls behavior when the Python function raises an exception.
 
@@ -214,7 +226,7 @@ The `on_error` parameter controls behavior when the Python function raises an ex
 
 You can also use the enum: `chdb.ExceptionHandling.PROPAGATE` / `chdb.ExceptionHandling.IGNORE`.
 
-### Example: Default (propagate) {#exception-propagate}
+### Example: default (propagate) {#exception-propagate}
 
 ```python
 @func(arg_types=["Int64", "Int64"], return_type="Int64")
@@ -225,7 +237,7 @@ query("SELECT divide(10, 2)")  # 5
 query("SELECT divide(1, 0)")   # Error: ZeroDivisionError
 ```
 
-### Example: Ignore errors {#exception-ignore}
+### Example: ignore errors {#exception-ignore}
 
 ```python
 @func(arg_types=["Int64", "Int64"], return_type="Int64", on_error="ignore")
@@ -236,7 +248,7 @@ query("SELECT safe_divide(10, 2)")  # 5
 query("SELECT safe_divide(1, 0)")   # NULL
 ```
 
-## Combining NULL and Exception Handling {#combining-null-and-exception}
+## Combining NULL and exception handling {#combining-null-and-exception}
 
 The `on_null` and `on_error` options can be combined:
 
@@ -264,11 +276,11 @@ query("SELECT robust_divide(NULL, 2)")   # -1
 query("SELECT robust_divide(1, 0)")      # NULL (exception caught)
 ```
 
-## DateTime and Timezone Support {#datetime-and-timezone}
+## DateTime and timezone support {#datetime-and-timezone}
 
 UDFs fully support date and time types with timezone awareness.
 
-### Date Types {#date-types}
+### Date types {#date-types}
 
 ```python
 from datetime import date, timedelta
@@ -285,7 +297,7 @@ query("SELECT next_day(toDate('2024-06-15'))")  # 2024-06-16
 query("SELECT get_year(toDate('2024-06-15'))")  # 2024
 ```
 
-### DateTime with Timezones {#datetime-with-timezones}
+### DateTime with timezones {#datetime-with-timezones}
 
 ```python
 from datetime import timedelta
@@ -297,7 +309,7 @@ def add_one_hour(dt):
 query("SELECT add_one_hour(toDateTime('2024-01-01 12:00:00', 'UTC'))")  # 2024-01-01 13:00:00
 ```
 
-### DateTime64 (High Precision) {#datetime64}
+### DateTime64 (high precision) {#datetime64}
 
 `DATETIME64` defaults to scale 6 (microseconds):
 
@@ -317,7 +329,7 @@ query("SELECT add_microsecond(toDateTime64('2024-01-01 12:00:00.000000', 6, 'UTC
 - Timezone conversion is handled automatically
 :::
 
-## Using UDFs with Sessions {#using-udfs-with-sessions}
+## Using UDFs with sessions {#using-udfs-with-sessions}
 
 UDFs are registered globally and available across all sessions in the same process:
 
@@ -333,5 +345,8 @@ sess = chs.Session()
 sess.query("CREATE TABLE t (x Int64) ENGINE = Memory")
 sess.query("INSERT INTO t VALUES (1), (2), (3)")
 result = sess.query("SELECT double(x) FROM t ORDER BY x", "CSV")
-print(result)  # 2, 4, 6
+print(result)
+# 2
+# 4
+# 6
 ```

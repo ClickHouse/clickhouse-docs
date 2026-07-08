@@ -3252,9 +3252,11 @@ with dbapi.connect("test.chdb") as conn:
 - Parameter binding syntax follows format style: `%s`
 :::
 
-## Python UDF (User-Defined Functions) {#user-defined-functions}
+## Python user-defined functions (UDF) {#user-defined-functions}
 
 chDB supports native Python UDFs that run in-process with full type safety, automatic type inference, and configurable NULL/exception handling. Python functions registered as UDFs can be called directly from SQL queries.
+
+Examples below show results in the default CSV output format, where `NULL` prints as `\N` and string or date values are printed with CSV quoting.
 
 ### `chdb.create_function` {#create-function}
 
@@ -3272,15 +3274,18 @@ chdb.create_function(name, func, arg_types=None, return_type=None, *, on_null=No
 |---------------|-----------------|---------------|-----------------------------------------------------------------------------|
 | `name`        | str             | *(required)*  | Name of the SQL function to register                                        |
 | `func`        | callable        | *(required)*  | Python function to register                                                 |
-| `arg_types`   | list or None    | `None`        | List of argument types. If `None`, inferred from type annotations           |
-| `return_type` | type or None    | `None`        | Return type. If `None`, inferred from the function’s return annotation      |
+| `arg_types`   | list of ChdbType/str/type, or None | `None`        | List of argument types. If `None`, inferred from type annotations           |
+| `return_type` | ChdbType, str, type, or None    | `None`        | Return type. If `None`, inferred from the function's return annotation; registration fails if neither is provided      |
 | `on_null`     | str or NullHandling | `None` (skip) | How to handle NULL inputs: `"skip"` or `"pass"`. Keyword-only        |
 | `on_error`    | str or ExceptionHandling | `None` (propagate) | How to handle exceptions: `"propagate"` or `"ignore"`. Keyword-only |
 
 Each type parameter (`arg_types` elements and `return_type`) accepts:
 
 - A `ChdbType` constant: `INT64`, `STRING`, `FLOAT64`, etc.
-- A ClickHouse type string: `"Int64"`, `"String"`, `"DateTime64(6)"`, `"DateTime(‘UTC’)"`, etc.
+- A ClickHouse type string: `"Int64"`, `"String"`, `"DateTime64(6)"`, `"DateTime('UTC')"`, etc.
+- A Python type: `int`, `float`, `str`, `bool`, `bytes`, `datetime.date`, `datetime.datetime` — mapped per [Automatic type mapping](#udf-automatic-type-mapping)
+
+Registering a name that is already registered raises an error — UDFs are not silently replaced. Call [`drop_function`](#drop-function) first to re-register a function.
 
 **Example**
 
@@ -3289,7 +3294,7 @@ from chdb import create_function, drop_function, query
 from chdb.sqltypes import INT64, STRING
 
 create_function("strlen", len, arg_types=[STRING], return_type=INT64)
-print(query("SELECT strlen(‘hello’)"))  # 5
+print(query("SELECT strlen('hello')"))  # 5
 
 drop_function("strlen")
 ```
@@ -3298,7 +3303,7 @@ drop_function("strlen")
 
 ### `chdb.drop_function` {#drop-function}
 
-Remove a previously registered Python UDF.
+Remove a previously registered Python UDF. Does nothing if the function is not registered, so it is safe to call unconditionally.
 
 **Syntax**
 
@@ -3314,7 +3319,7 @@ chdb.drop_function(name)
 
 ---
 
-### `@func` Decorator {#func-decorator}
+### `@func` decorator {#func-decorator}
 
 Decorator to register a Python function as a chDB SQL function. The function remains callable as normal Python and is simultaneously available in SQL queries by its `__name__`.
 
@@ -3348,21 +3353,21 @@ def add(a, b):
 def multiply(a: int, b: int) -> int:
     return a * b
 
-# Mixed: explicit return_type, inferred arg_types
+# Explicit return_type, arg_types inferred from annotations
 @func(return_type=STRING)
 def greet(name: str):
     return f"Hello, {name}!"
 
 print(query("SELECT add(12, 22)"))       # 34
 print(query("SELECT multiply(3, 7)"))    # 21
-print(query("SELECT greet(‘world’)"))    # Hello, world!
+print(query("SELECT greet('world')"))    # Hello, world!
 ```
 
 ---
 
-### Type System {#udf-type-system}
+### Type system {#udf-type-system}
 
-#### Available Types {#udf-available-types}
+#### Available types {#udf-available-types}
 
 Import types from `chdb.sqltypes`:
 
@@ -3377,7 +3382,7 @@ from chdb.sqltypes import (
 )
 ```
 
-#### Automatic Type Mapping {#udf-automatic-type-mapping}
+#### Automatic type mapping {#udf-automatic-type-mapping}
 
 When types are inferred from Python annotations, the following mapping is used:
 
@@ -3392,12 +3397,12 @@ When types are inferred from Python annotations, the following mapping is used:
 | `datetime.date`      | `Date`           |
 | `datetime.datetime`  | `DateTime64(6)`  |
 
-#### Type Specification Methods {#udf-type-specification-methods}
+#### Type specification methods {#udf-type-specification-methods}
 
 Types can be specified in multiple ways:
 
 ```python
-from chdb import create_function
+from chdb import create_function, func
 from chdb.sqltypes import INT64
 
 # 1. ChdbType constants
@@ -3407,17 +3412,19 @@ create_function("f1", lambda x: x, arg_types=[INT64], return_type=INT64)
 create_function("f2", lambda x: x, arg_types=["Int64"], return_type="Int64")
 
 # 3. Parameterized type strings
-create_function("f3", lambda x: x, arg_types=["DateTime(‘UTC’)"], return_type="DateTime(‘UTC’)")
+create_function("f3", lambda x: x, arg_types=["DateTime('UTC')"], return_type="DateTime('UTC')")
 
-# 4. Python types (inferred from annotations)
+# 4. Python types — passed directly or used as annotations
+create_function("f4", lambda x: x, arg_types=[int], return_type=int)
+
 @func()
-def f4(x: int) -> int:
+def f5(x: int) -> int:
     return x
 ```
 
 ---
 
-### NULL Handling {#udf-null-handling}
+### NULL handling {#udf-null-handling}
 
 Control how NULL values are handled with the `on_null` parameter.
 
@@ -3446,7 +3453,7 @@ print(query("SELECT null_safe(NULL)"))  # 0
 
 ---
 
-### Exception Handling {#udf-exception-handling}
+### Exception handling {#udf-exception-handling}
 
 Control how exceptions are handled with the `on_error` parameter.
 
@@ -3463,7 +3470,7 @@ from chdb import func, query
 def divide(a, b):
     return a // b
 
-print(query("SELECT divide(1, 0)"))  # Error: division by zero
+# print(query("SELECT divide(1, 0)"))  # Error: division by zero
 
 # Ignore: exception → NULL
 @func(arg_types=["Int64", "Int64"], return_type="Int64", on_error="ignore")
@@ -3476,7 +3483,7 @@ print(query("SELECT safe_divide(10, 2)"))  # 5
 
 ---
 
-### DateTime and Timezone Support {#udf-datetime}
+### DateTime and timezone support {#udf-datetime}
 
 UDFs fully support `Date`, `Date32`, `DateTime`, and `DateTime64` types with timezone awareness.
 
@@ -3484,7 +3491,7 @@ UDFs fully support `Date`, `Date32`, `DateTime`, and `DateTime64` types with tim
 from chdb import func, query
 from datetime import datetime, timedelta, date
 
-@func(arg_types=["DateTime(‘UTC’)"], return_type="DateTime(‘UTC’)")
+@func(arg_types=["DateTime('UTC')"], return_type="DateTime('UTC')")
 def add_one_hour(dt):
     return dt + timedelta(hours=1)
 
@@ -3505,7 +3512,7 @@ print(query("SELECT get_year(toDate('2024-06-15'))"))  # 2024
 ### Legacy API {#legacy-udf}
 
 :::warning Deprecated
-The `@chdb_udf` decorator is the legacy subprocess-based UDF mechanism. It is still available but the native Python UDF API ([`@func`](#func-decorator) / [`create_function`](#create-function)) is recommended for its easier and more user-friendly API. See the [Python UDF Guide](/chdb/guides/python-udf) for the recommended approach.
+The `@chdb_udf` decorator is the legacy subprocess-based UDF mechanism: it runs your function in a separate Python process and passes all arguments as strings. It is still available, but the native Python UDF API ([`@func`](#func-decorator) / [`create_function`](#create-function)) is recommended — native UDFs run in-process with typed arguments, NULL handling, and exception control. See the [Python UDF guide](/chdb/guides/python-udf) for the recommended approach.
 :::
 
 #### `chdb.udf.chdb_udf` {#chdb-udf}
