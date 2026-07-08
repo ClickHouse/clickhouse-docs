@@ -15,7 +15,7 @@ Here is the supported data-type mapping for the MySQL ClickPipe:
 | --------------------------| -----------------------| -------------------------------------------------------------------------------------- |
 | Enum                      | LowCardinality(String) ||
 | Set                       | String                 ||
-| Decimal                   | Decimal                ||
+| Decimal                   | Decimal(76,38)         | Values exceeding 38 integer digits are ingested as zero. |
 | Bit                       | UInt64                 ||
 | TinyInt                   | Int8                   | Supports unsigned.|
 | SmallInt                  | Int16                  | Supports unsigned.|
