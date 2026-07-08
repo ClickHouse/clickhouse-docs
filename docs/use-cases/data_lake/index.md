@@ -61,7 +61,7 @@ See the getting started guide for [writing to data lakes](/use-cases/data-lake/g
 
 ### Best practices {#best-practices}
 
-For production workloads, see [Data lake best practices](/use-cases/data-lake/best-practices) for guidance on choosing table functions, table engines, or catalog connections, tuning performance settings, and deciding when to load data into MergeTree.
+For production workloads, see [Data lake best practices](/use-cases/data-lake/best-practices) for guidance on choosing table functions, table engines, or catalog connections, tuning performance settings, and debugging lake queries.
 
 ## Next steps {#next-steps}
 
