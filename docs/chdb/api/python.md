@@ -3283,7 +3283,7 @@ Each type parameter (`arg_types` elements and `return_type`) accepts:
 
 - A `ChdbType` constant: `INT64`, `STRING`, `FLOAT64`, etc.
 - A ClickHouse type string: `"Int64"`, `"String"`, `"DateTime64(6)"`, `"DateTime('UTC')"`, etc.
-- A Python type: `int`, `float`, `str`, `bool`, `datetime.date`, `datetime.datetime` — mapped per [Automatic type mapping](#udf-automatic-type-mapping)
+- A Python type: `int`, `float`, `str`, `bool`, `bytes`, `datetime.date`, `datetime.datetime` — mapped per [Automatic type mapping](#udf-automatic-type-mapping)
 
 Registering a name that is already registered raises an error — UDFs are not silently replaced. Call [`drop_function`](#drop-function) first to re-register a function.
 
@@ -3396,8 +3396,6 @@ When types are inferred from Python annotations, the following mapping is used:
 | `bytearray`          | `String`         |
 | `datetime.date`      | `Date`           |
 | `datetime.datetime`  | `DateTime64(6)`  |
-
-`bytes` and `bytearray` map to `String` as type declarations only: the function receives `String` values as Python `str` and must also return `str` — returning a `bytes` or `bytearray` object raises an error.
 
 #### Type specification methods {#udf-type-specification-methods}
 

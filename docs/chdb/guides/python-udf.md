@@ -155,8 +155,6 @@ When `arg_types` or `return_type` is omitted, chDB infers types from Python type
 | `datetime.date` | `Date` |
 | `datetime.datetime` | `DateTime64(6)` |
 
-`bytes` and `bytearray` map to `String` as type declarations only: the function receives `String` values as Python `str` and must also return `str` — returning a `bytes` or `bytearray` object raises an error.
-
 ```python
 @func()
 def process(name: str, age: int) -> str:
