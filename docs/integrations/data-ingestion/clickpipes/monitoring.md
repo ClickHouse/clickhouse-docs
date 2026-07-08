@@ -22,7 +22,7 @@ ClickPipes metrics use the [standard service-level labels](/integrations/prometh
 
 ### Sample response {#sample-response}
 
-The following shows what ClickPipes metrics look like in a Prometheus scrape response for a Kafka ClickPipe. Note that the set of exposed metrics varies by pipe type — see [Available metrics](#available-metrics) for which metrics apply to which pipe types:
+The following shows what ClickPipes metrics look like in a Prometheus scrape response for a Kafka ClickPipe. The set of exposed metrics varies by pipe type — see [Available metrics](#available-metrics) for which metrics apply to which pipe types:
 
 ```response
 # HELP ClickPipes_Info Always equal to 1. Label "clickpipe_state" contains the current state of the pipe: Stopped/Provisioning/Running/Paused/Failed
@@ -67,7 +67,7 @@ Not every metric is emitted by every pipe type. In particular, CDC ClickPipes ex
 | Metric                                     | Type    | Available for | Description |
 |--------------------------------------------|---------|---------------|-------------|
 | `ClickPipes_FetchedBytes_Total`            | Counter | Streaming, object storage | Total uncompressed bytes fetched from the source. |
-| `ClickPipes_FetchedBytesCompressed_Total`  | Counter | All | Total bytes fetched from the source, as read over the wire. If the source data is uncompressed, equivalent to `ClickPipes_FetchedBytes_Total`. |
+| `ClickPipes_FetchedBytesCompressed_Total`  | Counter | All | Total bytes fetched from the source, as read over the wire. If the source data is uncompressed, equivalent to `ClickPipes_FetchedBytes_Total`. For CDC ClickPipes, this excludes bytes fetched from initial load, which is emitted separately to `ClickPipes_FetchedBytesInitialLoad_Total`. |
 | `ClickPipes_FetchedBytesInitialLoad_Total` | Counter | CDC | Total bytes fetched during the initial load phase, including resyncs. |
 | `ClickPipes_SentBytes_Total`               | Counter | Streaming, object storage | Total uncompressed bytes sent to ClickHouse. |
 | `ClickPipes_SentBytesCompressed_Total`     | Counter | Streaming, object storage | Total compressed bytes sent to ClickHouse. |
