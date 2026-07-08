@@ -3254,9 +3254,9 @@ with dbapi.connect("test.chdb") as conn:
 
 ## Python user-defined functions (UDF) {#user-defined-functions}
 
-chDB supports native Python UDFs that run in-process with full type safety, automatic type inference, and configurable NULL/exception handling. Python functions registered as UDFs can be called directly from SQL queries.
+chDB supports native Python UDFs that run in-process with typed arguments, automatic type inference, and configurable NULL/exception handling. Python functions registered as UDFs can be called directly from SQL queries.
 
-Examples below show results in the default CSV output format, where `NULL` prints as `\N` and string or date values are printed with CSV quoting.
+Examples below use the default CSV output format. Inline comments show the logical result values; the raw output prints `NULL` as `\N` and applies CSV quoting to string and date values.
 
 ### `chdb.create_function` {#create-function}
 
@@ -3275,7 +3275,7 @@ chdb.create_function(name, func, arg_types=None, return_type=None, *, on_null=No
 | `name`        | str             | *(required)*  | Name of the SQL function to register                                        |
 | `func`        | callable        | *(required)*  | Python function to register                                                 |
 | `arg_types`   | list of ChdbType/str/type, or None | `None`        | List of argument types. If `None`, inferred from type annotations           |
-| `return_type` | ChdbType, str, type, or None    | `None`        | Return type. If `None`, inferred from the function's return annotation; registration fails if neither is provided      |
+| `return_type` | ChdbType/str/type, or None    | `None`        | Return type. If `None`, inferred from the function's return annotation; registration fails if the annotation is also missing      |
 | `on_null`     | str or NullHandling | `None` (skip) | How to handle NULL inputs: `"skip"` or `"pass"`. Keyword-only        |
 | `on_error`    | str or ExceptionHandling | `None` (propagate) | How to handle exceptions: `"propagate"` or `"ignore"`. Keyword-only |
 
@@ -3283,7 +3283,7 @@ Each type parameter (`arg_types` elements and `return_type`) accepts:
 
 - A `ChdbType` constant: `INT64`, `STRING`, `FLOAT64`, etc.
 - A ClickHouse type string: `"Int64"`, `"String"`, `"DateTime64(6)"`, `"DateTime('UTC')"`, etc.
-- A Python type: `int`, `float`, `str`, `bool`, `bytes`, `datetime.date`, `datetime.datetime` — mapped per [Automatic type mapping](#udf-automatic-type-mapping)
+- A Python type: `int`, `float`, `str`, `bool`, `datetime.date`, `datetime.datetime` — mapped per [Automatic type mapping](#udf-automatic-type-mapping)
 
 Registering a name that is already registered raises an error — UDFs are not silently replaced. Call [`drop_function`](#drop-function) first to re-register a function.
 
@@ -3396,6 +3396,8 @@ When types are inferred from Python annotations, the following mapping is used:
 | `bytearray`          | `String`         |
 | `datetime.date`      | `Date`           |
 | `datetime.datetime`  | `DateTime64(6)`  |
+
+`bytes` and `bytearray` map to `String` as type declarations only: the function receives `String` values as Python `str` and must also return `str` — returning a `bytes` or `bytearray` object raises an error.
 
 #### Type specification methods {#udf-type-specification-methods}
 
@@ -3512,7 +3514,7 @@ print(query("SELECT get_year(toDate('2024-06-15'))"))  # 2024
 ### Legacy API {#legacy-udf}
 
 :::warning Deprecated
-The `@chdb_udf` decorator is the legacy subprocess-based UDF mechanism: it runs your function in a separate Python process and passes all arguments as strings. It is still available, but the native Python UDF API ([`@func`](#func-decorator) / [`create_function`](#create-function)) is recommended — native UDFs run in-process with typed arguments, NULL handling, and exception control. See the [Python UDF guide](/chdb/guides/python-udf) for the recommended approach.
+The `@chdb_udf` decorator is the legacy subprocess-based UDF mechanism: it runs your function in a separate Python process and passes all arguments as strings. It is still available, but the native Python UDF API ([`@func`](#func-decorator) / [`create_function`](#create-function)) is recommended — native UDFs run in-process with typed arguments, NULL handling, and exception control. See the [Python UDF guide](/chdb/guides/python-udf) for a complete walkthrough.
 :::
 
 #### `chdb.udf.chdb_udf` {#chdb-udf}

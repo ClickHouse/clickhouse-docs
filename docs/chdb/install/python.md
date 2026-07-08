@@ -329,7 +329,7 @@ cursor.executemany(
 
 ### Python user-defined functions (UDF) {#user-defined-functions}
 
-chDB supports native in-process Python UDFs with full type safety, automatic type inference, and configurable NULL/exception handling.
+chDB supports native in-process Python UDFs with typed arguments, automatic type inference, and configurable NULL/exception handling.
 
 ```python
 from chdb import query, func

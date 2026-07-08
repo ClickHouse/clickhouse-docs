@@ -2,7 +2,7 @@
 title: 'Python user-defined functions (UDF)'
 sidebar_label: 'Python UDF'
 slug: /chdb/guides/python-udf
-description: 'Create native Python UDFs in chDB with full type safety, NULL handling, and exception control.'
+description: 'Create native Python UDFs in chDB with typed arguments, NULL handling, and exception control.'
 keywords: ['chdb', 'udf', 'python', 'user-defined function']
 doc_type: 'guide'
 ---
@@ -26,7 +26,7 @@ print(result)  # 5
 ```
 
 :::note
-Examples in this guide show `query()` results in the default CSV output format: `NULL` prints as `\N`, and string or date values are printed with CSV quoting (for example `"Hello, world!"`).
+Examples in this guide run `query()` with the default CSV output format. Inline comments show the logical result values; the raw output prints `NULL` as `\N` and applies CSV quoting to string and date values (for example `"Hello, world!"`).
 :::
 
 ## Registration methods {#registration-methods}
@@ -124,7 +124,7 @@ Types can be provided in four ways:
 | `ChdbType` constant | `INT64`, `STRING` | Imported from `chdb.sqltypes` |
 | ClickHouse type string | `"Int64"`, `"String"` | Standard ClickHouse type names |
 | Parameterized string | `"DateTime('UTC')"`, `"DateTime64(6)"` | For types with parameters |
-| Python type | `int`, `str`, `float` | Passed directly in `arg_types`/`return_type`, or used as type hints on the function signature |
+| Python type | `int`, `str`, `float` | Passed directly in `arg_types`/`return_type`, or used as type annotations in the function signature |
 
 ```python
 from chdb import create_function, func
@@ -155,6 +155,8 @@ When `arg_types` or `return_type` is omitted, chDB infers types from Python type
 | `datetime.date` | `Date` |
 | `datetime.datetime` | `DateTime64(6)` |
 
+`bytes` and `bytearray` map to `String` as type declarations only: the function receives `String` values as Python `str` and must also return `str` — returning a `bytes` or `bytearray` object raises an error.
+
 ```python
 @func()
 def process(name: str, age: int) -> str:
@@ -168,7 +170,7 @@ def process(name: str, age: int) -> str:
 If `arg_types` is provided explicitly, it must cover **all** parameters — partial explicit + partial inferred is not supported. This applies to both `create_function` and the `@func` decorator: either specify types for all parameters, or omit them entirely and let chDB infer from annotations.
 :::
 
-A return type is always required: if `return_type` is omitted and the function has no return annotation, registration fails. Argument annotations, by contrast, are optional — a parameter with neither an explicit type nor an annotation accepts any supported input type dynamically.
+A return type is always required: if `return_type` is omitted and the function has no return annotation, registration fails. Argument types, by contrast, are optional — a parameter with neither an explicit type nor an annotation accepts any supported input type dynamically.
 
 ## NULL handling {#null-handling}
 
@@ -203,7 +205,7 @@ query("SELECT null_to_zero(NULL)")  # 0
 query("SELECT null_to_zero(5)")     # 6
 ```
 
-### With multiple arguments {#null-multiple-args}
+### Example: multiple arguments {#null-multiple-args}
 
 ```python
 @func(arg_types=["Int64", "Int64"], return_type="Int64", on_null="pass")
