@@ -334,4 +334,4 @@ cleanup:
 
 - **메인 저장소**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **이슈 및 지원**: [GitHub 저장소](https://github.com/chdb-io/chdb/issues)에서 이슈를 등록하십시오.
-- **C API 문서**: [바인딩 문서](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+- **C API 문서**: [바인딩 문서](https://github.com/chdb-io/chdb-core/blob/main/bindings.md)

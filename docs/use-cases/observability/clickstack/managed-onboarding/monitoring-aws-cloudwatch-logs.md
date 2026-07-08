@@ -12,7 +12,6 @@ hide_advert: true
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import { TrackedLink } from '@site/src/components/GalaxyTrackedLink/GalaxyTrackedLink';
 import clickstack_cloud from '@site/static/images/use-cases/observability/clickstack-cloud-v2.png';
 import log_search_view from '@site/static/images/clickstack/cloudwatch/log-search-view-clickstack.png';
@@ -297,7 +296,7 @@ If nothing shows up:
 
 A pre-built dashboard with log volume, severity breakdown, and error distribution is available for download.
 
-<TrackedLink href={useBaseUrl('/examples/cloudwatch-logs-dashboard.json')} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">Download `cloudwatch-logs-dashboard.json`</TrackedLink>, then in the ClickStack UI navigate to **Dashboards**, click **Import**.
+<TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/cloudwatch-logs-dashboard.json'} download="cloudwatch-logs-dashboard.json" eventName="docs.cloudwatch_logs_monitoring.dashboard_download">Download `cloudwatch-logs-dashboard.json`</TrackedLink>, then in the ClickStack UI navigate to **Dashboards**, click **Import**.
 
 <Image img={import_dashboard} size="lg" alt="Import dashboard button"/>
 

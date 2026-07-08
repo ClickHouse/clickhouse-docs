@@ -28,7 +28,7 @@ extensions:
 
 ```sh
 docker run --name pg_clickhouse -e POSTGRES_PASSWORD=my_pass \
-       -d ghcr.io/clickhouse/pg_clickhouse:18
+       -d ghcr.io/clickhouse/pg_clickhouse:19
 docker exec -it pg_clickhouse psql -U postgres -c 'CREATE EXTENSION pg_clickhouse'
 ```
 
@@ -83,7 +83,7 @@ See [PostgreSQL Apt] for details on pulling from the PostgreSQL Apt repository.
 
 ```sh
 sudo apt install \
-  postgresql-server-18 \
+  postgresql-server-19 \
   libcurl4-openssl-dev \
   uuid-dev \
   libssl-dev \

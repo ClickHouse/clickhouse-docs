@@ -46,7 +46,7 @@ While ClickStack offers its own language SDKs with enhanced telemetry and featur
 
 ## Securing with API key {#securing-api-key}
 
-:::Not required for Managed ClickStack
+:::note Not required for Managed ClickStack
 The API key isn't required for managed ClickStack.
 :::
 

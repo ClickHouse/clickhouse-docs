@@ -10,7 +10,6 @@ keywords: ['Kafka', 'metrics', 'OTEL', 'ClickStack', 'JMX']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/kafka/import-kafka-dashboard.png';
@@ -265,7 +264,7 @@ ClickStack으로 Kafka 모니터링을 시작할 수 있도록 Kafka 메트릭�
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/kafka-metrics-dashboard.json')} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">대시보드 구성 파일 다운로드</TrackedLink> \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/kafka-metrics-dashboard.json'} download="kafka-metrics-dashboard.json" eventName="docs.kafka_metrics_monitoring.dashboard_download">대시보드 구성 파일 다운로드</TrackedLink> \{#download\}
 
 #### 미리 준비된 대시보드 가져오기 \{#import-dashboard\}
 

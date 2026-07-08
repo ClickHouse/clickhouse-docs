@@ -10,7 +10,6 @@ keywords: ['Node.js', '链路追踪', 'OTel', 'ClickStack', '分布式链路追�
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import search_view from '@site/static/images/clickstack/nodejs/traces-search-view.png';
@@ -163,7 +162,7 @@ HyperDX 会以浏览器的本地时区显示时间戳。演示数据的时间范
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/nodejs-traces-dashboard.json')} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download-dashboard\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/nodejs-traces-dashboard.json'} download="nodejs-traces-dashboard.json" eventName="docs.node_traces_monitoring.dashboard_download">下载</TrackedLink> 仪表板配置 \{#download-dashboard\}
 
 #### 导入预构建仪表板 \{#import-dashboard\}
 
