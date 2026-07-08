@@ -15,23 +15,23 @@ Here is the supported data-type mapping for the MySQL ClickPipe:
 | --------------------------| -----------------------| -------------------------------------------------------------------------------------- |
 | Enum                      | LowCardinality(String) ||
 | Set                       | String                 ||
-| Decimal                   | Decimal                | Synonyms: `Numeric`, `Dec`, `Fixed`.|
+| Decimal                   | Decimal                ||
 | Bit                       | UInt64                 ||
-| TinyInt                   | Int8                   | Supports unsigned. Compatibility alias: `Int1`.|
-| SmallInt                  | Int16                  | Supports unsigned. Compatibility alias: `Int2`.|
-| MediumInt, Int            | Int32                  | Supports unsigned. Synonyms and compatibility aliases include `Integer`, `Int3`, `Int4`, `MiddleInt`.|
-| BigInt                    | Int64                  | Supports unsigned. Compatibility alias: `Int8`.|
-| Serial                    | UInt64                 | Alias for `BigInt Unsigned Not Null AUTO_INCREMENT Unique`.|
+| TinyInt                   | Int8                   | Supports unsigned.|
+| SmallInt                  | Int16                  | Supports unsigned.|
+| MediumInt, Int            | Int32                  | Supports unsigned.|
+| BigInt                    | Int64                  | Supports unsigned.|
+| Serial                    | UInt64                 ||
 | Year                      | Int16                  ||
-| TinyInt(1)                | Bool                   | Synonyms: `Bool`, `Boolean`.|
-| Float                     | Float32                | Precision on ClickHouse may differ from MySQL during initial load due to text protocol. Synonym: `Float4`. `Float(p)` maps to `Float32` for `p <= 24` and `Float64` for `p >= 25`.|
-| Double                    | Float64                | Precision on ClickHouse may differ from MySQL during initial load due to text protocol. Synonyms: `Double Precision`, `Real`, `Float8`.|
+| TinyInt(1)                | Bool                   ||
+| Float                     | Float32                | Precision on ClickHouse may differ from MySQL during initial load due to text protocol. `Float(p)` maps to `Float32` for `p <= 24` and `Float64` for `p >= 25`.|
+| Double                    | Float64                | Precision on ClickHouse may differ from MySQL during initial load due to text protocol.|
 | TinyText, Text, MediumText, LongText | String      ||
 | TinyBlob, Blob, MediumBlob, LongBlob | String      ||
-| Char, Varchar             | String                 | Synonyms: `Character`, `NChar`, `NVarchar`, `Character Varying`, `Char Varying`, `VarCharacter`, `NChar Varchar`, `NChar Varying`, `NChar VarCharacter`, and `National`-prefixed forms.|
-| Long, Long Varchar        | String                 | Compatibility aliases for `MediumText`. Additional MariaDB aliases: `Long Char Varying`, `Long Character Varying`, `Long VarCharacter`.|
+| Char, Varchar             | String                 ||
+| Long, Long Varchar        | String                 ||
 | Binary, VarBinary         | String                 ||
-| Long VarBinary            | String                 | Compatibility alias for `MediumBlob`.|
+| Long VarBinary            | String                 ||
 | JSON                      | String                 | MySQL only; MariaDB `json` is just an alias for `text` with a constraint.              |
 | Geometry & Geometry Types | String | WKT (Well-Known Text). WKT may suffer from small precision loss. |
 | UUID                      | UUID                   | MariaDB only. Columns added during CDC are added as `String`.  |
