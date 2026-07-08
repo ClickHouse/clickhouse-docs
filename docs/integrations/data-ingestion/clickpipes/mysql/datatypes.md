@@ -34,7 +34,7 @@ Here is the supported data-type mapping for the MySQL ClickPipe:
 | Long VarBinary            | String                 ||
 | JSON                      | String                 | MySQL only; MariaDB `json` is just an alias for `text` with a constraint.              |
 | Geometry & Geometry Types | String | WKT (Well-Known Text). WKT may suffer from small precision loss. |
-| UUID                      | UUID                   | MariaDB only. Columns added during CDC are added as `String`.  |
+| UUID                      | UUID                   | MariaDB only. Columns added during CDC are added as `String` holding the raw 16 bytes. |
 | INET4, INET6              | String                 | MariaDB only.                                                                          |
 | Vector                    | Array(Float32)         | MySQL only; MariaDB is adding support soon.                                            |
 | Char Byte, Raw            | String                 | MariaDB/Oracle-mode aliases for binary types.                                          |
