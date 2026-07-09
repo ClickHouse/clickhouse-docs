@@ -5,7 +5,6 @@ title: 'SAML SSO setup'
 description: 'How to set up SAML SSO with ClickHouse Cloud'
 doc_type: 'guide'
 keywords: ['ClickHouse Cloud', 'SAML', 'SSO', 'single sign-on', 'IdP', 'Okta', 'Google']
-toc_max_heading_level: 2
 ---
 
 import Image from '@theme/IdealImage';
@@ -198,6 +197,8 @@ You will configure two App Integrations in Okta for each ClickHouse organization
 
 You will configure one SAML app in Google for each organization and must provide your users the direct link (`https://console.clickhouse.cloud/?connection={organizationId}`) to bookmark if using multi-org SSO.
 
+#### Create a Google web app {#google-web-app}
+
 1. Go to your Google Admin console (admin.google.com).
 
    <Image img={samlGoogleApp} size="md" alt="Google SAML App" force/>
@@ -231,6 +232,8 @@ You will configure one SAML app in Google for each organization and must provide
 <TabItem value="azure" label="Azure (Microsoft)">
 
 Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or Microsoft Entra. You will set up one application integration with a separate sign-on URL for each organization.
+
+#### Create an Azure enterprise application {#azure-enterprise-app}
 
 1. Log on to the Microsoft Entra admin center.
 2. Navigate to **Applications > Enterprise applications** on the left.
@@ -267,6 +270,8 @@ Azure (Microsoft) SAML may also be referred to as Azure Active Directory (AD) or
 
 </TabItem>
 <TabItem value="duo" label="Duo">
+
+#### Create a generic SAML service provider for Duo {#duo-saml-provider}
 
 1. Follow the instructions for [Duo Single Sign-On for Generic SAML Service Providers](https://duo.com/docs/sso-generic).
 2. Use the following Bridge Attribute mapping:

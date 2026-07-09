@@ -5,7 +5,6 @@ title: 'SCIM provisioning with Microsoft Entra ID'
 description: 'How to set up SCIM provisioning between Microsoft Entra ID and ClickHouse Cloud'
 doc_type: 'guide'
 keywords: ['ClickHouse Cloud', 'SCIM', 'provisioning', 'Entra ID', 'Azure AD', 'Microsoft', 'SSO', 'SAML', 'identity provider', 'IdP', 'user management']
-toc_max_heading_level: 2
 ---
 
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
