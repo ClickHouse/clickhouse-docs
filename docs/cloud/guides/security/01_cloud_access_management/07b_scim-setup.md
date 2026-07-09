@@ -161,7 +161,7 @@ Okta and ClickHouse Cloud need to agree on how user fields line up. On the **Pro
 You can add optional attributes such as department, manager, and location — ClickHouse Cloud stores them on the user profile but doesn't use them for permissions today. Anything outside the SCIM standard set is ignored on the ClickHouse Cloud side.
 
 :::warning Email casing matters
-Make sure your Okta `userName` and `email` use the same casing. ClickHouse Cloud normalises emails to lowercase; mismatches between the two fields can cause test failures.
+Make sure your Okta `userName` and `email` use the same casing. ClickHouse Cloud normalizes emails to lowercase; mismatches between the two fields can cause test failures.
 :::
 
 ### Push groups and assign users {#push-groups-and-assign-users}
@@ -197,7 +197,7 @@ Group-based assignment is cleaner for ongoing management — when someone change
 
 ## Test the integration {#test-the-integration}
 
-Once provisioning is configured, return to **Settings → Users and roles** in the ClickHouse Cloud Console to confirm that synchronised users have appeared with the expected roles.
+Once provisioning is configured, return to **Settings → Users and roles** in the ClickHouse Cloud Console to confirm that synchronized users have appeared with the expected roles.
 
 ![Verify user synchronization in Users and roles](/images/cloud/security/scim-okta/scim-okta-18.png)
 
@@ -259,7 +259,7 @@ Okta retries failed provisioning calls but eventually parks them in the **Tasks*
 <summary>Users get created but have no permissions</summary>
 
 - Check that you've added a row under **Map roles in "Users and roles"** for the role you expect.
-- Check that the Okta group name **exactly** matches the SCIM group name in the mapping, including capitalisation and hyphens.
+- Check that the Okta group name **exactly** matches the SCIM group name in the mapping, including capitalization and hyphens.
 - If your design intentionally provisions some users without a group, confirm the **Default role** is set.
 
 </details>

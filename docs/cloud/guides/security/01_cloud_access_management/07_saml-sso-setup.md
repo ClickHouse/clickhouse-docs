@@ -97,14 +97,14 @@ Click `Next: Verify your domains`. Enter your domain in the text box and click `
 Create a TXT record with your DNS provider. Copy the `TXT record name` to the TXT record Name field with your DNS provider. Copy the `Value` to the Content field with your DNS provider. Click `Verify and Finish` to complete the process.
 
 :::note
-It may take several minutes for the DNS record to update and be verified. You may leave the setup page and return later to complete the process without restarting. The verification value is valid for 48 hours from when it is first generated.
+It may take several minutes for the DNS record to update and be verified. You may leave the setup page and return later to complete the process without restarting. The verification value is valid for 48 hours from when it's first generated.
 :::
 
    <Image img={samlSelfServe5} size="lg" alt="Verify your domain" force/>
 
 ### Update default role and session timeout {#update-defaults}
 
-Once the SAML setup is complete, you can set the default role(s) all users will be assigned when they log in and also adjust session timeout settings. For a list of available system roles that may be assigned, please review [Console roles and permissions](/cloud/security/console-roles).
+Once the SAML setup is complete, you can set the default roles all users will be assigned when they log in and also adjust session timeout settings. For a list of available system roles that may be assigned, review [Console roles and permissions](/cloud/security/console-roles).
 
 ### Configure your admin user {#configure-your-admin-user}
 
@@ -118,8 +118,8 @@ To assign your first admin user via SAML:
 2. In your identity provider, assign the admin user to the ClickHouse applications.
 3. Ask the user to log in via https://console.clickhouse.cloud/?connection={orgId} (shortcut URL). This may be via a bookmark you created in the prior steps. The user won't appear in ClickHouse Cloud until their first login.
 4. If the default SAML role is anything other than Admin, the user may need to log out and log back in with their original authentication method to update the new SAML user's role.
-   - For email + password accounts, please use `https://console.clickhouse.cloud/?with=email`.
-   - For social logins, please click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
+   - For email + password accounts, use `https://console.clickhouse.cloud/?with=email`.
+   - For social logins, click the appropriate button (**Continue with Google** or **Continue with Microsoft**)
 5. Log out one more time and log back in via the shortcut URL to complete the last step below.
 
 :::note

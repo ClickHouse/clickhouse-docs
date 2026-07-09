@@ -143,7 +143,7 @@ The remaining rows below come mapped by default — double-check that each is in
 Open **Provision Microsoft Entra ID Groups** and confirm `displayName` maps to `displayName` and `members` maps to `members` — group display name is what binds to your ClickHouse Cloud role.
 
 :::warning Email casing matters
-Make sure the value that flows into `userName` and the value that flows into the primary email use the same casing. ClickHouse Cloud normalises emails to lowercase; mismatches between the two fields can cause provisioning failures.
+Make sure the value that flows into `userName` and the value that flows into the primary email use the same casing. ClickHouse Cloud normalizes emails to lowercase; mismatches between the two fields can cause provisioning failures.
 :::
 
 ### Set the provisioning scope {#configure-provisioning-behavior}
@@ -184,7 +184,7 @@ Entra ID runs provisioning on a recurring cycle (approximately every 40 minutes)
 
 ## Test the integration {#test-the-integration}
 
-Once provisioning is on, use **Provision on demand** to push one or two test users right away rather than waiting for the next cycle. Then return to **Settings → Users and roles** in the ClickHouse Cloud Console to confirm that synchronised users have appeared with the expected roles.
+Once provisioning is on, use **Provision on demand** to push one or two test users right away rather than waiting for the next cycle. Then return to **Settings → Users and roles** in the ClickHouse Cloud Console to confirm that synchronized users have appeared with the expected roles.
 
 Run through this short test plan with one or two test users **before** you assign your whole team. If a step doesn't take effect, use **Provision on demand** to force a sync, then check the [Troubleshooting](#troubleshooting) section.
 
@@ -244,7 +244,7 @@ Entra ID syncs on a recurring cycle (roughly every 40 minutes), so routine chang
 <summary>Users get created but have no permissions</summary>
 
 - Check that you've added a row under **Map roles in "Users and roles"** for the role you expect.
-- Check that the Entra ID group name **exactly** matches the SCIM group name in the mapping, including capitalisation and hyphens.
+- Check that the Entra ID group name **exactly** matches the SCIM group name in the mapping, including capitalization and hyphens.
 - If your design intentionally provisions some users without a group, confirm the **Default role** is set.
 
 </details>
