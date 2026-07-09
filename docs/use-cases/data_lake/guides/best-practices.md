@@ -98,7 +98,7 @@ WHERE event_time >= '2026-03-01'
 
 List only the columns you need instead of `SELECT *`. ClickHouse reads [Parquet](/interfaces/formats/Parquet) column-by-column from object storage, so narrower selects reduce bytes transferred and decompressed.
 
-Put selective filters in `WHERE`. From ClickHouse 26.2+, [PREWHERE](/guides/best-practices/prewhere) is also supported on Iceberg and other lake table reads, where it filters at the Parquet layer before reading remaining columns. Partition pruning still depends on filtering partition source columns, not on PREWHERE alone.
+Put selective filters in `WHERE`. From ClickHouse 26.2+, [PREWHERE](/optimize/prewhere) is also supported on Iceberg and other lake table reads, where it filters at the Parquet layer before reading remaining columns. Partition pruning still depends on filtering partition source columns, not on PREWHERE alone.
 
 Iceberg tables with heavy [position or equality deletes](/engines/table-engines/integrations/iceberg#deleted-rows) apply merge-on-read filtering during scans. Expect more work per file than manifest pruning alone suggests.
 
@@ -130,7 +130,7 @@ Store the snapshot identifier from your last successful load and use it as the l
 
 ### Cache Parquet files locally {#filesystem-cache}
 
-Both formats honor [enable_filesystem_cache](/operations/settings/settings#enable_filesystem_cache) to keep hot [Parquet](/interfaces/formats/Parquet) files on local disk between queries. On self-managed deployments, configure a [filesystem cache disk](/operations/storages/cache) in server config so the setting has storage to write to. ClickHouse Cloud manages caching automatically. Set `enable_filesystem_cache = 0` when benchmarking so cache hits don't mask changes between runs.
+Both formats honor [enable_filesystem_cache](/operations/settings/settings#enable_filesystem_cache) to keep hot [Parquet](/interfaces/formats/Parquet) files on local disk between queries. On self-managed deployments, configure a [filesystem cache disk](/operations/storing-data#using-local-cache) in server config so the setting has storage to write to. ClickHouse Cloud manages caching automatically. Set `enable_filesystem_cache = 0` when benchmarking so cache hits don't mask changes between runs.
 
 ### Apache Iceberg {#iceberg-settings}
 
