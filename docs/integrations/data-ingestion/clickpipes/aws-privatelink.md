@@ -197,7 +197,7 @@ It's a preferred choice for:
 
 - Any on-premise Kafka setup that requires private DNS support
 - [Cross-region connectivity for Postgres CDC](/knowledgebase/aws-privatelink-setup-for-clickpipes)
-- Cross-region connectivity for MSK cluster. Please reach out to the ClickHouse support team for assistance.
+- Cross-region connectivity for MSK cluster
 
 See the [getting started](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) guide for more details.
 
