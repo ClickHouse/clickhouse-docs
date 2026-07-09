@@ -14,15 +14,11 @@ The [getting started guide](/use-cases/data-lake/getting-started) walks you thro
 
 ## Choose an access method {#choose-access-method}
 
-
 | Access method                     | When to use it                                                            | Examples                                                                                                                                                                                                         |
 | --------------------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Table function                    | Ad hoc queries on a known path                                            | [icebergS3()](/sql-reference/table-functions/iceberg), [deltaLake()](/sql-reference/table-functions/deltalake), [hudi()](/sql-reference/table-functions/hudi), [paimon()](/sql-reference/table-functions/paimon) |
 | Table engine                      | Repeated queries on the same path without a catalog                       | [IcebergS3](/engines/table-engines/integrations/iceberg), [DeltaLake](/engines/table-engines/integrations/deltalake), [Hudi](/engines/table-engines/integrations/hudi)                                           |
 | `DataLakeCatalog` database engine | Production workloads with a catalog; federated queries across many tables | [AWS Glue](/use-cases/data-lake/glue-catalog), [Unity Catalog](/use-cases/data-lake/unity-catalog), [REST catalog](/use-cases/data-lake/rest-catalog)                                                            |
-
-
-
 
 ### Table functions {#table-functions}
 
@@ -114,14 +110,12 @@ On ClickHouse Cloud and self-managed multi-node services, cluster variants of la
 
 Pass your cluster name as the first argument (`'default'` on ClickHouse Cloud). Cluster variants exist for all supported formats:
 
-
 | Format     | Cluster functions                                                                                                                                 |
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Iceberg    | [icebergS3Cluster()](/sql-reference/table-functions/icebergCluster), [icebergAzureCluster()](/sql-reference/table-functions/icebergCluster)       |
 | Delta Lake | [deltaLakeCluster()](/sql-reference/table-functions/deltalakeCluster), [deltaLakeAzureCluster()](/sql-reference/table-functions/deltalakeCluster) |
 | Hudi       | [hudiCluster()](/sql-reference/table-functions/hudiCluster)                                                                                       |
 | Paimon     | [paimonS3Cluster()](/sql-reference/table-functions/paimonCluster)                                                                                 |
-
 
 You can combine cluster reads with other performance settings. 
 
@@ -144,16 +138,12 @@ Most Iceberg read optimizations are on by default. The settings below control pa
 
 #### Read settings {#iceberg-read-settings}
 
-
 | Setting                                                                                            | Since | Default       | Notes                                                                                                          |
 | -------------------------------------------------------------------------------------------------- | ----- | ------------- | -------------------------------------------------------------------------------------------------------------- |
 | [use_iceberg_partition_pruning](/operations/settings/settings#use_iceberg_partition_pruning)       | 25.1  | `1` from 25.6 | Skips data files using partition metadata in manifests                                                         |
 | [use_iceberg_metadata_files_cache](/operations/settings/settings#use_iceberg_metadata_files_cache) | 25.4  | `1`           | Caches manifest lists and metadata JSON in memory                                                              |
 | [iceberg_metadata_staleness_ms](/operations/settings/settings#iceberg_metadata_staleness_ms)       | 26.3  | `0`           | Query setting. Use cached metadata when fresher than this window instead of calling the catalog on every query |
 | [iceberg_enable_version_hint](/operations/settings/settings#iceberg_enable_version_hint)           | 25.6  | —             | Reads `version-hint.text` for faster metadata resolution on direct path access                                 |
-
-
-
 
 #### Cut catalog latency {#iceberg-catalog-latency}
 
@@ -186,19 +176,15 @@ FROM my_iceberg_table
 SETTINGS iceberg_timestamp_ms = 1714636800000
 ```
 
-
-
 #### Iceberg writes {#iceberg-write-settings}
 
 Beyond [allow_insert_into_iceberg](/operations/settings/settings#allow_insert_into_iceberg) (25.7+, Beta from 26.2), control output file size and partition count on insert:
-
 
 | Setting                                                                                                      | Since | Purpose                                      |
 | ------------------------------------------------------------------------------------------------------------ | ----- | -------------------------------------------- |
 | [iceberg_insert_max_rows_in_data_file](/operations/settings/settings#iceberg_insert_max_rows_in_data_file)   | 25.9  | Row limit per output data file               |
 | [iceberg_insert_max_bytes_in_data_file](/operations/settings/settings#iceberg_insert_max_bytes_in_data_file) | 25.9  | Byte limit per output data file              |
 | [iceberg_insert_max_partitions](/operations/settings/settings#iceberg_insert_max_partitions)                 | 25.12 | Cap on partitions written in a single insert |
-
 
 See [Writing to data lakes](/use-cases/data-lake/getting-started/writing-data) and the [Iceberg engine reference](/engines/table-engines/integrations/iceberg).
 
@@ -214,10 +200,7 @@ From version 25.6, ClickHouse reads Delta Lake on S3 and GCS through the Delta L
 SET allow_experimental_delta_kernel_rs = 1;
 ```
 
-
-
 #### Read settings {#delta-read-settings}
-
 
 | Setting                                                                                                                                                                                                 | Since | Default | Notes                                                                                        |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | ------- | -------------------------------------------------------------------------------------------- |
@@ -225,7 +208,6 @@ SET allow_experimental_delta_kernel_rs = 1;
 | [delta_lake_reload_schema_for_consistency](/operations/settings/settings#delta_lake_reload_schema_for_consistency)                                                                                      | 26.3  | `0`     | Reloads schema before each query when concurrent writers evolve schema                       |
 | [delta_lake_snapshot_start_version](/operations/settings/settings#delta_lake_snapshot_start_version) / [delta_lake_snapshot_end_version](/operations/settings/settings#delta_lake_snapshot_end_version) | 25.12 | `-1`    | Read CDF changes between two snapshot versions. Requires CDF enabled upstream                |
 | [delta_lake_snapshot_version](/operations/settings/settings#delta_lake_snapshot_version)                                                                                                                | 25.8  | `-1`    | Read a single historical snapshot. Set `-1` for latest (`0` is valid)                        |
-
 
 Tables with [deletion vectors](https://docs.delta.io/latest/delta-deletion-vectors.html) (26.2+) apply row-level filtering during reads. ClickHouse handles this automatically, but scans on DV-heavy tables do more work per file.
 
@@ -247,12 +229,10 @@ Store the end version after each successful load and pass it as the start versio
 
 Beyond [allow_delta_lake_writes](/operations/settings/settings#allow_experimental_delta_lake_writes) (25.9+), control output file size on insert:
 
-
 | Setting                                                                                                            | Since | Purpose                         |
 | ------------------------------------------------------------------------------------------------------------------ | ----- | ------------------------------- |
 | [delta_lake_insert_max_rows_in_data_file](/operations/settings/settings#delta_lake_insert_max_rows_in_data_file)   | 25.9  | Row limit per output data file  |
 | [delta_lake_insert_max_bytes_in_data_file](/operations/settings/settings#delta_lake_insert_max_bytes_in_data_file) | 25.9  | Byte limit per output data file |
-
 
 ```sql
 SET allow_delta_lake_writes = 1;
@@ -309,13 +289,11 @@ Disable [enable_filesystem_cache](/operations/settings/settings#enable_filesyste
 
 ClickHouse exposes three system tables for metadata-level debugging. Enable logging at query time only. They're not for continuous monitoring.
 
-
 | System table                                                                        | Format     | Since | Enable with                                                                                         | Use it to                                                 |
 | ----------------------------------------------------------------------------------- | ---------- | ----- | --------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | [system.iceberg_metadata_log](/operations/system-tables/iceberg_metadata_log)       | Iceberg    | 25.9  | [iceberg_metadata_log_level](/operations/settings/settings#iceberg_metadata_log_level) on the query | Trace metadata files read and partition pruning decisions |
 | [system.iceberg_history](/operations/system-tables/iceberg_history)                 | Iceberg    | 25.6  | Populated automatically for Iceberg tables in ClickHouse                                            | Inspect snapshot lineage before time travel queries       |
 | [system.delta_lake_metadata_log](/operations/system-tables/delta_lake_metadata_log) | Delta Lake | 25.10 | [delta_lake_log_metadata](/operations/settings/settings#delta_lake_log_metadata) = `1` on the query | Trace Delta metadata files and snapshot resolution        |
-
 
 Run a query with logging enabled, flush the log, then inspect entries for that `query_id`:
 
@@ -343,4 +321,3 @@ See the [iceberg_metadata_log](/operations/system-tables/iceberg_metadata_log) a
 - [Connecting to catalogs](/use-cases/data-lake/getting-started/connecting-catalogs) — `DataLakeCatalog` setup with Unity Catalog
 - [Writing to data lakes](/use-cases/data-lake/getting-started/writing-data) — Write data back to Iceberg and Delta Lake
 - [Support matrix](/use-cases/data-lake/support-matrix) — Feature comparison across formats, catalogs, and storage backends
-
