@@ -19,5 +19,6 @@ This section contains detailed guides for managing access in ClickHouse Cloud
 | [Manage SQL console role assignments](/cloud/guides/sql-console/manage-sql-console-role-assignments) | An administrator's guide to managing SQL console users |
 | [Manage database users](/cloud/security/manage-database-users) | An administrator's guide to managing database users |
 | [SAML SSO setup](/cloud/security/saml-setup) | An administrator's guide to configuring and troubleshooting SAML integrations |
-| [SCIM provisioning with Okta](/cloud/security/scim-setup) | An administrator's guide to automating user and group lifecycle with SCIM |
+| [SCIM provisioning with Okta](/cloud/security/scim-setup) | An administrator's guide to automating user and group lifecycle with SCIM and Okta |
+| [SCIM provisioning with Entra ID](/cloud/security/scim-setup-entra) | An administrator's guide to automating user and group lifecycle with SCIM and Microsoft Entra ID |
 | [Common access management queries](/cloud/security/common-access-management-queries) | Detailed examples of setting up and verifying database permissions |

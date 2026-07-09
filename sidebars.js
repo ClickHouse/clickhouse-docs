@@ -944,6 +944,7 @@ const sidebars = {
       items: [
         'interfaces/cli',
         'interfaces/client',
+        'interfaces/documentation-search',
         {
           type: 'category',
           label: 'Drivers and interfaces',
@@ -1024,6 +1025,7 @@ const sidebars = {
         'integrations/data-sources/cassandra',
         'integrations/data-ingestion/gcs/index',
         'integrations/data-ingestion/s3-minio',
+        'integrations/data-ingestion/s3-tigris',
         'integrations/data-ingestion/emqx/index',
         'integrations/data-ingestion/insert-local-files',
         'integrations/data-ingestion/dbms/jdbc-with-clickhouse',
@@ -1231,7 +1233,21 @@ const sidebars = {
           ],
         },
         'integrations/data-ingestion/etl-tools/dlt-and-clickhouse',
-        'integrations/data-ingestion/etl-tools/estuary',
+        {
+          type: 'category',
+          label: 'Estuary',
+          className: 'top-nav-item',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/data-ingestion/etl-tools/estuary/index',
+          },
+          items: [
+            'integrations/data-ingestion/etl-tools/estuary/native-protocol',
+            'integrations/data-ingestion/etl-tools/estuary/clickpipes',
+          ],
+        },
         {
           type: 'category',
           label: 'Fivetran',
@@ -1655,6 +1671,7 @@ const sidebars = {
         'operations/settings/composable-protocols',
         'operations/settings/constraints-on-settings',
         'operations/settings/memory-overcommit',
+        'operations/settings/oom-canary',
         // "operations/settings/mysql-binlog-client",
         'operations/settings/permissions-for-queries',
         'operations/settings/query-complexity',
@@ -1837,6 +1854,7 @@ const sidebars = {
         'chdb/guides/querying-parquet',
         'chdb/guides/query-remote-clickhouse',
         'chdb/guides/clickhouse-local',
+        'chdb/guides/python-udf',
       ],
     },
     {

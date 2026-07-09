@@ -15,10 +15,10 @@ interfaces/web-terminal
 interfaces/web-sql
 operations/query-rules
 operations/query-plan-cache
+operations/restore-settings
 use-cases/observability/clickstack/managed-onboarding/setting-up-your-opentelemetry-collector.md
 use-cases/observability/clickstack/managed-onboarding/monitoring-kubernetes.md
 use-cases/observability/clickstack/managed-onboarding/monitoring-aws-cloudwatch-logs.md
 use-cases/observability/clickstack/managed-onboarding/instrument-application.md
 use-cases/observability/clickstack/managed-onboarding/tuning-clickstack-schema.md
 use-cases/observability/clickstack/managed-onboarding/managed-getting-started.md
-interfaces/documentation-search

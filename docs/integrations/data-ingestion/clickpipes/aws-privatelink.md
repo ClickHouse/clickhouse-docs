@@ -222,13 +222,11 @@ for a broker-per-endpoint-service setup that uses custom private DNS names.
 <PrivatePreviewBadge/>
 
 :::info
-Custom private DNS is in private preview. Contact the ClickHouse support team to enable it for your service.
+Custom private DNS is in **Private Preview**. Reach out to the [ClickHouse support team](https://clickhouse.com/support/program) to enable it for your service.
 :::
 
 AWS PrivateLink provides [managed private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html)
-for VPC endpoint services with a verified domain. Some services can't use it and instead
-require each consumer to manage DNS resolution in their own VPC — for example, Confluent Cloud
-requires consumers to resolve broker hostnames to the PrivateLink endpoint themselves.
+for VPC endpoint services with a verified domain. Some services require each consumer to manage DNS resolution in their own VPC, e.g., Confluent Cloud requires consumers to resolve broker hostnames to the PrivateLink endpoint.
 
 For these cases, ClickPipes supports attaching custom private DNS names to a reverse private
 endpoint. ClickPipes resolves these names to the endpoint's private addresses, so your data
@@ -239,7 +237,7 @@ PrivateLink service already provides private DNS names, you don't need custom na
 
 Custom private DNS names are supported for the [VPC endpoint service](#vpc-endpoint-service)
 and [VPC resource](#vpc-resource) endpoint types. MSK multi-VPC provides managed private DNS
-out of the box and doesn't support custom names.
+out-of-the-box and doesn't support custom names.
 
 :::note
 The ClickHouse Cloud console currently supports one custom private DNS name per reverse private endpoint.
@@ -254,7 +252,7 @@ The following rules apply to custom private DNS names:
   `b0-lkc123.abcde12345.us-east-1.aws.confluent.cloud`.
 - Names must be unique across all reverse private endpoints of a ClickHouse service,
   including overlaps between wildcard and exact names.
-- Names under reserved suffixes (such as `local`, `localhost`, `internal`, `corp`,
+- Names under reserved suffixes (e.g., `local`, `localhost`, `internal`, `corp`,
   `private`) are rejected.
 
 To configure custom private DNS names:
@@ -308,7 +306,7 @@ For same-region access, creating a VPC Resource is the recommended approach.
     - For VPC resource, provide the configuration share ARN and configuration ID.
     - For MSK multi-VPC, provide the cluster ARN and authentication method used with a created endpoint.
     - For VPC endpoint service, provide the service name.
-    - Optionally, provide a custom private DNS name — see [Custom private DNS](#custom-private-dns).
+    - Optionally, provide a [custom private DNS](#custom-private-dns) name.
 
 7. Click on `Create` and wait for the reverse private endpoint to be ready.
 
@@ -322,7 +320,7 @@ For same-region access, creating a VPC Resource is the recommended approach.
 
    On a list of endpoints, you can see the DNS name for the available endpoint.
    It can be an internally ClickPipes provisioned DNS name, a private DNS name supplied by a PrivateLink service,
-   or a [custom private DNS name](#custom-private-dns) you configured.
+   or a [custom private DNS name](#custom-private-dns).
    DNS name isn't a complete network address.
    Add the port according to the data source.
 
