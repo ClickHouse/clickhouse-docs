@@ -2939,6 +2939,7 @@ multidirectory
 multiif
 multiline
 multilinestring
+multipart
 multiplyDecimal
 multipolygon
 multiprocess
