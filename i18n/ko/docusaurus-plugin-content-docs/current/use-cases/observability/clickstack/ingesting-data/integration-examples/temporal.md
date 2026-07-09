@@ -10,7 +10,6 @@ keywords: ['Temporal', 'metrics', 'OTEL', 'ClickStack']
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import temporal_metrics from '@site/static/images/clickstack/temporal/temporal-metrics.png';
 import finish_import from '@site/static/images/clickstack/temporal/import-temporal-metrics-dashboard.png';
@@ -161,7 +160,7 @@ Temporal Cloud를 ClickStack으로 모니터링하기 시작하는 데 도움이
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/temporal-metrics-dashboard.json')} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/temporal-metrics-dashboard.json'} download="temporal-metrics-dashboard.json" eventName="docs.temporal_metrics_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> \{#download\}
 
 #### 미리 구성된 대시보드 가져오기 \{#import-dashboard\}
 

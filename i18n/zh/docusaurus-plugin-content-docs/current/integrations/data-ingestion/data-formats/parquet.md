@@ -20,7 +20,7 @@ ClickHouse 支持读取和写入 Parquet 文件。
 
 ## 从 Parquet 导入 \{#importing-from-parquet\}
 
-在加载数据之前，我们可以使用 [file()](/sql-reference/functions/files.md/#file) 函数来查看[示例 Parquet 文件](assets/data.parquet)的结构：
+在加载数据之前，我们可以使用 [file()](/sql-reference/functions/files.md/#file) 函数来查看[示例 Parquet 文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.parquet)的结构：
 
 ```sql
 DESCRIBE TABLE file('data.parquet', Parquet);
@@ -150,7 +150,7 @@ FORMAT Parquet
 
 ## ClickHouse 与 Parquet 数据类型 \{#clickhouse-and-parquet-data-types\}
 
-ClickHouse 与 Parquet 的数据类型在大多数情况下是相同的，但仍然[存在一些差异](/interfaces/formats/Parquet#data-types-matching-parquet)。例如，ClickHouse 会将 `DateTime` 类型导出为 Parquet 的 `int64`。如果我们随后再将该数据导入回 ClickHouse，看到的将是一串数字 ([time.parquet 文件](assets/time.parquet)) ：
+ClickHouse 与 Parquet 的数据类型在大多数情况下是相同的，但仍然[存在一些差异](/interfaces/formats/Parquet#data-types-matching-parquet)。例如，ClickHouse 会将 `DateTime` 类型导出为 Parquet 的 `int64`。如果我们随后再将该数据导入回 ClickHouse，看到的将是一串数字 ([time.parquet 文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/time.parquet)) ：
 
 ```sql
 SELECT * FROM file('time.parquet', Parquet);

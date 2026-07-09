@@ -10,6 +10,7 @@ integration:
    - category: 'clickpipes'
 ---
 
+import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 import cp_service from '@site/static/images/integrations/data-ingestion/clickpipes/cp_service.png';
 import cp_step0 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_step0.png';
 import cp_rpe_select from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_select.png';
@@ -35,6 +36,10 @@ data source types:
 - Postgres
 - MySQL
 - MongoDB
+
+:::note
+For Kafka, the [schema registry](/integrations/clickpipes/kafka/schema-registries) can be reached over the same reverse private endpoint as the brokers — it does not need to be publicly accessible — provided its hostname resolves to the endpoint's private IP addresses.
+:::
 
 ## Supported AWS PrivateLink endpoint types {#aws-privatelink-endpoint-types}
 
@@ -185,12 +190,17 @@ It requires setting up a NLB (Network Load Balancer) in front of your data sourc
 and configuring the VPC endpoint service to use the NLB.
 
 VPC endpoint service can be [configured with a private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html), that will be accessible in a ClickPipes VPC.
+AWS PrivateLink managed private DNS is not always a viable option:
+- you don't own the domain name of your data source, so you can't verify it with AWS
+- the provider requires consumers to manage DNS resolution, as Confluent Cloud does
+In these cases, see [Custom private DNS](#custom-private-dns).
 
 It's a preferred choice for:
 
-- Any on-premise Kafka setup that requires private DNS support
+- Any on-premises Kafka setup that requires private DNS support
+- [Confluent Cloud PrivateLink](https://docs.confluent.io/cloud/current/networking/aws-privatelink-overview.html)
 - [Cross-region connectivity for Postgres CDC](/knowledgebase/aws-privatelink-setup-for-clickpipes)
-- Cross-region connectivity for MSK cluster. Please reach out to the ClickHouse support team for assistance.
+- [Cross-region connectivity for MSK clusters](/knowledgebase/aws-privatelink-vpc-endpoint-service-for-msk-cluster)
 
 See the [getting started](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html) guide for more details.
 
@@ -203,6 +213,60 @@ See AWS guide for [managing permissions](https://docs.aws.amazon.com/vpc/latest/
 [Cross-region access](https://docs.aws.amazon.com/vpc/latest/privatelink/privatelink-share-your-services.html#endpoint-service-cross-region)
 can be configured for ClickPipes. Add [your ClickPipe region](#aws-privatelink-regions) to the allowed regions in your VPC endpoint service.
 :::
+
+For MSK clusters, see [AWS PrivateLink VPC endpoint service for MSK cluster](/knowledgebase/aws-privatelink-vpc-endpoint-service-for-msk-cluster)
+for a broker-per-endpoint-service setup that uses custom private DNS names.
+
+## Custom private DNS {#custom-private-dns}
+
+<PrivatePreviewBadge/>
+
+:::info
+Custom private DNS is in **Private Preview**. Reach out to the [ClickHouse support team](https://clickhouse.com/support/program) to enable it for your service.
+:::
+
+AWS PrivateLink provides [managed private DNS](https://docs.aws.amazon.com/vpc/latest/privatelink/manage-dns-names.html)
+for VPC endpoint services with a verified domain. Some services require each consumer to manage DNS resolution in their own VPC, e.g., Confluent Cloud requires consumers to resolve broker hostnames to the PrivateLink endpoint.
+
+For these cases, ClickPipes supports attaching custom private DNS names to a reverse private
+endpoint. ClickPipes resolves these names to the endpoint's private addresses, so your data
+source can be reached by its own hostname over private connectivity.
+
+Custom private DNS complements managed private DNS — it doesn't replace it. If your
+PrivateLink service already provides private DNS names, you don't need custom names.
+
+Custom private DNS names are supported for the [VPC endpoint service](#vpc-endpoint-service)
+and [VPC resource](#vpc-resource) endpoint types. MSK multi-VPC provides managed private DNS
+out-of-the-box and doesn't support custom names.
+
+:::note
+The ClickHouse Cloud console currently supports one custom private DNS name per reverse private endpoint.
+If you need to manage multiple custom private DNS names on the same endpoint, use OpenAPI or Terraform.
+:::
+
+The following rules apply to custom private DNS names:
+
+- Exact names (`kafka.internal.example.com`) and wildcard names (`*.example.com`) are
+  supported. A wildcard matches a single DNS label — for example,
+  `*.abcde12345.us-east-1.aws.confluent.cloud` matches
+  `b0-lkc123.abcde12345.us-east-1.aws.confluent.cloud`.
+- Names must be unique across all reverse private endpoints of a ClickHouse service,
+  including overlaps between wildcard and exact names.
+- Names under reserved suffixes (e.g., `local`, `localhost`, `internal`, `corp`,
+  `private`) are rejected.
+
+To configure custom private DNS names:
+
+- In the ClickHouse Cloud console, fill in the `Custom private DNS name` field when
+  [creating a reverse private endpoint](#creating-clickpipe). The field is shown once the
+  feature is enabled for your service.
+- With [OpenAPI](https://clickhouse.com/docs/cloud/manage/api/swagger), set
+  `customPrivateDnsMappings` when creating a reverse private endpoint, or update an existing
+  endpoint with a `PATCH` request. Updates replace the full list of mappings; an empty list
+  removes all custom names.
+- With Terraform, use the
+  [`clickhouse_clickpipes_reverse_private_endpoint_custom_private_dns`](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/clickpipes_reverse_private_endpoint_custom_private_dns)
+  resource to manage mappings on an existing reverse private endpoint.
 
 ## Creating a ClickPipe with reverse private endpoint {#creating-clickpipe}
 
@@ -242,6 +306,7 @@ For same-region access, creating a VPC Resource is the recommended approach.
     - For VPC resource, provide the configuration share ARN and configuration ID.
     - For MSK multi-VPC, provide the cluster ARN and authentication method used with a created endpoint.
     - For VPC endpoint service, provide the service name.
+    - Optionally, provide a [custom private DNS](#custom-private-dns) name.
 
 7. Click on `Create` and wait for the reverse private endpoint to be ready.
 
@@ -254,7 +319,8 @@ For same-region access, creating a VPC Resource is the recommended approach.
 8. Once the endpoint is ready, you can use a DNS name to connect to the data source.
 
    On a list of endpoints, you can see the DNS name for the available endpoint.
-   It can be either an internally ClickPipes provisioned DNS name or a private DNS name supplied by a PrivateLink service.
+   It can be an internally ClickPipes provisioned DNS name, a private DNS name supplied by a PrivateLink service,
+   or a [custom private DNS name](#custom-private-dns).
    DNS name isn't a complete network address.
    Add the port according to the data source.
 

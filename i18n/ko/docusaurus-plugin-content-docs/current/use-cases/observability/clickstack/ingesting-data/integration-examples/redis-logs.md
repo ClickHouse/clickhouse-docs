@@ -9,7 +9,6 @@ doc_type: 'guide'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/redis/redis-import-dashboard.png';
 import example_dashboard from '@site/static/images/clickstack/redis/redis-logs-dashboard.png';
@@ -272,7 +271,7 @@ ClickStack으로 Redis를 모니터링하기 시작하는 데 도움이 되도�
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/redis-logs-dashboard.json')} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> {#download}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/redis-logs-dashboard.json'} download="redis-logs-dashboard.json" eventName="docs.redis_logs_monitoring.dashboard_download">대시보드 구성 다운로드</TrackedLink> {#download}
 
 #### 사전 구성된 대시보드 가져오기 \{#import-dashboard\}
 

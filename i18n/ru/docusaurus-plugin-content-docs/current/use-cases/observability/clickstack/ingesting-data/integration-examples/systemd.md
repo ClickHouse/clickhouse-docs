@@ -10,7 +10,6 @@ keywords: ['systemd', 'journald', 'journal', 'OTEL', 'ClickStack', 'system logs'
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/systemd/finish-import-systemd.png';
@@ -284,7 +283,7 @@ HyperDX отображает временные метки в локальном
 
 <VerticalStepper headerLevel="h4">
 
-#### <TrackedLink href={useBaseUrl('/examples/systemd-logs-dashboard.json')} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
+#### <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/systemd-logs-dashboard.json'} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">Скачать</TrackedLink> конфигурацию дашборда \{#download\}
 
 #### Импорт готового дашборда \{#import-dashboard\}
 

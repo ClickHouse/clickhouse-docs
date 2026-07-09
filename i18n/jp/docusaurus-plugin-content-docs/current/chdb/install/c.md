@@ -334,4 +334,4 @@ cleanup:
 
 - **メインリポジトリ**: [chdb-io/chdb](https://github.com/chdb-io/chdb)
 - **イシューとサポート**: [GitHub リポジトリ](https://github.com/chdb-io/chdb/issues)で問題を報告してください
-- **C API ドキュメント**: [バインディングドキュメント](https://github.com/chdb-io/chdb/blob/main/bindings.md)
+- **C API ドキュメント**: [バインディングドキュメント](https://github.com/chdb-io/chdb-core/blob/main/bindings.md)
