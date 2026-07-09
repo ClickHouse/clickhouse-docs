@@ -99,7 +99,7 @@ SCIM groups bind to ClickHouse Cloud roles by name, with a few rules to keep in 
 
 Open the **Microsoft Entra ID** overview and, under **Manage** in the left-hand menu, select **Enterprise applications**. Open the application you created when you set up SAML SSO for ClickHouse Cloud.
 
-If you haven't created the enterprise application yet, follow the [SAML SSO setup guide](/cloud/security/saml-setup#configure-azure-microsoft-saml) first — with SAML-based SSO, the same enterprise application is used for both single sign-on and SCIM provisioning.
+If you haven't created the enterprise application yet, follow the [SAML SSO setup guide](/cloud/security/saml-setup?idp=azure#configure-idp) first — with SAML-based SSO, the same enterprise application is used for both single sign-on and SCIM provisioning.
 
 ### Set the provisioning mode and credentials {#connect-entra-scim}
 
