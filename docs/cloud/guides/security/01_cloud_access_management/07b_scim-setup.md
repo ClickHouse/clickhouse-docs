@@ -14,10 +14,6 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge/>
 
-:::note
-SCIM provisioning is in private preview.
-:::
-
 <EnterprisePlanFeatureBadge feature="SCIM"/>
 
 ClickHouse Cloud supports SCIM 2.0 (System for Cross-domain Identity Management) for automated user and group lifecycle management. Once connected to your identity provider, every user you assign to the ClickHouse Cloud application is automatically created in your organization with the right role, profile updates flow through automatically, and removing a user from your IdP removes their access — no manual invites, no orphaned accounts.
@@ -223,70 +219,123 @@ SCIM errors surface in **Reports → System Log** filtered by your application, 
 
 ## Best practices for production {#best-practices}
 
-**Rotate tokens regularly.** Set a calendar reminder for SCIM token rotation. Recommended cadence: every 12 months, or immediately whenever an admin who knew the token leaves the company. ClickHouse Cloud allows two active tokens per organization specifically so you can rotate without breaking provisioning.
+### Rotate tokens regularly {#rotate-tokens}
 
-**Use groups, not direct assignments.** Direct user assignment to the application works, but quickly becomes hard to audit. Driving assignment through Okta groups means access reviews and role changes happen in one place.
+Set a calendar reminder for SCIM token rotation. Recommended cadence: every 12 months, or immediately whenever an admin who knew the token leaves the company. ClickHouse Cloud allows two active tokens per organization specifically so you can rotate without breaking provisioning.
 
-**Review the audit log.** Every SCIM action — user created, user deactivated, profile updated — is recorded in the ClickHouse Cloud audit log. See [Audit logging](/cloud/security/audit-logging). Check the log periodically, especially after large provisioning bursts.
+### Use groups, not direct assignments {#use-groups}
 
-**Set a sensible default role.** If an Okta user gets assigned to the application but isn't in any pushed group, they're created with the **Default role**. Pick the most restrictive role that still lets the user accomplish *something*, so misconfigurations fail safely.
+Direct user assignment to the application works, but quickly becomes hard to audit. Driving assignment through Okta groups means access reviews and role changes happen in one place.
 
-**Avoid SCIM and manual invites at the same time.** Once SCIM is on, manage membership through Okta — don't also send manual invites for the same users. Mixing the two paths leads to confusion about who is the source of truth and can produce duplicates.
+### Review the audit log {#review-audit-log}
 
-**Monitor for failed provisioning tasks.** Okta retries failed provisioning calls but eventually parks them in the **Tasks** queue. Add this queue to the dashboards your IT team already monitors, or use Okta's webhook or email alerting to flag persistent failures.
+Every SCIM action — user created, user deactivated, profile updated — is recorded in the ClickHouse Cloud audit log. See [Audit logging](/cloud/security/audit-logging). Check the log periodically, especially after large provisioning bursts.
+
+### Set a sensible default role {#default-role}
+
+If an Okta user gets assigned to the application but isn't in any pushed group, they're created with the **Default role**. Pick the most restrictive role that still lets the user accomplish *something*, so misconfigurations fail safely.
+
+### Avoid SCIM and manual invites at the same time {#avoid-manual-invites}
+
+Once SCIM is on, manage membership through Okta — don't also send manual invites for the same users. Mixing the two paths leads to confusion about who is the source of truth and can produce duplicates.
+
+### Monitor for failed provisioning tasks {#monitor-failed-tasks}
+
+Okta retries failed provisioning calls but eventually parks them in the **Tasks** queue. Add this queue to the dashboards your IT team already monitors, or use Okta's webhook or email alerting to flag persistent failures.
 
 ## Troubleshooting {#troubleshooting}
 
-### "Test connector configuration" fails in Okta {#test-credentials-fails}
+<details id="test-credentials-fails">
+<summary>"Test connector configuration" fails in Okta</summary>
 
 - Confirm SCIM is **enabled** in the ClickHouse Cloud Console.
 - Confirm the **base URL** in Okta exactly matches the SCIM endpoint URL shown in the Cloud Console — the organization id must be correct.
 - Confirm the **token key and secret** are pasted without leading or trailing whitespace.
 - If you've rotated tokens, make sure you're using the **new** key and secret, not the previous pair.
 
-### Users get created but have no permissions {#users-no-permissions}
+</details>
+
+<details id="users-no-permissions">
+<summary>Users get created but have no permissions</summary>
 
 - Check that you've added a row under **Map roles in "Users and roles"** for the role you expect.
 - Check that the Okta group name **exactly** matches the SCIM group name in the mapping, including capitalisation and hyphens.
 - If your design intentionally provisions some users without a group, confirm the **Default role** is set.
 
-### Duplicate user in the member list {#duplicate-user}
+</details>
+
+<details id="duplicate-user">
+<summary>Duplicate user in the member list</summary>
 
 Usually caused by inconsistent email casing between Okta and an earlier manual invite. Remove the duplicate from the Members list, then unassign and reassign the user in Okta to provision fresh.
 
-### Group push fails with "displayName not recognised" {#group-display-name}
+</details>
+
+<details id="group-display-name">
+<summary>Group push fails with "displayName not recognised"</summary>
 
 The group name in Okta doesn't match a configured mapping in ClickHouse Cloud. Either rename the Okta group or add a mapping under **Map roles in "Users and roles"** from the SCIM Configuration panel (or via **Users and roles → Roles**).
 
-### Deactivated users still show as members {#deactivated-users-remaining}
+</details>
+
+<details id="deactivated-users-remaining">
+<summary>Deactivated users still show as members</summary>
 
 It can take up to a minute for Okta to propagate a deactivation. If the user is still a member after several minutes, check Okta's **Provisioning → View Logs** for an error on the deactivate task.
 
-### I rotated the SCIM token and now Okta is failing {#token-rotation-issue}
+</details>
+
+<details id="token-rotation-issue">
+<summary>I rotated the SCIM token and now Okta is failing</summary>
 
 Check that you updated the credentials on **the same SCIM application** in Okta. After updating, click `Test Connector Configuration` to confirm. Once provisioning is back to green, revoke the old token in ClickHouse Cloud Console.
 
-### I lost the SCIM token {#lost-token}
+</details>
+
+<details id="lost-token">
+<summary>I lost the SCIM token</summary>
 
 Tokens can't be recovered. In **Organization settings → SAML and SCIM settings → SCIM Configuration** in the ClickHouse Cloud Console, revoke the lost token and generate a new one, then update the credentials in Okta.
 
+</details>
+
 ## Frequently asked questions {#faq}
 
-**Do I need SAML SSO before I can use SCIM?**
+<details id="faq-need-saml-sso">
+<summary>Do I need SAML SSO before I can use SCIM?</summary>
+
 Yes. SCIM creates the user accounts, but ClickHouse Cloud authenticates them through SAML. Set up [SAML SSO](/cloud/security/saml-setup) first.
 
-**Does SCIM work with Microsoft Entra ID, OneLogin, or other SCIM 2.0 IdPs?**
+</details>
+
+<details id="faq-other-idps">
+<summary>Does SCIM work with Microsoft Entra ID, OneLogin, or other SCIM 2.0 IdPs?</summary>
+
 Microsoft Entra ID is also supported — see [SCIM provisioning with Entra ID](/cloud/security/scim-setup-entra). The endpoint follows SCIM 2.0 (RFC 7644) and accepts either Basic Auth (used by Okta) or a bearer token (used by Entra ID). Other SCIM 2.0 IdPs may work in practice if they can authenticate one of these ways, but Okta and Entra ID are the IdPs we've tested and support today.
 
-**How quickly do changes in Okta show up in ClickHouse Cloud?**
+</details>
+
+<details id="faq-change-timing">
+<summary>How quickly do changes in Okta show up in ClickHouse Cloud?</summary>
+
 Most operations propagate within a few seconds. Bulk changes (large group push) can take longer depending on size, but Okta retries automatically on transient errors.
 
-**Can I provision multiple ClickHouse Cloud organizations from a single Okta tenant?**
+</details>
+
+<details id="faq-multi-org">
+<summary>Can I provision multiple ClickHouse Cloud organizations from a single Okta tenant?</summary>
+
 Yes — install the application once per organization, with its own SCIM endpoint URL and token. Push the same Okta groups to each application as needed.
 
-**Where do I get help if I'm stuck?**
+</details>
+
+<details id="faq-get-help">
+<summary>Where do I get help if I'm stuck?</summary>
+
 Open a support ticket from the ClickHouse Cloud Console (**Help → Contact support**) and include:
 
 - your organization id,
 - your Okta application id, and
 - a screenshot of the failing task or test from the Okta logs.
+
+</details>
