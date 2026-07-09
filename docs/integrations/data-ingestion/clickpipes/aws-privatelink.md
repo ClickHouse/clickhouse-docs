@@ -198,7 +198,7 @@ In these cases, see [Custom private DNS](#custom-private-dns).
 It's a preferred choice for:
 
 - Any on-premises Kafka setup that requires private DNS support
-- [Confluent Cloud PrivateLink](https://docs.confluent.io/cloud/current/networking/aws-privatelink-overview.html)
+- [Confluent Cloud private connectivity](/knowledgebase/confluent-cloud-private-connectivity-for-clickpipes)
 - [Cross-region connectivity for Postgres CDC](/knowledgebase/aws-privatelink-setup-for-clickpipes)
 - [Cross-region connectivity for MSK clusters](/knowledgebase/aws-privatelink-vpc-endpoint-service-for-msk-cluster)
 
