@@ -168,6 +168,7 @@ exceptions:
   - VLDB
   - VS
   - VPC
+  - "VPC Lattice"
   - Vitess
   - Visual
   - Windows
