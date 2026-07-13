@@ -33,10 +33,10 @@ To pin a workload to a replica, set the `session_id` query parameter on the [HTT
 You use your existing service hostname. No special sticky hostnames or DNS changes are required.
 
 ```bash
-curl 'https://<host>:8443/?session_id=my-workload-1' \
+echo 'SELECT hostName()' | curl \
   -H 'X-ClickHouse-User: default' \
   -H 'X-ClickHouse-Key: <password>' \
-  -d 'SELECT hostName()'
+  'https://<host>:8443/?session_id=my-workload-1' -d @-
 ```
 
 Every request carrying `session_id=my-workload-1` lands on the same replica. A different `session_id` value hashes independently and may land on the same or a different replica. The mapping is consistent, but you do not choose *which* replica a given value maps to.
