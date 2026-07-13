@@ -106,7 +106,7 @@ On multi-node deployments, use [cluster table functions](#parallel-cluster-reads
 
 ### Parallel reads on multi-node clusters {#parallel-cluster-reads}
 
-On ClickHouse Cloud and self-managed multi-node services, cluster variants of lake table functions distribute [Parquet](/interfaces/formats/Parquet) file reads across replicas. The initiator node dispatches files to workers in parallel.  Use cluster variants for batch reads and scheduled loads over large tables. On single-node deployments, the standard table function is enough.
+On ClickHouse Cloud and self-managed multi-node services, cluster variants of lake table functions distribute [Parquet](/interfaces/formats/Parquet) file reads across replicas. The initiator node dispatches files to workers in parallel. Use cluster variants for batch reads and scheduled loads over large tables. On single-node deployments, the standard table function is enough.
 
 Pass your cluster name as the first argument (`'default'` on ClickHouse Cloud). Cluster variants exist for all supported formats:
 
