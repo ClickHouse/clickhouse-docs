@@ -81,7 +81,7 @@ For writes, Iceberg requires [allow_insert_into_iceberg](/operations/settings/se
 
 Version numbers on this page match ClickHouse release versions (Cloud and self-managed). Check your service version before enabling a setting or feature.
 
-Lake query performance depends on how much metadata and how many [Parquet](/interfaces/formats/Parquet) files ClickHouse reads from object storage. As with ClickHouse, query performance is improved by filtering on partition columns and selecting fewer columns. 
+Lake query performance depends on how much metadata and how many [Parquet](/interfaces/formats/Parquet) files ClickHouse reads from object storage. As with any ClickHouse table, query performance is improved by filtering on partition columns and selecting fewer columns. 
 
 ### Query habits {#query-habits}
 
