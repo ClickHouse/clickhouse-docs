@@ -15,13 +15,27 @@ import Image from '@theme/IdealImage';
 
 This article demonstrates how ClickPipes customers can leverage role-based access to authenticate with Amazon Aurora and RDS and access their databases securely.
 
-:::note
-For AWS RDS Postgres and Aurora Postgres, IAM authentication for replication is supported from PostgreSQL version 11 onwards and requires the `rds.iam_auth_for_replication` parameter to be set. On earlier versions, you can only run `Initial Load Only` ClickPipes.
-
-For MySQL and MariaDB, this limitation doesn't apply, and you can run both `Initial Load Only` and `CDC` ClickPipes.
-:::
-
 ## Setup {#setup}
+
+### Before you start {#before-you-start}
+
+#### Make sure IAM authentication is enabled {#make-sure-iam-authentication-is-enabled}
+
+1. Login to your AWS Account and navigate to the RDS instance you want to configure.
+2. Click on the **Modify** button.
+3. Scroll down to the **Database authentication** section.
+4. Enable the **Password and IAM database authentication** option.
+5. Click on the **Continue** button.
+6. Review the changes and click on the **Apply immediately** option.
+
+#### Setting up the Database User {#setting-up-the-database-user}
+
+Connect to your RDS/Aurora instance and create a database user with IAM authentication enabled, then follow the rest of the steps in your source setup guide to configure your instance for ClickPipes:
+
+- [AWS Aurora for PostgreSQL source setup guide](./source/aurora#configure-database-user)
+- [AWS RDS for PostgreSQL source setup guide](./source/rds#configure-database-user)
+- [AWS Aurora for MySQL source setup guide](../mysql/source/aurora#configure-database-user)
+- [AWS RDS for MySQL source setup guide](../mysql/source/rds#configure-database-user)
 
 ### Obtaining the ClickHouse service IAM role Arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
@@ -39,42 +53,13 @@ For MySQL and MariaDB, this limitation doesn't apply, and you can run both `Init
 
 Let's call this value `{ClickHouse_IAM_ARN}`. This is the IAM role that will be used to access your RDS/Aurora instance.
 
-### Configuring the RDS/Aurora instance {#configuring-the-rds-aurora-instance}
-
-#### Enabling IAM DB Authentication {#enabling-iam-db-authentication}
-1. Login to your AWS Account and navigate to the RDS instance you want to configure.
-2. Click on the **Modify** button.
-3. Scroll down to the **Database authentication** section.
-4. Enable the **Password and IAM database authentication** option.
-5. Click on the **Continue** button.
-6. Review the changes and click on the **Apply immediately** option.
+### Setting up the IAM role {#setting-up-iam-role}
 
 #### Obtaining the RDS/Aurora Resource ID {#obtaining-the-rds-resource-id}
 
 1. Login to your AWS Account and navigate to the RDS instance/Aurora Cluster you want to configure.
 2. Click on the **Configuration** tab.
 3. Note the **Resource ID** value. It should look like `db-xxxxxxxxxxxxxx` for RDS or `cluster-xxxxxxxxxxxxxx` for Aurora cluster. Let's call this value `{RDS_RESOURCE_ID}`. This is the resource ID that will be used in the IAM policy to allow access to the RDS instance.
-
-#### Setting up the Database User {#setting-up-the-database-user}
-
-##### PostgreSQL {#setting-up-the-database-user-postgres}
-
-1. Connect to your RDS/Aurora instance and create a new database user with the following command:
-    ```sql
-    CREATE USER clickpipes_iam_user; 
-    GRANT rds_iam TO clickpipes_iam_user;
-    ```
-2. Follow the rest of the steps in the [PostgreSQL source setup guide](./source/rds) to configure your RDS instance for ClickPipes.
-
-##### MySQL / MariaDB {#setting-up-the-database-user-mysql}
-
-1. Connect to your RDS/Aurora instance and create a new database user with the following command:
-    ```sql
-    CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
-    ```
-2. Follow the rest of the steps in the [MySQL source setup guide](../mysql/source/rds) to configure your RDS/Aurora instance for ClickPipes.
-
-### Setting up the IAM role {#setting-up-iam-role}
 
 #### Manually create IAM role. {#manually-create-iam-role}
 
