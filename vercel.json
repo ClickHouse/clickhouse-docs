@@ -23,6 +23,11 @@
       ]
     },
     {
+      "source": "/docs/cloud/manage/hyperdx",
+      "destination": "/docs/cloud/manage/clickstack",
+      "permanent": true
+    },
+    {
       "source": "/docs/install/quick-install-curl",
       "destination": "/docs/install/quick-install",
       "permanent": true
@@ -2957,7 +2962,7 @@
       "destination": "/docs/cloud/reference/billing/clickpipes/postgresql-cdc",
       "permanent": true
     },
-     {
+    {
       "source": "/docs/cloud/manage/billing/overview#clickpipes-for-streaming-object-storage",
       "destination": "/docs/cloud/reference/billing/clickpipes/streaming-and-object-storage",
       "permanent": true
@@ -3401,27 +3406,27 @@
       "source": "/docs/cloud/bestpractices/bulk-inserts",
       "destination": "/docs/best-practices/selecting-an-insert-strategy",
       "permanent": true
-    },    
+    },
     {
       "source": "/docs/cloud/bestpractices/asynchronous-inserts",
       "destination": "/docs/best-practices/use-materialized-views",
       "permanent": true
-    },    
+    },
     {
       "source": "/docs/cloud/bestpractices/avoid-mutations",
       "destination": "/docs/best-practices/avoid-mutations",
       "permanent": true
-    },    
+    },
     {
       "source": "/docs/cloud/bestpractices/avoid-nullable-columns",
       "destination": "/docs/best-practices/select-data-types",
       "permanent": true
-    },  
+    },
     {
       "source": "/docs/cloud/bestpractices/avoid-optimize-final",
       "destination": "/docs/best-practices/avoid-optimize-final",
       "permanent": true
-    },  
+    },
     {
       "source": "/docs/cloud/bestpractices/low-cardinality-partitioning-key",
       "destination": "/docs/best-practices/choosing-a-partitioning-key",
@@ -3544,9 +3549,9 @@
       "permanent": true
     },
     {
-      "source" : "/docs/cloud/manage/jan-2025-faq/new-tiers",
-      "destination" : "/docs/cloud/manage/cloud-tiers",
-      "permanent" : true
+      "source": "/docs/cloud/manage/jan-2025-faq/new-tiers",
+      "destination": "/docs/cloud/manage/cloud-tiers",
+      "permanent": true
     },
     {
       "source": "/docs/cloud/manage/jan-2025-faq/scaling",
