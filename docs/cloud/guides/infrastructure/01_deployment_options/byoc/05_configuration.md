@@ -68,6 +68,10 @@ If you rely solely on Tailscale for private connectivity, there is a risk that C
 
 ### AWS VPC Lattice {#k8s-api-private-connection-vpc-lattice}
 
+:::info
+VPC Lattice connectivity is currently in private preview. Contact ClickHouse Support to enable it for your deployment.
+:::
+
 For AWS deployments, the Kubernetes API server can instead be reached privately over [AWS VPC Lattice](https://aws.amazon.com/vpc/lattice/), with no third-party components involved:
 
 - ClickHouse Cloud automatically provisions a VPC Lattice Resource Gateway and a Resource Configuration targeting the EKS API server endpoint inside your BYOC VPC, and shares the Resource Configuration with the ClickHouse Cloud management account via AWS Resource Access Manager (RAM).
@@ -75,7 +79,7 @@ For AWS deployments, the Kubernetes API server can instead be reached privately 
 - The RAM share is created from your account and scoped to a single BYOC cluster; deleting it immediately revokes the private access path.
 - Because access does not depend on an agent running inside your Kubernetes cluster, ClickHouse Support retains access for troubleshooting even if in-cluster components are unavailable.
 
-**Contact ClickHouse Support** to request configuration of a private API endpoint, or to enable VPC Lattice connectivity for an AWS deployment.
+**Contact ClickHouse Support** to request configuration of a private API endpoint.
 
 ## Node Groups {#node-groups}
 
