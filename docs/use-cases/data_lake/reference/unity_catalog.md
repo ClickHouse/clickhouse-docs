@@ -20,7 +20,7 @@ ClickHouse supports integration with multiple catalogs (Unity, Glue, Polaris, et
 Databricks supports multiple data formats for their lakehouse. With ClickHouse, you can query Unity Catalog Delta and Iceberg tables that use external storage locations.
 
 :::note
-ClickHouse does not support Delta Lake or Iceberg tables stored on [Databricks managed storage](https://docs.databricks.com/aws/en/data-governance/unity-catalog/managed-versus-external). These tables require [credential vending](https://docs.databricks.com/aws/en/external-access/credential-vending), which Unity Catalog does not support for managed storage locations.
+Unity Catalog does not provide [credential vending](https://docs.databricks.com/aws/en/external-access/credential-vending) for Delta Lake or Iceberg tables stored on [Databricks managed storage](https://docs.databricks.com/aws/en/data-governance/unity-catalog/managed-versus-external). ClickHouse relies on credential vending to read table data from Unity Catalog.
 :::
 
 :::note
