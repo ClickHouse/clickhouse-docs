@@ -47,14 +47,7 @@ Any HTTP client that can add a query parameter works, including `curl`, [clickho
 
 ### Check which replica you hit {#check-which-replica}
 
-```bash
-curl 'https://<host>:8443/?session_id=test-123' \
-  -H 'X-ClickHouse-User: default' \
-  -H 'X-ClickHouse-Key: <password>' \
-  -d 'SELECT hostName()'
-```
-
-Run it again with the same `session_id`. You should get the same hostname. A different `session_id` may map to a different replica.
+Run the `SELECT hostName()` example above again with the same `session_id`. You should get the same hostname. A different `session_id` may map to a different replica.
 
 ## Subdomain-based routing (deprecated) {#subdomain-based-routing-deprecated}
 
