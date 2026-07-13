@@ -16,7 +16,7 @@ Replica-aware routing (also known as sticky sessions, sticky routing, or session
 It's best-effort and doesn't guarantee isolation. Scaling, upgrades, and restarts can remap which replica a given `session_id` lands on.
 
 :::warning Protocol support: HTTP/HTTPS only
-Replica-aware routing is applied at the proxy layer over the [HTTP/HTTPS interface](/interfaces/http), using the `session_id` query parameter (see below). It's **not available over the native protocol** (native port, e.g. the [clickhouse-go](/integrations/language-clients/go) driver in its default native mode). Native-protocol clients must switch to HTTP and pass a `session_id` on each request. For clickhouse-go (v2), set `Protocol: clickhouse.HTTP` and pass `session_id` as a [setting](/integrations/language-clients/go/database-sql-api#sessions). The driver sends it as the URL query parameter the proxy hashes on.
+Replica-aware routing is applied at the proxy layer over the [HTTP/HTTPS interface](/interfaces/http), using the `session_id` query parameter (see below). It's **not available over the native protocol** (native port, e.g. the [clickhouse-go](/integrations/go) driver in its default native mode). Native-protocol clients must switch to HTTP and pass a `session_id` on each request. For clickhouse-go (v2), set `Protocol: clickhouse.HTTP` and pass `session_id` as a [setting](/integrations/language-clients/go/database-sql-api#sessions). The driver sends it as the URL query parameter the proxy hashes on.
 :::
 
 ## Prerequisites {#prerequisites}
