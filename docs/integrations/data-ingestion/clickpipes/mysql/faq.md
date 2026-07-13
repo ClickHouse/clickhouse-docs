@@ -33,7 +33,7 @@ it means the table has one or more columns using MariaDB's [column compression](
 
 To resolve it:
 
-- **Convert the compressed columns to a non-compressed type** on the source:
+- **Convert the compressed columns to a non-compressed type** on the source (or remove a table from the pipe):
   ```sql
   ALTER TABLE <table> MODIFY <column> <type>; -- without COLUMN_FORMAT COMPRESSED
   ```
