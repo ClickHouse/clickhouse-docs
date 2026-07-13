@@ -31,13 +31,13 @@ convert them to a non-compressed type or remove the table from the mirror
 
 it means the table has one or more columns using MariaDB's [column compression](https://mariadb.com/kb/en/storage-engine-independent-column-compression/) (`COLUMN_FORMAT COMPRESSED`). We can't decompress these values from the binlog, so the affected table can't be replicated via CDC.
 
-To resolve it, either:
+To resolve it:
 
-- **Convert the compressed columns to a non-compressed type** on the source, then resync the pipe:
+- **Convert the compressed columns to a non-compressed type** on the source:
   ```sql
   ALTER TABLE <table> MODIFY <column> <type>; -- without COLUMN_FORMAT COMPRESSED
   ```
-- **Remove the table from the mirror** if you don't need to replicate it.
+- resync the pipe
 
 ### Does the MySQL ClickPipe support PlanetScale, Vitess, or TiDB? {#does-the-clickpipe-support-planetscale-vitess}
 No, these don't support MySQL's binlog API.
