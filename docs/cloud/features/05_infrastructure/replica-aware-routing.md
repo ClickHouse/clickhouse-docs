@@ -23,7 +23,7 @@ Replica-aware routing is applied at the proxy layer over the [HTTP/HTTPS interfa
 
 - Your service needs **2 or more replicas**. On a single-replica service, there's nothing to pin to.
 - A **running** service. Waking an idle service can change which replica a `session_id` maps to.
-- Available on **Enterprise** by default. **Scale** customers can request access through [support](https://clickhouse.com/support/program).
+- Available on **Enterprise** by default when feature is GA.
 - Supported on standard ClickHouse Cloud services. [BYOC](/cloud/reference/byoc/overview) is not yet supported.
 
 ## HTTP-based routing (session_id) {#http-based-routing}
