@@ -107,13 +107,7 @@ If you'd like to only perform a one-time load of your data (`Initial Load Only`)
 
    The `clickpipes` publication will contain the set of change events generated from the specified tables, and will later be used to ingest the replication stream.
 
-   :::warning
-   Avoid using `FOR ALL TABLES` unless you intend to replicate every table. Including unnecessary tables increases WAL traffic from Postgres to ClickPipes and reduces overall replication efficiency.
-   :::
-
-   :::note
-   ClickPipes can automatically create and manage the publication on your behalf. However, this requires granting the ClickPipes user both table ownership and the `CREATE` permission on the database. If you prefer read-only access for the ClickPipes user, we recommend creating and managing the publication manually.
-   :::
+   Avoid using `FOR ALL TABLES` unless you intend to replicate every table, as including unnecessary tables increases WAL traffic from Postgres to ClickPipes and reduces overall replication efficiency.
 
 After these steps, you should be able to proceed with [creating a ClickPipe](../index.md).
 
