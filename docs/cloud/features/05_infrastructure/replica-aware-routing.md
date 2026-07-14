@@ -15,7 +15,7 @@ Replica-aware routing (also known as sticky sessions, sticky routing, or session
 
 It's best-effort and doesn't guarantee isolation. Scaling, upgrades, and restarts can remap which replica a given `session_id` lands on.
 
-:::warning Protocol support: HTTP/HTTPS only
+:::warning Requires the HTTP interface
 Replica-aware routing is applied at the proxy layer over the [HTTP/HTTPS interface](/interfaces/http), using the `session_id` query parameter (see below). It's **not available over the native protocol** (native port, e.g. the [clickhouse-go](/integrations/go) driver in its default native mode). Native-protocol clients must switch to HTTP and pass a `session_id` on each request. For clickhouse-go (v2), set `Protocol: clickhouse.HTTP` and pass `session_id` as a [setting](/integrations/language-clients/go/database-sql-api#sessions). The driver sends it as the URL query parameter the proxy hashes on.
 :::
 
@@ -24,7 +24,7 @@ Replica-aware routing is applied at the proxy layer over the [HTTP/HTTPS interfa
 - Your service needs **2 or more replicas**. On a single-replica service, there's nothing to pin to.
 - A **running** service. Waking an idle service can change which replica a `session_id` maps to.
 - Available on **Enterprise** by default when the feature is GA.
-- Supported on standard ClickHouse Cloud services. [BYOC](/cloud/reference/byoc/overview) is not yet supported.
+- Supported on standard ClickHouse Cloud services. [BYOC](/cloud/reference/byoc/overview) isn't supported yet.
 
 ## Configuring replica-aware routing {#configuring-replica-aware-routing}
 
@@ -43,7 +43,7 @@ echo 'SELECT hostName()' | curl \
   'https://<host>:8443/?session_id=my-workload-1' -d @-
 ```
 
-Every request carrying `session_id=my-workload-1` lands on the same replica. A different `session_id` value hashes independently and may land on the same or a different replica. The mapping is consistent, but you do not choose *which* replica a given value maps to.
+Every request carrying `session_id=my-workload-1` lands on the same replica. A different `session_id` value hashes independently and may land on the same or a different replica. The mapping is consistent, but you don't choose *which* replica a given value maps to.
 
 `session_id` is any string you choose (application name, user id, or workload label). Requests without `session_id` keep normal load balancing.
 
@@ -56,7 +56,7 @@ Run the `SELECT hostName()` example above again with the same `session_id`. You 
 ## Subdomain-based routing (deprecated) {#subdomain-based-routing-deprecated}
 
 :::danger Deprecated
-The subdomain-based mechanism is being **deprecated** and will no longer be enabled on new services. It does not scale (each sticky endpoint requires its own TLS certificate). Use the [HTTP-based `session_id` method](#http-based-routing) instead. If you already use sticky subdomains, contact [support](https://clickhouse.com/support/program) to enable `session_id` routing. This is a breaking change and will require migration.
+The subdomain-based mechanism is being **deprecated** and will no longer be enabled on new services. It doesn't scale (each sticky endpoint requires its own TLS certificate). Use the [HTTP-based `session_id` method](#http-based-routing) instead. If you already use sticky subdomains, contact [support](https://clickhouse.com/support/program) to enable `session_id` routing. This is a breaking change and will require migration.
 :::
 
 Previously, enabling replica-aware routing allowed a wildcard subdomain on top of the service hostname. For a service with the host name `abcxyz123.us-west-2.aws.clickhouse.cloud`, any hostname matching `*.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud` (e.g. `aaa.sticky.abcxyz123.us-west-2.aws.clickhouse.cloud`) was hashed by Envoy to a consistent replica. The original hostname continued to use `LEAST_CONNECTION` load balancing, the default routing algorithm.
@@ -67,7 +67,7 @@ Previously, enabling replica-aware routing allowed a wildcard subdomain on top o
 
 Any disruption to the service changes the routing hash ring. That includes server pod restarts (version upgrade, crash, vertical scaling) and scaling out or in. Requests sharing the same `session_id` may then land on a different server pod. If you rely on temporary tables or session-level settings, be ready to recreate them after a remap.
 
-### Replica-aware routing is not workload isolation {#not-workload-isolation}
+### Replica-aware routing isn't workload isolation {#not-workload-isolation}
 
 Sticky routing only controls *which* replica handles a request. That replica may still serve other traffic. For dedicated compute, use [compute-compute separation](/cloud/reference/warehouses).
 
@@ -75,11 +75,11 @@ Sticky routing only controls *which* replica handles a request. That replica may
 
 HTTP `session_id` routing works with [private networking](/cloud/security/connectivity/private-networking) on your normal service hostname. No extra DNS entries are required.
 
-The deprecated subdomain method does not: you must add DNS for the `*.sticky.*` hostname pattern, and incorrect setup can imbalance load across replicas.
+The deprecated subdomain method doesn't: you must add DNS for the `*.sticky.*` hostname pattern, and incorrect setup can imbalance load across replicas.
 
 ### Replica-aware routing requires the HTTP protocol {#replica-aware-routing-requires-http}
 
-Sticky routing is keyed on the `session_id` query parameter, which only exists on the HTTP/HTTPS interface. The native binary protocol carries no such parameter for the proxy to hash on, so replica-aware routing is not available over the native protocol. Today, native-protocol clients must move the relevant workload to the HTTP interface to use this feature.
+Sticky routing is keyed on the `session_id` query parameter, which only exists on the HTTP/HTTPS interface. The native binary protocol carries no such parameter for the proxy to hash on, so replica-aware routing isn't available over the native protocol. Today, native-protocol clients must move the relevant workload to the HTTP interface to use this feature.
 
 ## Troubleshooting {#troubleshooting}
 
