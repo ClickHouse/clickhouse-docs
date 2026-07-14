@@ -26,6 +26,10 @@ Replica-aware routing is applied at the proxy layer over the [HTTP/HTTPS interfa
 - Available on **Enterprise** by default when the feature is GA.
 - Supported on standard ClickHouse Cloud services. [BYOC](/cloud/reference/byoc/overview) is not yet supported.
 
+## Configuring replica-aware routing {#configuring-replica-aware-routing}
+
+Open a [support](https://clickhouse.com/support/program) ticket and ask to enable HTTP-based sticky replica routing. Include your service ID and why you need it (temporary tables, session state, or cache reuse). After it's enabled, start sending `?session_id=` on HTTPS requests. No restart is required.
+
 ## HTTP-based routing (session_id) {#http-based-routing}
 
 To pin a workload to a replica, set the `session_id` query parameter on the [HTTPS interface](/interfaces/http). The proxy uses consistent hashing on that value to select a replica, so all requests sharing the same `session_id` go to the same server until the cluster topology changes.
@@ -84,7 +88,3 @@ Sticky routing is keyed on the `session_id` query parameter, which only exists o
 - Confirm `session_id` is a URL query parameter (`?session_id=...`), not an HTTP header.
 - Wait briefly after enablement. It can take under a minute to take effect.
 - Check whether the service recently scaled or restarted; remapping is expected after topology changes. Use `SELECT hostName()` to discover the new mapping.
-
-## Configuring replica-aware routing {#configuring-replica-aware-routing}
-
-Open a [support](https://clickhouse.com/support/program) ticket and ask to enable HTTP-based sticky replica routing. Include your service ID and why you need it (temporary tables, session state, or cache reuse). After it's enabled, start sending `?session_id=` on HTTPS requests. No restart is required.
