@@ -1764,6 +1764,7 @@ const sidebars = {
         'operations/utilities/clickhouse-keeper-client',
         'operations/utilities/clickhouse-local',
         'operations/utilities/clickhouse-obfuscator',
+        'operations/utilities/clickhouse-proxy',
         'operations/utilities/odbc-bridge',
         'tools-and-utilities/static-files-disk-uploader',
         'getting-started/playground',
