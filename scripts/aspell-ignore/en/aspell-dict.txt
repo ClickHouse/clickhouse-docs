@@ -307,6 +307,7 @@ DB's
 DBAPI
 DBAs
 DBFS
+DBM
 DBMSs
 DBPedia
 DBeaver
@@ -2164,6 +2165,7 @@ damerauLevenshteinDistance
 dashboarding
 datacenter
 datacenters
+datadoghq
 datafiles
 dataframe
 datagrip

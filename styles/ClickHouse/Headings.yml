@@ -67,6 +67,7 @@ exceptions:
   - Docker
   - Docker Compose
   - DigitalOcean Spaces
+  - Datadog Agent
   - Duo SAML
   - EDOT
   - Elastic Agent
