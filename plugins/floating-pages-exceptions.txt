@@ -10,6 +10,7 @@
 integrations/language-clients/java/client-v1
 integrations/language-clients/java/jdbc-v1
 operations/utilities/clickhouse-keeper-http-api.md
+operations/utilities/clickhouse-proxy
 cloud/features/backups/faq.md
 interfaces/web-terminal
 interfaces/web-sql
