@@ -129,7 +129,7 @@ aws vpc-lattice create-resource-configuration \
 You can't create a resource configuration for a publicly accessible cluster.
 If your cluster is publicly accessible, you must modify the cluster
 to make it private before creating the resource configuration
-or use [IP allow list](/integrations/clickpipes#list-of-static-ips) instead.
+or use [IP allow list](/integrations/clickpipes/networking/static-ips) instead.
 For more information, see the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
 :::
 
@@ -342,7 +342,7 @@ You can manage existing reverse private endpoints in the ClickHouse Cloud servic
 ## Supported AWS regions {#aws-privatelink-regions}
 
 AWS PrivateLink support is limited to specific AWS regions for ClickPipes.
-Please refer to the [ClickPipes regions list](/integrations/clickpipes#list-of-static-ips) to see the available regions.
+Please refer to the [ClickPipes regions list](/integrations/clickpipes/networking/static-ips) to see the available regions.
 
 This restriction doesn't apply to PrivateLink VPC endpoint service with a cross-region connectivity enabled.
 

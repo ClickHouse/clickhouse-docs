@@ -755,7 +755,6 @@ const sidebars = {
             'integrations/data-ingestion/clickpipes/postgres/parallel_initial_load',
             'integrations/data-ingestion/clickpipes/postgres/lifecycle',
             'integrations/data-ingestion/clickpipes/postgres/auth',
-            'integrations/data-ingestion/clickpipes/gcp-psc/postgres',
             {
               type: 'category',
               label: 'Operations',
@@ -932,7 +931,33 @@ const sidebars = {
           ],
         },
         'integrations/data-ingestion/clickpipes/monitoring',
-        'integrations/data-ingestion/clickpipes/aws-privatelink',
+        {
+          type: 'category',
+          label: 'Networking',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/data-ingestion/clickpipes/networking',
+          },
+          items: [
+            {
+              type: 'doc',
+              id: 'integrations/data-ingestion/clickpipes/networking/static-ips',
+              label: 'Static IPs',
+            },
+            {
+              type: 'doc',
+              id: 'integrations/data-ingestion/clickpipes/aws-privatelink',
+              label: 'AWS PrivateLink',
+            },
+            {
+              type: 'doc',
+              id: 'integrations/data-ingestion/clickpipes/gcp-psc/postgres',
+              label: 'GCP Private Service Connect',
+            },
+          ],
+        },
         'integrations/data-ingestion/dbms/dynamodb/index',
       ],
     },

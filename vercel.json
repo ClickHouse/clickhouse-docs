@@ -48,6 +48,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/integrations/clickpipes/gcp-psc",
+      "destination": "/docs/integrations/clickpipes/gcp-psc/postgres",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/clickpipes/static-ips",
+      "destination": "/docs/integrations/clickpipes/networking/static-ips",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/integrations/clickpipes/secure-kinesis",
       "destination": "/docs/integrations/clickpipes/kinesis/auth",
       "permanent": true

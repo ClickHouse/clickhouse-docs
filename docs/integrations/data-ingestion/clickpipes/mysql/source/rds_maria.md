@@ -106,7 +106,7 @@ Connect to your RDS MariaDB instance as an admin user and execute the following 
 
 ### IP-based access control {#ip-based-access-control}
 
-If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](../../index.md#list-of-static-ips) to the `Inbound rules` of your RDS security group.
+If you want to restrict traffic to your RDS instance, please add the [documented static NAT IPs](/integrations/clickpipes/networking/static-ips) to the `Inbound rules` of your RDS security group.
 
 <Image img={security_group_in_rds_mysql} alt="Where to find security group in RDS?" size="lg" border/>
 

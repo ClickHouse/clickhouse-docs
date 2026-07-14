@@ -57,7 +57,7 @@ Next, you must allow connections to your Azure Flexible Server for MySQL instanc
 
 2. Under **Settings**, select **Networking**. Ensure **Public access** is enabled.
 
-3. In the **Firewall rules** section, enter the [list of ClickPipes static IP addresses](../../index.md#list-of-static-ips) for the region your service is deployed in.
+3. In the **Firewall rules** section, enter the [list of ClickPipes static IP addresses](/integrations/clickpipes/networking/static-ips) for the region your service is deployed in.
 
    <Image img={configure_network_security} alt="Configure networking for public access with an IP allowlist" size="lg" border/>
 
@@ -72,7 +72,7 @@ If you don't allow public access to your Azure Flexible Server for MySQL instanc
    - Ensure the VM is in the same Virtual Network (VNet) as your Azure Flexible Server for MySQL instance, or in a peered VNet with connectivity.
    - Ensure the VM has a [static public IP address](https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/virtual-network-public-ip-address). You’ll use this IP address when connecting ClickPipes to your SSH bastion host.
 
-2. Update the Network Security Group (NSG) rules of the SSH bastion host to allow traffic from the [list of ClickPipes static IP addresses](../../index.md#list-of-static-ips) for the region your service is deployed in.
+2. Update the Network Security Group (NSG) rules of the SSH bastion host to allow traffic from the [list of ClickPipes static IP addresses](/integrations/clickpipes/networking/static-ips) for the region your service is deployed in.
 
 3. Update the firewall rules of your Azure Flexible Server for MySQL instance to allow traffic from the [private IP address](https://learn.microsoft.com/en-us/azure/virtual-network/ip-services/private-ip-addresses) of the SSH bastion host.
 

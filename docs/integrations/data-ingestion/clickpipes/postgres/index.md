@@ -79,7 +79,7 @@ Make sure you're logged in to your ClickHouse Cloud account. If you don't have a
 
    :::info
 
-   Before you start adding your connection details make sure that you have whitelisted ClickPipes IP addresses in your firewall rules. You can find the list of ClickPipes IP addresses [here](../index.md#list-of-static-ips).
+   Before you start adding your connection details make sure that you have whitelisted ClickPipes IP addresses in your firewall rules. You can find the list of ClickPipes IP addresses [here](/integrations/clickpipes/networking/static-ips).
    For more information refer to the source Postgres setup guides linked at [the top of this page](#prerequisites).
 
    :::
@@ -110,7 +110,7 @@ You can specify SSH tunneling details if your source Postgres database isn't pub
 
 :::note
 
-Make sure to whitelist [ClickPipes IP addresses](../clickpipes#list-of-static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
+Make sure to whitelist [ClickPipes IP addresses](/integrations/clickpipes/networking/static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
 
 :::
 

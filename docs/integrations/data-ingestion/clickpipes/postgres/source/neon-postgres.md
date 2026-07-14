@@ -81,7 +81,7 @@ SHOW max_replication_slots; -- should be 10
 ```
 
 ## IP whitelisting (for Neon enterprise plan) {#ip-whitelisting-for-neon-enterprise-plan}
-If you have Neon Enterprise plan, you can whitelist the [ClickPipes IPs](../../index.md#list-of-static-ips) to allow replication from ClickPipes to your Neon Postgres instance.
+If you have Neon Enterprise plan, you can whitelist the [ClickPipes IPs](/integrations/clickpipes/networking/static-ips) to allow replication from ClickPipes to your Neon Postgres instance.
 To do this you can click on the **Settings** tab and go to the **IP Allow** section.
 
 <Image size="lg" img={neon_ip_allow} alt="Allow IPs screen" border/>

@@ -63,7 +63,7 @@ You can use SSH tunneling if your Kafka broker isn't publicly accessible. Instea
 4. Click on "Verify Connection" to verify the connection.
 
 :::note
-Make sure to whitelist [ClickPipes IP addresses](../index.md#list-of-static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
+Make sure to whitelist [ClickPipes IP addresses](/integrations/clickpipes/networking/static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
 :::
 
 ## Select your topic {#7-select-your-topic}

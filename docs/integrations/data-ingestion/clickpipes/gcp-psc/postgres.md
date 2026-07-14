@@ -78,6 +78,10 @@ gcloud sql instances patch <INSTANCE_NAME> \
 
 The `--allowed-psc-projects` (`psc_config.allowed_consumer_projects` in the API and Terraform) is the auto-accept list. As long as the ClickPipes consumer project is on it, Cloud SQL accepts the endpoint automatically — no manual approval step.
 
+:::note
+A PSC service attachment can be claimed by only one ClickHouse Cloud service at a time — it cannot be reused across multiple services. If you need to move a service attachment to a different service, contact ClickHouse support to release the existing claim.
+:::
+
 ### Step 2 — Read the service attachment URI and DNS name {#step-2-service-attachment-dns}
 
 These two values are what you hand to ClickPipes.
@@ -106,12 +110,12 @@ Cloud SQL's DNS names end with . (FQDN notation) but the ClickHouse form expects
 
 1. In ClickHouse Cloud, open your service and go to **Data Sources** > **ClickPipes**.
 2. Select the data source you want to ingest data from.
-2. Under **Setup your ClickPipe connection**, toggle on **Use secure connection**, then click **+ Reverse private endpoint**. Click **Create reverse private endpoint** and pick **GCP PSC service attachment**.
-3. Fill in:
+3. Under **Setup your ClickPipe connection**, toggle on **Use secure connection**, then click **+ Reverse private endpoint**. Click **Create reverse private endpoint** and pick **GCP PSC service attachment**.
+4. Fill in:
    - **Service attachment URI** — paste the `pscServiceAttachmentLink` from Step 2.
    - **Private DNS name** — paste the `dnsName` from Step 2 (without the trailing dot).
    - **Description** — any human-readable label.
-4. Click **Create** and wait. The endpoint moves through `Provisioning` → `Ready`. (You will not see `PendingAcceptance` for the native PSC path, because Cloud SQL auto-accepts.)
+5. Click **Create** and wait. The endpoint moves through `Provisioning` → `Ready`. (You will not see `PendingAcceptance` for the native PSC path, because Cloud SQL auto-accepts.)
 
 #### Option 2: Terraform {#option-2-terraform}
 
@@ -149,7 +153,7 @@ module "cloud_sql_native_psc" {
 }
 ```
 
-If you already have a Cloud SQL instance and only want to create the RPE, use the `clickhouse_clickpipes_reverse_private_endpoint` resource directly:
+If you already have a Cloud SQL instance and only want to create the RPE, use the `clickhouse_clickpipes_reverse_private_endpoint` resource directly. Custom private DNS mappings are not an attribute of this resource — they are managed by the separate `clickhouse_clickpipes_reverse_private_endpoint_custom_private_dns` resource, which takes a full replacement list of mappings and references the endpoint by ID:
 
 ```hcl
 resource "clickhouse_clickpipes_reverse_private_endpoint" "cloud_sql" {
@@ -157,8 +161,13 @@ resource "clickhouse_clickpipes_reverse_private_endpoint" "cloud_sql" {
   description            = "Cloud SQL native PSC endpoint"
   type                   = "GCP_PSC_SERVICE_ATTACHMENT"
   gcp_service_attachment = "projects/<YOUR_PROJECT_ID>/regions/<REGION>/serviceAttachments/<NAME>"
+}
 
-  custom_private_dns_mappings = [
+resource "clickhouse_clickpipes_reverse_private_endpoint_custom_private_dns" "cloud_sql" {
+  service_id                  = var.clickhouse_service_id
+  reverse_private_endpoint_id = clickhouse_clickpipes_reverse_private_endpoint.cloud_sql.id
+
+  mapping = [
     { private_dns_name = "<INSTANCE_UID>.<REGION>.sql.goog" }
   ]
 }
@@ -167,16 +176,15 @@ resource "clickhouse_clickpipes_reverse_private_endpoint" "cloud_sql" {
 #### Option 3: API {#option-3-api}
 
 ```bash
-curl -X POST \
-  -H "Authorization: Bearer <CLICKHOUSE_CLOUD_API_TOKEN>" \
-  -H "Content-Type: application/json" \
-  https://api.clickhouse.cloud/v1/organizations/<ORG_ID>/services/<SERVICE_ID>/clickPipeReversePrivateEndpoints \
+curl --silent --user $KEY_ID:$KEY_SECRET \
+  -X POST -H "Content-Type: application/json" \
+  https://api.clickhouse.cloud/v1/organizations/<ORG_ID>/services/<SERVICE_ID>/clickpipesReversePrivateEndpoints \
   -d '{
     "type": "GCP_PSC_SERVICE_ATTACHMENT",
     "description": "Cloud SQL native PSC endpoint",
-    "gcp_service_attachment": "projects/<YOUR_PROJECT_ID>/regions/<REGION>/serviceAttachments/<NAME>",
-    "custom_private_dns_mappings": [
-      { "private_dns_name": "<INSTANCE_UID>.<REGION>.sql.goog" }
+    "gcpServiceAttachment": "projects/<YOUR_PROJECT_ID>/regions/<REGION>/serviceAttachments/<NAME>",
+    "customPrivateDnsMappings": [
+      { "privateDnsName": "<INSTANCE_UID>.<REGION>.sql.goog" }
     ]
   }'
 ```
@@ -246,7 +254,7 @@ Go to **Data Sources** → **Reverse Private Endpoints** in your service to:
 
 GCP PSC RPE is available in every region where ClickPipes is hosted on GCP. The PSC endpoint must be created in the **same region** as the service attachment — pick a Cloud SQL region that matches a ClickPipes-on-GCP region.
 
-> _TODO: paste the current region list before publishing._
+For the current list of regions, see [ClickPipes networking → Supported regions](/integrations/clickpipes/networking#supported-regions).
 
 ## Limitations {#limitations}
 
@@ -254,4 +262,5 @@ GCP PSC RPE is available in every region where ClickPipes is hosted on GCP. The 
 - One RPE provisions **one static internal IP**. GCP PSC does not propagate DNS, so you must supply the source's private DNS name via `custom_private_dns_mappings`.
 - Cloud SQL native PSC requires the instance's **public IP to be disabled** (`ipv4_enabled = false`).
 - The Cloud SQL instance and the ClickPipes service must be in projects where the consumer project (`clickpipes-production`) is on the allow list.
+- A PSC service attachment is claimed by a single ClickHouse Cloud service and cannot be reused across multiple services. The claim can be released on request through ClickHouse support.
 - Only `GCP_PSC_SERVICE_ATTACHMENT` is supported as a GCP RPE type. VPC peering is not supported.

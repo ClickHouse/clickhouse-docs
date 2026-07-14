@@ -68,7 +68,7 @@ Make sure you're logged in to your ClickHouse Cloud account. If you don't have a
 4. Fill in the connection details for your source MongoDB database which you configured in the prerequisites step.
 
    :::info
-   Before you start adding your connection details make sure that you have whitelisted ClickPipes IP addresses in your firewall rules. On the following page you can find a [list of ClickPipes IP addresses](../index.md#list-of-static-ips).
+   Before you start adding your connection details make sure that you have whitelisted ClickPipes IP addresses in your firewall rules. On the following page you can find a [list of ClickPipes IP addresses](/integrations/clickpipes/networking/static-ips).
    For more information refer to the source MongoDB setup guides linked at [the top of this page](#prerequisites).
    :::
 
@@ -91,7 +91,7 @@ You can specify SSH tunneling details if your source MongoDB database isn't publ
 4. Click on "Verify Connection" to verify the connection.
 
 :::note
-Make sure to whitelist [ClickPipes IP addresses](../clickpipes#list-of-static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
+Make sure to whitelist [ClickPipes IP addresses](/integrations/clickpipes/networking/static-ips) in your firewall rules for the SSH bastion host so that ClickPipes can establish the SSH tunnel.
 :::
 
 Once the connection details are filled in, click `Next`.
