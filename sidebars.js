@@ -754,6 +754,7 @@ const sidebars = {
             'integrations/data-ingestion/clickpipes/postgres/parallel_initial_load',
             'integrations/data-ingestion/clickpipes/postgres/lifecycle',
             'integrations/data-ingestion/clickpipes/postgres/auth',
+            'integrations/data-ingestion/clickpipes/gcp-psc/postgres',
             {
               type: 'category',
               label: 'Operations',
