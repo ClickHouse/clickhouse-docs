@@ -277,6 +277,53 @@ $ echo 'DROP TABLE t' | curl 'http://localhost:8123/' --data-binary @-
 
 For successful requests that don't return a data table, an empty response body is returned.
 
+### Mapping HTTP headers to columns {#http-column-mapping}
+
+You can map HTTP request header values to INSERT columns using `http_column_` URL parameters.
+The format is `http_column_<Header-Name>=<column_name>`. ClickHouse reads the specified header from the request
+and inserts its value into the corresponding column for every row.
+
+This is useful for webhook receivers and HTTP-based data pipelines where metadata
+(event type, signature, tenant ID, etc.) arrives in headers while the payload is in the request body.
+
+For example, given this table:
+
+```sql
+CREATE TABLE events (
+    event_type LowCardinality(String),
+    signature  String,
+    payload    String
+) ENGINE = MergeTree ORDER BY tuple();
+```
+
+You can insert data with headers mapped to columns:
+
+```bash
+$ curl -sS \
+    -H 'X-Event-Type: push' \
+    -H 'X-Signature: sha256=abc123' \
+    'http://localhost:8123/?query=INSERT+INTO+events+(payload)+FORMAT+JSONEachRow&http_column_X-Event-Type=event_type&http_column_X-Signature=signature' \
+    -d '{"payload":"hello"}'
+```
+
+This inserts a row with `event_type = 'push'`, `signature = 'sha256=abc123'`, and `payload = 'hello'`.
+
+Header names are case-insensitive per RFC 9110, so `http_column_x-event-type` and `http_column_X-Event-Type`
+match the same header. Column names are case-sensitive and must exist in the target table.
+
+If the specified header is absent from the request, the default value for the column type is inserted.
+
+The feature works with both synchronous and asynchronous inserts (`async_insert=1`).
+With async inserts, each request's header values are preserved per entry, so rows from
+different requests in the same batch carry their own header values.
+
+A column must come from exactly one source. If a column appears in both the INSERT column list
+(meaning the body provides it) and an `http_column_` parameter, ClickHouse returns an error.
+
+:::note
+The `http_column_` parameters only affect INSERT queries. For SELECT queries they are ignored.
+:::
+
 ## Compression {#compression}
 
 Compression can be used to reduce network traffic when transmitting a large amount of data, or for creating dumps that are immediately compressed.
