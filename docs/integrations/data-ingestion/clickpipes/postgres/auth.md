@@ -28,7 +28,7 @@ This article demonstrates how ClickPipes customers can leverage role-based acces
 5. Click on the **Continue** button.
 6. Review the changes and click on the **Apply immediately** option.
 
-#### Setting up the Database User {#setting-up-the-database-user}
+#### Setting up the database user {#setting-up-the-database-user}
 
 Connect to your RDS/Aurora instance and create a database user with IAM authentication enabled, then follow the rest of the steps in your source setup guide to configure your instance for ClickPipes:
 
