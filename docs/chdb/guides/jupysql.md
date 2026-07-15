@@ -10,10 +10,6 @@ doc_type: 'guide'
 [JupySQL](https://github.com/ploomber/jupysql) is a Python library that lets you run SQL in Jupyter notebooks and the IPython shell.
 In this guide, we're going to learn how to query data using chDB and JupySQL.
 
-<div class='vimeo-container'>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/2wjl3OijCto?si=EVf2JhjS5fe4j6Cy" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
-
 ## Setup {#setup}
 
 Let's first create a virtual environment:
@@ -372,3 +368,6 @@ plot = (
 ```
 
 Most trips are short hops of one to three miles, with a long tail stretching out towards the airport runs.
+
+## Related {#related}
+- [Intro to JupySQL with chDB (YouTube)](https://www.youtube.com/watch?v=2wjl3OijCto)
