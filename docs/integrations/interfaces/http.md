@@ -897,6 +897,12 @@ curl -X POST 'http://localhost:8123/api/events?id=123' \
 In one `predefined_query_handler` only one `query` is supported.
 :::
 
+#### Mapping request headers to INSERT columns {#predefined-handler-http-column-mapping}
+
+`predefined_query_handler` can map HTTP request header values directly to INSERT columns using the `<header_column_mappings>` configuration block. This is the static-config equivalent of the `http_column_<Header-Name>=<column_name>` URL parameter available in the dynamic handler.
+
+See [Mapping HTTP headers to columns](#http-column-mapping) for the full description of the feature, including type support, async insert behavior, and security considerations.
+
 ### dynamic_query_handler {#dynamic_query_handler}
 
 In `dynamic_query_handler`, the query is written in the form of parameter of the HTTP request. The difference is that in `predefined_query_handler`, the query is written in the configuration file. `query_param_name` can be configured in `dynamic_query_handler`.
