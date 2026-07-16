@@ -16,7 +16,7 @@ This page describes the different ways to connect to your ClickHouse services in
 
 Connection details for every BYOC service are available in the ClickHouse Cloud console: open the service and click **Connect**.
 
-When a service exposes more than one network path, the **Connect** dialog shows a **Connection via** dropdown. Use it to choose how you reach the service:
+For BYOC services, the **Connect** dialog includes a **Connection via** dropdown. Use it to choose how you reach the service:
 
 - **Public load balancer** — the internet-facing endpoint.
 - **Private load balancer** — the internal endpoint, reached over VPC peering or connected networks. Listed only when a [private load balancer](#private-load-balancer) is enabled for your infrastructure.
@@ -24,7 +24,7 @@ When a service exposes more than one network path, the **Connect** dialog shows 
 
 Selecting a path updates the hostname in every connection example in the dialog — the HTTPS (`curl`) command, the native client, JDBC, MySQL, and the language-client snippets (Python, Node.js, Java, Go, and C#) — so you can copy a ready-to-use command for the exact path you need without editing the hostname by hand.
 
-The dropdown lists only the paths enabled for your infrastructure. A service that exposes only the public load balancer shows that endpoint directly, without a dropdown.
+The dropdown lists only the paths enabled for your infrastructure, and the list is refreshed each time the dialog opens — a newly enabled private load balancer or PrivateLink endpoint appears the next time you open **Connect**, with no propagation delay. When only one path is available, the dropdown is shown disabled with that endpoint selected.
 
 {/* TODO: add a screenshot of the Connect dialog with the "Connection via" dropdown expanded once the feature is live in production. */}
 
