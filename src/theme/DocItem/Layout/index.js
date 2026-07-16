@@ -16,7 +16,6 @@ import Translate from "@docusaurus/Translate";
 import IconClose from "@theme/Icon/Close";
 import {useLocation} from "@docusaurus/router";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
-import RelatedBlogs from "../../../components/RelatedBlogs/RelatedBlogs";
 import {galaxyOnClick, useGalaxyOnPage} from "../../../lib/galaxy/galaxy";
 /**
  * Decide if the toc should be rendered, on mobile or desktop viewports
@@ -40,7 +39,7 @@ function useDocTOC() {
 
 export default function DocItemLayout({children}) {
   const docTOC = useDocTOC();
-  const {metadata, frontMatter} = useDoc();
+  const {metadata} = useDoc();
   const {editUrl} = metadata;
 
   // Instrument every docs page with galaxy load/blur/focus events, keyed on
@@ -114,7 +113,6 @@ export default function DocItemLayout({children}) {
             <DocItemContent>{children}</DocItemContent>
             <DocItemFooter />
           </article>
-          {frontMatter.show_related_blogs === true ? <RelatedBlogs frontMatter={frontMatter}/> : <></>}
           <DocItemPaginator />
         </div>
       </div>
