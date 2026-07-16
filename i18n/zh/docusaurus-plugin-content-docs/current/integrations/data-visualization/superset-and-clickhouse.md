@@ -57,7 +57,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
     ```
 
     :::note Docker Compose Setup
-    对于基于 Docker 的安装，请参阅 [Superset database configuration guide](https://superset.apache.org/docs/configuration/databases/#clickhouse)，了解如何将 `clickhouse-connect` 添加到容器。
+    对于基于 Docker 的安装，请参阅 [Superset database configuration guide](https://superset.apache.org/user-docs/6.0.0/configuration/databases/)，了解如何将 `clickhouse-connect` 添加到容器。
     :::
 
 2. 启动（或重新启动）Superset。

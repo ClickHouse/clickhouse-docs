@@ -43,7 +43,7 @@ import ConnectionDetails from '@site/i18n/zh/docusaurus-plugin-content-docs/curr
 
 <Image size="md" img={deepnote_02} alt="ClickHouse 详细信息对话框" border />
 
-***注意：*** 如果您到 ClickHouse 的连接受 IP Access List 保护，可能需要将 Deepnote 的 IP 地址加入允许列表。请参阅 [Deepnote 文档](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses) 了解更多信息。
+***注意：*** 如果您到 ClickHouse 的连接受 IP Access List 保护，可能需要将 Deepnote 的 IP 地址加入允许列表。请参阅 [Deepnote 文档](https://deepnote.com/docs/securing-connections) 了解更多信息。
 
 3. 恭喜！您已成功将 ClickHouse 集成到 Deepnote 中。
 

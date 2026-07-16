@@ -50,7 +50,7 @@ doc_type: 'guide'
 
   :::note 別のLLMプロバイダーを使う場合
   Anthropic APIキーをお持ちでなく、別のLLMプロバイダーを使いたい場合は、
-  認証情報の設定手順を[Agnoドキュメント](https://docs.agno.com/concepts/models/introduction)でご確認ください。
+  認証情報の設定手順を[Agnoドキュメント](https://docs.agno.com/models/overview)でご確認ください。
   :::
 
   次に、ClickHouse SQLプレイグラウンドへの接続に必要な認証情報を定義します:

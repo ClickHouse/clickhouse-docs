@@ -46,7 +46,7 @@ Nessie 是一个面向数据湖的开源事务型 catalog，提供：
 
 ### 设置本地 Nessie Catalog \{#setting-up-local-nessie-catalog\}
 
-你可以使用官方提供的 [Nessie docker-compose 部署](https://projectnessie.org/guides/setting-up/)，它提供了一个完整的环境，包括 Nessie、内存版本存储（in-memory version store）以及用于对象存储的 MinIO。
+你可以使用官方提供的 [Nessie docker-compose 部署](https://projectnessie.org/guides/)，它提供了一个完整的环境，包括 Nessie、内存版本存储（in-memory version store）以及用于对象存储的 MinIO。
 
 **步骤 1：** 创建一个新文件夹用于运行该示例，然后创建一个名为 `docker-compose.yml` 的文件，并填入以下配置：
 

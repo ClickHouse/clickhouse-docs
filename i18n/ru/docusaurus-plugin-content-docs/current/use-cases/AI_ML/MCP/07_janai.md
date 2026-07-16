@@ -30,7 +30,7 @@ import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png'
   ## Установка Jan.ai \{#install-janai\}
 
   Jan.ai — это открытое ПО, являющееся альтернативой ChatGPT, которое работает полностью офлайн.
-  Вы можете скачать Jan.ai для [Mac](https://jan.ai/docs/desktop/mac), [Windows](https://jan.ai/docs/desktop/windows) или [Linux](https://jan.ai/docs/desktop/linux).
+  Вы можете скачать Jan.ai для [Mac](https://jan.ai/docs/desktop/install/mac), [Windows](https://jan.ai/docs/desktop/windows) или [Linux](https://jan.ai/docs/desktop/linux).
 
   Это нативное приложение, поэтому после загрузки его можно просто запустить.
 

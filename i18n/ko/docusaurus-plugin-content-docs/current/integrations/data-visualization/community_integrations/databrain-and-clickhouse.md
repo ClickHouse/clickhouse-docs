@@ -171,5 +171,5 @@ Databrain 기능과 강력한 분석 환경을 구축하는 방법에 대한 자
 
 * [Databrain 문서](https://docs.usedatabrain.com/)
 * [ClickHouse 통합 가이드](https://docs.usedatabrain.com/guides/datasources/connecting-data-sources-to-databrain/clickhouse)
-* [대시보드 만들기](https://docs.usedatabrain.com/guides/dashboards/create-a-dashboard)
-* [메트릭 만들기](https://docs.usedatabrain.com/guides/metrics/create-metrics)
+* [대시보드 만들기](https://docs.usedatabrain.com/getting-started/core-concepts/dashboards)
+* [메트릭 만들기](https://docs.usedatabrain.com/getting-started/core-concepts/metrics)

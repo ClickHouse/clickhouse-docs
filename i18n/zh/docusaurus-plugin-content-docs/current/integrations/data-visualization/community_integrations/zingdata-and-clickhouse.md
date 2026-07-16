@@ -27,7 +27,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge />
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> 是一个数据探索与可视化平台。Zing Data 使用 ClickHouse 提供的 JS 驱动程序连接到 ClickHouse。
+Zing Data 是一个数据探索与可视化平台。Zing Data 使用 ClickHouse 提供的 JS 驱动程序连接到 ClickHouse。
 
 ## 如何连接 \{#how-to-connect\}
 
@@ -37,9 +37,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 2. 下载或访问 Zing Data
 
-    * 要在移动端将 ClickHouse 与 Zing Data 一起使用，请在 [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) 或 [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091) 下载 Zing Data 应用。
+    * 要在移动端将 ClickHouse 与 Zing Data 一起使用，请在 Google Play Store 或 Apple App Store 下载 Zing Data 应用。
 
-    * 要在 Web 端将 ClickHouse 与 Zing Data 一起使用，请访问 [Zing web console](https://console.getzingdata.com/) 并创建账号。
+    * 要在 Web 端将 ClickHouse 与 Zing Data 一起使用，请访问 Zing web console 并创建账号。
 
 3. 添加一个数据源
 
@@ -93,6 +93,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 相关内容 \{#related-content\}
 
-- [文档](https://docs.getzingdata.com/docs/)
-- [快速开始](https://getzingdata.com/quickstart/)
-- 关于[创建仪表盘](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)的指南
+- 文档
+- 快速开始
+- 关于创建仪表盘的指南

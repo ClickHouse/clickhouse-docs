@@ -27,7 +27,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge />
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a>는 데이터 탐색 및 시각화 플랫폼입니다. Zing Data는 ClickHouse에서 제공하는 JS 드라이버를 사용해 ClickHouse에 연결합니다.
+Zing Data는 데이터 탐색 및 시각화 플랫폼입니다. Zing Data는 ClickHouse에서 제공하는 JS 드라이버를 사용해 ClickHouse에 연결합니다.
 
 ## 연결 방법 \{#how-to-connect\}
 
@@ -37,9 +37,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 2. Zing Data 다운로드 또는 접속
 
-    * 모바일에서 Zing Data와 함께 ClickHouse를 사용하려면 [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) 또는 [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091)에서 Zing Data 앱을 다운로드합니다.
+    * 모바일에서 Zing Data와 함께 ClickHouse를 사용하려면 Google Play Store 또는 Apple App Store에서 Zing Data 앱을 다운로드합니다.
 
-    * 웹에서 Zing Data와 함께 ClickHouse를 사용하려면 [Zing 웹 콘솔](https://console.getzingdata.com/)에 접속하여 계정을 만듭니다.
+    * 웹에서 Zing Data와 함께 ClickHouse를 사용하려면 Zing 웹 콘솔에 접속하여 계정을 만듭니다.
 
 3. 데이터 소스 추가
 
@@ -93,6 +93,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 관련 자료 \{#related-content\}
 
-- [문서](https://docs.getzingdata.com/docs/)
-- [빠른 시작](https://getzingdata.com/quickstart/)
-- [대시보드 만들기 가이드](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)
+- 문서
+- 빠른 시작
+- 대시보드 만들기 가이드

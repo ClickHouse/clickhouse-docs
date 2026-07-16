@@ -27,7 +27,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge />
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> — это платформа для анализа и визуализации данных. Zing Data подключается к ClickHouse с помощью JS-драйвера от ClickHouse.
+Zing Data — это платформа для анализа и визуализации данных. Zing Data подключается к ClickHouse с помощью JS-драйвера от ClickHouse.
 
 ## Как подключиться \{#how-to-connect\}
 
@@ -37,9 +37,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 2. Загрузите приложение или откройте Zing Data
 
-    * Чтобы использовать ClickHouse с Zing Data на мобильном устройстве, загрузите приложение Zing Data в [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) или [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091).
+    * Чтобы использовать ClickHouse с Zing Data на мобильном устройстве, загрузите приложение Zing Data в Google Play Store или Apple App Store.
 
-    * Чтобы использовать ClickHouse с Zing Data в веб-интерфейсе, перейдите в [веб-консоль Zing](https://console.getzingdata.com/) и создайте учётную запись.
+    * Чтобы использовать ClickHouse с Zing Data в веб-интерфейсе, перейдите в веб-консоль Zing и создайте учётную запись.
 
 3. Добавьте источник данных
 
@@ -93,6 +93,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## Связанные материалы \{#related-content\}
 
-- [Документация](https://docs.getzingdata.com/docs/)
-- [Краткое руководство](https://getzingdata.com/quickstart/)
-- Руководство по [созданию дашбордов](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)
+- Документация
+- Краткое руководство
+- Руководство по созданию дашбордов

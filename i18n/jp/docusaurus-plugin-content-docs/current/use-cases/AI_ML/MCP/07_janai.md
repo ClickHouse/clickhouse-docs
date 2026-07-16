@@ -30,7 +30,7 @@ import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png'
   ## Jan.ai をインストールする \{#install-janai\}
 
   Jan.ai は 100% オフラインで動作するオープンソースの ChatGPT 代替です。
-  [Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows)、または [Linux](https://jan.ai/docs/desktop/linux) 向けの Jan.ai をダウンロードできます。
+  [Mac](https://jan.ai/docs/desktop/install/mac)、[Windows](https://jan.ai/docs/desktop/windows)、または [Linux](https://jan.ai/docs/desktop/linux) 向けの Jan.ai をダウンロードできます。
 
   ネイティブアプリなので、ダウンロード後はそのまま起動できます。
 

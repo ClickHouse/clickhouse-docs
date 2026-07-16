@@ -27,7 +27,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge/>
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> is a data exploration and visualization platform. Zing Data connects to ClickHouse using the JS driver provided by ClickHouse.
+Zing Data is a data exploration and visualization platform. Zing Data connects to ClickHouse using the JS driver provided by ClickHouse.
 
 ## How to connect {#how-to-connect}
 1. Gather your connection details.
@@ -35,9 +35,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 2. Download or visit Zing Data
 
-    * To use Clickhouse with Zing Data on mobile, download the Zing data app on [Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) or the [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091).
+    * To use Clickhouse with Zing Data on mobile, download the Zing data app on Google Play Store or the Apple App Store.
 
-    * To use Clickhouse with Zing Data on the web, visit the [Zing web console](https://console.getzingdata.com/) and create an account.
+    * To use Clickhouse with Zing Data on the web, visit the Zing web console and create an account.
 
 3. Add a datasource
 
@@ -91,6 +91,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## Related content {#related-content}
 
-- [Documentation](https://docs.getzingdata.com/docs/)
-- [Quick Start](https://getzingdata.com/quickstart/)
-- Guide to [Create Dashboards](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)
+- Documentation
+- Quick Start
+- Guide to Create Dashboards

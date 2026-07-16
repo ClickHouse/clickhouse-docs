@@ -27,7 +27,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <CommunityMaintainedBadge />
 
-<a href="https://www.zingdata.com/" target="_blank">Zing Data</a> は、データ探索と可視化のためのプラットフォームです。Zing Data は、ClickHouse が提供する JS ドライバーを使用して ClickHouse に接続します。
+Zing Data は、データ探索と可視化のためのプラットフォームです。Zing Data は、ClickHouse が提供する JS ドライバーを使用して ClickHouse に接続します。
 
 ## 接続手順 \{#how-to-connect\}
 
@@ -37,9 +37,9 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 2. Zing Data をダウンロードするか、Web 版にアクセスします
 
-    * モバイルで Zing Data と ClickHouse を使用するには、[Google Play Store](https://play.google.com/store/apps/details?id=com.getzingdata.android) もしくは [Apple App Store](https://apps.apple.com/us/app/zing-data-collaborative-bi/id1563294091) から Zing Data アプリをダウンロードします。
+    * モバイルで Zing Data と ClickHouse を使用するには、Google Play Store もしくは Apple App Store から Zing Data アプリをダウンロードします。
 
-    * Web で Zing Data と ClickHouse を使用するには、[Zing web console](https://console.getzingdata.com/) にアクセスしてアカウントを作成します。
+    * Web で Zing Data と ClickHouse を使用するには、Zing web console にアクセスしてアカウントを作成します。
 
 3. データソースを追加します
 
@@ -93,6 +93,6 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 ## 関連コンテンツ \{#related-content\}
 
-- [ドキュメント](https://docs.getzingdata.com/docs/)
-- [クイックスタート](https://getzingdata.com/quickstart/)
-- [ダッシュボード作成ガイド](https://getzingdata.com/blog/new-feature-create-multi-question-dashboards/)
+- ドキュメント
+- クイックスタート
+- ダッシュボード作成ガイド
