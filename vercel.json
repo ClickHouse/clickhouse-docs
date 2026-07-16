@@ -3942,6 +3942,11 @@
       "source": "/docs/ko/ko/guides/joining-tables",
       "destination": "/docs/ko/guides/joining-tables",
       "permanent": true
+    },
+    {
+      "source": "/docs/integrations/zingdata",
+      "destination": "/docs/integrations/data-visualization",
+      "permanent": true
     }
   ]
 }
