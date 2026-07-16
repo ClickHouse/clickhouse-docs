@@ -11,7 +11,6 @@ toc_max_heading_level: 2
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
-import TOCInline from '@theme/TOCInline';
 import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
 
 <ClickHouseSupportedBadge/>
@@ -29,8 +28,6 @@ catalog plugins.
 
 Spark's default catalog is `spark_catalog`, and tables are identified by `{catalog name}.{database}.{table}`. With the new
 catalog feature, it is now possible to add and work with multiple catalogs in a single Spark application.
-
-<TOCInline toc={toc}></TOCInline>
 
 ## Choosing Between Catalog API and TableProvider API {#choosing-between-apis}
 
