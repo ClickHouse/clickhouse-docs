@@ -1603,22 +1603,22 @@ The connector implements the Spark DataSource V2 push-down interfaces, meaning t
 
 To enable runtime filtering:
 
-<Tabs groupId="language">
-<TabItem value="python" label="Python" default>
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
 
 ```python
 spark.conf.set("spark.clickhouse.read.runtimeFilter.enabled", "true")
 ```
 
 </TabItem>
-<TabItem value="scala" label="Scala">
+<TabItem value="Scala" label="Scala">
 
 ```java
 spark.conf.set("spark.clickhouse.read.runtimeFilter.enabled", "true")
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
+<TabItem value="Java" label="Java">
 
 ```java
 spark.conf().set("spark.clickhouse.read.runtimeFilter.enabled", "true");
@@ -1659,22 +1659,22 @@ For **Distributed tables**, when `spark.clickhouse.write.distributed.useClusterN
 
 To control the number of write tasks, set `spark.clickhouse.write.repartitionNum` to the desired partition count:
 
-<Tabs groupId="language">
-<TabItem value="python" label="Python" default>
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
 
 ```python
 spark.conf.set("spark.clickhouse.write.repartitionNum", "16")
 ```
 
 </TabItem>
-<TabItem value="scala" label="Scala">
+<TabItem value="Scala" label="Scala">
 
 ```java
 spark.conf.set("spark.clickhouse.write.repartitionNum", "16")
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
+<TabItem value="Java" label="Java">
 
 ```java
 spark.conf().set("spark.clickhouse.write.repartitionNum", "16");
@@ -1685,8 +1685,8 @@ spark.conf().set("spark.clickhouse.write.repartitionNum", "16");
 
 Alternatively, repartition the DataFrame explicitly before writing. Note that a bare `df.repartition(16)` performs a round-robin shuffle and is not equivalent to `spark.clickhouse.write.repartitionNum` — it does not group rows by shard or partition key. To co-locate rows for the same shard and partition in the same task, repartition by the sharding column and sort within each partition:
 
-<Tabs groupId="language">
-<TabItem value="python" label="Python" default>
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
 
 ```python
 from pyspark.sql.functions import col
@@ -1703,7 +1703,7 @@ df.repartition(16, col("SHARD_COLUMN")) \
 ```
 
 </TabItem>
-<TabItem value="scala" label="Scala">
+<TabItem value="Scala" label="Scala">
 
 ```java
 import org.apache.spark.sql.functions.col
@@ -1720,7 +1720,7 @@ df.repartition(16, col("SHARD_COLUMN"))
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
+<TabItem value="Java" label="Java">
 
 ```java
 import static org.apache.spark.sql.functions.col;
@@ -1807,8 +1807,8 @@ Use `spark.clickhouse.read.settings` to apply ClickHouse settings to reads. The 
 
 To scope the settings to a single read, set the config, force the action, then unset:
 
-<Tabs groupId="language">
-<TabItem value="python" label="Python" default>
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
 
 ```python
 spark.conf.set("spark.clickhouse.read.settings", "max_execution_time=300,max_memory_usage=10000000000")
@@ -1826,7 +1826,7 @@ spark.conf.unset("spark.clickhouse.read.settings")
 ```
 
 </TabItem>
-<TabItem value="scala" label="Scala">
+<TabItem value="Scala" label="Scala">
 
 ```java
 spark.conf.set("spark.clickhouse.read.settings", "max_execution_time=300,max_memory_usage=10000000000")
@@ -1844,7 +1844,7 @@ spark.conf.unset("spark.clickhouse.read.settings")
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
+<TabItem value="Java" label="Java">
 
 ```java
 spark.conf().set("spark.clickhouse.read.settings", "max_execution_time=300,max_memory_usage=10000000000");
@@ -1866,8 +1866,8 @@ spark.conf().unset("spark.clickhouse.read.settings");
 
 For write-side settings (e.g. per-write batch size), pass `spark.clickhouse.write.*` options directly on the writer:
 
-<Tabs groupId="language">
-<TabItem value="python" label="Python" default>
+<Tabs groupId="spark_apis">
+<TabItem value="Python" label="Python" default>
 
 ```python
 df.write \
@@ -1882,7 +1882,7 @@ df.write \
 ```
 
 </TabItem>
-<TabItem value="scala" label="Scala">
+<TabItem value="Scala" label="Scala">
 
 ```java
 df.write
@@ -1897,7 +1897,7 @@ df.write
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
+<TabItem value="Java" label="Java">
 
 ```java
 df.write()
