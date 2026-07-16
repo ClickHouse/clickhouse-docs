@@ -1533,6 +1533,12 @@
   "sidebar.dropdownCategories.category.Integrations.Data sources.description": {
     "message": "Load data into ClickHouse from your prefered source"
   },
+  "sidebar.dropdownCategories.category.Integrations.Data lakes": {
+    "message": "Data lakes"
+  },
+  "sidebar.dropdownCategories.category.Integrations.Data lakes.description": {
+    "message": "Connect a data catalog for Iceberg or Delta tables"
+  },
   "sidebar.dropdownCategories.category.Integrations.Data visualization": {
     "message": "Data visualization"
   },

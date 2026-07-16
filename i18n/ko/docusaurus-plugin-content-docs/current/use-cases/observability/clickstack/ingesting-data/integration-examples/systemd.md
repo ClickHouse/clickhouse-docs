@@ -10,7 +10,6 @@ keywords: ['systemd', 'journald', 'journal', 'OTEL', 'ClickStack', '시스템 �
 ---
 
 import Image from '@theme/IdealImage';
-import useBaseUrl from '@docusaurus/useBaseUrl';
 import api_key from '@site/static/images/clickstack/api-key.png';
 import import_dashboard from '@site/static/images/clickstack/import-dashboard.png';
 import finish_import from '@site/static/images/clickstack/systemd/finish-import-systemd.png';
@@ -284,7 +283,7 @@ ClickStack으로 systemd 로그 모니터링을 시작할 수 있도록, systemd
 
 <VerticalStepper headerLevel="h4">
 
-#### 대시보드 구성 파일을 <TrackedLink href={useBaseUrl('/examples/systemd-logs-dashboard.json')} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">다운로드</TrackedLink>합니다 \{#download\}
+#### 대시보드 구성 파일을 <TrackedLink href={'https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/examples/systemd-logs-dashboard.json'} download="systemd-logs-dashboard.json" eventName="docs.systemd_logs_monitoring.dashboard_download">다운로드</TrackedLink>합니다 \{#download\}
 
 #### 미리 준비된 대시보드를 가져옵니다 \{#import-dashboard\}
 

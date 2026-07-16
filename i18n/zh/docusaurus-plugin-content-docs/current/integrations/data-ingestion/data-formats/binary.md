@@ -11,7 +11,7 @@ import CloudNotSupportedBadge from '@theme/badges/CloudNotSupportedBadge';
 
 ClickHouse 支持多种二进制格式，这些格式可带来更好的性能和空间利用率。二进制格式在字符编码方面也很安全，因为数据以二进制形式保存。
 
-我们将使用 some&#95;data [表](assets/some_data.sql) 和 [数据](assets/some_data.tsv) 进行演示，欢迎在你的 ClickHouse 实例上复现。
+我们将使用 some&#95;data [表](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.sql) 和 [数据](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/some_data.tsv) 进行演示，欢迎在你的 ClickHouse 实例上复现。
 
 ## 以 ClickHouse 原生格式导出 \{#exporting-in-a-native-clickhouse-format\}
 
@@ -22,7 +22,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.clickhouse' FORMAT Native
 ```
 
-这将在原生格式下创建 [data.clickhouse](assets/data.clickhouse) 文件。
+这将在原生格式下创建 [data.clickhouse](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.clickhouse) 文件。
 
 
 ### 从原生格式导入 \{#importing-from-a-native-format\}
@@ -84,7 +84,7 @@ SELECT * FROM some_data
 INTO OUTFILE 'data.binary' FORMAT RowBinary
 ```
 
-这将生成一个采用二进制行格式的 [data.binary](assets/data.binary) 文件。
+这将生成一个采用二进制行格式的 [data.binary](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.binary) 文件。
 
 
 ### 探索 RowBinary 文件 \{#exploring-rowbinary-files\}
@@ -173,7 +173,7 @@ INTO OUTFILE 'data.msgpk'
 FORMAT MsgPack
 ```
 
-要从 [MessagePack 文件](assets/data.msgpk) 导入数据：
+要从 [MessagePack 文件](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.msgpk) 导入数据：
 
 ```sql
 INSERT INTO sometable
@@ -186,7 +186,7 @@ FORMAT MsgPack
 
 <CloudNotSupportedBadge />
 
-要使用 [Protocol Buffers](/interfaces/formats/Protobuf)，首先需要定义一个 [模式文件（schema 文件）](assets/schema.proto)：
+要使用 [Protocol Buffers](/interfaces/formats/Protobuf)，首先需要定义一个 [模式文件（schema 文件）](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.proto)：
 
 ```protobuf
 syntax = "proto3";
@@ -207,14 +207,14 @@ FORMAT Protobuf
 SETTINGS format_schema = 'schema:MessageType'
 ```
 
-这会将数据保存到 [proto.bin](assets/proto.bin) 文件中。ClickHouse 还支持导入 Protobuf 数据以及包含嵌套消息的数据。对于处理单个 Protocol Buffer 消息的场景（此时会省略长度分隔符），请考虑使用 [ProtobufSingle](/interfaces/formats/ProtobufSingle)。
+这会将数据保存到 [proto.bin](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/proto.bin) 文件中。ClickHouse 还支持导入 Protobuf 数据以及包含嵌套消息的数据。对于处理单个 Protocol Buffer 消息的场景（此时会省略长度分隔符），请考虑使用 [ProtobufSingle](/interfaces/formats/ProtobufSingle)。
 
 
 ## Cap&#39;n Proto \{#capn-proto\}
 
 <CloudNotSupportedBadge />
 
-ClickHouse 支持的另一种流行二进制序列化格式是 [Cap&#39;n Proto](https://capnproto.org/)。与 `Protobuf` 格式类似，我们也需要在本示例中定义一个 schema 文件（[`schema.capnp`](assets/schema.capnp)）：
+ClickHouse 支持的另一种流行二进制序列化格式是 [Cap&#39;n Proto](https://capnproto.org/)。与 `Protobuf` 格式类似，我们也需要在本示例中定义一个 schema 文件（[`schema.capnp`](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/schema.capnp)）：
 
 ```response
 @0xec8ff1a10aa10dbe;

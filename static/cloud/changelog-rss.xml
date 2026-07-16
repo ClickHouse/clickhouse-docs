@@ -7,6 +7,36 @@
     <language>en-us</language>
     <atom:link href="https://clickhouse.com/docs/cloud/changelog-rss.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>ClickHouse Cloud - July 13, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-07-13</link>
+      <description>Sticky replica routing over HTTPS (private preview):
+
+Custom billing period start dates:
+
+Skip initial load for object storage ClickPipes:</description>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-07-13</guid>
+    </item>
+    <item>
+      <title>ClickHouse Cloud - June 30, 2026</title>
+      <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-06-30</link>
+      <description>Kafka exactly-once delivery in ClickPipes:
+
+Unified TLS controls for CDC sources:
+
+Replicated databases return to the ClickPipes picker:
+
+ClickHouse Agents updates (public beta):
+
+ClickHouse BYOC on the Azure Marketplace:
+
+Official ClickHouse Airflow provider:
+
+Billing visibility and marketplace improvements:</description>
+      <pubDate>Tue, 30 Jun 2026 00:00:00 +0200</pubDate>
+      <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-06-30</guid>
+    </item>
+    <item>
       <title>ClickHouse Cloud - June 3, 2026</title>
       <link>https://clickhouse.com/docs/cloud/whats-new/cloud#2026-06-03</link>
       <description>ClickPipes now runs natively on GCP with Private Service Connect:
@@ -27,7 +57,7 @@ Horizontal autoscaling (private preview):
 
 ClickStack MCP Server (open source):
 
-Open House 2026: a roadmap of UX improvements for humans and agents:</description>
+Executable User Defined Functions:</description>
       <pubDate>Wed, 03 Jun 2026 00:00:00 +0200</pubDate>
       <guid isPermaLink="true">https://clickhouse.com/docs/cloud/whats-new/cloud#2026-06-03</guid>
     </item>

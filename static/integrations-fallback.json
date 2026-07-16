@@ -1901,6 +1901,25 @@
       }
     },
     {
+      "id": 222,
+      "documentId": "clickhousecnativeclient1",
+      "name": "C",
+      "slug": "c_client",
+      "category": "LANGUAGE_CLIENT",
+      "supportLevel": "COMMUNITY",
+      "docsLink": "https://clickhouse.com/docs/integrations/c",
+      "logo": {
+        "id": 2919,
+        "documentId": "guygur1gr8fjbtwcs0643ida",
+        "url": "/uploads/logo_c_9d2b85a06d.svg"
+      },
+      "logo_dark": {
+        "id": 2919,
+        "documentId": "guygur1gr8fjbtwcs0643ida",
+        "url": "/uploads/logo_c_9d2b85a06d.svg"
+      }
+    },
+    {
       "id": 151,
       "documentId": "arge8cjaw7dtobbs7qix3tcm",
       "name": "CHProxy",
@@ -2477,7 +2496,7 @@
       "slug": "rust",
       "category": "LANGUAGE_CLIENT",
       "supportLevel": "CORE",
-      "docsLink": "https://github.com/loyd/clickhouse.rs",
+      "docsLink": "https://clickhouse.com/docs/integrations/rust",
       "logo": {
         "id": 2948,
         "documentId": "we1gajse8mwtz3t8ybcjjefh",

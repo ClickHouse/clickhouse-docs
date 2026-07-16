@@ -14,7 +14,7 @@ Apache는 널리 사용되는 [Avro](https://avro.apache.org/), [Arrow](https://
 
 ClickHouse는 Hadoop 시스템에서 널리 사용되는 [Apache Avro](https://avro.apache.org/) 데이터 파일을 읽고 쓸 수 있습니다.
 
-[avro 파일](assets/data.avro)에서 데이터를 가져오려면 `INSERT` 구문에서 [Avro](/interfaces/formats/Avro) 형식을 사용하면 됩니다.
+[avro 파일](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.avro)에서 데이터를 가져오려면 `INSERT` 구문에서 [Avro](/interfaces/formats/Avro) 형식을 사용하면 됩니다.
 
 ```sql
 INSERT INTO sometable
@@ -88,7 +88,7 @@ kafka_format = 'AvroConfluent';
 
 ## Arrow 형식 다루기 \{#working-with-arrow-format\}
 
-또 다른 컬럼형 포맷으로 [Apache Arrow](https://arrow.apache.org/)가 있으며, ClickHouse에서는 가져오기와 내보내기 모두를 지원합니다. [Arrow 파일](assets/data.arrow)에서 데이터를 가져오기 위해 [Arrow](/interfaces/formats/Arrow) 형식을 사용합니다:
+또 다른 컬럼형 포맷으로 [Apache Arrow](https://arrow.apache.org/)가 있으며, ClickHouse에서는 가져오기와 내보내기 모두를 지원합니다. [Arrow 파일](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.arrow)에서 데이터를 가져오기 위해 [Arrow](/interfaces/formats/Arrow) 형식을 사용합니다:
 
 ```sql
 INSERT INTO sometable
@@ -142,7 +142,7 @@ arrow-stream | clickhouse-client -q "INSERT INTO sometable FORMAT ArrowStream"
 
 ## ORC 데이터 가져오기 및 내보내기 \{#importing-and-exporting-orc-data\}
 
-[Apache ORC](https://orc.apache.org/) 형식은 Hadoop 환경에서 주로 사용되는 열 지향 저장 형식입니다. ClickHouse는 [ORC 형식](/interfaces/formats/ORC)을 사용하여 [ORC 데이터](assets/data.orc)의 가져오기(import)와 내보내기(export)를 모두 지원합니다:
+[Apache ORC](https://orc.apache.org/) 형식은 Hadoop 환경에서 주로 사용되는 열 지향 저장 형식입니다. ClickHouse는 [ORC 형식](/interfaces/formats/ORC)을 사용하여 [ORC 데이터](https://clickhouse-docs-assets.s3.us-east-1.amazonaws.com/data.orc)의 가져오기(import)와 내보내기(export)를 모두 지원합니다:
 
 ```sql
 SELECT *
