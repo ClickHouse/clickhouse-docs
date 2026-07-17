@@ -36,10 +36,10 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 - Запущенный экземпляр SQL Server  
 
-- В этом руководстве мы используем AWS RDS для SQL Server, но подойдёт любой современный экземпляр SQL Server. [Настройка AWS SQL Server с нуля.](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap%23setting-up-a-new-rds-sql-server-from-scratch)
+- В этом руководстве мы используем AWS RDS для SQL Server, но подойдёт любой современный экземпляр SQL Server. [Настройка AWS SQL Server с нуля.](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap#setting-up-a-new-rds-sql-server-from-scratch)
 - Экземпляр ClickHouse  
 
-- Самостоятельно развернутый или облачный. [Настройка ClickHouse с нуля.](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap%23creating-a-new-clickhouse-account)
+- Самостоятельно развернутый или облачный. [Настройка ClickHouse с нуля.](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap#creating-a-new-clickhouse-account)
 - Streamkap  
 
 - Этот инструмент будет основой вашего конвейера потоковой обработки данных.

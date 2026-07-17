@@ -2,7 +2,7 @@
 title: "ClickHouse에서 JOIN 사용하기"
 description: "ClickHouse에서 테이블을 조인하는 방법"
 keywords: ["조인", "테이블 조인"]
-slug: /ko/guides/joining-tables
+slug: /guides/joining-tables
 doc_type: "guide"
 ---
 

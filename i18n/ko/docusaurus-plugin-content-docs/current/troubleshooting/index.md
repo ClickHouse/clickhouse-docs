@@ -146,4 +146,4 @@ ClickHouse에 연결하지 못하는 경우, 인증 실패, SSL 인증서 오류
 1. **시스템 테이블 확인** - [개요](/operations/system-tables/overview)
 2. **서버 로그 검토** - ClickHouse 로그에서 오류 메시지를 확인하십시오.
 3. **커뮤니티에 질문** - [커뮤니티 Slack 참여](https://clickhouse.com/slack), [GitHub Discussions](https://github.com/ClickHouse/ClickHouse/discussions)
-4. **전문 지원 받기** - [ClickHouse Cloud 지원](https://clickhouse.com/support)
+4. **전문 지원 받기** - [ClickHouse Cloud 지원](https://clickhouse.com/support/program)

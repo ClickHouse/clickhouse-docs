@@ -24,7 +24,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <br />
 
-このガイドでは、Hashboard を ClickHouse インスタンスに接続する手順を説明します。これらの情報は、Hashboard の [ClickHouse 連携ドキュメント](https://docs.hashboard.com/docs/database-connections/clickhouse) でも参照できます。
+このガイドでは、Hashboard を ClickHouse インスタンスに接続する手順を説明します。これらの情報は、Hashboard の [ClickHouse 連携ドキュメント](https://hashboard.com/docs/database-connections/clickhouse) でも参照できます。
 
 ## 前提条件 \{#pre-requisites\}
 
@@ -47,8 +47,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 6. &quot;Test&quot; をクリックして、接続が正しく設定されていることを確認します。
 7. &quot;Add&quot; をクリックします
 
-これで ClickHouse データベースが Hashboard に接続され、[Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model)、[Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations)、[Metrics](https://docs.hashboard.com/docs/metrics)、[Dashboards](https://docs.hashboard.com/docs/dashboards) の作成に進めます。これらの機能の詳細については、該当する Hashboard のドキュメントを参照してください。
+これで ClickHouse データベースが Hashboard に接続され、[Data Models](https://hashboard.com/docs/data-modeling/add-data-model)、[Explorations](https://hashboard.com/docs/visualizing-data/explorations)、[Metrics](https://hashboard.com/docs/metrics)、[Dashboards](https://hashboard.com/docs/dashboards) の作成に進めます。これらの機能の詳細については、該当する Hashboard のドキュメントを参照してください。
 
 ## 詳細情報 \{#learn-more\}
 
-より高度な機能やトラブルシューティングについては、[Hashboard のドキュメント](https://docs.hashboard.com/)を参照してください。
+より高度な機能やトラブルシューティングについては、[Hashboard のドキュメント](https://hashboard.com/docs)を参照してください。

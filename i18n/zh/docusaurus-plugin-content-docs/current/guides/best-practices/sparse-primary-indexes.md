@@ -647,7 +647,7 @@ LIMIT 10;
 
 :::note
 
-* 对于使用[宽格式](/engines/table-engines/mergettree-family/mergetree.md/#mergetree-data-storage)且未启用[自适应索引粒度](/whats-new/changelog/2019.md/#experimental-features-1)的表，ClickHouse 使用如上所示的 `.mrk` 标记文件，其中每条记录包含两个 8 字节长的地址。这些记录是粒度的物理位置，所有粒度的大小都相同。
+* 对于使用[宽格式](/engines/table-engines/mergetree-family/mergetree.md/#mergetree-data-storage)且未启用[自适应索引粒度](/whats-new/changelog/2019.md/#experimental-features-1)的表，ClickHouse 使用如上所示的 `.mrk` 标记文件，其中每条记录包含两个 8 字节长的地址。这些记录是粒度的物理位置，所有粒度的大小都相同。
 
 索引粒度在[默认情况下](/operations/settings/merge-tree-settings#index_granularity_bytes)是自适应的，但在我们的示例表中，我们禁用了自适应索引粒度 (以简化本指南中的讨论，并使图示和结果可复现) 。我们的表使用宽格式，是因为数据大小大于 [min&#95;bytes&#95;for&#95;wide&#95;part](/operations/settings/merge-tree-settings#min_bytes_for_wide_part) (对于自管理集群，其默认值为 10 MB) 。
 

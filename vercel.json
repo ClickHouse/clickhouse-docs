@@ -3897,6 +3897,56 @@
       "source": "/docs/cloud/security/cmek-migration",
       "destination": "/docs/cloud/security/cmek",
       "permanent": true
+    },
+    {
+      "source": "/docs/engines/table-engines/special/materializedview",
+      "destination": "/docs/materialized-views",
+      "permanent": true
+    },
+    {
+      "source": "/docs/getting-started/example-datasets/opensky",
+      "destination": "/docs/getting-started/example-datasets",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/language-clients/nodejs",
+      "destination": "/docs/integrations/javascript",
+      "permanent": true
+    },
+    {
+      "source": "/docs/manage/security/compliance-and-certification",
+      "destination": "/docs/cloud/security/compliance-overview",
+      "permanent": true
+    },
+    {
+      "source": "/docs/observability/clickstack",
+      "destination": "/docs/use-cases/observability/clickstack",
+      "permanent": true
+    },
+    {
+      "source": "/docs/sql-reference/statements/alter/statistic",
+      "destination": "/docs/sql-reference/statements/alter/statistics",
+      "permanent": true
+    },
+    {
+      "source": "/docs/ru/getting-started/tutorial",
+      "destination": "/docs/ru/tutorial",
+      "permanent": true
+    },
+    {
+      "source": "/docs/jp/engines/table-engines/mergetree-family/mergettree",
+      "destination": "/docs/jp/engines/table-engines/mergetree-family/mergetree",
+      "permanent": true
+    },
+    {
+      "source": "/docs/ko/ko/guides/joining-tables",
+      "destination": "/docs/ko/guides/joining-tables",
+      "permanent": true
+    },
+    {
+      "source": "/docs/integrations/zingdata",
+      "destination": "/docs/integrations/data-visualization",
+      "permanent": true
     }
   ]
 }

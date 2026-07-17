@@ -37,7 +37,6 @@ doc_type: 'guide'
 * [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
 * [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 * [Tableau](./tableau/tableau-and-clickhouse.md)
-* [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
 * [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
 ## 데이터 시각화 도구와 ClickHouse Cloud 호환성 \{#clickhouse-cloud-compatibility-with-data-visualization-tools\}
@@ -72,4 +71,3 @@ doc_type: 'guide'
 | [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)            | 네이티브 커넥터              | ✅      | ❌          |                                                                                                                                         |
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | ClickHouse 공식 커넥터 | ✅      | ✅          |                                                                                                               |
 | [Tableau Online](./tableau/tableau-online-and-clickhouse.md) | MySQL 인터페이스               | ✅      | ✅          | 일부 제한 사항이 있습니다. 자세한 내용은 [문서](./tableau/tableau-online-and-clickhouse.md)를 참조하세요            |
-| [Zing Data](./community_integrations/zingdata-and-clickhouse.md)            | 네이티브 커넥터              | ✅      | ✅          |                                                                                                                                         |

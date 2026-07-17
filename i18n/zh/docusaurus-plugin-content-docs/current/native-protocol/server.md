@@ -55,7 +55,7 @@ keywords: ['原生协议', 'tcp 协议', '客户端-服务器', '协议规范', 
 
 可以是一个连续的异常列表，直到 `nested` 为 `false` 为止。
 
-[codes]: https://clickhouse.com/codebrowser/ClickHouse/src/Common/ErrorCodes.cpp.html "错误代码列表"
+[codes]: https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp "错误代码列表"
 
 ## 进度 \{#progress\}
 

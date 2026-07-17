@@ -26,7 +26,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge />
 
-Metabase は、データに関する質問を簡単に行える使いやすいオープンソースの UI ツールです。Metabase は Java アプリケーションであり、<a href="https://www.metabase.com/start/oss/jar" target="_blank">JAR ファイルをダウンロード</a>して `java -jar metabase.jar` で実行するだけで起動できます。Metabase は JDBC ドライバーを使用して ClickHouse に接続します。このドライバーをダウンロードして `plugins` フォルダーに配置してください。
+Metabase は、データに関する質問を簡単に行える使いやすいオープンソースの UI ツールです。Metabase は Java アプリケーションであり、<a href="https://www.metabase.com/cloud/oss/jar" target="_blank">JAR ファイルをダウンロード</a>して `java -jar metabase.jar` で実行するだけで起動できます。Metabase は JDBC ドライバーを使用して ClickHouse に接続します。このドライバーをダウンロードして `plugins` フォルダーに配置してください。
 
 ## 目的 \{#goal\}
 
