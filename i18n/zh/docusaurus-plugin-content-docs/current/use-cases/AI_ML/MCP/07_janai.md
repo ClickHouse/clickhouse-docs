@@ -30,7 +30,7 @@ import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png'
   ## 安装 Jan.ai \{#install-janai\}
 
   Jan.ai 是一个可 100% 离线运行的开源 ChatGPT 替代方案。
-  可以下载适用于 [Mac](https://jan.ai/docs/desktop/mac)、[Windows](https://jan.ai/docs/desktop/windows) 或 [Linux](https://jan.ai/docs/desktop/linux) 的 Jan.ai。
+  可以下载适用于 [Mac](https://jan.ai/docs/desktop/install/mac)、[Windows](https://jan.ai/docs/desktop/windows) 或 [Linux](https://jan.ai/docs/desktop/linux) 的 Jan.ai。
 
   它是一个原生应用程序，下载完成后即可直接启动。
 

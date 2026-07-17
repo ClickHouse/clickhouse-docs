@@ -55,7 +55,7 @@ If you don't have a dataset to work with you can add one of the examples. This g
     ```
 
     :::note Docker Compose Setup
-    For Docker-based installations, see the [Superset database configuration guide](https://superset.apache.org/docs/configuration/databases/#clickhouse) for instructions on adding `clickhouse-connect` to your container.
+    For Docker-based installations, see the [Superset database configuration guide](https://superset.apache.org/user-docs/6.0.0/configuration/databases/) for instructions on adding `clickhouse-connect` to your container.
     :::
 
 2. Start (or restart) Superset.

@@ -503,23 +503,6 @@ logic might fail.
 
 2. Use simplified version parameters in URLs (e.g., `v08` instead of `v0.8.x`).
 
-## Related blog component
-
-Pages can show a "Related blogs" component which displays recent blogs which are
-related to the keywords or title of the document.
-
-If you would like to show it on a page, add the following property to the 
-front matter:
-
-```yaml
----
-show_related_blogs: true
----
-```
-
-This will show it on the page, assuming there is a matching blog. If there is no
-match then it remains hidden.
-
 ## Vale
 
 Vale is a command-line tool that brings code-like linting to prose.

@@ -24,7 +24,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 ClickHouse は、優れた圧縮性能 (ログでは最大 [170x](https://clickhouse.com/blog/log-compression-170x))
 と大量のデータを高速に集計できる能力により、ログデータの保存と分析に非常に優れています。
 
-このガイドでは、広く利用されているデータパイプライン [Vector](https://vector.dev/docs/about/what-is-vector/) を使用して、Nginx のログファイルをテールし、ClickHouse に送信する方法を説明します。
+このガイドでは、広く利用されているデータパイプライン [Vector](https://vector.dev/docs/introduction/) を使用して、Nginx のログファイルをテールし、ClickHouse に送信する方法を説明します。
 以下の手順は、あらゆる種類のログファイルをテールする場合にもほぼ同様です。
 
 **前提条件:**

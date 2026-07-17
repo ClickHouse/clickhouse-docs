@@ -26,7 +26,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge />
 
-Metabase — это простой в использовании UI-инструмент с открытым исходным кодом для анализа ваших данных. Metabase — это Java-приложение, которое можно запустить, просто <a href="https://www.metabase.com/start/oss/jar" target="_blank">скачав JAR-файл</a> и выполнив его с помощью `java -jar metabase.jar`. Metabase подключается к ClickHouse с помощью JDBC-драйвера, который нужно скачать и поместить в папку `plugins`:
+Metabase — это простой в использовании UI-инструмент с открытым исходным кодом для анализа ваших данных. Metabase — это Java-приложение, которое можно запустить, просто <a href="https://www.metabase.com/cloud/oss/jar" target="_blank">скачав JAR-файл</a> и выполнив его с помощью `java -jar metabase.jar`. Metabase подключается к ClickHouse с помощью JDBC-драйвера, который нужно скачать и поместить в папку `plugins`:
 
 ## Цель \{#goal\}
 

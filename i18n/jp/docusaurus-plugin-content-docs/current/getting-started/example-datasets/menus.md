@@ -9,7 +9,7 @@ keywords: ['example dataset', 'menus', 'historical data', 'sample data', 'nypl']
 
 このデータセットは New York Public Library (ニューヨーク公共図書館) によって作成されたものです。ホテル、レストラン、カフェのメニューに関する履歴データが含まれており、料理名とその価格が記録されています。
 
-出典: http://menus.nypl.org/data
+出典: https://www.nypl.org/research/support/whats-on-the-menu
 データはパブリックドメインです。
 
 このデータは図書館アーカイブ由来であるため、不完全であったり、統計解析には扱いづらい場合があります。それでも、とても「おいしい」データです。
@@ -26,7 +26,7 @@ md5sum 2021_08_01_07_01_17_data.tgz
 # Checksum should be equal to: db6126724de939a5481e3160a2d67d15
 ```
 
-必要に応じて、[http://menus.nypl.org/data](http://menus.nypl.org/data) にある最新のリンクに差し替えてください。
+必要に応じて、[https://www.nypl.org/research/support/whats-on-the-menu](https://www.nypl.org/research/support/whats-on-the-menu) にある最新のリンクに差し替えてください。
 ダウンロードサイズは約 35 MB です。
 
 ## データセットの展開 \{#unpack-dataset\}

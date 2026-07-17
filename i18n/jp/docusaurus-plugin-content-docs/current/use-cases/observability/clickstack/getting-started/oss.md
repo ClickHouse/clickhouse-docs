@@ -115,7 +115,7 @@ HyperDX はローカルクラスターに自動的に接続し、ログ、トレ
 
 ### ホスト型バージョン \{#hosted-version\}
 
-ローカルモードで利用可能な ClickStack のホスト型バージョンは、[play-clickstack.clickhouse.com](https://play-clickstack.clickstack.com) から利用できます。
+ローカルモードで利用可能な ClickStack のホスト型バージョンは、[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com) から利用できます。
 
 ### 自前ホスティング版 \{#self-hosted-version\}
 

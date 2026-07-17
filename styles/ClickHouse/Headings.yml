@@ -67,10 +67,12 @@ exceptions:
   - Docker
   - Docker Compose
   - DigitalOcean Spaces
+  - Datadog Agent
   - Duo SAML
   - EDOT
   - Elastic Agent
   - Emmet
+  - Entra ID
   - FAQ
   - Filebeat
   - Frequently Asked Questions
@@ -167,6 +169,7 @@ exceptions:
   - VLDB
   - VS
   - VPC
+  - "VPC Lattice"
   - Vitess
   - Visual
   - Windows
@@ -593,6 +596,7 @@ exceptions:
   - Synapse
   - Systemd
   - "TABLUM.IO"
+  - Tigris
   - TimescaleDB
   - Upsonic
   - WebUI

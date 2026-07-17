@@ -24,7 +24,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 ClickHouse는 뛰어난 압축률(로그의 경우 최대 [170배](https://clickhouse.com/blog/log-compression-170x))과
 대량의 데이터를 빠르게 집계하는 기능 덕분에 로그 데이터를 저장하고 분석하는 데 탁월합니다.
 
-이 가이드에서는 널리 사용되는 데이터 파이프라인 [Vector](https://vector.dev/docs/about/what-is-vector/)를 사용하여 Nginx 로그 파일을 tail한 뒤 ClickHouse로 전송하는 방법을 설명합니다.
+이 가이드에서는 널리 사용되는 데이터 파이프라인 [Vector](https://vector.dev/docs/introduction/)를 사용하여 Nginx 로그 파일을 tail한 뒤 ClickHouse로 전송하는 방법을 설명합니다.
 아래 단계는 어떤 유형의 로그 파일을 tail할 때에도 거의 동일합니다.
 
 **사전 요구 사항:**
