@@ -9,6 +9,7 @@ doc_type: 'reference'
 
 import Image from '@theme/IdealImage';
 import byoc_connect_1 from '@site/static/images/cloud/reference/byoc-connect-1.png';
+import byoc_connect_via from '@site/static/images/cloud/reference/byoc-connect-via.png';
 
 This page describes the different ways to connect to your ClickHouse services in BYOC. You can choose from public load balancers, private load balancers, or PrivateLink/Private Service Connect endpoints based on your security and networking requirements.
 
@@ -26,7 +27,7 @@ Selecting a path updates the hostname in every connection example in the dialog 
 
 The dropdown lists only the paths enabled for your infrastructure, and the list is refreshed each time the dialog opens — a newly enabled private load balancer or PrivateLink endpoint appears the next time you open **Connect**, with no propagation delay. When only one path is available, the dropdown is shown disabled with that endpoint selected.
 
-{/* TODO: add a screenshot of the Connect dialog with the "Connection via" dropdown expanded once the feature is live in production. */}
+<Image img={byoc_connect_via} size="lg" alt="Connect dialog with the Connection via dropdown expanded, showing the public load balancer, private load balancer, and PrivateLink paths" background='black'/>
 
 ## Public Load Balancer {#public-load-balancer}
 
