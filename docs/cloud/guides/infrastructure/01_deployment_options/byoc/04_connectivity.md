@@ -21,7 +21,7 @@ For BYOC services, the **Connect** dialog includes a **Connection via** dropdown
 
 - **Public load balancer** — the internet-facing endpoint.
 - **Private load balancer** — the internal endpoint, reached over VPC peering or connected networks. Listed only when a [private load balancer](#private-load-balancer) is enabled for your infrastructure.
-- **PrivateLink** (AWS) / **Private Service Connect** (GCP) / **Private Link** (Azure) — the cloud provider's private-endpoint hostname. Listed only when [PrivateLink or Private Service Connect](#privatelink-or-private-service-connect) is enabled.
+- **PrivateLink** (AWS) / **Private Service Connect** (GCP) — the cloud provider's private-endpoint hostname. Listed only when [PrivateLink or Private Service Connect](#privatelink-or-private-service-connect) is enabled.
 
 Selecting a path updates the hostname in every connection example in the dialog — the HTTPS (`curl`) command, the native client, JDBC, MySQL, and the language-client snippets (Python, Node.js, Java, Go, and C#) — so you can copy a ready-to-use command for the exact path you need without editing the hostname by hand.
 
@@ -116,7 +116,7 @@ The PrivateLink endpoint format is similar to the public endpoint, but includes 
 - **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
 - **PrivateLink endpoint**: `h5ju65kv87.vpce.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
 
-Once the endpoint is set up and allowlisted, select **PrivateLink** (or **Private Service Connect** on GCP, **Private Link** on Azure) from the **Connection via** dropdown in the **Connect** dialog to copy the private-endpoint connection details directly.
+Once the endpoint is set up and allowlisted, select **PrivateLink** (or **Private Service Connect** on GCP) from the **Connection via** dropdown in the **Connect** dialog to copy the private-endpoint connection details directly.
 
 ### Endpoint ID Allowlist {#endpoint-id-allowlist}
 
