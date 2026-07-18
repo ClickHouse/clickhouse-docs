@@ -59,6 +59,10 @@ ClickHouse supports writing data back to open table formats, which is relevant i
 
 See the getting started guide for [writing to data lakes](/use-cases/data-lake/getting-started/writing-data).
 
+### Best practices {#best-practices}
+
+For production workloads, see [Data lake best practices](/use-cases/data-lake/best-practices) for guidance on choosing table functions, table engines, or catalog connections, tuning performance settings, and debugging lake queries.
+
 ## Next steps {#next-steps}
 
 Ready to try it out? The [Getting Started guide](/use-cases/data-lake/getting-started) walks through querying open table formats directly, connecting to a catalog, loading data into MergeTree for fast analytics, and writing results back - all in a single end-to-end workflow.

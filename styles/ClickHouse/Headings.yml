@@ -298,6 +298,7 @@ exceptions:
   - Tableau Online
   - SSL/TLS
   - Delta Lake
+  - Delta Kernel
   - Embeddable
   - Draxlr
   - Rust

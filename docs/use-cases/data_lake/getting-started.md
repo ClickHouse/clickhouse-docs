@@ -239,3 +239,4 @@ Now that you've seen the full workflow, dive deeper into each area:
 - [Accelerating analytics](/use-cases/data-lake/getting-started/accelerating-analytics) — Schema optimization, indexing, ~40x speedup demo
 - [Writing to data lakes](/use-cases/data-lake/getting-started/writing-data) — Raw writes, aggregated writes, type mapping
 - [Support matrix](/use-cases/data-lake/support-matrix) — Feature comparison across formats and storage backends
+- [Best practices](/use-cases/data-lake/best-practices) — Access method selection, performance settings, and workload patterns
