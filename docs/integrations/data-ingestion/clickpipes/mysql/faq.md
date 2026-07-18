@@ -37,7 +37,7 @@ To resolve it:
   ```sql
   ALTER TABLE <table> MODIFY <column> <type>; -- without COLUMN_FORMAT COMPRESSED
   ```
-- resync the pipe
+- resync the table or the pipe
 
 ### Does the MySQL ClickPipe support PlanetScale, Vitess, or TiDB? {#does-the-clickpipe-support-planetscale-vitess}
 No, these don't support MySQL's binlog API.
