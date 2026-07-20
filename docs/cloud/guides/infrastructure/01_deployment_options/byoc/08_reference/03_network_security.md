@@ -16,7 +16,7 @@ The ClickHouse Cloud control plane maintains several types of connections to ope
 
 | Purpose                                      | Connection type                                 | Notes                                                                                                                                                                                           |
 | -------------------------------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Daily operations — Kubernetes API server** | Public with IP filtering (default), or private via Tailscale or AWS VPC Lattice | Management services talk to the EKS API server over the public network, restricted by IP allow lists. After initial deployment, you can optionally switch this to private access via Tailscale or, on AWS, VPC Lattice. |
+| **Daily operations — Kubernetes API server** | Public with IP filtering (default), or private via Tailscale or AWS VPC Lattice | Management services talk to the EKS API server over the public network, restricted by IP allow lists. After initial deployment, you can optionally switch this to private access via Tailscale or, on AWS, VPC Lattice. On Azure, the AKS cluster is a private cluster: when the public API endpoint is disabled, the API server's internal load balancer is fronted by an AKS [Private Link Service](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview), and the ClickHouse management plane connects through a Private Endpoint in its own VNet. |
 | **Daily operations — AWS APIs**              | ClickHouse VPC → AWS                            | Management services call AWS APIs (e.g., EKS, EC2) from ClickHouse Cloud’s own VPC to AWS. This doesn't involve your VPC or Tailscale.                                                          |
 | **Troubleshooting — ClickHouse service**     | Tailscale                                       | ClickHouse engineers access the ClickHouse service (e.g., system tables) for diagnostics via Tailscale.                                                                                         |
 | **Troubleshooting — Kubernetes API server**  | Tailscale                                       | ClickHouse engineers access the EKS API server for cluster diagnostics via Tailscale.                                                                                                           |
@@ -99,6 +99,10 @@ By default, ClickHouse management services access your BYOC Kubernetes cluster v
 - You can configure the EKS API server to use only a private endpoint
 - In this case, management services access the API server via Tailscale (similar to human troubleshooting access) or, on AWS, via VPC Lattice (see [Kubernetes API Private Connection](/cloud/reference/byoc/configurations#k8s-api-private-connection))
 - Public access is kept as a backup mechanism for emergency investigation and support needs
+
+:::note Azure BYOC
+On Azure, private management-plane access does not use Tailscale. The AKS cluster is provisioned as a private cluster, and its API server internal load balancer is fronted by an AKS Private Link Service. The ClickHouse management plane connects to it through a Private Endpoint in the ClickHouse VNet. Tailscale on Azure is reserved for engineer troubleshooting access only.
+:::
 
 ### Network Traffic Flow {#tailscale-traffic-flow}
 
