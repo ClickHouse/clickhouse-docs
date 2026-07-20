@@ -180,7 +180,13 @@ You can add [data skipping indexes](/optimize/skipping-indexes) to `table` mater
 
 ### Projections {#projections}
 
-You can add [projections](/data-modeling/projections) to `table` and `distributed_table` materializations using the `projections` configuration:
+You can add [projections](/data-modeling/projections) to `table` and `distributed_table` materializations using the `projections` configuration. Each projection entry requires either a `query` or an `index` key (not both).
+
+**Note**: For distributed tables, the projection is applied to the `_local` tables, not to the distributed proxy table.
+
+#### Query projections {#query-projections}
+
+Use `query` to define a full projection query:
 
 ```sql
 {{ config(
@@ -193,7 +199,48 @@ You can add [projections](/data-modeling/projections) to `table` and `distribute
        ]
 ) }}
 ```
-**Note**: For distributed tables, the projection is applied to the `_local` tables, not to the distributed proxy table.
+
+#### Index projections {#index-projections}
+
+:::note
+Requires ClickHouse 25.6 or later.
+:::
+
+Use `index` as syntax sugar for lightweight [index projections](https://clickhouse.com/blog/clickhouse-release-25-06#index-projections) that use the `_part_offset` virtual column. Pass a single column name or a list of columns to order by:
+
+```sql
+{{ config(
+       materialized='table',
+       projections=[
+           {
+               'name': 'proj_by_age',
+               'index': 'age'
+           }
+       ]
+) }}
+```
+
+```sql
+{{ config(
+       materialized='table',
+       projections=[
+           {
+               'name': 'proj_by_dept_age',
+               'index': ['department', 'age']
+           }
+       ]
+) }}
+```
+
+dbt-clickhouse generates version-appropriate DDL automatically:
+
+| ClickHouse version | Generated SQL |
+|--------------------|---------------|
+| 26.1+ | `ADD PROJECTION proj_by_age INDEX age TYPE basic` |
+| 25.6 – 26.0 | `ADD PROJECTION proj_by_age (SELECT _part_offset ORDER BY age)` |
+| < 25.6 | Compile-time error |
+
+Specifying both `query` and `index` on the same projection entry raises a compile-time error.
 
 ## Materialization: incremental {#materialization-incremental}
 
