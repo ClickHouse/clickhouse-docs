@@ -36,6 +36,7 @@ Connect to your RDS/Aurora instance and create a database user with IAM authenti
 - [AWS RDS for PostgreSQL source setup guide](./source/rds#configure-database-user)
 - [AWS Aurora for MySQL source setup guide](../mysql/source/aurora#configure-database-user)
 - [AWS RDS for MySQL source setup guide](../mysql/source/rds#configure-database-user)
+- [AWS RDS for MariaDB source setup guide](../mysql/source/rds_maria#configure-database-user-rds)
 
 ### Obtaining the ClickHouse service IAM role Arn {#obtaining-the-clickhouse-service-iam-role-arn}
 
