@@ -34,16 +34,6 @@ We [blogged about ClickCannon recently](https://clickhouse.com/blog/building-cli
 
 The profile payloads turned out to be considerably larger than the other signals, so tuning how many keys get added per sample, and checking throughput against instance size, is still ongoing work. Being able to generate this data at volume means the team can start optimizing the schema and get a reference point for it, which ties into the broader effort to support profiling data, and its visualization, across ClickStack. Spencer also took a first look at rendering profile frames in the ClickStack log viewer.
 
-## MCP notebook integration improvements {#mcp-notebook-integration-improvements}
-
-*Demo by [@pulpdrew](https://github.com/pulpdrew)*
-
-<iframe width="768" height="432" src="https://www.youtube.com/embed/hHPV59GD7Tk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-The idea here is that users should be able to persist a local Claude session that uses the MCP and store it as a notebook, unlocking collaboration across SRE investigations. Subagent calls made through a harness like Claude Code now get grouped into expandable, collapsible threads instead of showing up as a flat list, making a multi-step investigation much easier to follow when a session gets persisted to a notebook.
-
-You can now also download the context from a notebook and hand it to a local agent, letting a local harness pick up an existing notebook investigation and continue from there, with next steps written back to the same notebook. Drew also added tile attribution: hovering a tile now shows who created it and where, whether that's a notebook investigation or someone's local harness using the MCP session.
-
 ## Bar charts {#bar-charts}
 
 *Demo by [@pulpdrew](https://github.com/pulpdrew)*
