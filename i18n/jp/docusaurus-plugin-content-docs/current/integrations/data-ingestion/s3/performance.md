@@ -114,7 +114,7 @@ Go to ①.
 
 大量のファイルがある場合、複数の挿入スレッドによる並列処理が有効に機能します。これにより、利用可能な CPU コアおよびネットワーク帯域幅（ファイルの並列ダウンロード）を十分に使い切ることができます。少数の大きなファイルだけをテーブルにロードするシナリオでは、ClickHouse は自動的に高いレベルのデータ処理並列性を実現し、各挿入スレッドごとに追加のリーダースレッドを生成して、大きなファイル内のより多くの別々の範囲を並列に読み取り（ダウンロード）することでネットワーク帯域幅の使用を最適化します。
 
-`s3` 関数およびテーブルの場合、個々のファイルの並列ダウンロードは [max&#95;download&#95;threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) と [max&#95;download&#95;buffer&#95;size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size) の値によって決まります。ファイルサイズが `2 * max_download_buffer_size` より大きい場合にのみ、ファイルは並列でダウンロードされます。デフォルトでは、`max_download_buffer_size` は 10MiB に設定されています。場合によっては、各ファイルが単一スレッドによってダウンロードされるようにすることを目的として、このバッファサイズを 50 MB（`max_download_buffer_size=52428800`）まで安全に増やすことができます。これにより、各スレッドが行う S3 呼び出しに要する時間を短縮でき、その結果として S3 の待ち時間も短縮されます。さらに、並列読み取りには小さすぎるファイルについてスループットを向上させるために、ClickHouse はそのようなファイルを非同期に先読みすることでデータを自動的にプリフェッチします。
+`s3` 関数およびテーブルの場合、個々のファイルの並列ダウンロードは [max&#95;download&#95;threads](/operations/settings/settings#max_download_threads) と [max&#95;download&#95;buffer&#95;size](/operations/settings/settings#max_download_buffer_size) の値によって決まります。ファイルサイズが `2 * max_download_buffer_size` より大きい場合にのみ、ファイルは並列でダウンロードされます。デフォルトでは、`max_download_buffer_size` は 10MiB に設定されています。場合によっては、各ファイルが単一スレッドによってダウンロードされるようにすることを目的として、このバッファサイズを 50 MB（`max_download_buffer_size=52428800`）まで安全に増やすことができます。これにより、各スレッドが行う S3 呼び出しに要する時間を短縮でき、その結果として S3 の待ち時間も短縮されます。さらに、並列読み取りには小さすぎるファイルについてスループットを向上させるために、ClickHouse はそのようなファイルを非同期に先読みすることでデータを自動的にプリフェッチします。
 
 
 ## パフォーマンスの測定 \{#measuring-performance\}

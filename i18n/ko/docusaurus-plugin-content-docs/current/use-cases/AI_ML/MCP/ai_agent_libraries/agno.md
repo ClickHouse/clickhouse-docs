@@ -50,7 +50,7 @@ doc_type: 'guide'
 
   :::note 다른 LLM 프로바이더 사용
   Anthropic API 키가 없고 다른 LLM 프로바이더를 사용하려는 경우,
-  자격 증명 설정 방법은 [Agno 문서](https://docs.agno.com/concepts/models/introduction)에서 확인하실 수 있습니다.
+  자격 증명 설정 방법은 [Agno 문서](https://docs.agno.com/models/overview)에서 확인하실 수 있습니다.
   :::
 
   다음으로, ClickHouse SQL 플레이그라운드에 연결하는 데 필요한 자격 증명을 정의합니다:

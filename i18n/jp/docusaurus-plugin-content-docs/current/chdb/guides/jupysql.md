@@ -10,7 +10,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) は、Jupyter Notebook と IPython シェルで SQL を実行できる Python ライブラリです。
+[JupySQL](https://jupysql.readthedocs.io/en/latest/quick-start.html) は、Jupyter Notebook と IPython シェルで SQL を実行できる Python ライブラリです。
 このガイドでは、chDB と JupySQL を使ってデータにクエリを実行する方法を学びます。
 
 <div class="vimeo-container">

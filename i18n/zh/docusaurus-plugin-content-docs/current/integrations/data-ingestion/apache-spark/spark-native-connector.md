@@ -101,7 +101,7 @@ ClickHouse Spark 连接器支持两种访问模式：**Catalog API** 和 **Table
   <repository>
     <id>sonatype-oss-snapshots</id>
     <name>Sonatype OSS Snapshots Repository</name>
-    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
   </repository>
 </repositories>
 ```
@@ -120,7 +120,7 @@ dependencies {
 
 ```gradle
 repositries {
-  maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
+  maven { url = "https://central.sonatype.com/repository/maven-snapshots/" }
 }
 ```
 
@@ -163,7 +163,7 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 ```
 
 你可以在 [Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/spark/) 中找到所有已发布的 JAR 文件，
-并在 [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/) 中找到所有每日构建的 SNAPSHOT 版 JAR 文件。
+并在 [Sonatype OSS Snapshots Repository](https://central.sonatype.com/repository/maven-snapshots/com/clickhouse/) 中找到所有每日构建的 SNAPSHOT 版 JAR 文件。
 
 :::important
 务必包含带有 `all` classifier 的 [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)，

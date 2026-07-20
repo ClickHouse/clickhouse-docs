@@ -10,7 +10,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html)은 Jupyter 노트북과 IPython 셸에서 SQL을 실행할 수 있도록 해주는 Python 라이브러리입니다.
+[JupySQL](https://jupysql.readthedocs.io/en/latest/quick-start.html)은 Jupyter 노트북과 IPython 셸에서 SQL을 실행할 수 있도록 해주는 Python 라이브러리입니다.
 이 가이드에서는 chDB와 JupySQL을 사용하여 데이터를 쿼리하는 방법을 살펴봅니다.
 
 <div class="vimeo-container">

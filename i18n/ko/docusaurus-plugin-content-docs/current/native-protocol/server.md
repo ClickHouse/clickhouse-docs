@@ -55,7 +55,7 @@ keywords: ['native protocol', 'tcp 프로토콜', '클라이언트-서버', '프
 
 `nested`가 `false`가 될 때까지 예외가 연속해서 나열될 수 있습니다.
 
-[codes]: https://clickhouse.com/codebrowser/ClickHouse/src/Common/ErrorCodes.cpp.html "오류 코드 목록"
+[codes]: https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp "오류 코드 목록"
 
 ## 진행 상황 \{#progress\}
 

@@ -36,10 +36,10 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 - 一个正在运行的 SQL Server 实例  
 
-- 在本教程中，我们使用 AWS RDS for SQL Server，但任何现代的 SQL Server 实例都可以。[从零开始设置 AWS SQL Server。](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap%23setting-up-a-new-rds-sql-server-from-scratch)
+- 在本教程中，我们使用 AWS RDS for SQL Server，但任何现代的 SQL Server 实例都可以。[从零开始设置 AWS SQL Server。](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap#setting-up-a-new-rds-sql-server-from-scratch)
 - 一个 ClickHouse 实例  
 
-- 自托管或云环境均可。[从零开始设置 ClickHouse。](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap%23creating-a-new-clickhouse-account)
+- 自托管或云环境均可。[从零开始设置 ClickHouse。](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap#creating-a-new-clickhouse-account)
 - Streamkap  
 
 - 该工具将作为数据流处理管道的核心组件。

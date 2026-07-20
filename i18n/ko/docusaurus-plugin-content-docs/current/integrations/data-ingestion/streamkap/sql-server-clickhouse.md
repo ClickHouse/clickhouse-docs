@@ -36,10 +36,10 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 - 실행 중인 SQL Server 인스턴스  
 
-- 이 가이드에서는 AWS RDS for SQL Server를 사용하지만, 최신 SQL Server 인스턴스라면 어느 것이든 사용할 수 있습니다. [AWS SQL Server를 처음부터 설정하는 방법](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap%23setting-up-a-new-rds-sql-server-from-scratch)
+- 이 가이드에서는 AWS RDS for SQL Server를 사용하지만, 최신 SQL Server 인스턴스라면 어느 것이든 사용할 수 있습니다. [AWS SQL Server를 처음부터 설정하는 방법](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap#setting-up-a-new-rds-sql-server-from-scratch)
 - ClickHouse 인스턴스  
 
-- Self-hosted 또는 Cloud 환경. [ClickHouse를 처음부터 설정하는 방법](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap%23creating-a-new-clickhouse-account)
+- Self-hosted 또는 Cloud 환경. [ClickHouse를 처음부터 설정하는 방법](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap#creating-a-new-clickhouse-account)
 - Streamkap  
 
 - 이 도구가 데이터 스트리밍 파이프라인의 중추 역할을 합니다.

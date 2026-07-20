@@ -14,7 +14,9 @@ import fast_release from '@site/static/images/cloud/manage/fast_release.png';
 import scheduled_upgrades from '@site/static/images/cloud/manage/scheduled_upgrades.png';
 import scheduled_upgrade_window from '@site/static/images/cloud/manage/scheduled_upgrade_window.png';
 
-With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis. For the full list of what is new in ClickHouse refer to our [Cloud changelog](/whats-new/changelog/cloud).
+With ClickHouse Cloud you never have to worry about patching and upgrades. We roll out upgrades that include fixes, new features and performance improvements on a periodic basis.
+- For the full list of what is new in ClickHouse refer to our [Cloud changelog](/whats-new/changelog/cloud)
+- For version release timing, see the [release status](/cloud/release-status) page
 
 :::note
 We're introducing a new upgrade mechanism, a concept we call "make before break" (or MBB). With this new approach, we add updated replicas before removing the old ones during the upgrade operation. This results in more seamless upgrades that are less disruptive to running workloads.

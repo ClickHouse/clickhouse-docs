@@ -117,7 +117,7 @@ Browser SDK также поддерживает [маскирование инп
 
 Когда вы выбираете сетевой запрос или ошибку на таймлайне сессии, вы можете перейти на вкладку **Trace**, чтобы отследить этот запрос через ваши backend-сервисы — просматривая связанные логи, спаны и запросы к базе данных, которые были вызваны этим действием пользователя.
 
-Это работает, так как конфигурация `tracePropagationTargets` связывает спаны браузера со спанами сервера через заголовок `traceparent`, формируя единый распределённый трейc от клика пользователя до самой базы данных. Подробный пошаговый разбор этого на практике, включая инструментирование как frontend-, так и backend-частей, см. в статье [Instrumenting your NextJS application with OpenTelemetry and ClickStack](https://clickhouse.com/blog/instrumenting-nextjs-opentelemetry-clickstack).
+Это работает, так как конфигурация `tracePropagationTargets` связывает спаны браузера со спанами сервера через заголовок `traceparent`, формируя единый распределённый трейc от клика пользователя до самой базы данных. Подробный пошаговый разбор этого на практике, включая инструментирование как frontend-, так и backend-частей, см. в статье [Instrumenting your NextJS application with OpenTelemetry and ClickStack](https://clickhouse.com/blog/instrumenting-your-app-with-otel-clickstack).
 
 <img src={clickpy_trace} alt="Переход от воспроизведения сессии к backend-трейсам в ClickStack" />
 

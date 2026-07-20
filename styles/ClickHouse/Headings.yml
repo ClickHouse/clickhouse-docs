@@ -67,6 +67,7 @@ exceptions:
   - Docker
   - Docker Compose
   - DigitalOcean Spaces
+  - Datadog Agent
   - Duo SAML
   - EDOT
   - Elastic Agent
@@ -168,6 +169,7 @@ exceptions:
   - VLDB
   - VS
   - VPC
+  - "VPC Lattice"
   - Vitess
   - Visual
   - Windows
@@ -296,6 +298,7 @@ exceptions:
   - Tableau Online
   - SSL/TLS
   - Delta Lake
+  - Delta Kernel
   - Embeddable
   - Draxlr
   - Rust

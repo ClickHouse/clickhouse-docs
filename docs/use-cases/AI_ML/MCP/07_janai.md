@@ -31,7 +31,7 @@ import Result from '@site/static/images/use-cases/AI_ML/MCP/10_janai_result.png'
 ## Install Jan.ai {#install-janai}
 
 Jan.ai is an open source ChatGPT-alternative that runs 100% offline.
-You can download Jan.ai for [Mac](https://jan.ai/docs/desktop/mac), [Windows](https://jan.ai/docs/desktop/windows), or [Linux](https://jan.ai/docs/desktop/linux).
+You can download Jan.ai for [Mac](https://jan.ai/docs/desktop/install/mac), [Windows](https://jan.ai/docs/desktop/windows), or [Linux](https://jan.ai/docs/desktop/linux).
 
 It's a native app, so once it's downloaded, you can launch it.
 
