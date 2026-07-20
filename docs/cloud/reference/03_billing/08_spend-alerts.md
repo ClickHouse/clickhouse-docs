@@ -49,13 +49,14 @@ Reaching 100% of your spend alert doesn't restrict or cap your usage — spendin
 
 ## Automatic threshold alerts {#threshold-alerts}
 
-Three alerts are automatically created and triggered based on your configured spend alert amount:
+Four alerts are automatically created and triggered based on your configured spend alert amount:
 
-| Threshold | Trigger                         | Example ($10 alert) |
-|-----------|---------------------------------|---------------------|
-| **50%**   | Half of spend reached           | $5                  |
-| **75%**   | Three-quarters of spend reached | $7.50               |
-| **100%**  | Full spend reached              | $10                 |
+| Threshold | Trigger                          | Example ($10 alert) |
+|-----------|----------------------------------|---------------------|
+| **50%**   | Half of spend reached            | $5                  |
+| **75%**   | Three-quarters of spend reached  | $8                  |
+| **90%**   | Ninety percent of spend reached  | $9                  |
+| **100%**  | Full spend reached               | $10                 |
 
 ## Notification channels {#notification-channels}
 
