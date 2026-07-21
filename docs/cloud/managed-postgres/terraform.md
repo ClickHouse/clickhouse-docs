@@ -14,13 +14,13 @@ import BetaBadge from '@theme/badges/BetaBadge';
 ClickHouse Managed Postgres services can be created and managed using the `clickhouse_postgres_service` resource in the [ClickHouse Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/postgres_service). This page covers provider setup and configuration examples for the resource and its companion data sources.
 
 :::note
-This resource is in alpha and its behavior may change in future provider versions. It ships in the regular provider build. This page documents provider version **v3.21.0** and later, which changed how credentials are managed; earlier versions behave differently and stop working correctly after July 31st. See the [provider releases](https://github.com/ClickHouse/terraform-provider-clickhouse/releases) for details.
+This resource is in alpha and its behavior may change in future provider versions. It ships in the regular provider build. This page documents provider version **v3.21.0** and later, which changed how credentials are managed; earlier versions behave differently and as of July 31, 2026 no longer work correctly. See the [provider releases](https://github.com/ClickHouse/terraform-provider-clickhouse/releases) for details.
 :::
 
-:::warning[Upgrade to provider v3.21.0 before July 31st]
-On **July 31st**, the Managed Postgres API stops returning the superuser password and connection string in its responses; credentials are returned only when a service is created or its password is reset. Provider versions **v3.21.0 and later** work identically before and after this change. Older provider versions rely on the API echoing credentials: after July 31st they no longer populate `connection_string`, and a service created without a declared `password` succeeds while the generated password is never captured anywhere.
+:::warning[Upgrade to provider v3.21.0 before July 31, 2026]
+As of **July 31, 2026**, the Managed Postgres API ceased to return the superuser password and connection string in its responses; credentials are returned only when a service is created or its password is reset. Provider versions **v3.21.0 and later** work identically before and after this change. Older provider versions rely on the API echoing credentials: as of July 31, 2026, they no longer populate `connection_string`, and a service created without a declared `password` succeeds while the generated password is never captured anywhere.
 
-Upgrade before July 31st. Your state migrates automatically on the first plan or apply with v3.21.0. If any of your services rely on a server-generated password (no `password` in configuration), recover it first with `terraform state pull` and declare it, since v3.21.0 requires `password` or `password_wo` for a standard service.
+Upgrade before July 31, 2026. Your state migrates automatically on the first plan or apply with v3.21.0. If any of your services rely on a server-generated password (no `password` in configuration), recover it first with `terraform state pull` and declare it, since v3.21.0 requires `password` or `password_wo` for a standard service.
 :::
 
 ## Provider setup {#provider-setup}
