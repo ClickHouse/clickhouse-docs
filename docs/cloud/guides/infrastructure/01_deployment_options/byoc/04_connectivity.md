@@ -2,8 +2,8 @@
 title: 'Connect to ClickHouse'
 slug: /cloud/reference/byoc/connect
 sidebar_label: 'Connect to ClickHouse'
-keywords: ['BYOC', 'cloud', 'bring your own cloud', 'connect to clickhouse', 'load balancer', 'privatelink']
-description: 'Connect to your BYOC ClickHouse services via public, private, or PrivateLink endpoints'
+keywords: ['BYOC', 'cloud', 'bring your own cloud', 'connect to clickhouse', 'load balancer', 'privatelink', 'private service connect', 'azure private link']
+description: 'Connect to your BYOC ClickHouse services via public or private load balancers, or private endpoints (PrivateLink, Private Service Connect, Private Link)'
 doc_type: 'reference'
 ---
 
@@ -52,6 +52,8 @@ For example:
 sb9jmrq2ne.asf3kcggao.ap-southeast-1.aws.clickhouse-byoc.com
 ```
 
+The `aws` segment reflects your cloud provider — it is `gcp` or `azure` for deployments on those clouds.
+
 ### IP Filtering {#public-ip-filtering}
 
 IP filtering (IP Access List) is **strongly recommended** when using a public load balancer to restrict access to authorized IP addresses or CIDR ranges.
@@ -60,12 +62,12 @@ For detailed information about IP filtering, see the [IP Access List documentati
 
 ## Private Load Balancer {#private-load-balancer}
 
-A private load balancer provides internal access to your ClickHouse services, accessible only from within your connected networks (e.g., peered VPCs). This is the default configuration when using a customer-managed VPC.
+A private load balancer provides internal access to your ClickHouse services, accessible only from within your connected networks (e.g., peered VPCs/VNets). This is the default configuration when using a customer-managed VPC.
 
 ### Overview {#private-load-balancer-overview}
 
 - **Access**: Accessible only from within your private network infrastructure
-- **Use case**: Ideal for applications running in the same cloud environment or connected via VPC peering
+- **Use case**: Ideal for applications running in the same cloud environment or connected via VPC/VNet peering
 - **Security**: Traffic stays within your private network, no public internet exposure
 
 ### Connecting via Private Load Balancer {#connecting-via-private-load-balancer}
@@ -74,8 +76,8 @@ To connect using the private endpoint:
 
 1. **Enable private load balancer** (if not already enabled). Contact ClickHouse Support if you need to [enable a private load balancer](/cloud/reference/byoc/configurations#load-balancers) for your deployment.
 2. **Ensure network connectivity**:
-   - For VPC peering: Complete the VPC peering setup (see [Private Networking Setup](/cloud/reference/byoc/onboarding/network))
-   - For other private networks: Ensure routing is configured to reach the BYOC VPC
+   - For VPC/VNet peering: Complete the peering setup (see [Private Networking Setup](/cloud/reference/byoc/onboarding/network))
+   - For other private networks: Ensure routing is configured to reach the BYOC VPC/VNet
 3. **Obtain your private endpoint**: 
    The private endpoint is available in the ClickHouse Cloud console in the "Connect" section of your service. The private endpoint follows the same format as the public endpoint, but with a `-private` suffix added to the service ID portion. For example:
    - **Public endpoint**: `sb9jmrq2ne.asf3kcggao.ap-southeast-1.aws.clickhouse-byoc.com`
@@ -107,14 +109,16 @@ AWS PrivateLink, GCP Private Service Connect, and Azure Private Link provide the
   - Simplified network architecture
   - Enhanced security and compliance posture
 
-### Connecting via PrivateLink/Private Service Connect {#connecting-via-privatelink}
+### Connecting via a private endpoint {#connecting-via-privatelink}
 
-Complete the PrivateLink, Private Service Connect, or Private Link setup (see [Private Networking Setup](/cloud/reference/byoc/onboarding/network)). Once configured, you can connect to your ClickHouse service using a PrivateLink-specific endpoint format. The PrivateLink endpoint includes a `vpce` subdomain to indicate it routes through the VPC endpoint. DNS resolution in your VPC automatically routes traffic through the PrivateLink endpoint.
+Complete the PrivateLink, Private Service Connect, or Private Link setup (see [Private Networking Setup](/cloud/reference/byoc/onboarding/network)). Once configured, you can connect to your ClickHouse service using a dedicated private-endpoint hostname. DNS resolution in your VPC/VNet automatically routes traffic through the private endpoint.
 
-The PrivateLink endpoint format is similar to the public endpoint, but includes a `vpce` subdomain between the service subdomain and BYOC infrastructure subdomain. For example:
+The private-endpoint hostname is similar to the public endpoint, but adds a cloud-specific label between the service subdomain and the BYOC infrastructure subdomain — `vpce` on AWS, `p` on GCP, and `privatelink` on Azure. For example:
 
-- **Public endpoint**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
-- **PrivateLink endpoint**: `h5ju65kv87.vpce.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
+- **Public endpoint (AWS)**: `h5ju65kv87.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
+- **PrivateLink endpoint (AWS)**: `h5ju65kv87.vpce.mhp0y4dmph.us-west-2.aws.clickhouse-byoc.com`
+- **Private Service Connect endpoint (GCP)**: `h5ju65kv87.p.mhp0y4dmph.us-central1.gcp.clickhouse-byoc.com`
+- **Private Link endpoint (Azure)**: `h5ju65kv87.privatelink.mhp0y4dmph.westus3.azure.clickhouse-byoc.com`
 
 Once the endpoint is set up and allowlisted, select **PrivateLink** (**Private Service Connect** on GCP, **Private Link** on Azure) from the **Connection via** dropdown in the **Connect** dialog to copy the private-endpoint connection details directly.
 
@@ -138,7 +142,7 @@ If you're experiencing connection issues:
 
 1. **Verify endpoint accessibility**: Ensure you're using the correct endpoint (public vs. private)
 2. **Check IP filters**: For public load balancers, verify your IP address is in the allow list
-3. **Verify network connectivity**: For private connections, ensure VPC peering or PrivateLink is properly configured
+3. **Verify network connectivity**: For private connections, ensure VPC/VNet peering or the private endpoint is properly configured
 4. **Check security groups**: For private load balancers, verify security group rules allow traffic from your source network
 4. **Check security groups**: For PrivateLink, Private Service Connect, or Private Link, verify the endpoint ID has been added to the allowlist of the ClickHouse service
 5. **Review authentication**: Ensure you're using correct credentials (username and password)
