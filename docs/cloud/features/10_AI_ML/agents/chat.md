@@ -3,8 +3,8 @@ sidebar_label: 'Chat'
 sidebar_position: 2
 slug: /cloud/features/ai-ml/agents/chat
 title: 'Chat'
-description: 'Conversations, bookmarks, forking, multi-conversation, and sharing chats in ClickHouse Agents'
-keywords: ['AI', 'ClickHouse Cloud', 'agents', 'chat', 'conversations', 'bookmarks', 'fork', 'share', 'multi-conversation']
+description: 'Conversations, bookmarks, forking, and sharing chats in ClickHouse Agents'
+keywords: ['AI', 'ClickHouse Cloud', 'agents', 'chat', 'conversations', 'bookmarks', 'fork', 'share']
 doc_type: 'reference'
 ---
 
@@ -14,14 +14,12 @@ import chat from '@site/static/images/cloud/agent-builder/chat/chat.png';
 import conversation from '@site/static/images/cloud/agent-builder/chat/conversation.png';
 import bookmark from '@site/static/images/cloud/agent-builder/chat/bookmark.png';
 import fork from '@site/static/images/cloud/agent-builder/chat/fork.png';
-import multiConversation from '@site/static/images/cloud/agent-builder/chat/multi-conversation.png';
-import multiConversation2 from '@site/static/images/cloud/agent-builder/chat/multi-conversation-2.png';
 import share from '@site/static/images/cloud/agent-builder/chat/share.png';
 import shareModal from '@site/static/images/cloud/agent-builder/chat/share-modal.png';
 
 <BetaBadge/>
 
-The chat surface in ClickHouse Agents handles conversations, branching, side-by-side comparison, and sharing.
+The chat surface in ClickHouse Agents handles conversations, branching, and sharing.
 
 <Image img={chat} alt="ClickHouse Agent chat surface showing the left navigation, the agent identity header, and the message composer" size="lg"/>
 
@@ -54,18 +52,6 @@ There are three fork modes available:
 Forked conversations are independent, so changes don't sync back to the original.
 
 <Image img={fork} alt="Select a fork option dialog showing three fork mode icons, Start fork here and Remember checkboxes, and the message action toolbar below" size="lg"/>
-
-## Multi-conversation {#multi-conversation}
-
-Multi-conversation runs two conversations side-by-side and sends the same prompt to both. Use it to compare responses across models or to A/B test different agent configurations.
-
-Click the **+** button in the chat header to spawn a parallel conversation alongside the current one.
-
-<Image img={multiConversation} alt="Chat header with the Add multi-conversation button highlighted, and a + ClickHouse Agent indicator above the composer" size="lg"/>
-
-The two conversations then sit side-by-side and receive the same prompt:
-
-<Image img={multiConversation2} alt="Multi-conversation view with two ClickHouse Agent conversations running side by side, both executing the same run_select_query tool calls" size="lg"/>
 
 ## Sharing chats {#sharing-chats}
 
