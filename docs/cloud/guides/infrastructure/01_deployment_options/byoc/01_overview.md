@@ -25,7 +25,7 @@ BYOC is designed specifically for large-scale deployments, and requires customer
 **Supported Cloud Service Providers:**
 * AWS (GA)
 * GCP (GA)
-* Azure (Private Preview). Please join the waitlist [here](https://clickhouse.com/cloud/bring-your-own-cloud) if you're interested.
+* Azure (GA)
 
 **Supported Cloud Regions:**
 All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. Private regions aren't currently supported.
@@ -50,6 +50,7 @@ All **public regions** listed in our [supported regions](https://clickhouse.com/
 - **Secure S3**
 - **[AWS PrivateLink](https://aws.amazon.com/privatelink/)**
 - **[GCP Private Service Connect](https://docs.cloud.google.com/vpc/docs/private-service-connect)**
+- **[Azure Private Link](https://learn.microsoft.com/en-us/azure/private-link/private-link-overview)**
 - **Integrations**: See the full list on [this page](/integrations).
 
 ### Planned features (currently unsupported) {#planned-features-currently-unsupported}
