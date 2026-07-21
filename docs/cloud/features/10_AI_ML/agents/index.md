@@ -29,7 +29,7 @@ Learn more about the capabilities of ClickHouse Agents in the pages below:
 | Page | What it covers                                                                               |
 | ---- |----------------------------------------------------------------------------------------------|
 | [Quickstart](/cloud/features/ai-ml/agents/quickstart) | Build your first agent and run an example query                                              |
-| [Chat](/cloud/features/ai-ml/agents/chat) | Conversations, bookmarks, forking, multi-conversation, and sharing                           |
+| [Chat](/cloud/features/ai-ml/agents/chat) | Conversations, bookmarks, pinned conversations, forking, keyboard shortcuts, and sharing     |
 | [Agent Builder](/cloud/features/ai-ml/agents/builder) | Configuring agents, model parameters, and attached tools, MCP servers, skills, and subagents |
 | [Prompts](/cloud/features/ai-ml/agents/prompts) | Saved prompt library                                                                         |
 | [Memory](/cloud/features/ai-ml/agents/memory) | Persistent context across conversations                                                      |

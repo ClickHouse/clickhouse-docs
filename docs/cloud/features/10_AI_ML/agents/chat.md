@@ -3,8 +3,8 @@ sidebar_label: 'Chat'
 sidebar_position: 2
 slug: /cloud/features/ai-ml/agents/chat
 title: 'Chat'
-description: 'Conversations, bookmarks, forking, multi-conversation, and sharing chats in ClickHouse Agents'
-keywords: ['AI', 'ClickHouse Cloud', 'agents', 'chat', 'conversations', 'bookmarks', 'fork', 'share', 'multi-conversation']
+description: 'Conversations, bookmarks, pinned conversations, forking, keyboard shortcuts, and sharing chats in ClickHouse Agents'
+keywords: ['AI', 'ClickHouse Cloud', 'agents', 'chat', 'conversations', 'bookmarks', 'pinned conversations', 'keyboard shortcuts', 'fork', 'share']
 doc_type: 'reference'
 ---
 
@@ -14,14 +14,12 @@ import chat from '@site/static/images/cloud/agent-builder/chat/chat.png';
 import conversation from '@site/static/images/cloud/agent-builder/chat/conversation.png';
 import bookmark from '@site/static/images/cloud/agent-builder/chat/bookmark.png';
 import fork from '@site/static/images/cloud/agent-builder/chat/fork.png';
-import multiConversation from '@site/static/images/cloud/agent-builder/chat/multi-conversation.png';
-import multiConversation2 from '@site/static/images/cloud/agent-builder/chat/multi-conversation-2.png';
 import share from '@site/static/images/cloud/agent-builder/chat/share.png';
 import shareModal from '@site/static/images/cloud/agent-builder/chat/share-modal.png';
 
 <BetaBadge/>
 
-The chat surface in ClickHouse Agents handles conversations, branching, side-by-side comparison, and sharing.
+The chat surface in ClickHouse Agents handles conversations, branching, and sharing.
 
 <Image img={chat} alt="ClickHouse Agent chat surface showing the left navigation, the agent identity header, and the message composer" size="lg"/>
 
@@ -42,6 +40,12 @@ Bookmark a message or a whole conversation to flag it for quick retrieval. Bookm
 
 <Image img={bookmark} alt="Chat header with the bookmark icon highlighted and an Add Bookmarks tooltip visible" size="lg"/>
 
+## Pinned conversations {#pinned-conversations}
+
+Pin a conversation to keep it at the top of the sidebar, separate from the date-grouped history below. Open the conversation's options menu (the three-dot icon) in the sidebar and select **Pin**. Pinned conversations collect in a **Pinned** section above the **Today**, **Yesterday**, and older groups.
+
+To unpin, open the same menu and select **Unpin**.
+
 ## Forking {#forking}
 
 Forking creates a new conversation branched from a specific message. You can use it to explore an alternative path without disrupting the original thread.
@@ -55,23 +59,13 @@ Forked conversations are independent, so changes don't sync back to the original
 
 <Image img={fork} alt="Select a fork option dialog showing three fork mode icons, Start fork here and Remember checkboxes, and the message action toolbar below" size="lg"/>
 
-## Multi-conversation {#multi-conversation}
-
-Multi-conversation runs two conversations side-by-side and sends the same prompt to both. Use it to compare responses across models or to A/B test different agent configurations.
-
-Click the **+** button in the chat header to spawn a parallel conversation alongside the current one.
-
-<Image img={multiConversation} alt="Chat header with the Add multi-conversation button highlighted, and a + ClickHouse Agent indicator above the composer" size="lg"/>
-
-The two conversations then sit side-by-side and receive the same prompt:
-
-<Image img={multiConversation2} alt="Multi-conversation view with two ClickHouse Agent conversations running side by side, both executing the same run_select_query tool calls" size="lg"/>
-
 ## Sharing chats {#sharing-chats}
 
 Generate a shareable link for any conversation to send it to a teammate or save it for reference. Recipients see a read-only view, including artifacts and visible branches. You can revoke a link from the sharing dashboard at any time.
 
 Edits to existing messages appear in the shared view; messages added after the link was generated do not.
+
+Anyone viewing a shared link can pick up the conversation in their own account by clicking **Continue this chat**. This copies the conversation — including the branch they're viewing — into their history as a new, private conversation, leaving your original untouched.
 
 To share a conversation, open its menu in the sidebar and select **Share**:
 
@@ -80,3 +74,34 @@ To share a conversation, open its menu in the sidebar and select **Share**:
 Then click **Create link** in the share dialog:
 
 <Image img={shareModal} alt="Share link to chat dialog with the Create link button and a note that your name and any messages added after sharing stay private" size="md"/>
+
+## Keyboard shortcuts {#keyboard-shortcuts}
+
+Open the keyboard shortcuts reference with `Cmd+Shift+/` (`Ctrl+Shift+/` on Windows and Linux), or from the account menu under **Help** → **Keyboard shortcuts**. Every shortcut is customizable: click a row in the dialog to record a new combination, and use **Reset all to defaults** to revert.
+
+The default shortcuts are:
+
+| Action | macOS | Windows and Linux |
+|---|---|---|
+| Show keyboard shortcuts | `Cmd+Shift+/` | `Ctrl+Shift+/` |
+| New chat | `Cmd+Shift+O` | `Ctrl+Shift+O` |
+| Focus chat input | `Shift+Esc` | `Shift+Esc` |
+| Upload file | `Cmd+Shift+U` | `Ctrl+Shift+U` |
+| Copy last response | `Cmd+Shift+;` | `Ctrl+Shift+;` |
+| Submit message | `Cmd+Enter` | `Ctrl+Enter` |
+| Toggle sidebar | `Cmd+Shift+S` | `Ctrl+Shift+S` |
+| Open model selector | `Cmd+Shift+M` | `Ctrl+Shift+M` |
+| Focus search | `Cmd+/` | `Ctrl+/` |
+| Open settings | `Cmd+Shift+,` | `Ctrl+Shift+,` |
+| Bookmark conversation | `Cmd+Shift+B` | `Ctrl+Shift+B` |
+| Stop generating | `Cmd+Shift+X` | `Ctrl+Shift+X` |
+| Regenerate response | `Cmd+Shift+E` | `Ctrl+Shift+E` |
+| Edit last message | `Cmd+Shift+I` | `Ctrl+Shift+I` |
+| Continue response | `Cmd+Shift+C` | `Ctrl+Shift+C` |
+| Copy last code block | `Cmd+Shift+K` | `Ctrl+Shift+K` |
+| Scroll to top | `Cmd+Shift+Up` | `Ctrl+Shift+Up` |
+| Scroll to bottom | `Cmd+Shift+Down` | `Ctrl+Shift+Down` |
+| Archive conversation | `Cmd+Shift+L` | `Ctrl+Shift+L` |
+| Delete conversation | `Cmd+Shift+Backspace` | `Ctrl+Shift+Backspace` |
+
+You can also assign your own shortcuts to open panels such as agents, prompts, files, and bookmarks — these have no default keys.
