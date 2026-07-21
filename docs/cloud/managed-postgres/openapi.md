@@ -79,6 +79,10 @@ like:
 
 Let's explore the lifecycle of a Postgres service.
 
+:::warning[Credential redaction from July 31st]
+On **July 31st**, the API stops returning the `password` and `connectionString` properties in its responses. After that date they appear only in the response that creates a service and the response of a [password reset] without a supplied password. Capture credentials from the create response; a later `GET` will not return them. If you manage services with Terraform, upgrade the provider to **v3.21.0 or later** before July 31st (see the [Terraform reference](/cloud/managed-postgres/terraform)).
+:::
+
 ### Create {#create}
 
 First, create a new one
@@ -105,12 +109,14 @@ create_data='{
 ```
 
 Now use this data to create a new instance; note that it requires the content
-type header:
+type header. Save the response, since it is the one place the credentials are
+returned:
 
 ```bash
-curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
+pg_created=$(curl -s --user "$KEY_ID:$KEY_SECRET" -H 'Content-Type: application/json' \
     "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres" \
-    -d "$create_data" | jq
+    -d "$create_data")
+echo "$pg_created" | jq
 ```
 
 On success, it will create a new instance and return information about it,
@@ -151,7 +157,8 @@ curl -s --user "$KEY_ID:$KEY_SECRET" \
     | jq
 ```
 
-The output will be similar to the JSON returned for creation, but keep an eye
+The output will be similar to the JSON returned for creation (from July 31st,
+without the `password` and `connectionString` properties), but keep an eye
 on the `state`; when it changes to `running`, the server is ready:
 
 ```bash
@@ -164,15 +171,11 @@ curl -s --user "$KEY_ID:$KEY_SECRET" \
 "running"
 ```
 
-Now you can use the `connectionString` property to connect, for example via
-[psql]:
+Now you can use the `connectionString` property from the saved create response
+to connect, for example via [psql]:
 
 ```bash
-$ psql "$(
-    curl -s --user "$KEY_ID:$KEY_SECRET" \
-    "https://api.clickhouse.cloud/v1/organizations/$ORG_ID/postgres/$PG_ID" \
-    | jq -r .result.connectionString
-)"
+$ psql "$(echo "$pg_created" | jq -r .result.connectionString)"
 
 psql (18.3)
 SSL connection (protocol: TLSv1.3, cipher: TLS_AES_256_GCM_SHA384, compression: off, ALPN: postgresql)
@@ -439,6 +442,7 @@ counter set documented under [per-execution counters].
 [config API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceSetConfig
   "Update a Postgres Service configuration"
 [delete API]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceDelete
+[password reset]: https://clickhouse.com/docs/cloud/manage/api/swagger#tag/Postgres/operation/postgresServiceSetPassword
   "Delete a PostgreSQL service"
 [Prometheus endpoint]: /cloud/managed-postgres/monitoring/prometheus
   "Managed Postgres Prometheus endpoint"
