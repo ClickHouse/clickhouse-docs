@@ -14,7 +14,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 ClickHouse Managed Postgres services can be created and managed using the `clickhouse_postgres_service` resource in the [ClickHouse Terraform provider](https://registry.terraform.io/providers/ClickHouse/clickhouse/latest/docs/resources/postgres_service). This page covers provider setup and configuration examples for the resource and its companion data sources.
 
 :::note
-This resource is in alpha and its behavior may change in future provider versions. It ships in the regular provider build and is available from provider version **v3.17.1** — check the [provider releases](https://github.com/ClickHouse/terraform-provider-clickhouse/releases) for details.
+This resource is in alpha and its behavior may change in future provider versions. It ships in the regular provider build. This page documents provider version **v3.21.0** and later, which changed how credentials are managed; earlier versions behave differently and stop working correctly after July 31st. See the [provider releases](https://github.com/ClickHouse/terraform-provider-clickhouse/releases) for details.
 :::
 
 :::warning[Upgrade to provider v3.21.0 before July 31st]
