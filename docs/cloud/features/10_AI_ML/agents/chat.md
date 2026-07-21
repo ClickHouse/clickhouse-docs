@@ -3,8 +3,8 @@ sidebar_label: 'Chat'
 sidebar_position: 2
 slug: /cloud/features/ai-ml/agents/chat
 title: 'Chat'
-description: 'Conversations, bookmarks, forking, and sharing chats in ClickHouse Agents'
-keywords: ['AI', 'ClickHouse Cloud', 'agents', 'chat', 'conversations', 'bookmarks', 'fork', 'share']
+description: 'Conversations, bookmarks, pinned conversations, forking, keyboard shortcuts, and sharing chats in ClickHouse Agents'
+keywords: ['AI', 'ClickHouse Cloud', 'agents', 'chat', 'conversations', 'bookmarks', 'pinned conversations', 'keyboard shortcuts', 'fork', 'share']
 doc_type: 'reference'
 ---
 
@@ -40,6 +40,12 @@ Bookmark a message or a whole conversation to flag it for quick retrieval. Bookm
 
 <Image img={bookmark} alt="Chat header with the bookmark icon highlighted and an Add Bookmarks tooltip visible" size="lg"/>
 
+## Pinned conversations {#pinned-conversations}
+
+Pin a conversation to keep it at the top of the sidebar, separate from the date-grouped history below. Open the conversation's options menu (the three-dot icon) in the sidebar and select **Pin**. Pinned conversations collect in a **Pinned** section above the **Today**, **Yesterday**, and older groups.
+
+To unpin, open the same menu and select **Unpin**.
+
 ## Forking {#forking}
 
 Forking creates a new conversation branched from a specific message. You can use it to explore an alternative path without disrupting the original thread.
@@ -59,6 +65,8 @@ Generate a shareable link for any conversation to send it to a teammate or save 
 
 Edits to existing messages appear in the shared view; messages added after the link was generated do not.
 
+Anyone viewing a shared link can pick up the conversation in their own account by clicking **Continue this chat**. This copies the conversation — including the branch they're viewing — into their history as a new, private conversation, leaving your original untouched.
+
 To share a conversation, open its menu in the sidebar and select **Share**:
 
 <Image img={share} alt="Conversation menu in the sidebar with Share, Rename, Duplicate, Archive, and Delete options visible" size="lg"/>
@@ -66,3 +74,34 @@ To share a conversation, open its menu in the sidebar and select **Share**:
 Then click **Create link** in the share dialog:
 
 <Image img={shareModal} alt="Share link to chat dialog with the Create link button and a note that your name and any messages added after sharing stay private" size="md"/>
+
+## Keyboard shortcuts {#keyboard-shortcuts}
+
+Open the keyboard shortcuts reference with `Cmd+Shift+/` (`Ctrl+Shift+/` on Windows and Linux), or from the account menu under **Help** → **Keyboard shortcuts**. Every shortcut is customizable: click a row in the dialog to record a new combination, and use **Reset all to defaults** to revert.
+
+The default shortcuts are:
+
+| Action | macOS | Windows and Linux |
+|---|---|---|
+| Show keyboard shortcuts | `Cmd+Shift+/` | `Ctrl+Shift+/` |
+| New chat | `Cmd+Shift+O` | `Ctrl+Shift+O` |
+| Focus chat input | `Shift+Esc` | `Shift+Esc` |
+| Upload file | `Cmd+Shift+U` | `Ctrl+Shift+U` |
+| Copy last response | `Cmd+Shift+;` | `Ctrl+Shift+;` |
+| Submit message | `Cmd+Enter` | `Ctrl+Enter` |
+| Toggle sidebar | `Cmd+Shift+S` | `Ctrl+Shift+S` |
+| Open model selector | `Cmd+Shift+M` | `Ctrl+Shift+M` |
+| Focus search | `Cmd+/` | `Ctrl+/` |
+| Open settings | `Cmd+Shift+,` | `Ctrl+Shift+,` |
+| Bookmark conversation | `Cmd+Shift+B` | `Ctrl+Shift+B` |
+| Stop generating | `Cmd+Shift+X` | `Ctrl+Shift+X` |
+| Regenerate response | `Cmd+Shift+E` | `Ctrl+Shift+E` |
+| Edit last message | `Cmd+Shift+I` | `Ctrl+Shift+I` |
+| Continue response | `Cmd+Shift+C` | `Ctrl+Shift+C` |
+| Copy last code block | `Cmd+Shift+K` | `Ctrl+Shift+K` |
+| Scroll to top | `Cmd+Shift+Up` | `Ctrl+Shift+Up` |
+| Scroll to bottom | `Cmd+Shift+Down` | `Ctrl+Shift+Down` |
+| Archive conversation | `Cmd+Shift+L` | `Ctrl+Shift+L` |
+| Delete conversation | `Cmd+Shift+Backspace` | `Ctrl+Shift+Backspace` |
+
+You can also assign your own shortcuts to open panels such as agents, prompts, files, and bookmarks — these have no default keys.
