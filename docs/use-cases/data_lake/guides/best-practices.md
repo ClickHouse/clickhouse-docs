@@ -1,5 +1,5 @@
 ---
-title: 'Data lake best practices'
+title: 'Data lakes Best Practices'
 sidebar_label: 'Best practices'
 slug: /use-cases/data-lake/best-practices
 sidebar_position: 5
