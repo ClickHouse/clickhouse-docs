@@ -34,7 +34,7 @@ Provisioning retries automatically and self-heals once the underlying issue is f
 <details>
 <summary>Can BYOC use an existing VPC? What about shared VPCs?</summary>
 
-On AWS and GCP, you can deploy into an existing VPC that lives in the **same** account or project as the BYOC infrastructure. See the customization guides for [AWS](/cloud/reference/byoc/onboarding/customization-aws) and [GCP](/cloud/reference/byoc/onboarding/customization-gcp). Bringing your own VNet on Azure is not available today.
+On AWS and GCP, you can deploy into an existing VPC that lives in the **same** account or project as the BYOC infrastructure. See the customization guides for [AWS](/cloud/reference/byoc/onboarding/customization-aws) and [GCP](/cloud/reference/byoc/onboarding/customization-gcp). Bringing your own VNet on Azure is coming soon.
 
 Subnets shared from another account (AWS RAM) or a GCP Shared VPC host project are not supported. The recommended pattern is a dedicated account or project for BYOC, connected to your existing network via VPC peering, PrivateLink, Private Service Connect, or Azure Private Link. Note that with a customer-managed VPC, only the private load balancer is enabled by default (see [configuration](/cloud/reference/byoc/configurations)).
 
@@ -68,7 +68,7 @@ Yes. The infrastructure (including the Kubernetes cluster) only needs to be prov
 <details>
 <summary>Which regions do you support for BYOC?</summary>
 
-All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. BYOC provisions across three availability zones, so regions with fewer than three zones and AWS Local Zones are not supported, and BYOC is not available in AWS China regions. If a region you need is not listed, contact your ClickHouse representative to discuss availability.
+All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. BYOC provisions across three availability zones, so regions with fewer than three zones and AWS Local Zones are not supported. If a region you need is not listed, contact your ClickHouse representative to discuss availability.
 
 </details>
 
@@ -77,14 +77,14 @@ All **public regions** listed in our [supported regions](https://clickhouse.com/
 
 Besides the ClickHouse instances themselves (ClickHouse servers and ClickHouse Keeper), we also run supporting services such as `clickhouse-operator`, the cluster autoscaler, Istio, and the monitoring stack.
 
-The resource consumption of these shared components is relatively stable and doesn't grow linearly with the number or size of your ClickHouse services. As a rough guideline, in AWS we typically use a dedicated node group of about four `4xlarge` EC2 instances to run these workloads. In addition, each service runs a dedicated three-node ClickHouse Keeper ensemble, which is shared by all services in the same warehouse. See the [cost model](/cloud/reference/byoc/cost-model-aws) for details.
+The resource consumption of these shared components is relatively stable and doesn't grow linearly with the number or size of your ClickHouse services. As a rough guideline, we typically use a dedicated node group of about six `2xlarge` instances to run these workloads. In addition, each service runs a dedicated three-node ClickHouse Keeper ensemble, which is shared by all services in the same warehouse. See the [cost model](/cloud/reference/byoc/cost-model-aws) for details.
 
 </details>
 
 <details>
 <summary>Does BYOC support autoscaling?</summary>
 
-Service-level (vertical) autoscaling is on the roadmap. Available today: manual vertical and horizontal scaling through the console, automatic idling and wake-up for intermittent workloads, and automatic node-group scaling at the infrastructure level — you never manage nodes yourself. ClickHouse Keeper is monitored and scaled by ClickHouse.
+Service-level (vertical) autoscaling is on the roadmap. Available today: manual vertical and horizontal scaling through the console, scheduled scaling for predictable load patterns, automatic idling and wake-up for intermittent workloads, and automatic node-group scaling at the infrastructure level — you never manage nodes yourself. ClickHouse Keeper is monitored and scaled by ClickHouse.
 
 </details>
 
@@ -114,7 +114,7 @@ Yes. Warehouses (compute-compute separation) are supported in BYOC: multiple ser
 <details>
 <summary>Can we limit or revoke the permissions granted during installation?</summary>
 
-You can reduce the grants from the start: the onboarding template is parameterized, so you can withhold network write permissions when bringing your own VPC (`IncludeVPCWritePermissions=false`) and — in private preview on AWS, enabled through support — manage the IAM roles yourself (`IncludeIAMWritePermissions=false`, see [customer-managed IAM roles](/cloud/reference/byoc/onboarding/customization-aws)). The cross-account roles support an `ExternalId` condition to prevent confused-deputy access.
+You can reduce the grants from the start: the onboarding template is parameterized, so you can withhold network write permissions when bringing your own VPC (`IncludeVPCWritePermissions=false`) and — in private preview on AWS, enabled through support — manage the IAM roles yourself (`IncludeIAMWritePermissions=false`, see [customer-managed IAM roles](/cloud/reference/byoc/onboarding/customization-aws)). The cross-account roles support an `ExternalId` condition to prevent confused-deputy access. In addition, some permissions are required only for specific features and can be removed if you will never use those features — contact support if you need to scope down permissions beyond what the template parameters provide.
 
 After provisioning, do not remove permissions from the management identity unilaterally: ClickHouse continuously reconciles the infrastructure, and missing permissions break provisioning, upgrades, and support. To change the granted permissions or offboard entirely, coordinate with support (see the decommissioning question below).
 
@@ -124,8 +124,6 @@ After provisioning, do not remove permissions from the management identity unila
 <summary>What exactly can ClickHouse do in our cloud account? Can our security team review the permissions?</summary>
 
 All roles and identities and their purposes are documented in the [privilege reference](/cloud/reference/byoc/reference/privilege) for AWS, GCP, and Azure. Write permissions of the management identity (an IAM role on AWS, a service account on GCP, a service principal on Azure) are scoped by resource tags and name prefixes such as `clickhouse-cloud-*`, so it cannot modify resources it did not create, and it has **no object-level access to your data buckets** — object access is limited to in-cluster identities scoped to the ClickHouse workloads. Read permissions are broader because they are required for continuous reconciliation.
-
-ClickHouse can provide the rendered policy JSON for review and walk your security team through each permission on request.
 
 </details>
 
