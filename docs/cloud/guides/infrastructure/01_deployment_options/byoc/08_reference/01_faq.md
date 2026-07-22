@@ -14,7 +14,7 @@ doc_type: 'reference'
 <details>
 <summary>How do we get started with BYOC?</summary>
 
-Reach out to ClickHouse via the [contact form](https://clickhouse.com/cloud/bring-your-own-cloud), and the team will enable BYOC for your organization. You then prepare a dedicated cloud account (AWS account, GCP project) and follow the [standard onboarding guide](/cloud/reference/byoc/onboarding/standard). We strongly recommend a dedicated account or project used only for BYOC.
+Reach out to ClickHouse via the [contact form](https://clickhouse.com/cloud/bring-your-own-cloud), and the team will enable BYOC for your organization. You then prepare a dedicated cloud account (AWS account, GCP project, or Azure subscription) and follow the [standard onboarding guide](/cloud/reference/byoc/onboarding/standard). We strongly recommend a dedicated account, project, or subscription used only for BYOC.
 
 </details>
 
@@ -24,7 +24,7 @@ Reach out to ClickHouse via the [contact form](https://clickhouse.com/cloud/brin
 Expect roughly 45–90 minutes end to end. When provisioning stalls, the most common causes are on the account side:
 
 - The CloudFormation template or Terraform module was modified before applying it (for example, adding a `PermissionsBoundary`). Apply the artifacts as provided — supported customizations are exposed as parameters.
-- Organization-level policies (AWS SCPs, GCP organization policies such as `iam.allowedPolicyMemberDomains`) blocking role assumption or IAM bindings.
+- Organization-level policies (AWS SCPs, GCP organization policies such as `iam.allowedPolicyMemberDomains`, or Azure policies restricting role assignments) blocking role assumption or IAM bindings.
 - Account quota limits (for example Elastic IPs or VPCs on AWS).
 
 Provisioning retries automatically and self-heals once the underlying issue is fixed. If your infrastructure remains stuck for more than a couple of hours, contact support.
@@ -34,16 +34,16 @@ Provisioning retries automatically and self-heals once the underlying issue is f
 <details>
 <summary>Can BYOC use an existing VPC? What about shared VPCs?</summary>
 
-Yes — you can deploy into an existing VPC that lives in the **same** account or project as the BYOC infrastructure. See the customization guides for [AWS](/cloud/reference/byoc/onboarding/customization-aws) and [GCP](/cloud/reference/byoc/onboarding/customization-gcp).
+On AWS and GCP, you can deploy into an existing VPC that lives in the **same** account or project as the BYOC infrastructure. See the customization guides for [AWS](/cloud/reference/byoc/onboarding/customization-aws) and [GCP](/cloud/reference/byoc/onboarding/customization-gcp). Bringing your own VNet on Azure is not available today.
 
-Subnets shared from another account (AWS RAM) or a GCP Shared VPC host project are not supported today. The recommended pattern is a dedicated account or project for BYOC, connected to your existing network via VPC peering or PrivateLink / Private Service Connect. Note that with a customer-managed VPC, only the private load balancer is enabled by default (see [configuration](/cloud/reference/byoc/configurations)).
+Subnets shared from another account (AWS RAM) or a GCP Shared VPC host project are not supported. The recommended pattern is a dedicated account or project for BYOC, connected to your existing network via VPC peering, PrivateLink, Private Service Connect, or Azure Private Link. Note that with a customer-managed VPC, only the private load balancer is enabled by default (see [configuration](/cloud/reference/byoc/configurations)).
 
 </details>
 
 <details>
 <summary>Can BYOC be installed into an existing Kubernetes cluster?</summary>
 
-No. The Kubernetes cluster (EKS or GKE) is created and fully managed by ClickHouse. This is required so that ClickHouse can operate the platform reliably and keep it upgraded.
+No. The Kubernetes cluster (EKS, GKE, or AKS) is created and fully managed by ClickHouse. This is required so that ClickHouse can operate the platform reliably and keep it upgraded.
 
 </details>
 
@@ -61,21 +61,21 @@ In the Kubernetes cluster: it is possible with constraints — use your own node
 <details>
 <summary>Can I create multiple services in a single BYOC infrastructure?</summary>
 
-Yes. The infrastructure (including the Kubernetes cluster) only needs to be provisioned once for every cloud account and region combination, and all services you create in that region share it.
+Yes. The infrastructure (including the Kubernetes cluster) only needs to be provisioned once for every cloud account/project/subscription and region combination, and all services you create in that region share it.
 
 </details>
 
 <details>
 <summary>Which regions do you support for BYOC?</summary>
 
-All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. BYOC provisions across three availability zones, so regions with fewer than three zones and AWS Local Zones are not supported. If a region you need is not listed, contact your ClickHouse representative to discuss availability.
+All **public regions** listed in our [supported regions](https://clickhouse.com/docs/cloud/reference/supported-regions) documentation are available for BYOC deployments. BYOC provisions across three availability zones, so regions with fewer than three zones and AWS Local Zones are not supported, and BYOC is not available in AWS China regions. If a region you need is not listed, contact your ClickHouse representative to discuss availability.
 
 </details>
 
 <details>
 <summary>Will there be some resource overhead? What are the resources needed to run services other than ClickHouse instances?</summary>
 
-Besides the ClickHouse instances themselves (ClickHouse servers and ClickHouse Keeper), we also run supporting services such as `clickhouse-operator`, `aws-cluster-autoscaler`, Istio, and the monitoring stack.
+Besides the ClickHouse instances themselves (ClickHouse servers and ClickHouse Keeper), we also run supporting services such as `clickhouse-operator`, the cluster autoscaler, Istio, and the monitoring stack.
 
 The resource consumption of these shared components is relatively stable and doesn't grow linearly with the number or size of your ClickHouse services. As a rough guideline, in AWS we typically use a dedicated node group of about four `4xlarge` EC2 instances to run these workloads. In addition, each service runs a dedicated three-node ClickHouse Keeper ensemble, which is shared by all services in the same warehouse. See the [cost model](/cloud/reference/byoc/cost-model-aws) for details.
 
@@ -91,7 +91,14 @@ Service-level (vertical) autoscaling is on the roadmap. Available today: manual 
 <details>
 <summary>Which instance types does BYOC run on? Can we change the instance family?</summary>
 
-BYOC runs on a curated set of node groups rather than arbitrary instance types — on AWS, ARM-based (Graviton) memory-optimized families by default. Different instance families, CPU-to-memory ratios, or architectures can be provisioned on request through support; spot instances are not supported. See [configuration](/cloud/reference/byoc/configurations).
+BYOC runs on a curated set of node groups rather than arbitrary instance types — ARM-based, memory-optimized instances by default (Graviton on AWS). Different instance families, CPU-to-memory ratios, or architectures can be provisioned on request through support; spot instances are not supported. See [configuration](/cloud/reference/byoc/configurations).
+
+</details>
+
+<details>
+<summary>Can we run very small replicas to keep costs down?</summary>
+
+Each replica runs as one pod on its own node — node size is matched to the replica size, nodes are provisioned on demand, and multiple replicas are never packed onto one node. Very small replicas are therefore inefficient: a larger share of the hardware goes to overhead, and network and disk bandwidth scale with instance size. Sizes below what the console offers are custom requests through support.
 
 </details>
 
@@ -107,16 +114,16 @@ Yes. Warehouses (compute-compute separation) are supported in BYOC: multiple ser
 <details>
 <summary>Can we limit or revoke the permissions granted during installation?</summary>
 
-You can reduce the grants from the start: the onboarding template is parameterized, so you can withhold network write permissions when bringing your own VPC (`IncludeVPCWritePermissions=false`), withhold KMS permissions (off by default), and — in private preview on AWS — manage the IAM roles yourself (`IncludeIAMWritePermissions=false`, see [customer-managed IAM roles](/cloud/reference/byoc/onboarding/customization-aws)). The cross-account roles support an `ExternalId` condition to prevent confused-deputy access.
+You can reduce the grants from the start: the onboarding template is parameterized, so you can withhold network write permissions when bringing your own VPC (`IncludeVPCWritePermissions=false`) and — in private preview on AWS, enabled through support — manage the IAM roles yourself (`IncludeIAMWritePermissions=false`, see [customer-managed IAM roles](/cloud/reference/byoc/onboarding/customization-aws)). The cross-account roles support an `ExternalId` condition to prevent confused-deputy access.
 
-After provisioning, do not remove permissions from the management role unilaterally: ClickHouse continuously reconciles the infrastructure, and missing permissions break provisioning, upgrades, and support. To change the granted permissions or offboard entirely, coordinate with support (see the decommissioning question below).
+After provisioning, do not remove permissions from the management identity unilaterally: ClickHouse continuously reconciles the infrastructure, and missing permissions break provisioning, upgrades, and support. To change the granted permissions or offboard entirely, coordinate with support (see the decommissioning question below).
 
 </details>
 
 <details>
 <summary>What exactly can ClickHouse do in our cloud account? Can our security team review the permissions?</summary>
 
-All roles and their purposes are documented in the [privilege reference](/cloud/reference/byoc/reference/privilege). Write permissions are scoped: resource creation and mutation are restricted by the `clickhouse-byoc=true` resource tag and `clickhouse-cloud-*` name prefixes, so the management role cannot modify resources it did not create. The management role has **no object-level access to your data buckets** — object access is limited to in-cluster identities scoped to the ClickHouse workloads. Read permissions are broader because they are required for continuous reconciliation.
+All roles and identities and their purposes are documented in the [privilege reference](/cloud/reference/byoc/reference/privilege) for AWS, GCP, and Azure. Write permissions of the management identity (an IAM role on AWS, a service account on GCP, a service principal on Azure) are scoped by resource tags and name prefixes such as `clickhouse-cloud-*`, so it cannot modify resources it did not create, and it has **no object-level access to your data buckets** — object access is limited to in-cluster identities scoped to the ClickHouse workloads. Read permissions are broader because they are required for continuous reconciliation.
 
 ClickHouse can provide the rendered policy JSON for review and walk your security team through each permission on request.
 
@@ -151,18 +158,18 @@ By default, the Kubernetes API endpoint is public but restricted to ClickHouse's
 </details>
 
 <details>
-<summary>What is the size of the VPC IP range created?</summary>
+<summary>What is the size of the VPC/VNet IP range created?</summary>
 
-By default, we use `10.0.0.0/16` for BYOC VPC. We recommend reserving at least /22 for potential future scaling,
+By default, we use `10.0.0.0/16` for the BYOC VPC (AWS/GCP) or VNet (Azure). We recommend reserving at least /22 for potential future scaling,
 but if you prefer to limit the size, it is possible to use /23 if it is likely that you will be limited
 to 30 server pods.
 
 </details>
 
 <details>
-<summary>How does network communication work between BYOC VPC and S3?</summary>
+<summary>How does network communication work between the BYOC network and object storage?</summary>
 
-Traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. This traffic goes through an S3 gateway VPC endpoint, so it remains within the AWS network, doesn't traverse the public internet, and incurs no NAT gateway charges. On GCP, access to Google APIs similarly uses Private Google Access.
+On AWS, traffic between your Customer BYOC VPC and S3 uses HTTPS (port 443) via the AWS S3 API for table data, backups, and logs. This traffic goes through an S3 gateway VPC endpoint, so it remains within the AWS network, doesn't traverse the public internet, and incurs no NAT gateway charges. On GCP, access to Google APIs similarly uses Private Google Access. On Azure, data is stored in Azure Blob Storage accounts within your subscription.
 
 </details>
 
@@ -178,14 +185,14 @@ No. Table data blobs are stored in a shared layout without per-table paths, so o
 
 Client connections terminate at the load balancer on TLS ports: **8443** (HTTPS interface) and **9440** (native protocol over TLS); port 443 also routes to the HTTPS interface.
 
-Inside the VPC, cluster-internal communication uses the native protocol on port 9000, HTTP on port 8123, and interserver communication on port 9009 for replication and distributed queries. These internal ports and the ClickHouse Keeper ports are never exposed on any load balancer.
+Inside the network, cluster-internal communication uses the native protocol on port 9000, HTTP on port 8123, and interserver communication on port 9009 for replication and distributed queries. These internal ports and the ClickHouse Keeper ports are never exposed on any load balancer.
 
 </details>
 
 <details>
 <summary>Are our service endpoints exposed to the public internet? Can we go private-only?</summary>
 
-By default (with a ClickHouse-managed VPC), each service gets a public load balancer protected by an IP access list, plus a private load balancer reachable from your VPC and peered networks. IP filtering is enforced at the ingress proxy layer, so the load balancer ports may appear open in scans while connections from unlisted sources are rejected. The public endpoint can be disabled entirely once nothing depends on it. See [connectivity](/cloud/reference/byoc/connect).
+With a ClickHouse-managed VPC, each service gets a public load balancer protected by an IP access list by default; a private load balancer, reachable from your network and peered networks, can additionally be enabled through support. With a customer-managed VPC, the defaults are inverted and only the private load balancer is enabled. IP filtering is enforced at the ingress proxy layer, so the load balancer ports may appear open in scans while connections from unlisted sources are rejected. The public endpoint can be disabled entirely once nothing depends on it. The console's [Connection via selector](/cloud/reference/byoc/connect#connection-via) shows the endpoints for each connection path enabled for your service. See [connectivity](/cloud/reference/byoc/connect).
 
 </details>
 
@@ -197,9 +204,16 @@ Not today. Service endpoints are provisioned under `clickhouse-byoc.com` with Cl
 </details>
 
 <details>
-<summary>How do we set up AWS PrivateLink or GCP Private Service Connect?</summary>
+<summary>How do we set up AWS PrivateLink, GCP Private Service Connect, or Azure Private Link?</summary>
 
-Follow the network setup guides for [AWS](/cloud/reference/byoc/onboarding/network-aws) and [GCP](/cloud/reference/byoc/onboarding/network-gcp). Two things commonly missed: endpoint allowlisting is **per service**, so endpoints must be registered again for each new service, and DNS resolution for the private endpoint names must be configured on your side if you run your own DNS.
+Follow the network setup guides for [AWS](/cloud/reference/byoc/onboarding/network-aws) and [GCP](/cloud/reference/byoc/onboarding/network-gcp); for Azure deployments, Azure Private Link is supported — contact the ClickHouse team for setup assistance. Two things commonly missed: endpoint allowlisting is **per service**, so endpoints must be registered again for each new service, and DNS resolution for the private endpoint names must be configured on your side if you run your own DNS. Once set up, use the console's [Connection via selector](/cloud/reference/byoc/connect#connection-via) to copy the correct private endpoint hostname.
+
+</details>
+
+<details>
+<summary>Is there a list of endpoints we need to allow in our firewall or egress rules?</summary>
+
+There is no single published endpoint list. The cluster requires working outbound internet access (directly or via NAT) in addition to private access to cloud provider APIs — see the [network connectivity requirements](/cloud/reference/byoc/onboarding/customization-aws#ensure-network-connectivity). If your network policy requires an explicit inventory, contact support to review your setup.
 
 </details>
 
@@ -259,14 +273,14 @@ Backups form chains: a full backup followed by incrementals that depend on it. T
 <details>
 <summary>How can we monitor backup status ourselves?</summary>
 
-Two ways: the ClickHouse Cloud API backup endpoints, and the Prometheus counters exposed by the in-cluster monitoring stack (`backups_initiated_total`, `backups_completed_total`, `backups_failed_total`) — we recommend alerting on failures in your own monitoring. See [observability](/cloud/reference/byoc/observability).
+Two ways: the ClickHouse Cloud API backup endpoints, and the backup metrics (initiation, completion, and failure counters) exposed by the in-cluster monitoring stack — we recommend alerting on failures in your own monitoring. See [observability](/cloud/reference/byoc/observability).
 
 </details>
 
 <details>
 <summary>How do we meet disaster recovery requirements (RPO/RTO)?</summary>
 
-BYOC deploys across three availability zones, and writes are acknowledged only after object storage confirms them. For regional disaster recovery, backup frequency and destination can be configured to match your RPO and RTO targets, including backing up to a bucket in another region — contact support to set this up.
+BYOC deploys across three availability zones, and writes are acknowledged only after object storage confirms them. Cross-region replication is not available today, so regional disaster recovery is backup-based and the achievable RPO is bounded by your backup frequency. Backup frequency and destination can be configured to match your targets, including backing up to a bucket in another region — contact support to set this up.
 
 </details>
 
@@ -275,7 +289,7 @@ BYOC deploys across three availability zones, and writes are acknowledged only a
 <details>
 <summary>How do we integrate BYOC with our own monitoring and alerting?</summary>
 
-The monitoring stack (Prometheus, Grafana, AlertManager) runs inside your account, and you can consume it directly: query it over the PromQL API, federate it into your own Prometheus, or scrape the ClickHouse `/metrics_all` endpoint per service. There is no turnkey integration for third-party platforms such as Datadog today — integrate via their Prometheus-compatible ingestion. See [observability](/cloud/reference/byoc/observability) for endpoints and setup.
+The monitoring stack (Prometheus, Grafana, AlertManager) runs inside your account, and you can consume it directly over private connectivity: query it over the PromQL API, federate it into your own Prometheus, or scrape the ClickHouse `/metrics_all` endpoint per service. There is no turnkey integration for third-party platforms such as Datadog today — integrate via their Prometheus-compatible ingestion. See [observability](/cloud/reference/byoc/observability) for endpoints and setup.
 
 </details>
 
@@ -284,7 +298,7 @@ The monitoring stack (Prometheus, Grafana, AlertManager) runs inside your accoun
 <details>
 <summary>What do we pay for with BYOC?</summary>
 
-Two separate bills: ClickHouse Cloud charges based on the memory allocated to your services, and your cloud provider bills you directly for the underlying infrastructure at cost, with no markup. See the [cost model](/cloud/reference/byoc/cost-model-aws), [billable AWS services](/cloud/reference/byoc/billable-aws-services), and [AWS service limits](/cloud/reference/byoc/aws-service-limits).
+Two separate bills: ClickHouse Cloud charges based on the memory allocated to your services, and your cloud provider bills you directly for the underlying infrastructure at cost, with no markup. The detailed cost reference pages currently cover AWS: see the [cost model](/cloud/reference/byoc/cost-model-aws), [billable AWS services](/cloud/reference/byoc/billable-aws-services), and [AWS service limits](/cloud/reference/byoc/aws-service-limits).
 
 </details>
 
@@ -293,14 +307,14 @@ Two separate bills: ClickHouse Cloud charges based on the memory allocated to yo
 <details>
 <summary>Which cloud providers is BYOC available on?</summary>
 
-AWS and GCP are generally available. Azure is in private preview — contact your ClickHouse representative to join. See the [overview](/cloud/reference/byoc/overview) for current status.
+AWS, GCP, and Azure are all generally available. See the [overview](/cloud/reference/byoc/overview) for the supported features and regions on each cloud.
 
 </details>
 
 <details>
 <summary>How do we decommission a BYOC environment?</summary>
 
-Contact ClickHouse **before** deleting anything. The correct order is: ClickHouse deprovisions the services and infrastructure first, then you remove the onboarding stack and any remaining resources. Deleting resources or revoking the management role's permissions first severs the control-plane connection mid-flight and forces manual cleanup. All ClickHouse-created resources are tagged `clickhouse-byoc=true`, so you can enumerate them afterwards to verify nothing is left.
+Terminate your services and the BYOC infrastructure from the ClickHouse console — do not start by deleting resources or revoking permissions in your cloud provider console, which severs the control-plane connection mid-flight and forces manual cleanup. Once the console-driven termination completes, remove the onboarding stack (CloudFormation stack or Terraform module) and any remaining resources. All ClickHouse-created resources are tagged `clickhouse-byoc=true`, so you can enumerate them afterwards to verify nothing is left.
 
 </details>
 
