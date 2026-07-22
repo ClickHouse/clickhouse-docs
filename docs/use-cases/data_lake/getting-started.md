@@ -22,7 +22,7 @@ A hands-on walkthrough of querying data lake tables, accelerating them with Merg
 
 Screenshots in this guide are from the [ClickHouse Cloud](https://console.clickhouse.cloud) SQL console. All queries work on both Cloud and self-managed deployments.
 
-ClickHouse offers three ways to read open table formats: table functions, table engines, and the [`DataLakeCatalog`](/engines/database-engines/datalakecatalog) database engine. **If your tables live in a data catalog** (Glue, Unity Catalog, REST, and others), connect with `DataLakeCatalog` — it is the recommended integration. The table function and table engine sections below are best for ad hoc queries or when you know a specific storage path and don't use a catalog.
+ClickHouse offers three ways to read open table formats: table functions, table engines, and the [`DataLakeCatalog`](/engines/database-engines/datalakecatalog) database engine. **If your tables live in a data catalog** (Glue, Unity Catalog, REST, and others), connect with `DataLakeCatalog` so you can get access to all of your Iceberg/Delta tables in one function. The table function and table engine sections below are best for ad hoc queries or when you know a specific storage path and don't use a catalog.
 
 <VerticalStepper headerLevel="h2">
 
