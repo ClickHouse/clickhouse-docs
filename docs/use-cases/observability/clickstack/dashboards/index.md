@@ -37,6 +37,7 @@ import heatmap_tile_editor from '@site/static/images/clickstack/dashboards/heatm
 import heatmap_tile_rendered from '@site/static/images/clickstack/dashboards/heatmap-tile-rendered.png';
 import heatmap_tile_drilldown from '@site/static/images/clickstack/dashboards/heatmap-tile-drilldown.png';
 import number_tile_background_chart from '@site/static/images/clickstack/dashboards/number-tile-background-chart.png';
+import table_tile_display_settings from '@site/static/images/clickstack/dashboards/table-tile-display-settings.png';
 import Tagging from '@site/docs/_snippets/_clickstack_tagging.mdx';
 
 ClickStack supports visualizing events, with built-in support for charting in ClickStack UI (HyperDX). These charts can be added to dashboards for sharing with other users.
@@ -226,6 +227,14 @@ With a number tile selected, open **Display Settings** and set **Background char
 <Image img={number_tile_background_chart} alt="Display Settings drawer for a number tile, with Background chart set to Area" size="lg"/>
 
 Background charts apply to query-builder number tiles. Raw SQL number tiles return a single value with no time dimension to bucket, so the option appears but is disabled for them.
+
+Table tiles can stripe their rows with **Alternate Row Background**, which tints every other row so wide tables are easier to scan. It is off by default.
+
+With a table tile selected, open **Display Settings** and turn on **Alternate Row Background**. Striping is purely visual, so it works on both query-builder and raw SQL table tiles.
+
+<Image img={table_tile_display_settings} alt="Display Settings drawer for a table tile, with Alternate Row Background turned on" size="lg"/>
+
+Table tiles also keep a separator between the header row and the data as you scroll, so the column headers stay distinct.
 
 ## Dashboard - Listing and search {#dashboard-listing-search}
 
