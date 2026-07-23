@@ -217,6 +217,13 @@ Follow the network setup guides for [AWS](/cloud/reference/byoc/onboarding/netwo
 </details>
 
 <details>
+<summary>Can we connect over PrivateLink from a different AWS region?</summary>
+
+Yes, but the console's **Enable private link** toggle covers same-region consumers only — AWS disables cross-region access on endpoint services by default, and the ClickHouse console doesn't manage it. Since the endpoint service lives in your BYOC account, you enable it yourself: add the consumer regions to the endpoint service's **Supported regions** list in your AWS console, then create the endpoint with the cross-region option on the consumer side. ClickHouse won't change or reset these values. See the [PrivateLink setup guide](/cloud/reference/byoc/onboarding/network-aws#setup-privatelink) for the steps; AWS cross-region data transfer rates apply.
+
+</details>
+
+<details>
 <summary>Is there a list of endpoints we need to allow in our firewall or egress rules?</summary>
 
 There is no single published endpoint list. The cluster requires working outbound internet access (directly or via NAT) in addition to private access to cloud provider APIs — see the [network connectivity requirements](/cloud/reference/byoc/onboarding/customization-aws#ensure-network-connectivity). If your network policy requires an explicit inventory, contact support to review your setup.
