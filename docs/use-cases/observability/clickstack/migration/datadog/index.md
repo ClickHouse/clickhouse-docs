@@ -19,6 +19,7 @@ import migrating_data_agents from '@site/static/images/use-cases/observability/m
 import simple_otel_pipeline from '@site/static/images/use-cases/observability/simple_otel_pipeline.png';
 import datadog_to_otel from '@site/static/images/use-cases/observability/datadog_to_otel.png';
 import hyperdx_ingestion_key from '@site/static/images/use-cases/observability/hyperdx_ingestion_key.png';
+import hackernews_main from '@site/static/images/clickstack/getting-started/hackernews_main.png';
 
 <ExperimentalBadge/>
 
@@ -91,6 +92,10 @@ With Managed ClickStack you deploy a standalone ClickStack collector that ingest
 <VerticalStepper headerLevel="h3">
 
 ### Deploy a collector with the receiver enabled {#deploy-collector-managed}
+
+:::note ClickStack OpenTelemetry collector vs standard OpenTelemetry collector
+
+:::
 
 Run the [standalone ClickStack collector](/use-cases/observability/clickstack/ingesting-data/otel-collector), pointing it at your ClickHouse Cloud service. Enable the Datadog receiver with `ENABLE_DATADOG_RECEIVER=true`, expose port `8126`, and secure ingestion by setting your own `OTLP_AUTH_TOKEN`:
 
@@ -278,7 +283,7 @@ git clone --branch datadog-instrumentation https://github.com/ClickHouse/hn-news
 
 Follow the [instructions in the README](https://github.com/ClickHouse/hn-news-analyzer/tree/datadog-instrumentation) to run the app.
 
-{/* IMAGE PLACEHOLDER: Screenshot of the Hacker News analyzer sample app. Source blog asset: Hacker_News_Analyzer_Click_Stack_O_Tel_Demo */}
+<Image img={hackernews_main} alt="The HackerNews Analyzer application running locally"/>
 
 ### Launch ClickStack with the receiver enabled {#launch-clickstack-example}
 
