@@ -25,9 +25,17 @@ Expect roughly 45–90 minutes end to end. When provisioning stalls, the most co
 
 - The CloudFormation template or Terraform module was modified before applying it — for example, adding a `PermissionsBoundary`, or renaming the IAM role to satisfy a naming convention (on AWS it must be named exactly `ClickHouseManagementRole`). Apply the artifacts as provided — supported customizations are exposed as parameters, and any other change needs ClickHouse's approval first.
 - Organization-level policies (AWS SCPs, GCP organization policies such as `iam.allowedPolicyMemberDomains`, or Azure policies restricting role assignments) blocking role assumption or IAM bindings.
+- An external ID mismatch on the onboarding role (see the external ID question below).
 - Account quota limits (for example Elastic IPs or VPCs on AWS).
 
 Provisioning retries automatically and self-heals once the underlying issue is fixed. If your infrastructure remains stuck for more than a couple of hours, contact support.
+
+</details>
+
+<details>
+<summary>What value should we use for the external ID in the onboarding template?</summary>
+
+Use the external ID shown in the ClickHouse Cloud onboarding flow (the `ExternalId` parameter in CloudFormation, the `external_id` input in Terraform). Displaying the external ID in the console is rolling out gradually — if your onboarding screen doesn't show one, leave the CloudFormation parameter at its default, or ask your ClickHouse contact for the value to use with Terraform. Don't choose your own value: it must match what ClickHouse's automation expects, or the cross-account role can't be assumed and provisioning fails.
 
 </details>
 
