@@ -11,7 +11,7 @@ toc_max_heading_level: 3
 ---
 
 import ManagedGettingStartedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_managed_getting_started_ingestion.md';
-import PrepareOTelIngestionUser from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_prepare_otel_ingestion_user.md';
+import CreateIngestionUser from '@site/docs/use-cases/observability/clickstack/managed-onboarding/_snippets/_create_ingestion_user.md';
 import SendManagedGettingStartedData from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_send_managed_getting_started_data.md';
 import ConfirmManagedGettingStartedIngestion from '@site/docs/use-cases/observability/clickstack/deployment/_snippets/_confirm_managed_getting_started_ingestion.md';
 
@@ -49,7 +49,7 @@ Your ingestion path determines the remaining prerequisites:
 
 Open the [ClickHouse Cloud SQL console](/cloud/get-started/sql-console) and run:
 
-<PrepareOTelIngestionUser />
+<CreateIngestionUser />
 
 ### Start ingestion in ClickStack {#choose-an-ingestion-source}
 
