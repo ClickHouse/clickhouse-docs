@@ -48,6 +48,10 @@ Ensure your VPC has working DNS resolution and doesn't block, interfere with, or
 
 The initial BYOC setup creates a privileged IAM role (`ClickHouseManagementRole`) that enables BYOC controllers from ClickHouse Cloud to manage your infrastructure. This can be performed using either a [CloudFormation template](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc_v2.yaml) or a Terraform module (see below).
 
+:::warning The IAM role name is a hard requirement
+The role must be named exactly `ClickHouseManagementRole` — no prefixes, suffixes, or renaming to satisfy an organizational naming convention. The name is hard-coded in ClickHouse's automation and identical for every customer, so a renamed role applies successfully but provisioning then fails because ClickHouse cannot assume the expected role. More generally, do not change anything in the provided template or module without ClickHouse's explicit approval; supported customizations are exposed as parameters.
+:::
+
 When deploying for a `BYO-VPC` setup, set the `IncludeVPCWritePermissions` parameter to `false` to ensure ClickHouse Cloud doesn't receive permissions to modify your customer-managed VPC.
 
 :::note

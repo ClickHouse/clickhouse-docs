@@ -23,7 +23,7 @@ Reach out to ClickHouse via the [contact form](https://clickhouse.com/cloud/brin
 
 Expect roughly 45–90 minutes end to end. When provisioning stalls, the most common causes are on the account side:
 
-- The CloudFormation template or Terraform module was modified before applying it (for example, adding a `PermissionsBoundary`). Apply the artifacts as provided — supported customizations are exposed as parameters.
+- The CloudFormation template or Terraform module was modified before applying it — for example, adding a `PermissionsBoundary`, or renaming the IAM role to satisfy a naming convention (on AWS it must be named exactly `ClickHouseManagementRole`). Apply the artifacts as provided — supported customizations are exposed as parameters, and any other change needs ClickHouse's approval first.
 - Organization-level policies (AWS SCPs, GCP organization policies such as `iam.allowedPolicyMemberDomains`, or Azure policies restricting role assignments) blocking role assumption or IAM bindings.
 - Account quota limits (for example Elastic IPs or VPCs on AWS).
 
