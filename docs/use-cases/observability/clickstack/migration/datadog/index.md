@@ -20,6 +20,9 @@ import simple_otel_pipeline from '@site/static/images/use-cases/observability/si
 import datadog_to_otel from '@site/static/images/use-cases/observability/datadog_to_otel.png';
 import hyperdx_ingestion_key from '@site/static/images/use-cases/observability/hyperdx_ingestion_key.png';
 import hackernews_main from '@site/static/images/clickstack/getting-started/hackernews_main.png';
+import datadog_clickstack_demo_1 from '@site/static/images/use-cases/observability/datadog_clickstack_demo_1.png';
+import datadog_clickstack_demo_2 from '@site/static/images/use-cases/observability/datadog_clickstack_demo_2.png';
+import datadog_clickstack_demo_3 from '@site/static/images/use-cases/observability/datadog_clickstack_demo_3.png';
 
 <ExperimentalBadge/>
 
@@ -94,7 +97,7 @@ With Managed ClickStack you deploy a standalone ClickStack collector that ingest
 ### Deploy a collector with the receiver enabled {#deploy-collector-managed}
 
 :::note ClickStack OpenTelemetry collector vs standard OpenTelemetry collector
-
+The Datadog receiver is built into and pre-configured in the ClickStack distribution of the OpenTelemetry collector. If you prefer to use the standard [OpenTelemetry Collector Contrib](https://github.com/open-telemetry/opentelemetry-collector-contrib) distribution, you'll need to configure the receiver yourself. All of our changes and improvements to the receiver are pushed upstream, so they're available there too. For configuration options, see the [Datadog receiver README](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/datadogreceiver/README.md).
 :::
 
 Run the [standalone ClickStack collector](/use-cases/observability/clickstack/ingesting-data/otel-collector), pointing it at your ClickHouse Cloud service. Enable the Datadog receiver with `ENABLE_DATADOG_RECEIVER=true`, expose port `8126`, and secure ingestion by setting your own `OTLP_AUTH_TOKEN`:
@@ -322,11 +325,11 @@ See [Enabling the Datadog receiver](#enabling-the-datadog-receiver) for the full
 
 Open the HyperDX interface at [http://localhost:8080](http://localhost:8080) and explore the traces, logs, and metrics captured from the Datadog agent.
 
-{/* IMAGE PLACEHOLDER: ClickStack (HyperDX) showing traces from the Datadog agent. Source blog asset: datadog_otel_jul2026_image1 */}
+<Image img={datadog_clickstack_demo_2} alt="Datadog in clickstack traces 2" size="lg" background/>
 
-{/* IMAGE PLACEHOLDER: ClickStack (HyperDX) showing logs from the Datadog agent. Source blog asset: datadog_otel_jul2026_image2 */}
+<Image img={datadog_clickstack_demo_1} alt="Datadog in clickstack traces 1" size="lg" background/>
 
-{/* IMAGE PLACEHOLDER: ClickStack (HyperDX) showing metrics from the Datadog agent. Source blog asset: datadog_otel_jul2026_image4 */}
+<Image img={datadog_clickstack_demo_3} alt="Datadog in clickstack traces 3" size="lg" background/>
 
 </VerticalStepper>
 
