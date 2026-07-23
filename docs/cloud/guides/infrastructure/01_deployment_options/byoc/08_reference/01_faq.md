@@ -159,7 +159,7 @@ Only operational metadata: service and backup state events, usage metrics for bi
 <details>
 <summary>How does the ClickHouse control plane reach the Kubernetes API in our account? Is Tailscale required?</summary>
 
-By default, the Kubernetes API endpoint is public but restricted to ClickHouse's NAT IP addresses. For private-only connectivity, two options exist: Tailscale (outbound-only, used by default for troubleshooting access) and, on AWS, a fully private path via VPC Lattice (private preview). See [network security](/cloud/reference/byoc/reference/network_security) and [configuration](/cloud/reference/byoc/configurations). Do not remove the ClickHouse IP allowlist entries from the API endpoint — the control plane needs them to manage the cluster.
+By default, the Kubernetes API endpoint is public but restricted to ClickHouse's NAT IP addresses. For private-only connectivity, two options exist: Tailscale (outbound-only, used by default for troubleshooting access) and, on AWS, a fully private path via VPC Lattice (private preview). Note that this applies only to the Kubernetes API: cloud provider API calls (for example EKS and EC2 on AWS) originate from ClickHouse Cloud's network via cross-account role assumption and can never be routed through Tailscale — see [cloud provider APIs vs the Kubernetes API](/cloud/reference/byoc/reference/network_security#cloud-api-vs-kubernetes-api) and [configuration](/cloud/reference/byoc/configurations). Do not remove the ClickHouse IP allowlist entries from the API endpoint — the control plane needs them to manage the cluster.
 
 </details>
 
