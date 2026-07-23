@@ -19,6 +19,7 @@ import ssh_tunnel from '@site/static/images/integrations/data-ingestion/clickpip
 import select_replication_slot from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-replication-slot.jpg'
 import select_destination_db from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/select-destination-db.jpg'
 import ch_permissions from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/ch-permissions.jpg'
+import partition_by from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/partition-by.png'
 import Image from '@theme/IdealImage';
 import ChangingTLSSettings from '@site/docs/_snippets/clickpipes/_changing_tls_settings.md';
 
@@ -143,6 +144,10 @@ You can configure the Advanced settings if needed. A brief description of each s
    :::warning
    If you're defining an ordering key in ClickHouse differently than from the primary key in Postgres, don't forget to read all the [considerations](/integrations/clickpipes/postgres/ordering_keys) around it
    :::
+
+8. Additionally, you can provide a custom `PARTITION BY <expr>` expression to control destination [ClickHouse table partitioning](https://clickhouse.com/docs/partitions).
+
+<Image img={partition_by} alt="Partition by" size="lg" border/>
 
 ### Review permissions and start the ClickPipe {#review-permissions-and-start-the-clickpipe}
 
