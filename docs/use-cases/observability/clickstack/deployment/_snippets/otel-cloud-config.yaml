@@ -27,15 +27,11 @@ connectors:
         statement: route() where IsMatch(attributes["rr-web.event"], ".*")
         pipelines: [logs/out-rrweb]
 exporters:
-  debug:
-    verbosity: detailed
-    sampling_initial: 5
-    sampling_thereafter: 200
   clickhouse/rrweb:
     database: default
     endpoint: <clickhouse_cloud_endpoint>
     password: <your_password_here>
-    username: default
+    username: clickstack-ingest
     ttl: 720h
     logs_table_name: hyperdx_sessions
     timeout: 5s
@@ -48,7 +44,7 @@ exporters:
     database: default
     endpoint: <clickhouse_cloud_endpoint>
     password: <your_password_here>
-    username: default
+    username: clickstack-ingest
     ttl: 720h
     timeout: 5s
     retry_on_failure:
