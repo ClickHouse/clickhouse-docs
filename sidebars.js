@@ -2158,6 +2158,7 @@ const sidebars = {
                 },
               ],
             },
+            'use-cases/observability/clickstack/migration/datadog/index',
           ],
         },
         'use-cases/observability/clickstack/api-reference',
