@@ -201,7 +201,7 @@ The receiver is now available at `http://localhost:8126`.
 The Datadog agent also listens on port `8126`. If the agent runs on the same host as the collector, map the collector to a different host port to avoid a conflict, for example `-p 18126:8126`, and point the agent at that port instead.
 :::
 
-Complete the remaining setup process as described in [open source getting started guide](/docs/use-cases/observability/clickstack/getting-started/oss#navigate-to-hyperdx-ui).
+Complete the remaining setup process as described in the [open source getting started guide](/docs/use-cases/observability/clickstack/getting-started/oss#navigate-to-hyperdx-ui).
 
 ### Copy your ingestion API key {#copy-ingestion-key-oss}
 
