@@ -19,6 +19,7 @@ import binlog_row_metadata from '@site/static/images/integrations/data-ingestion
 import security_group_in_rds_mysql from '@site/static/images/integrations/data-ingestion/clickpipes/mysql/source/rds/security-group-in-rds-mysql.png';
 import edit_inbound_rules from '@site/static/images/integrations/data-ingestion/clickpipes/postgres/source/rds/edit_inbound_rules.png';
 import Image from '@theme/IdealImage';
+import IAMAuthentication from '@site/docs/_snippets/clickpipes/_iam_authentication.md';
 
 This is a step-by-step guide on how to configure your RDS MariaDB instance for replicating its data via the MySQL ClickPipe.
 <br/>
@@ -104,13 +105,7 @@ Connect to your RDS MariaDB instance as an admin user and execute the following 
 
 ### Using IAM authentication (optional) {#iam-authentication}
 
-Instead of a password, you can authenticate the ClickPipes user via AWS IAM role-based access. Create the user as follows, then grant it the same schema and replication privileges shown above:
-
-```sql
-CREATE USER 'clickpipes_iam_user' IDENTIFIED WITH AWSAuthenticationPlugin AS 'RDS';
-```
-
-See [AWS IAM DB authentication (RDS/Aurora)](/integrations/clickpipes/postgres/auth) for the full steps to set up the IAM role and policy required for ClickPipes to authenticate this way.
+<IAMAuthentication engine="mysql" service="rds" />
 
 ## Configure network access {#configure-network-access}
 
