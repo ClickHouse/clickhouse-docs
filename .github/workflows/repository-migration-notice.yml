@@ -5,24 +5,17 @@ on:
     types: [opened]
 
 permissions:
-  issues: write
+  pull-requests: write
 
 jobs:
   post-migration-notice:
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
-      - name: Generate token
-        id: generate-token
-        uses: actions/create-github-app-token@v3
-        with:
-          app-id: ${{ secrets.WORKFLOW_AUTH_PUBLIC_APP_ID }}
-          private-key: ${{ secrets.WORKFLOW_AUTH_PUBLIC_PRIVATE_KEY }}
-
       - name: Comment with the new contribution location
         uses: actions/github-script@v8
         with:
-          github-token: ${{ steps.generate-token.outputs.token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const marker = '<!-- clickhouse-docs-migration-notice -->';
             const issue = {
