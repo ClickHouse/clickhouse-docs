@@ -1618,6 +1618,7 @@ const sidebars = {
         'faq/operations/multi-region-replication',
         'faq/operations/production',
         'operations/cluster-discovery',
+        'operations/introspection-port',
         'operations/monitoring',
         'operations/opentelemetry',
         'operations/quotas',
