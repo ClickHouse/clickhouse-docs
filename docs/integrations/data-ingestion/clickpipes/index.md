@@ -64,6 +64,18 @@ More connectors will get added to ClickPipes, you can find out more by [contacti
 
 The following tables list the static NAT IPs that ClickPipes uses to connect to your external services. Add the IPs for the ClickPipes region that serves your ClickHouse Cloud service to your IP allow list. In the case of object storage pipes you should also add the [ClickHouse cluster IPs](/manage/data-sources/cloud-endpoints-api) to your IP allow list.
 
+:::tip Fetch these IPs programmatically
+The ClickPipes static NAT IPs are also available from the [Cloud endpoints API](/manage/data-sources/cloud-endpoints-api) under the `clickpipes_egress_ips` field of each region, so you can keep an allow list in sync automatically:
+
+```bash
+# AWS — replace <region> with the ClickPipes region serving your service
+curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.aws[] | select(.region == "<region>") | .clickpipes_egress_ips[]'
+
+# Google Cloud
+curl -s https://api.clickhouse.cloud/static-ips.json | jq -r '.gcp[] | select(.region == "<region>") | .clickpipes_egress_ips[]'
+```
+:::
+
 Services in the Google Cloud regions listed in the Google Cloud table below use those Google Cloud IPs only if the service did not contain pre-existing ClickPipes prior to June 15th, 2026. Services in those regions with pre-existing ClickPipes prior to June 15th, 2026 continue to use the default region IPs listed below.
 
 For other services, ClickPipes traffic will originate from a default region based on your service's location:
