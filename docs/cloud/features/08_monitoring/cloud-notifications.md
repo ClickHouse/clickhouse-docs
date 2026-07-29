@@ -62,14 +62,6 @@ ClickHouse sends service notifications when a certain alert condition is trigger
 
 ClickHouse sends ClickPipes notifications when your ClickPipe is experiencing failures or issues. 
 
-## Postgres notifications {#postgres-notifications}
-
-ClickHouse sends Postgres notifications for managed Postgres services. These notifications only appear for organizations with Postgres services.
-
-| Notify when | Specific alert condition | Default notification channels | Resolution steps |
-|---|---|---|---|
-| Postgres storage passed 85% threshold | When storage usage on a Postgres service reaches 85% of capacity. Notification will only trigger once per calendar day. | UI, email | Storage scales automatically when usage reaches 90% (brief cutover downtime). No action is needed unless auto-scaling is already at its limit. |
-
 ## Billing notifications {#billing-notifications}
 
 ClickHouse sends billing notifications for payment issues, and when prepaid commitments reach certain consumption thresholds. 
