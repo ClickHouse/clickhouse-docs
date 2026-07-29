@@ -28,7 +28,7 @@ AWS PrivateLink is available in the following AWS regions:
 
 GCP Private Service Connect is available in the following Google Cloud regions:
 
-`asia-northeast1`, `asia-southeast1`, `australia-southeast1`, `europe-west2`, `europe-west4`, `us-central1`, `us-east1`, `us-west1`
+`asia-northeast1`, `asia-southeast1`, `australia-southeast1`, `europe-west2`, `europe-west3`, `europe-west4`, `europe-west6`, `northamerica-northeast1`, `us-central1`, `us-east1`, `us-west1`
 
 The static egress IPs that ClickPipes uses in each region are listed under [List of static IPs](/integrations/clickpipes/networking/static-ips).
 

@@ -45,6 +45,7 @@ Each RPE provisions a single static internal IP in the ClickPipes VPC. Unlike AW
 - A GCP project where Cloud SQL (or your Postgres host) lives. You need IAM rights to:
   - Manage Cloud SQL (`roles/cloudsql.admin`) or your equivalent Postgres infrastructure.
   - Manage PSC service attachments (`roles/compute.networkAdmin`).
+- A Postgres source prepared for CDC. For Cloud SQL, complete the [Cloud SQL source setup guide](/integrations/clickpipes/postgres/source/google-cloudsql), including enabling logical decoding, granting table and replication permissions, and creating a publication.
 - The ClickHouse Cloud API key/secret for the organization that owns the service (only required if you provision through Terraform or the API).
 - The **ClickPipes consumer project** that you will allow to connect to your service attachment. For ClickPipes production, this is `clickpipes-production`.
 
@@ -196,9 +197,8 @@ In the ClickPipes UI, choose **Postgres CDC** → **Cloud SQL for PostgreSQL** (
 - **Host** — the Cloud SQL `dnsName` you mapped in the RPE.
 - **Port** — `5432`.
 - **Database / User / Password** — the credentials you set on the instance.
-- **Reverse Private Endpoint** — pick the RPE you created in Step 3.
 
-The pipe routes Postgres traffic through the RPE's internal IP, with DNS resolution coming from the `custom_private_dns_mappings` entry.
+Postgres ClickPipes are automatically opted in to all reverse private endpoints configured for the ClickHouse Cloud service. You do not select an individual endpoint. ClickPipes resolves the configured **Host** through the matching `custom_private_dns_mappings` entry and routes traffic through that RPE's internal IP.
 
 ---
 
@@ -232,13 +232,21 @@ module "cloud_sql_private_psc" {
 If you skip the auto-accept list, the RPE will sit in `PendingAcceptance` until you manually approve the connection on the service attachment:
 
 ```bash
+gcloud beta compute service-attachments describe <SERVICE_ATTACHMENT_NAME> \
+  --region=<REGION> --project=<YOUR_PROJECT_ID> \
+  --format='yaml(connectedEndpoints)'
+```
+
+Copy the `endpointWithId` value for the `PENDING` connection, then use that ID-based URI to approve the endpoint:
+
+```bash
 gcloud beta compute service-attachments update <SERVICE_ATTACHMENT_NAME> \
   --region=<REGION> --project=<YOUR_PROJECT_ID> \
-  --consumer-accept-list=projects/clickpipes-production/regions/<REGION>/forwardingRules/<FORWARDING_RULE_ID> \
+  --consumer-accept-list="<ENDPOINT_WITH_ID>" \
   --reconcile-connections
 ```
 
-You can find the consumer forwarding rule ID on the RPE detail page in the ClickPipes UI, or as `endpoint_id` in the API/Terraform response.
+The `endpointWithId` value is the URI ending in the numeric forwarding rule ID. The `endpoint_id` value returned by the ClickPipes API or Terraform provider is the forwarding rule name and cannot be used for individual endpoint approval.
 
 ---
 
