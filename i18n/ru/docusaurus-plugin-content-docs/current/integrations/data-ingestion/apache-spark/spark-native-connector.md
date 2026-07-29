@@ -108,7 +108,7 @@ Hive Metastore или AWS Glue.
   <repository>
     <id>sonatype-oss-snapshots</id>
     <name>Sonatype OSS Snapshots Repository</name>
-    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
   </repository>
 </repositories>
 ```
@@ -127,7 +127,7 @@ dependencies {
 
 ```gradle
 repositries {
-  maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
+  maven { url = "https://central.sonatype.com/repository/maven-snapshots/" }
 }
 ```
 
@@ -172,7 +172,7 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 
 Вы можете найти все доступные релизные JAR-файлы
 в [репозитории Maven Central](https://repo1.maven.org/maven2/com/clickhouse/spark/)
-и все SNAPSHOT JAR-файлы ежедневных сборок — в [репозитории Sonatype OSS Snapshots](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/).
+и все SNAPSHOT JAR-файлы ежедневных сборок — в [репозитории Sonatype OSS Snapshots](https://central.sonatype.com/repository/maven-snapshots/com/clickhouse/).
 
 :::important
 Крайне важно добавить [clickhouse-jdbc JAR](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-jdbc)

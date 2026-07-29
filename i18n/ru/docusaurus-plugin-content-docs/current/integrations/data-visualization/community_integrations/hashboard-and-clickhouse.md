@@ -24,7 +24,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <br />
 
-В этом руководстве описаны шаги по подключению Hashboard к вашему экземпляру ClickHouse. Эта информация также доступна в [документации Hashboard по интеграции с ClickHouse](https://docs.hashboard.com/docs/database-connections/clickhouse).
+В этом руководстве описаны шаги по подключению Hashboard к вашему экземпляру ClickHouse. Эта информация также доступна в [документации Hashboard по интеграции с ClickHouse](https://hashboard.com/docs/database-connections/clickhouse).
 
 ## Предварительные требования \{#pre-requisites\}
 
@@ -47,8 +47,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 6. Нажмите &quot;Test&quot;, чтобы убедиться, что подключение настроено правильно.
 7. Нажмите &quot;Add&quot;
 
-Теперь ваша база данных ClickHouse подключена к Hashboard, и вы можете перейти к созданию [Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations), [Metrics](https://docs.hashboard.com/docs/metrics) и [Dashboards](https://docs.hashboard.com/docs/dashboards). Подробнее об этих возможностях см. в соответствующей документации Hashboard.
+Теперь ваша база данных ClickHouse подключена к Hashboard, и вы можете перейти к созданию [Data Models](https://hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://hashboard.com/docs/visualizing-data/explorations), [Metrics](https://hashboard.com/docs/metrics) и [Dashboards](https://hashboard.com/docs/dashboards). Подробнее об этих возможностях см. в соответствующей документации Hashboard.
 
 ## Узнать больше \{#learn-more\}
 
-Более подробную информацию о расширенных возможностях и устранении неполадок см. в [документации Hashboard](https://docs.hashboard.com/).
+Более подробную информацию о расширенных возможностях и устранении неполадок см. в [документации Hashboard](https://hashboard.com/docs).

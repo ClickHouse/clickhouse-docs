@@ -114,7 +114,7 @@ Go to ①.
 
 파일 개수가 많은 경우 여러 insert 스레드를 통한 병렬 처리가 효과적으로 동작합니다. 사용 가능한 CPU 코어와 네트워크 대역폭(병렬 파일 다운로드)을 모두 충분히 활용할 수 있습니다. 반대로 소수의 대용량 파일만 테이블에 로드되는 시나리오에서는, ClickHouse가 자동으로 높은 수준의 데이터 처리 병렬성을 확보하고, 각 insert 스레드마다 추가 reader 스레드를 생성하여 대용량 파일 내의 서로 다른 범위를 병렬로 읽기(다운로드)함으로써 네트워크 대역폭 사용을 최적화합니다.
 
-`s3` 함수와 테이블의 경우, 개별 파일의 병렬 다운로드 여부는 [max&#95;download&#95;threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) 및 [max&#95;download&#95;buffer&#95;size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size) 값에 의해 결정됩니다. 파일 크기가 `2 * max_download_buffer_size`보다 클 때에만 병렬로 다운로드됩니다. 기본적으로 `max_download_buffer_size`는 10 MiB로 설정되어 있습니다. 어떤 경우에는 각 파일이 단일 스레드에 의해 다운로드되도록 하기 위해 이 버퍼 크기를 50 MB(`max_download_buffer_size=52428800`)까지 안전하게 늘릴 수 있습니다. 이렇게 하면 각 스레드가 S3 호출에 소요하는 시간을 줄이고, 그에 따라 S3 대기 시간도 감소시킬 수 있습니다. 또한 병렬 읽기에는 너무 작은 파일의 처리량을 높이기 위해, ClickHouse는 이러한 파일을 비동기적으로 미리 읽어(prefetch) 데이터를 자동으로 가져옵니다.
+`s3` 함수와 테이블의 경우, 개별 파일의 병렬 다운로드 여부는 [max&#95;download&#95;threads](/operations/settings/settings#max_download_threads) 및 [max&#95;download&#95;buffer&#95;size](/operations/settings/settings#max_download_buffer_size) 값에 의해 결정됩니다. 파일 크기가 `2 * max_download_buffer_size`보다 클 때에만 병렬로 다운로드됩니다. 기본적으로 `max_download_buffer_size`는 10 MiB로 설정되어 있습니다. 어떤 경우에는 각 파일이 단일 스레드에 의해 다운로드되도록 하기 위해 이 버퍼 크기를 50 MB(`max_download_buffer_size=52428800`)까지 안전하게 늘릴 수 있습니다. 이렇게 하면 각 스레드가 S3 호출에 소요하는 시간을 줄이고, 그에 따라 S3 대기 시간도 감소시킬 수 있습니다. 또한 병렬 읽기에는 너무 작은 파일의 처리량을 높이기 위해, ClickHouse는 이러한 파일을 비동기적으로 미리 읽어(prefetch) 데이터를 자동으로 가져옵니다.
 
 
 ## 성능 측정 \{#measuring-performance\}

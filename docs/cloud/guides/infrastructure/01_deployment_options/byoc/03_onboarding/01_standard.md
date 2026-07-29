@@ -45,7 +45,7 @@ Prepare a fresh AWS account, GCP project, or Azure subscription under your organ
 
 ### Account/project/subscription setup {#account-setup}
 
-The initial BYOC setup can be performed using a [CloudFormation template (AWS)](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc.yaml), a [Terraform module (GCP)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/gcp), or a [Terraform module (Azure)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/azure). It creates a highly privileged identity (IAM role/service account/service principal), enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure.
+The initial BYOC setup can be performed using a [CloudFormation template (AWS)](https://s3.us-east-2.amazonaws.com/clickhouse-public-resources.clickhouse.cloud/cf-templates/byoc_v2.yaml), a [Terraform module (GCP)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/gcp), or a [Terraform module (Azure)](https://github.com/ClickHouse/terraform-byoc-onboarding/tree/main/modules/azure). It creates a highly privileged identity (IAM role/service account/service principal), enabling BYOC controllers from ClickHouse Cloud to manage your infrastructure.
 
 <Image img={byoc_onboarding_2} size="lg" alt="BYOC initialize account" background='black'/>
 

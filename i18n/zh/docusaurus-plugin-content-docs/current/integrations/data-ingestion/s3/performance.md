@@ -114,7 +114,7 @@ Go to ①.
 
 在处理大量文件时，多插入线程的并行处理效果良好，可以充分利用可用的 CPU 核心以及网络带宽（用于并行下载文件）。在仅向表中加载少量大文件的场景下，ClickHouse 会自动建立较高的数据处理并行度，并通过为每个插入线程派生额外的读取线程来并行读取（下载）大文件中更多彼此独立的区间，从而优化网络带宽的使用。
 
-对于 s3 函数和表，单个文件是否并行下载由 [max&#95;download&#95;threads](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_threads) 和 [max&#95;download&#95;buffer&#95;size](https://clickhouse.com/codebrowser/ClickHouse/src/Core/Settings.h.html#DB::SettingsTraits::Data::max_download_buffer_size) 的取值决定。只有当文件大小大于 `2 * max_download_buffer_size` 时，文件才会被并行下载。默认情况下，`max_download_buffer_size` 设置为 10MiB。在某些情况下，可以放心地将该缓冲区大小增大到 50 MB（`max_download_buffer_size=52428800`），以确保每个文件由单个线程下载。这样可以减少每个线程发起 S3 调用所花费的时间，从而降低 S3 等待时间。此外，对于过小而不适合并行读取的文件，为了提高吞吐量，ClickHouse 会通过异步预读此类文件来自动预取数据。
+对于 s3 函数和表，单个文件是否并行下载由 [max&#95;download&#95;threads](/operations/settings/settings#max_download_threads) 和 [max&#95;download&#95;buffer&#95;size](/operations/settings/settings#max_download_buffer_size) 的取值决定。只有当文件大小大于 `2 * max_download_buffer_size` 时，文件才会被并行下载。默认情况下，`max_download_buffer_size` 设置为 10MiB。在某些情况下，可以放心地将该缓冲区大小增大到 50 MB（`max_download_buffer_size=52428800`），以确保每个文件由单个线程下载。这样可以减少每个线程发起 S3 调用所花费的时间，从而降低 S3 等待时间。此外，对于过小而不适合并行读取的文件，为了提高吞吐量，ClickHouse 会通过异步预读此类文件来自动预取数据。
 
 
 ## 性能衡量 \{#measuring-performance\}

@@ -10,7 +10,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) 是一个 Python 库，用于在 Jupyter Notebook 和 IPython shell 中运行 SQL。
+[JupySQL](https://jupysql.readthedocs.io/en/latest/quick-start.html) 是一个 Python 库，用于在 Jupyter Notebook 和 IPython shell 中运行 SQL。
 在本指南中，我们将学习如何使用 chDB 和 JupySQL 来查询数据。
 
 <div class="vimeo-container">

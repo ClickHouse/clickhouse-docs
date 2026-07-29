@@ -171,5 +171,5 @@ GRANT SELECT ON your_database.* TO your_databrain_user;
 
 * [Databrain 文档](https://docs.usedatabrain.com/)
 * [ClickHouse 集成指南](https://docs.usedatabrain.com/guides/datasources/connecting-data-sources-to-databrain/clickhouse)
-* [创建仪表盘](https://docs.usedatabrain.com/guides/dashboards/create-a-dashboard)
-* [构建指标](https://docs.usedatabrain.com/guides/metrics/create-metrics)
+* [创建仪表盘](https://docs.usedatabrain.com/getting-started/core-concepts/dashboards)
+* [构建指标](https://docs.usedatabrain.com/getting-started/core-concepts/metrics)

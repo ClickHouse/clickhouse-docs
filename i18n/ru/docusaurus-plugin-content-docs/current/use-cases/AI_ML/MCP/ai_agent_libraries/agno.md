@@ -51,7 +51,7 @@ doc_type: 'guide'
 
   :::note Использование другого LLM-провайдера
   Если у вас нет API-ключа Anthropic и вы хотите использовать другой LLM-провайдер,
-  инструкции по настройке учётных данных можно найти в [документации Agno](https://docs.agno.com/concepts/models/introduction)
+  инструкции по настройке учётных данных можно найти в [документации Agno](https://docs.agno.com/models/overview)
   :::
 
   Далее определите учётные данные, необходимые для подключения к ClickHouse SQL playground:

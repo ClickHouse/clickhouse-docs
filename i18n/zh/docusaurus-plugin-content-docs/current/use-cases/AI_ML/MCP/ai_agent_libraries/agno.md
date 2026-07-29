@@ -50,7 +50,7 @@ doc_type: 'guide'
 
   :::note 使用其他 LLM 提供商
   如果您没有 Anthropic API 密钥，并希望使用其他 LLM 提供商，
-  可在 [Agno 文档](https://docs.agno.com/concepts/models/introduction)中查阅配置凭据的相关说明。
+  可在 [Agno 文档](https://docs.agno.com/models/overview)中查阅配置凭据的相关说明。
   :::
 
   接下来，定义连接 ClickHouse SQL 演练场所需的凭据：

@@ -43,7 +43,7 @@ import ConnectionDetails from '@site/i18n/ru/docusaurus-plugin-content-docs/curr
 
 <Image size="md" img={deepnote_02} alt="Диалоговое окно с параметрами ClickHouse" border />
 
-***ПРИМЕЧАНИЕ:*** Если подключение к ClickHouse защищено с помощью IP Access List, вам может потребоваться разрешить IP-адреса Deepnote. Подробнее см. в [документации Deepnote](https://docs.deepnote.com/integrations/authorize-connections-from-deepnote-ip-addresses).
+***ПРИМЕЧАНИЕ:*** Если подключение к ClickHouse защищено с помощью IP Access List, вам может потребоваться разрешить IP-адреса Deepnote. Подробнее см. в [документации Deepnote](https://deepnote.com/docs/securing-connections).
 
 3. Готово! ClickHouse успешно интегрирован в Deepnote.
 

@@ -399,7 +399,7 @@ WHERE PostId IN (
 ### 链式 / 级联 Materialized Views \{#chaining\}
 
 Materialized views 可以按链式（或级联）方式组合，从而构建复杂的工作流。
-更多信息请参阅指南《Cascading materialized views》（https://clickhouse.com/docs/guides/developer/cascading-materialized-views）。
+更多信息请参阅指南 [Cascading materialized views](https://clickhouse.com/docs/guides/developer/cascading-materialized-views)。
 
 ## materialized view 与 JOIN \{#materialized-views-and-joins\}
 

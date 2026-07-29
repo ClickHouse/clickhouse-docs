@@ -57,7 +57,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
     ```
 
     :::note Docker Compose Setup
-    Docker ベースのセットアップの場合は、コンテナに `clickhouse-connect` を追加する手順について、[Superset database configuration guide](https://superset.apache.org/docs/configuration/databases/#clickhouse) を参照してください。
+    Docker ベースのセットアップの場合は、コンテナに `clickhouse-connect` を追加する手順について、[Superset database configuration guide](https://superset.apache.org/user-docs/6.0.0/configuration/databases/) を参照してください。
     :::
 
 2. Superset を起動（または再起動）します。

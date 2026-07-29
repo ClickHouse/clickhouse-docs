@@ -57,7 +57,7 @@ import ClickHouseSupportedBadge from '@theme/badges/ClickHouseSupported';
     ```
 
     :::note Настройка Docker Compose
-    Для установок на базе Docker см. [руководство по настройке баз данных Superset](https://superset.apache.org/docs/configuration/databases/#clickhouse) с инструкциями по добавлению `clickhouse-connect` в контейнер.
+    Для установок на базе Docker см. [руководство по настройке баз данных Superset](https://superset.apache.org/user-docs/6.0.0/configuration/databases/) с инструкциями по добавлению `clickhouse-connect` в контейнер.
     :::
 
 2. Запустите (или перезапустите) Superset.

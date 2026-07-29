@@ -10,7 +10,7 @@ doc_type: 'guide'
 import Image from '@theme/IdealImage';
 import PlayersPerRank from '@site/static/images/chdb/guides/players_per_rank.png';
 
-[JupySQL](https://jupysql.ploomber.io/en/latest/quick-start.html) — это библиотека Python, которая позволяет выполнять SQL‑запросы в блокнотах Jupyter и оболочке IPython.
+[JupySQL](https://jupysql.readthedocs.io/en/latest/quick-start.html) — это библиотека Python, которая позволяет выполнять SQL‑запросы в блокнотах Jupyter и оболочке IPython.
 В этом руководстве мы узнаем, как выполнять запросы к данным с помощью chDB и JupySQL.
 
 <div class="vimeo-container">

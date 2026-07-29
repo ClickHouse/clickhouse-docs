@@ -89,7 +89,7 @@ Glue supports multiple table formats, but ClickHouse only reads **Iceberg** tabl
 </TabItem>
 <TabItem value="unity-iceberg" label="Unity Catalog (Iceberg)">
 
-Query Unity Catalog managed [Iceberg](/engines/table-engines/integrations/iceberg) tables using OAuth client credentials from a Databricks service principal. See the [Unity Catalog guide](/use-cases/data-lake/unity-catalog#read-iceberg) for full setup.
+Query Unity Catalog [Iceberg](/engines/table-engines/integrations/iceberg) tables that use external storage locations, using OAuth client credentials from a Databricks service principal. See the [Unity Catalog guide](/use-cases/data-lake/unity-catalog#read-iceberg) for full setup.
 
 Before you connect, confirm:
 
@@ -107,7 +107,7 @@ In the flyout:
 </TabItem>
 <TabItem value="unity-delta" label="Unity Catalog (Delta)">
 
-Query Unity Catalog [Delta Lake](/engines/table-engines/integrations/deltalake) tables using a Databricks Personal Access Token (PAT). See the [Unity Catalog guide](/use-cases/data-lake/unity-catalog#read-delta) for full setup.
+Query Unity Catalog [Delta Lake](/engines/table-engines/integrations/deltalake) tables that use external storage locations, using a Databricks Personal Access Token (PAT). See the [Unity Catalog guide](/use-cases/data-lake/unity-catalog#read-delta) for full setup.
 
 Before you connect, confirm:
 

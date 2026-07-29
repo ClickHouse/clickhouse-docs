@@ -24,7 +24,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <br />
 
-本指南将逐步介绍如何将 Hashboard 连接到您的 ClickHouse 实例。相关信息也可参阅 Hashboard 的 [ClickHouse integration documentation](https://docs.hashboard.com/docs/database-connections/clickhouse)。
+本指南将逐步介绍如何将 Hashboard 连接到您的 ClickHouse 实例。相关信息也可参阅 Hashboard 的 [ClickHouse integration documentation](https://hashboard.com/docs/database-connections/clickhouse)。
 
 ## 前提条件 \{#pre-requisites\}
 
@@ -47,8 +47,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 6. 点击“Test”，验证连接是否已成功配置。
 7. 点击“Add”
 
-你的 ClickHouse 数据库现已连接到 Hashboard，接下来可以继续创建 [数据模型](https://docs.hashboard.com/docs/data-modeling/add-data-model)、[Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations)、[指标](https://docs.hashboard.com/docs/metrics) 和 [仪表盘](https://docs.hashboard.com/docs/dashboards)。有关这些功能的更多信息，请参阅相应的 Hashboard 文档。
+你的 ClickHouse 数据库现已连接到 Hashboard，接下来可以继续创建 [数据模型](https://hashboard.com/docs/data-modeling/add-data-model)、[Explorations](https://hashboard.com/docs/visualizing-data/explorations)、[指标](https://hashboard.com/docs/metrics) 和 [仪表盘](https://hashboard.com/docs/dashboards)。有关这些功能的更多信息，请参阅相应的 Hashboard 文档。
 
 ## 了解更多 \{#learn-more\}
 
-如需了解更多高级功能和故障排查信息，请参阅 [Hashboard 文档](https://docs.hashboard.com/)。
+如需了解更多高级功能和故障排查信息，请参阅 [Hashboard 文档](https://hashboard.com/docs)。

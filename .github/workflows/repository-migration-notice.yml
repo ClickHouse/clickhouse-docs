@@ -1,0 +1,49 @@
+name: Repository migration notice
+
+on:
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  post-migration-notice:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Comment with the new contribution location
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const marker = '<!-- clickhouse-docs-migration-notice -->';
+            const issue = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            };
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              issue,
+            );
+
+            if (comments.some(comment => comment.body?.includes(marker))) {
+              core.info('Migration notice already exists; skipping.');
+              return;
+            }
+
+            const body = `${marker}
+            Thanks for contributing to the ClickHouse documentation!
+
+            We’ve moved documentation development to the main [ClickHouse/ClickHouse](https://github.com/ClickHouse/ClickHouse) repository. For future documentation changes, please open your pull request there, with changes under the [docs/](https://github.com/ClickHouse/ClickHouse/tree/master/docs) directory.
+
+            We’ll continue reviewing this pull request here during the transition, and it will be transferred as part of the migration. You don’t need to reopen it.
+
+            See the [documentation README](https://github.com/ClickHouse/ClickHouse/tree/master/docs#readme) for more information.`;
+
+            await github.rest.issues.createComment({
+              ...issue,
+              body,
+            });

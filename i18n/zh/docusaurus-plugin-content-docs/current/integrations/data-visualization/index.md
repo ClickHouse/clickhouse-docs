@@ -37,7 +37,6 @@ doc_type: 'guide'
 * [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
 * [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 * [Tableau](./tableau/tableau-and-clickhouse.md)
-* [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
 * [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
 ## ClickHouse Cloud 与数据可视化工具的兼容性 \{#clickhouse-cloud-compatibility-with-data-visualization-tools\}
@@ -72,4 +71,3 @@ doc_type: 'guide'
 | [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)            | 原生连接器              | ✅      | ❌      |                                                                                                                                         |
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | ClickHouse 官方连接器 | ✅      | ✅      |                                                                                                               |
 | [Tableau Online](./tableau/tableau-online-and-clickhouse.md) | MySQL 接口               | ✅      | ✅      | 存在一些限制，更多详情请参见[文档](./tableau/tableau-online-and-clickhouse.md)。            |
-| [Zing Data](./community_integrations/zingdata-and-clickhouse.md)            | 原生连接器              | ✅      | ✅      |                                                                                                                                         |

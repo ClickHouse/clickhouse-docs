@@ -7,7 +7,7 @@ sidebar_label: 'Migration guides'
 description: 'Migrating to ClickStack from other observability solutions'
 doc_type: 'guide'
 keywords: ['migrate to ClickStack', 'ClickStack migration guide
-', 'ClickStack migration from Elastic', 'ELK']
+', 'ClickStack migration from Elastic', 'ELK', 'ClickStack migration from Datadog', 'Datadog']
 ---
 
 This section provides comprehensive guides for migrating from various observability solutions to ClickStack. Each guide includes detailed instructions for transitioning your data, agents, and workflows while maintaining operational continuity.
@@ -15,3 +15,4 @@ This section provides comprehensive guides for migrating from various observabil
 | Technology | Description |
 |------------|-------------|
 | [Elastic Stack](/use-cases/observability/clickstack/migration/elastic) | Complete guide for migrating from Elastic Stack to ClickStack, covering data migration, agent transition, and search capabilities |
+| [Datadog](/use-cases/observability/clickstack/migration/datadog) | Reroute telemetry from existing Datadog agents and SDKs to ClickStack using the Datadog receiver in the ClickStack OpenTelemetry collector |

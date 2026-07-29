@@ -147,7 +147,7 @@ EMQX Cloud 默认不允许匿名连接，所以你需要添加一个客户端凭
 
 ## 将 EMQX Cloud 与 ClickHouse Cloud 集成 \{#integration-emqx-cloud-with-clickhouse-cloud\}
 
-[EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/rule_engine/introduction.html#general-flow) 用于配置处理和响应 EMQX 消息流与设备事件的规则。Data Integrations 不仅提供了清晰且灵活的可配置架构方案，还简化了开发流程、提升了用户体验，并降低了业务系统与 EMQX Cloud 之间的耦合度。同时，它还为 EMQX Cloud 专有能力的定制化提供了完善的基础设施。
+[EMQX Cloud Data Integrations](https://docs.emqx.com/en/cloud/latest/data_integration/introduction.html) 用于配置处理和响应 EMQX 消息流与设备事件的规则。Data Integrations 不仅提供了清晰且灵活的可配置架构方案，还简化了开发流程、提升了用户体验，并降低了业务系统与 EMQX Cloud 之间的耦合度。同时，它还为 EMQX Cloud 专有能力的定制化提供了完善的基础设施。
 
 <Image img={emqx_cloud_data_integration} size="lg" border alt="EMQX Cloud 数据集成选项，展示可用的连接器" />
 
@@ -173,7 +173,7 @@ EMQX Cloud 为常见数据系统提供了 30 多种原生集成方案，ClickHou
 
 在创建资源的过程中，您会看到一个弹窗，点击 “New” 会跳转到规则创建页面。
 
-EMQX 提供了强大的[规则引擎](https://docs.emqx.com/en/cloud/latest/rule_engine/rules.html)，可在将原始 MQTT 消息发送到第三方系统之前对其进行转换和丰富。
+EMQX 提供了强大的[规则引擎](https://docs.emqx.com/en/cloud/latest/data_integration/rules.html)，可在将原始 MQTT 消息发送到第三方系统之前对其进行转换和丰富。
 
 以下是本教程中使用的规则：
 

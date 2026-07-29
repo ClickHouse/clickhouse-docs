@@ -114,7 +114,7 @@ For further details on this deployment model, see ["Local Mode Only"](/use-cases
 
 ### Hosted version {#hosted-version}
 
-You can use a hosted version of ClickStack in local mode available at [play-clickstack.clickhouse.com](https://play-clickstack.clickstack.com).
+You can use a hosted version of ClickStack in local mode available at [play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com).
 
 ### Self-hosted version {#self-hosted-version}
 

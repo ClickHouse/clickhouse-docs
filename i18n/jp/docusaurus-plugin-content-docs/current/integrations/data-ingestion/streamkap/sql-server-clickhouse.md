@@ -36,10 +36,10 @@ import image3 from '@site/static/images/integrations/data-ingestion/etl-tools/im
 
 - 稼働中の SQL Server インスタンス  
 
-- このチュートリアルでは AWS RDS for SQL Server を使用しますが、最新の SQL Server インスタンスであればどれでも使用できます。[AWS SQL Server をゼロからセットアップ](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap%23setting-up-a-new-rds-sql-server-from-scratch)
+- このチュートリアルでは AWS RDS for SQL Server を使用しますが、最新の SQL Server インスタンスであればどれでも使用できます。[AWS SQL Server をゼロからセットアップ](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap#setting-up-a-new-rds-sql-server-from-scratch)
 - ClickHouse インスタンス  
 
-- セルフホスト環境でもクラウド環境でもかまいません。[ClickHouse をゼロからセットアップ](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap%23creating-a-new-clickhouse-account)
+- セルフホスト環境でもクラウド環境でもかまいません。[ClickHouse をゼロからセットアップ](https://streamkap.com/blog/how-to-stream-data-from-rds-sql-server-to-clickhouse-cloud-using-streamkap#creating-a-new-clickhouse-account)
 - Streamkap  
 
 - このツールがデータストリーミングパイプラインの中核となります。

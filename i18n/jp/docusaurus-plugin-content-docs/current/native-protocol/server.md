@@ -55,7 +55,7 @@ keywords: ['ネイティブプロトコル', 'tcp protocol', 'client-server', 'p
 
 `nested` が `false` になるまで、例外が連続したリストとして含まれる場合があります。
 
-[codes]: https://clickhouse.com/codebrowser/ClickHouse/src/Common/ErrorCodes.cpp.html "エラーコード一覧"
+[codes]: https://github.com/ClickHouse/ClickHouse/blob/master/src/Common/ErrorCodes.cpp "エラーコード一覧"
 
 ## 進捗 \{#progress\}
 

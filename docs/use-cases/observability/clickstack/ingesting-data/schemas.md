@@ -46,10 +46,6 @@ The following tables are created for each data type in the `default` database. Y
 
 ### Exponential histograms {#exponential-histograms}
 
-:::note
-HyperDX doesn't support fetching/displaying exponential histogram metrics yet. You may configure them in the metrics source but future support is forthcoming.
-:::
-
 <OtelMetricsExponentialHistogramSchema />
 
 ### Summary table {#summary-table}

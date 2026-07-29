@@ -117,7 +117,7 @@ ClickStack UI（HyperDX）の左サイドバーから **Client Sessions** に移
 
 セッションタイムライン上でネットワークリクエストまたはエラーを選択すると、**Trace** タブに遷移して、そのリクエストがバックエンドサービス間でどのように処理されるかを追跡できます。これにより、そのユーザー操作によってトリガーされた関連するログ、span、データベースクエリを確認できます。
 
-これは、`tracePropagationTargets` 設定が `traceparent` ヘッダーを介してブラウザ側の span とサーバー側の span を結び付けることで機能します。その結果、ユーザーのクリックからデータベースまでを結ぶ、ひと続きの分散トレースが生成されます。フロントエンドとバックエンドの両方の計装を含む、これが実際にどのように動作するかの詳細な手順については、[OpenTelemetry と ClickStack を用いた NextJS アプリケーションの計装](https://clickhouse.com/blog/instrumenting-nextjs-opentelemetry-clickstack) を参照してください。
+これは、`tracePropagationTargets` 設定が `traceparent` ヘッダーを介してブラウザ側の span とサーバー側の span を結び付けることで機能します。その結果、ユーザーのクリックからデータベースまでを結ぶ、ひと続きの分散トレースが生成されます。フロントエンドとバックエンドの両方の計装を含む、これが実際にどのように動作するかの詳細な手順については、[OpenTelemetry と ClickStack を用いた NextJS アプリケーションの計装](https://clickhouse.com/blog/instrumenting-your-app-with-otel-clickstack) を参照してください。
 
 <img src={clickpy_trace} alt="ClickStack でセッションリプレイからバックエンドトレースへドリルダウンする例" />
 

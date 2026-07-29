@@ -26,7 +26,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 
 <PartnerBadge />
 
-Metabase 是一款易于使用的开源 UI 工具，用于对数据进行查询和分析。Metabase 是一个 Java 应用程序，只需<a href="https://www.metabase.com/start/oss/jar" target="_blank">下载 JAR 文件</a>并使用 `java -jar metabase.jar` 运行即可。Metabase 使用 JDBC 驱动程序连接到 ClickHouse，您需要下载该驱动程序并将其放入 `plugins` 文件夹中：
+Metabase 是一款易于使用的开源 UI 工具，用于对数据进行查询和分析。Metabase 是一个 Java 应用程序，只需<a href="https://www.metabase.com/cloud/oss/jar" target="_blank">下载 JAR 文件</a>并使用 `java -jar metabase.jar` 运行即可。Metabase 使用 JDBC 驱动程序连接到 ClickHouse，您需要下载该驱动程序并将其放入 `plugins` 文件夹中：
 
 ## 目标 \{#goal\}
 

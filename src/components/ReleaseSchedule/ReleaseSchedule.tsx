@@ -79,55 +79,74 @@ export default function ReleaseSchedule({ releases }: ReleaseScheduleProps) {
           </tr>
         </thead>
         <tbody>
-          {releases.map((release, index) => (
-            <tr key={index}>
-              <td>
-                {release.changelog_link ? (
-                  <a href={release.changelog_link} target="_blank" rel="noopener noreferrer">
-                    {release.version}
-                  </a>
+          {releases.map((release, index) => {
+            const isCompleted = [
+              release.fast_start_date,
+              release.fast_end_date,
+              release.regular_start_date,
+              release.regular_end_date,
+              release.slow_start_date,
+              release.slow_end_date,
+            ].every((date) => date === 'Completed');
+
+            return (
+              <tr key={index}>
+                <td>
+                  {release.changelog_link ? (
+                    <a href={release.changelog_link} target="_blank" rel="noopener noreferrer">
+                      {release.version}
+                    </a>
+                  ) : (
+                    release.version
+                  )}
+                </td>
+                {isCompleted ? (
+                  <td colSpan={6} className={styles.completedCell}>
+                    <DateCell date="Completed" status="green" />
+                  </td>
                 ) : (
-                  release.version
+                  <>
+                    <td>
+                      <DateCell
+                        date={release.fast_start_date}
+                        status={release.fast_progress}
+                      />
+                    </td>
+                    <td>
+                      <DateCell
+                        date={release.fast_end_date}
+                        status={release.fast_progress}
+                      />
+                    </td>
+                    <td>
+                      <DateCell
+                        date={release.regular_start_date}
+                        status={release.regular_progress}
+                      />
+                    </td>
+                    <td>
+                      <DateCell
+                        date={release.regular_end_date}
+                        status={release.regular_progress}
+                      />
+                    </td>
+                    <td>
+                      <DateCell
+                        date={release.slow_start_date}
+                        status={release.slow_progress}
+                      />
+                    </td>
+                    <td>
+                      <DateCell
+                        date={release.slow_end_date}
+                        status={release.slow_progress}
+                      />
+                    </td>
+                  </>
                 )}
-              </td>
-              <td>
-                <DateCell
-                  date={release.fast_start_date}
-                  status={release.fast_progress}
-                />
-              </td>
-              <td>
-                <DateCell
-                  date={release.fast_end_date}
-                  status={release.fast_progress}
-                />
-              </td>
-              <td>
-                <DateCell
-                  date={release.regular_start_date}
-                  status={release.regular_progress}
-                />
-              </td>
-              <td>
-                <DateCell
-                  date={release.regular_end_date}
-                  status={release.regular_progress}
-                />
-              </td>
-              <td>
-                <DateCell
-                  date={release.slow_start_date}
-                  status={release.slow_progress}
-                />
-              </td>
-              <td>
-                <DateCell
-                  date={release.slow_end_date}
-                  status={release.slow_progress}
-                />
-              </td>
-            </tr>
-          ))}
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

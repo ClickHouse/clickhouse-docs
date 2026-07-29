@@ -87,5 +87,5 @@ Querio를 ClickHouse에 연결한 후에는 플랫폼 전반에서 데이터를 
 
 ## 추가 자료 \{#additional-resources\}
 
-- [Querio 문서](https://docs.querio.ai/integrations/clickhouse)
+- [Querio 문서](https://docs.querio.ai/)
 - [Querio 시작하기 가이드 및 튜토리얼](https://www.querio.ai)

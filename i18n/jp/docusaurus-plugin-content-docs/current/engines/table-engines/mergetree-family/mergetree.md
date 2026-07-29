@@ -2,7 +2,7 @@
 description: '`MergeTree` ファミリーのテーブルエンジンは、高速なデータ取り込みと膨大なデータ量に対応するよう設計されています。'
 sidebar_label: 'MergeTree'
 sidebar_position: 11
-slug: /engines/table-engines/mergetree-family/mergettree
+slug: /engines/table-engines/mergetree-family/mergetree
 title: 'MergeTree テーブルエンジン'
 doc_type: 'reference'
 ---

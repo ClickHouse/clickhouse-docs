@@ -30,6 +30,10 @@
   overflow: visible;
 }
 
+.completedCell .statusCell {
+  justify-content: center;
+}
+
 .statusIndicator {
   width: 10px;
   height: 10px;

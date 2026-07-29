@@ -106,7 +106,7 @@ SNAPSHOT 버전을 사용하려면 다음 저장소를 추가합니다.
   <repository>
     <id>sonatype-oss-snapshots</id>
     <name>Sonatype OSS Snapshots Repository</name>
-    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
   </repository>
 </repositories>
 ```
@@ -125,7 +125,7 @@ SNAPSHOT 버전을 사용하려면 다음 저장소를 추가합니다.
 
 ```gradle
 repositries {
-  maven { url = "https://s01.oss.sonatype.org/content/repositories/snapshots" }
+  maven { url = "https://central.sonatype.com/repository/maven-snapshots/" }
 }
 ```
 
@@ -170,7 +170,7 @@ clickhouse-spark-runtime-${spark_binary_version}_${scala_binary_version}-${versi
 
 모든 사용 가능한 릴리스 JAR 파일은
 [Maven Central Repository](https://repo1.maven.org/maven2/com/clickhouse/spark/)에서 확인할 수 있으며,
-모든 데일리 빌드 SNAPSHOT JAR 파일은 [Sonatype OSS Snapshots Repository](https://s01.oss.sonatype.org/content/repositories/snapshots/com/clickhouse/)에서 확인할 수 있습니다.
+모든 데일리 빌드 SNAPSHOT JAR 파일은 [Sonatype OSS Snapshots Repository](https://central.sonatype.com/repository/maven-snapshots/com/clickhouse/)에서 확인할 수 있습니다.
 
 :::important
 커넥터는 [clickhouse-http](https://mvnrepository.com/artifact/com.clickhouse/clickhouse-http-client)와

@@ -22,7 +22,7 @@ SCIM provisioning is in private preview.
 
 ClickHouse Cloud supports SCIM 2.0 (System for Cross-domain Identity Management) for automated user and group lifecycle management. Once connected to your identity provider, every user you assign to the ClickHouse Cloud application is automatically created in your organization with the right role, profile updates flow through automatically, and removing a user from your IdP removes their access — no manual invites, no orphaned accounts.
 
-This guide walks through setting up SCIM provisioning end-to-end with **Okta**. The ClickHouse Cloud SCIM endpoint follows SCIM 2.0 (RFC 7644), but authentication is supported only via Basic Auth, and Okta is the only identity provider we've tested against. Other SCIM 2.0 IdPs may work if they can authenticate using Basic Auth, but they're not officially supported today.
+This guide walks through setting up SCIM provisioning end-to-end with **Okta**. The ClickHouse Cloud SCIM endpoint follows SCIM 2.0 (RFC 7644). Okta authenticates using Basic Auth, which is what this guide uses. If your identity provider is Microsoft Entra ID, follow the [SCIM provisioning with Entra ID](/cloud/security/scim-setup-entra) guide instead.
 
 ## Before you begin {#before-you-begin}
 
@@ -65,13 +65,13 @@ Copy it — you'll paste it into Okta later.
 
 ### Generate a SCIM access token {#generate-scim-token}
 
-Locate the `Create an API key` section and choose an expiration date.
+Locate the `Generate new key` section and choose an expiration date.
 
 :::tip Plan for rotation
 We recommend setting an expiry of 12 months and adding a calendar reminder. ClickHouse Cloud supports up to two active SCIM tokens at once so you can rotate without downtime: generate the new token, swap Okta over, confirm provisioning still works, then revoke the old token.
 :::
 
-Click `Generate key`. The token is shown **once**, as a key (prefixed `scim_`) and a secret. Copy both immediately and store them in a secure secrets manager — they can't be retrieved later. If you lose them, revoke the token and generate a new one.
+Click `Generate new key`. The token is shown **once**, as a key (prefixed `scim_`) and a secret. Copy both immediately and store them in a secure secrets manager — they can't be retrieved later. If you lose them, revoke the token and generate a new one.
 
 ![Generate a new SCIM API key](/images/cloud/security/scim-okta/scim-okta-07.png)
 
@@ -276,7 +276,7 @@ Tokens can't be recovered. In **Organization settings → SAML and SCIM settings
 Yes. SCIM creates the user accounts, but ClickHouse Cloud authenticates them through SAML. Set up [SAML SSO](/cloud/security/saml-setup) first.
 
 **Does SCIM work with Microsoft Entra ID, OneLogin, or other SCIM 2.0 IdPs?**
-Officially, no — Okta is the only IdP we've tested and support today. The endpoint follows SCIM 2.0 (RFC 7644), but authentication is restricted to Basic Auth, so any IdP that can't authenticate over Basic Auth won't work. Other Basic-Auth-capable SCIM 2.0 IdPs may work in practice, but we make no guarantees.
+Microsoft Entra ID is also supported — see [SCIM provisioning with Entra ID](/cloud/security/scim-setup-entra). The endpoint follows SCIM 2.0 (RFC 7644) and accepts either Basic Auth (used by Okta) or a bearer token (used by Entra ID). Other SCIM 2.0 IdPs may work in practice if they can authenticate one of these ways, but Okta and Entra ID are the IdPs we've tested and support today.
 
 **How quickly do changes in Okta show up in ClickHouse Cloud?**
 Most operations propagate within a few seconds. Bulk changes (large group push) can take longer depending on size, but Okta retries automatically on transient errors.

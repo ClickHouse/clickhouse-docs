@@ -24,7 +24,7 @@ import PartnerBadge from '@theme/badges/PartnerBadge';
 ClickHouse 凭借出色的压缩能力 (对于日志最高可达 [170x](https://clickhouse.com/blog/log-compression-170x))
 以及快速聚合海量数据的能力，在存储和分析日志数据方面表现卓越。
 
-本指南将向您展示如何使用流行的数据管道 [Vector](https://vector.dev/docs/about/what-is-vector/) 来 tail Nginx 日志文件并将其发送到 ClickHouse。
+本指南将向您展示如何使用流行的数据管道 [Vector](https://vector.dev/docs/introduction/) 来 tail Nginx 日志文件并将其发送到 ClickHouse。
 下面的步骤同样适用于 tail 任何类型的日志文件。
 
 **前置条件：**

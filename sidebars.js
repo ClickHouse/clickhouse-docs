@@ -684,7 +684,6 @@ const sidebars = {
           collapsible: true,
           items: [
             'integrations/language-clients/c',
-            'integrations/language-clients/moose-olap',
             'interfaces/third-party/client-libraries',
           ],
         },
@@ -754,7 +753,6 @@ const sidebars = {
             'integrations/data-ingestion/clickpipes/postgres/faq',
             'integrations/data-ingestion/clickpipes/postgres/parallel_initial_load',
             'integrations/data-ingestion/clickpipes/postgres/lifecycle',
-            'integrations/data-ingestion/clickpipes/postgres/auth',
             {
               type: 'category',
               label: 'Operations',
@@ -1881,6 +1879,7 @@ const sidebars = {
         'chdb/guides/querying-parquet',
         'chdb/guides/query-remote-clickhouse',
         'chdb/guides/clickhouse-local',
+        'chdb/guides/python-udf',
       ],
     },
     {
@@ -2185,6 +2184,7 @@ const sidebars = {
                 },
               ],
             },
+            'use-cases/observability/clickstack/migration/datadog/index',
           ],
         },
         'use-cases/observability/clickstack/api-reference',

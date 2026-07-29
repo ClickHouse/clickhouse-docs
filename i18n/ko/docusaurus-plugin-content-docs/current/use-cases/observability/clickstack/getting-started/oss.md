@@ -115,7 +115,7 @@ HyperDX는 로컬 클러스터에 자동으로 연결하고 로그, 트레이스
 
 ### 호스티드 버전 \{#hosted-version\}
 
-[play-clickstack.clickhouse.com](https://play-clickstack.clickstack.com)에서 로컬 모드로 제공되는 ClickStack의 호스티드 버전을 사용할 수 있습니다.
+[play-clickstack.clickhouse.com](https://play-clickstack.clickhouse.com)에서 로컬 모드로 제공되는 ClickStack의 호스티드 버전을 사용할 수 있습니다.
 
 ### 셀프 호스팅 버전 \{#self-hosted-version\}
 

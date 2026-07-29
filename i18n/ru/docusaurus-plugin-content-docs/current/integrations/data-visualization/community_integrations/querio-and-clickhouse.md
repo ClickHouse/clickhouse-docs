@@ -87,5 +87,5 @@ GRANT SELECT ON database.table_name TO querio_user;
 
 ## Дополнительные материалы \{#additional-resources\}
 
-- [Документация Querio](https://docs.querio.ai/integrations/clickhouse)
+- [Документация Querio](https://docs.querio.ai/)
 - [Руководства и обучающие материалы по началу работы с Querio](https://www.querio.ai)

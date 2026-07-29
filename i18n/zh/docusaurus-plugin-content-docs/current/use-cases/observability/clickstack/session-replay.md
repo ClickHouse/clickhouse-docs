@@ -117,7 +117,7 @@ Browser SDK 还支持为对隐私敏感的应用进行[输入和文本遮罩](/u
 
 在会话时间轴中选择某个网络请求或错误时，可以点击进入 **Trace** 选项卡，沿着该请求在后端服务中的执行路径进行追踪，查看这次用户交互所触发的相关日志、span 和数据库查询。
 
-之所以能够实现这一点，是因为 `tracePropagationTargets` 配置通过 `traceparent` 头将浏览器 span 与服务器 span 关联起来，从用户点击一路到数据库，构建出一条完整连通的分布式 trace。要了解包含前端和后端插桩在内的详细实战步骤，请参阅 [Instrumenting your NextJS application with OpenTelemetry and ClickStack](https://clickhouse.com/blog/instrumenting-nextjs-opentelemetry-clickstack)。
+之所以能够实现这一点，是因为 `tracePropagationTargets` 配置通过 `traceparent` 头将浏览器 span 与服务器 span 关联起来，从用户点击一路到数据库，构建出一条完整连通的分布式 trace。要了解包含前端和后端插桩在内的详细实战步骤，请参阅 [Instrumenting your NextJS application with OpenTelemetry and ClickStack](https://clickhouse.com/blog/instrumenting-your-app-with-otel-clickstack)。
 
 <img src={clickpy_trace} alt="从会话回放深入到 ClickStack 中的后端 trace" />
 

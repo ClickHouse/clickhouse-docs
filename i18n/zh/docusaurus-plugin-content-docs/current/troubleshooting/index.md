@@ -146,4 +146,4 @@ description: '查找最常见 ClickHouse 问题的解决方案，包括慢查询
 1. **检查系统表** - [概览](/operations/system-tables/overview)
 2. **查看服务器日志** - 在 ClickHouse 日志中查找错误消息。
 3. **咨询社区** - [加入我们的社区 Slack](https://clickhouse.com/slack)、[GitHub Discussions](https://github.com/ClickHouse/ClickHouse/discussions)
-4. **获取专业支持** - [ClickHouse Cloud 支持](https://clickhouse.com/support)
+4. **获取专业支持** - [ClickHouse Cloud 支持](https://clickhouse.com/support/program)

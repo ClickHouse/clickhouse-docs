@@ -37,7 +37,6 @@ doc_type: 'guide'
 * [Rill](https://docs.rilldata.com/reference/olap-engines/clickhouse)
 * [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)
 * [Tableau](./tableau/tableau-and-clickhouse.md)
-* [Zing Data](./community_integrations/zingdata-and-clickhouse.md)
 * [Holistics BI](./community_integrations/holistics-and-clickhouse.md)
 
 ## Совместимость ClickHouse Cloud с инструментами визуализации данных \{#clickhouse-cloud-compatibility-with-data-visualization-tools\}
@@ -72,4 +71,3 @@ doc_type: 'guide'
 | [Rocket BI](./community_integrations/rocketbi-and-clickhouse.md)            | Нативный коннектор              | ✅      | ❌          |                                                                                                                                         |
 | [Tableau Desktop](./tableau/tableau-and-clickhouse.md)       | Официальный коннектор ClickHouse | ✅      | ✅          |                                                                                                               |
 | [Tableau Online](./tableau/tableau-online-and-clickhouse.md) | Интерфейс MySQL               | ✅      | ✅          | Работает с некоторыми ограничениями, подробнее см. [документацию](./tableau/tableau-online-and-clickhouse.md).                        |
-| [Zing Data](./community_integrations/zingdata-and-clickhouse.md)            | Нативный коннектор              | ✅      | ✅          |                                                                                                                                         |

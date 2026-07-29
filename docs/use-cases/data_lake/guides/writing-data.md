@@ -5,7 +5,7 @@ slug: /use-cases/data-lake/getting-started/writing-data
 sidebar_position: 4
 toc_max_heading_level: 3
 pagination_prev: use-cases/data_lake/guides/accelerating-analytics
-pagination_next: null
+pagination_next: use-cases/data_lake/guides/best-practices
 description: 'Write data from ClickHouse back to Iceberg tables in object storage for long-term storage and downstream consumption.'
 keywords: ['data lake', 'lakehouse', 'write', 'iceberg', 'reverse ETL', 'INSERT INTO', 'IcebergS3']
 doc_type: 'guide'

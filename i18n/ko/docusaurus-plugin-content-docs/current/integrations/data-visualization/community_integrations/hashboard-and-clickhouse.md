@@ -24,7 +24,7 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 
 <br />
 
-이 가이드에서는 Hashboard를 ClickHouse 인스턴스에 연결하는 단계를 안내합니다. 이 정보는 Hashboard의 [ClickHouse 통합 문서](https://docs.hashboard.com/docs/database-connections/clickhouse)에서도 확인할 수 있습니다.
+이 가이드에서는 Hashboard를 ClickHouse 인스턴스에 연결하는 단계를 안내합니다. 이 정보는 Hashboard의 [ClickHouse 통합 문서](https://hashboard.com/docs/database-connections/clickhouse)에서도 확인할 수 있습니다.
 
 ## 사전 준비 사항 \{#pre-requisites\}
 
@@ -47,8 +47,8 @@ import CommunityMaintainedBadge from '@theme/badges/CommunityMaintained';
 6. "Test"를 클릭하여 연결이 정상적으로 구성되었는지 확인합니다.
 7. "Add"를 클릭합니다.
 
-이제 ClickHouse 데이터베이스가 Hashboard에 연결되었으므로, [Data Models](https://docs.hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://docs.hashboard.com/docs/visualizing-data/explorations), [Metrics](https://docs.hashboard.com/docs/metrics), [Dashboards](https://docs.hashboard.com/docs/dashboards)를 생성하여 계속 진행할 수 있습니다. 이러한 기능에 대한 자세한 내용은 해당 Hashboard 문서를 참고하십시오.
+이제 ClickHouse 데이터베이스가 Hashboard에 연결되었으므로, [Data Models](https://hashboard.com/docs/data-modeling/add-data-model), [Explorations](https://hashboard.com/docs/visualizing-data/explorations), [Metrics](https://hashboard.com/docs/metrics), [Dashboards](https://hashboard.com/docs/dashboards)를 생성하여 계속 진행할 수 있습니다. 이러한 기능에 대한 자세한 내용은 해당 Hashboard 문서를 참고하십시오.
 
 ## 더 알아보기 \{#learn-more\}
 
-고급 기능 및 문제 해결 방법에 대해서는 [Hashboard 문서](https://docs.hashboard.com/)를 참조하십시오.
+고급 기능 및 문제 해결 방법에 대해서는 [Hashboard 문서](https://hashboard.com/docs)를 참조하십시오.

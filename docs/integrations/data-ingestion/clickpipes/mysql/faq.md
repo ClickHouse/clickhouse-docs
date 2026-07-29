@@ -20,6 +20,25 @@ MariaDB 12.3 and above can emit a [partial rows event](https://mariadb.com/docs/
 
 To recover, resync the pipe. To reduce the chance of hitting this again, you can also raise `binlog_row_event_fragment_threshold` setting on the source so fewer row changes get fragmented — keep it below your `max_allowed_packet`, since a single unfragmented binlog event larger than `max_allowed_packet` will fail the replication stream instead (see [Why is my pipe failing with a max_allowed_packet binlog error?](#binlog-event-exceeded-max-allowed-packet)).
 
+### Why did my pipe fail with an unsupported MariaDB COMPRESSED column? {#mariadb-compressed-column-unsupported}
+
+If your pipe fails with an error similar to:
+
+```text
+table <database>.<table> has MariaDB COMPRESSED column(s) [<columns>], which cannot be replicated via CDC;
+convert them to a non-compressed type or remove the table from the mirror
+```
+
+it means the table has one or more columns using MariaDB's [column compression](https://mariadb.com/kb/en/storage-engine-independent-column-compression/) (`COLUMN_FORMAT COMPRESSED`). We can't decompress these values from the binlog, so the affected table can't be replicated via CDC.
+
+To resolve it:
+
+- **Convert the compressed columns to a non-compressed type** on the source (or remove a table from the pipe):
+  ```sql
+  ALTER TABLE <table> MODIFY <column> <type>; -- without COLUMN_FORMAT COMPRESSED
+  ```
+- resync the table or the pipe
+
 ### Does the MySQL ClickPipe support PlanetScale, Vitess, or TiDB? {#does-the-clickpipe-support-planetscale-vitess}
 No, these don't support MySQL's binlog API.
 
