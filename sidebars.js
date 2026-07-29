@@ -775,7 +775,6 @@ const sidebars = {
                 'integrations/data-ingestion/clickpipes/postgres/source/aurora',
                 'integrations/data-ingestion/clickpipes/postgres/source/supabase',
                 'integrations/data-ingestion/clickpipes/postgres/source/google-cloudsql',
-                'integrations/data-ingestion/clickpipes/postgres/source/cloud-sql-psc',
                 'integrations/data-ingestion/clickpipes/postgres/source/azure-flexible-server-postgres',
                 'integrations/data-ingestion/clickpipes/postgres/source/neon-postgres',
                 'integrations/data-ingestion/clickpipes/postgres/source/crunchy-postgres',
@@ -958,7 +957,7 @@ const sidebars = {
             {
               type: 'doc',
               id: 'integrations/data-ingestion/clickpipes/networking/azure-privatelink',
-              label: 'Azure private connectivity',
+              label: 'Azure Private Link',
             },
           ],
         },
