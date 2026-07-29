@@ -22,11 +22,11 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
-You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to establish secure connectivity between VPCs,
-AWS services, your on-premises systems, and ClickHouse Cloud without exposing traffic to the public Internet.
+You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to establish a secure connection between ClickPipes and a data source hosted on AWS. ClickPipes creates a **reverse private endpoint (RPE)** in its VPC and points it at a private endpoint service published for your data source, so traffic is never exposed to the public internet.
 
-This document outlines the ClickPipes reverse private endpoint functionality
-that allows setting up an AWS PrivateLink VPC endpoint.
+:::note
+Check the [supported AWS regions](#aws-privatelink-regions) before you start.
+:::
 
 ## Supported ClickPipes data sources {#supported-sources}
 
@@ -332,7 +332,7 @@ For same-region access, creating a VPC Resource is the recommended approach.
 
 </VerticalStepper>
 
-## Managing existing reverse private endpoints {#managing-existing-endpoints}
+## Managing reverse private endpoints {#managing-rpes}
 
 You can manage existing reverse private endpoints in the ClickHouse Cloud service settings:
 
@@ -348,7 +348,7 @@ You can manage existing reverse private endpoints in the ClickHouse Cloud servic
 
    Reverse private endpoint extended information is shown in the flyout.
 
-   Endpoint can be removed from here. It will affect any ClickPipes using this endpoint.
+   An endpoint can't be edited after you create it. You can delete one by clicking the `×` on the endpoint and confirming — deletion is permanent and breaks any ClickPipe currently using that endpoint.
 
 </VerticalStepper>
 

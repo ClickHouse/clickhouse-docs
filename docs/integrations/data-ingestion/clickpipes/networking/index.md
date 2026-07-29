@@ -1,56 +1,40 @@
 ---
 sidebar_label: 'Networking'
-description: 'Private networking for ClickPipes: AWS PrivateLink and GCP Private Service Connect, and the regions where they are available.'
+description: 'Networking configuration options for ClickPipes.'
 slug: /integrations/clickpipes/networking
-title: 'ClickPipes networking'
+title: 'Networking'
 doc_type: 'guide'
-keywords: ['clickpipes networking', 'private networking', 'reverse private endpoint', 'aws privatelink', 'gcp private service connect', 'private connectivity']
+keywords: ['clickpipes networking', 'private networking', 'reverse private endpoint', 'aws privatelink', 'gcp private service connect', 'private connectivity', 'azure privatelink']
 integration:
    - support_level: 'core'
    - category: 'clickpipes'
 ---
 
-ClickPipes can reach a data source over private networking, so ingestion traffic never crosses the public internet. There are two ways to connect privately:
+Depending on the networking configuration of your upstream data source, you can connect ClickPipes using the following approaches:
 
-- **Managed private endpoints** — a **reverse private endpoint (RPE)** that the ClickPipes data plane creates inside its own VPC and points at a private endpoint service you publish in front of your source, using [AWS PrivateLink](/integrations/clickpipes/aws-privatelink) or [GCP Private Service Connect](/integrations/clickpipes/gcp-psc).
-- **[SSH tunneling](#ssh-tunneling)** — for sources that can't use PrivateLink or PSC, including private Azure sources.
+## IP allowlisting {#ip-allowlisting}
 
-## Supported regions {#supported-regions}
+For data sources exposed to the public internet, you can use IP allowlisting to restrict traffic to the static NAT IPs ClickPipes connects from. Add the [static NAT IPs](/integrations/clickpipes/networking/static-ips) for the region that ClickPipes connects from to the upstream firewall or security group rules.
 
-A reverse private endpoint must be created in the **same region** as both the ClickHouse Cloud service and the data source. Cross-region private connectivity is not supported, with the exception of an AWS PrivateLink VPC endpoint service configured for [cross-region access](/integrations/clickpipes/aws-privatelink#aws-privatelink-regions).
+## Managed private endpoints {#managed-private-endpoints}
 
-Private networking is available in every region where ClickPipes is hosted.
+For data sources that are **not** exposed to the public internet, you can connect using managed private endpoints. ClickPipes creates a **reverse private endpoint (RPE)** in its VPC and points it at a private endpoint service published for your data source, so traffic is never exposed to the public internet.
 
-### AWS {#aws-regions}
+Support for RPE depends on the cloud provider and region your data source is hosted in:
 
-AWS PrivateLink is available in the following AWS regions:
-
-`af-south-1`, `ap-east-1`, `ap-northeast-1`, `ap-northeast-2`, `ap-south-1`, `ap-southeast-1`, `ap-southeast-2`, `ap-southeast-3`, `ca-central-1`, `eu-central-1`, `eu-north-1`, `eu-west-1`, `eu-west-2`, `il-central-1`, `mx-central-1`, `sa-east-1`, `us-east-1`, `us-east-2`, `us-west-2`
-
-### Google Cloud {#gcp-regions}
-
-GCP Private Service Connect is available in the following Google Cloud regions:
-
-`asia-northeast1`, `asia-southeast1`, `australia-southeast1`, `europe-west2`, `europe-west3`, `europe-west4`, `europe-west6`, `northamerica-northeast1`, `us-central1`, `us-east1`, `us-west1`
-
-The static egress IPs that ClickPipes uses in each region are listed under [List of static IPs](/integrations/clickpipes/networking/static-ips).
-
-## Providers {#providers}
-
-| Provider | Use with | Guide |
-| --- | --- | --- |
-| **AWS PrivateLink** | Sources hosted on AWS | [AWS PrivateLink for ClickPipes](/integrations/clickpipes/aws-privatelink) |
-| **GCP Private Service Connect** | Sources hosted on GCP | [GCP Private Service Connect](/integrations/clickpipes/gcp-psc) |
-| **Azure Private Link** *(planned)* | Sources hosted on Azure | [Azure private connectivity](/integrations/clickpipes/azure-privatelink) |
+| Provider                                                        | Supported | Notes |
+| --------------------------------------------------------------- | --------- | ----- |
+| [AWS PrivateLink](/integrations/clickpipes/aws-privatelink)     | Yes       | For data sources hosted on AWS. Cross-region connectivity can be configured using a VPC endpoint service. |
+| [GCP Private Service Connect](/integrations/clickpipes/gcp-psc) | Yes       | For data sources hosted on GCP. Cross-region connectivity via Global Access is not supported yet; use [SSH tunneling](#ssh-tunneling) to reach a private data source in unsupported GCP regions. |
+| [Azure Private Link](/integrations/clickpipes/azure-privatelink)| No        | Use [SSH tunneling](#ssh-tunneling) to reach a private Azure data source. |
 
 ## SSH tunneling {#ssh-tunneling}
 
-When a source can't use AWS PrivateLink or GCP Private Service Connect, ClickPipes can connect through an SSH tunnel via a bastion (jump) host, so traffic still avoids the public internet. Use it for:
+For data sources that are **not** exposed to the public internet and **can't** use managed private endpoints, you can connect
+using an SSH tunnel via a bastion host. Add the [static NAT IPs](/integrations/clickpipes/networking/static-ips) for the region that ClickPipes connects from to the firewall rules of the upstream bastion host.
 
-- **Azure sources** — ClickPipes does not support Azure Private Link yet, so an SSH tunnel is the way to reach a private Azure source over secure connectivity. Native Azure Private Link support is planned.
-- Sources in regions where PrivateLink or PSC isn't available, or where the source and your ClickHouse Cloud service are in different regions.
-- On-premises or self-managed sources reachable through a bastion host.
+You should use this approach when:
 
-SSH tunneling is configured per ClickPipe during creation. See the steps for your source: [Postgres](/integrations/clickpipes/postgres#optional-setting-up-ssh-tunneling), [MySQL](/integrations/clickpipes/mysql#optional-set-up-ssh-tunneling), [MongoDB](/integrations/clickpipes/mongodb#optional-set-up-ssh-tunneling), or [Kafka](/integrations/clickpipes/kafka/create-your-first-kafka-clickpipe#6-configure-ssh-tunneling).
-
-Add the [ClickPipes static IPs](/integrations/clickpipes/networking/static-ips) to your bastion host's firewall rules so ClickPipes can establish the tunnel.
+* The data source is hosted on Azure.
+* The data source and ClickPipes are hosted in different cloud providers or regions, and there is no option for cross-region connectivity with [managed private endpoints](#managed-private-endpoints).
+* There is no option to use [managed private endpoints](#managed-private-endpoints), e.g. on-premises deployments that can only be reached through a bastion host.
