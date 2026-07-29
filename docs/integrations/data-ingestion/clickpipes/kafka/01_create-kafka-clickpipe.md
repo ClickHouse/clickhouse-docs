@@ -45,7 +45,7 @@ A valid schema is required for Avro and Protobuf topics. See [Schema registries]
 
 ## Configure a reverse private endpoint (optional) {#5-configure-reverse-private-endpoint}
 Configure a Reverse Private Endpoint to allow ClickPipes to connect to your Kafka cluster using AWS PrivateLink.
-See our [AWS PrivateLink documentation](../aws-privatelink.md) for more information.
+See our [AWS PrivateLink documentation](../networking/aws-privatelink.md) for more information.
 
 ## Configure SSH tunneling (optional) {#6-configure-ssh-tunneling}
 

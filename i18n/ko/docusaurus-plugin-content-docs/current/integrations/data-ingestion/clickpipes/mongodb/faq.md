@@ -88,4 +88,4 @@ MongoDB(및 DocumentDB) 클러스터에 대해서는 AWS에서만 PrivateLink를
 
 레플리카 셋 연결을 사용하는 경우, MongoDB에 대해 VPC Resource 또는 VPC Endpoint Service를 사용하여 PrivateLink를 설정할 수 있습니다. VPC Resource를 선택하면 `GROUP` 리소스 구성 하나와 클러스터 내 각 노드에 대한 `CHILD` 리소스 구성이 필요합니다. VPC Endpoint Service를 선택하면 클러스터 내 각 노드마다 별도의 Endpoint Service(및 별도의 NLB)를 생성해야 합니다. 
 
-자세한 내용은 [AWS PrivateLink for ClickPipes](../aws-privatelink.md) 문서를 참고하십시오. 도움이 필요하면 ClickHouse 지원팀에 문의하십시오.
+자세한 내용은 [AWS PrivateLink for ClickPipes](../networking/aws-privatelink.md) 문서를 참고하십시오. 도움이 필요하면 ClickHouse 지원팀에 문의하십시오.

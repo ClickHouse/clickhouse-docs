@@ -87,4 +87,4 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 对于副本集连接，您可以通过 VPC Resource 或 VPC Endpoint Service 为 MongoDB 搭建 PrivateLink。如果您选择 VPC Resource，则需要创建一个 `GROUP` 资源配置，并为集群中的每个节点分别创建一个 `CHILD` 资源配置。如果您选择 VPC Endpoint Service，则需要为集群中的每个节点分别创建独立的 Endpoint Service (以及独立的 NLB) 。
 
-更多详情，请参阅 [AWS PrivateLink for ClickPipes](../aws-privatelink.md) 文档。如需帮助，请联系 ClickHouse Support。
+更多详情，请参阅 [AWS PrivateLink for ClickPipes](../networking/aws-privatelink.md) 文档。如需帮助，请联系 ClickHouse Support。

@@ -937,7 +937,7 @@ const sidebars = {
           collapsible: true,
           link: {
             type: 'doc',
-            id: 'integrations/data-ingestion/clickpipes/networking',
+            id: 'integrations/data-ingestion/clickpipes/networking/index',
           },
           items: [
             {
@@ -947,12 +947,12 @@ const sidebars = {
             },
             {
               type: 'doc',
-              id: 'integrations/data-ingestion/clickpipes/aws-privatelink',
+              id: 'integrations/data-ingestion/clickpipes/networking/aws-privatelink',
               label: 'AWS PrivateLink',
             },
             {
               type: 'doc',
-              id: 'integrations/data-ingestion/clickpipes/gcp-psc/index',
+              id: 'integrations/data-ingestion/clickpipes/networking/gcp-psc/index',
               label: 'GCP Private Service Connect',
             },
           ],

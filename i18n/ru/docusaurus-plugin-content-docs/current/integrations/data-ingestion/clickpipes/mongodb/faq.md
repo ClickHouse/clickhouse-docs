@@ -87,4 +87,4 @@ SELECT sum(doc.shipping.cost::Float32) AS total_shipping_cost FROM t1;
 
 Для соединения с набором реплик вы можете настроить PrivateLink для MongoDB либо через VPC Resource, либо через VPC Endpoint Service. Если вы выберете VPC Resource, потребуется создать конфигурацию ресурса `GROUP`, а также конфигурацию ресурса `CHILD` для каждого узла в кластере. Если вы выберете VPC Endpoint Service, потребуется создать отдельный Endpoint Service (и отдельный NLB) для каждого узла в кластере.
 
-Дополнительные сведения см. в документации [AWS PrivateLink for ClickPipes](../aws-privatelink.md). За помощью обращайтесь в службу поддержки ClickHouse.
+Дополнительные сведения см. в документации [AWS PrivateLink for ClickPipes](../networking/aws-privatelink.md). За помощью обращайтесь в службу поддержки ClickHouse.
