@@ -48,8 +48,8 @@
       "permanent": true
     },
     {
-      "source": "/docs/integrations/clickpipes/gcp-psc",
-      "destination": "/docs/integrations/clickpipes/gcp-psc/postgres",
+      "source": "/docs/integrations/clickpipes/gcp-psc/postgres",
+      "destination": "/docs/integrations/clickpipes/gcp-psc",
       "permanent": true
     },
     {

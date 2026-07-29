@@ -23,6 +23,8 @@ import Image from '@theme/IdealImage';
 
 If you use one of the supported providers (in the sidebar), please refer to the specific guide for that provider.
 
+To connect over private networking instead of the public internet, see [Cloud SQL for PostgreSQL over Private Service Connect](/integrations/clickpipes/postgres/source/cloud-sql-psc).
+
 :::
 
 ## Supported Postgres versions {#supported-postgres-versions}
