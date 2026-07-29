@@ -171,7 +171,7 @@ Follow [this guide](/cloud/data-sources/secure-s3) to [create a role](/cloud/dat
 
 S3 ClickPipes use two distinct network paths for metadata discovery and data ingestion: the ClickPipes service and the ClickHouse Cloud service, respectively. If you want to configure an additional layer of network security (e.g., for compliance reasons), network access **must be configured for both paths**.
 
-* For **IP-based access control**, the S3 bucket policy must allow the static IPs for the ClickPipes service region listed [here](/integrations/clickpipes#list-of-static-ips), as well as the [static IPs](/manage/data-sources/cloud-endpoints-api) for the ClickHouse Cloud service. To obtain the static IPs for your ClickHouse Cloud region, open a terminal and run:
+* For **IP-based access control**, the S3 bucket policy must allow the static IPs for the ClickPipes service region listed [here](/integrations/clickpipes/networking/static-ips), as well as the [static IPs](/manage/data-sources/cloud-endpoints-api) for the ClickHouse Cloud service. To obtain the static IPs for your ClickHouse Cloud region, open a terminal and run:
 
     ```bash
     # Replace <your-region> with your ClickHouse Cloud region

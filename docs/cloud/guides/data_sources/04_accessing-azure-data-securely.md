@@ -107,7 +107,7 @@ See ["Creating your first Azure ClickPipe"](/integrations/clickpipes/object-stor
 ClickPipes uses separate static IP addresses for outbound connections.
 These IPs must be allowlisted if you're using IP-based firewall rules.
 
-See ["List of Static IPs"](/integrations/clickpipes#list-of-static-ips)
+See ["List of Static IPs"](/integrations/clickpipes/networking/static-ips)
 :::
 
 :::tip

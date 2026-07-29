@@ -52,7 +52,7 @@ Kafka ClickPipes は、ClickPipes UI を使用して手動でデプロイおよ�
   ## Reverse Private Endpoint を設定する (任意) \{#5-configure-reverse-private-endpoint\}
 
   Reverse Private Endpoint を設定すると、ClickPipes が AWS PrivateLink を使って Kafka クラスタに接続できるようになります。
-  詳細については、[AWS PrivateLink documentation](../aws-privatelink.md) を参照してください。
+  詳細については、[AWS PrivateLink documentation](../networking/aws-privatelink.md) を参照してください。
 
   ## SSH トンネリングを設定する (任意) \{#6-configure-ssh-tunneling\}
 

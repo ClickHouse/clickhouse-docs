@@ -52,7 +52,7 @@ Kafka ClickPipes 可通过 ClickPipes UI 手动部署和管理，也可使用 [O
   ## 配置反向 private endpoint (可选) \{#5-configure-reverse-private-endpoint\}
 
   配置 Reverse Private Endpoint，以便 ClickPipes 通过 AWS PrivateLink 连接到您的 Kafka cluster。
-  更多信息请参阅 [AWS PrivateLink documentation](../aws-privatelink.md)。
+  更多信息请参阅 [AWS PrivateLink documentation](../networking/aws-privatelink.md)。
 
   ## 配置 SSH 隧道 (可选) \{#6-configure-ssh-tunneling\}
 

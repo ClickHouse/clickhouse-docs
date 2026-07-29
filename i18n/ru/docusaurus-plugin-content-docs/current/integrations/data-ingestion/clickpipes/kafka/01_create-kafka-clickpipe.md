@@ -52,7 +52,7 @@ Kafka ClickPipes можно развертывать и вручную наст�
   ## Настройте обратную частную конечную точку (необязательно) \{#5-configure-reverse-private-endpoint\}
 
   Настройте обратную частную конечную точку, чтобы ClickPipes могли подключаться к вашему кластеру Kafka через AWS PrivateLink.
-  Подробнее см. в нашей [документации по AWS PrivateLink](../aws-privatelink.md).
+  Подробнее см. в нашей [документации по AWS PrivateLink](../networking/aws-privatelink.md).
 
   ## Настройте SSH-туннелирование (необязательно) \{#6-configure-ssh-tunneling\}
 

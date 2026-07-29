@@ -87,4 +87,4 @@ AWS の MongoDB (および DocumentDB) クラスターでのみ、PrivateLink �
 
 レプリカセット接続の場合、MongoDB の PrivateLink は VPC Resource または VPC Endpoint Service のいずれかでセットアップできます。VPC Resource を使用する場合は、`GROUP` リソース設定に加えて、クラスター内の各ノードごとに `CHILD` リソース設定を作成する必要があります。VPC Endpoint Service を使用する場合は、クラスター内の各ノードごとに個別の Endpoint Service (および個別の NLB) を作成する必要があります。
 
-詳細については、[AWS PrivateLink for ClickPipes](../aws-privatelink.md) のドキュメントを参照してください。支援が必要な場合は、ClickHouse Support までお問い合わせください。
+詳細については、[AWS PrivateLink for ClickPipes](../networking/aws-privatelink.md) のドキュメントを参照してください。支援が必要な場合は、ClickHouse Support までお問い合わせください。

@@ -22,11 +22,11 @@ import cp_rpe_settings0 from '@site/static/images/integrations/data-ingestion/cl
 import cp_rpe_settings1 from '@site/static/images/integrations/data-ingestion/clickpipes/cp_rpe_settings1.png';
 import Image from '@theme/IdealImage';
 
-You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to establish secure connectivity between VPCs,
-AWS services, your on-premises systems, and ClickHouse Cloud without exposing traffic to the public Internet.
+You can use [AWS PrivateLink](https://aws.amazon.com/privatelink/) to establish a secure connection between ClickPipes and a data source hosted on AWS. ClickPipes creates a **reverse private endpoint (RPE)** in its VPC and points it at a private endpoint service published for your data source, so traffic is never exposed to the public internet.
 
-This document outlines the ClickPipes reverse private endpoint functionality
-that allows setting up an AWS PrivateLink VPC endpoint.
+:::note
+Check the [supported AWS regions](#aws-privatelink-regions) before you start.
+:::
 
 ## Supported ClickPipes data sources {#supported-sources}
 
@@ -129,13 +129,15 @@ aws vpc-lattice create-resource-configuration \
 You can't create a resource configuration for a publicly accessible cluster.
 If your cluster is publicly accessible, you must modify the cluster
 to make it private before creating the resource configuration
-or use [IP allow list](/integrations/clickpipes#list-of-static-ips) instead.
+or use [IP allow list](/integrations/clickpipes/networking/static-ips) instead.
 For more information, see the [AWS documentation](https://docs.aws.amazon.com/vpc/latest/privatelink/resource-configuration.html#resource-definition).
 :::
 
 The output will contain a Resource-Configuration ARN, which you will need for the next step. It will also contain a Resource-Configuration ID, which you will need to set up a ClickPipe connection with VPC resource.
 
+<!-- vale off -->
 #### Create a Resource-Share {#create-resource-share}
+<!-- vale on -->
 
 Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
 
@@ -330,7 +332,7 @@ For same-region access, creating a VPC Resource is the recommended approach.
 
 </VerticalStepper>
 
-## Managing existing reverse private endpoints {#managing-existing-endpoints}
+## Managing reverse private endpoints {#managing-rpes}
 
 You can manage existing reverse private endpoints in the ClickHouse Cloud service settings:
 
@@ -346,14 +348,14 @@ You can manage existing reverse private endpoints in the ClickHouse Cloud servic
 
    Reverse private endpoint extended information is shown in the flyout.
 
-   Endpoint can be removed from here. It will affect any ClickPipes using this endpoint.
+   An endpoint can't be edited after you create it. You can delete one by clicking the `×` on the endpoint and confirming — deletion is permanent and breaks any ClickPipe currently using that endpoint.
 
 </VerticalStepper>
 
 ## Supported AWS regions {#aws-privatelink-regions}
 
 AWS PrivateLink support is limited to specific AWS regions for ClickPipes.
-Please refer to the [ClickPipes regions list](/integrations/clickpipes#list-of-static-ips) to see the available regions.
+Please refer to the [ClickPipes regions list](/integrations/clickpipes/networking/static-ips) to see the available regions.
 
 This restriction doesn't apply to PrivateLink VPC endpoint service with a cross-region connectivity enabled.
 

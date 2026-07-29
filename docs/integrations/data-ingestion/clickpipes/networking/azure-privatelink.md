@@ -1,0 +1,17 @@
+---
+sidebar_label: 'Azure Private Link'
+description: 'Establish a secure connection between ClickPipes and a data source hosted in Azure using Private Link.'
+slug: /integrations/clickpipes/azure-privatelink
+title: 'Azure Private Link'
+doc_type: 'guide'
+keywords: ['azure private link', 'azure', 'clickpipes', 'private connectivity', 'ssh tunnel', 'azure flexible server']
+integration:
+   - support_level: 'core'
+   - category: 'clickpipes'
+---
+
+ClickPipes does **not** support Azure Private Link yet. To reach an Azure data source that isn't exposed to the public internet, use [SSH tunneling](/integrations/clickpipes/networking#ssh-tunneling).
+
+:::info
+Support for Azure Private Link is planned. [Contact ClickHouse support](https://clickhouse.com/support/program) for updates on the timeline for this feature.
+:::

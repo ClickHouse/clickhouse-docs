@@ -929,7 +929,38 @@ const sidebars = {
           ],
         },
         'integrations/data-ingestion/clickpipes/monitoring',
-        'integrations/data-ingestion/clickpipes/aws-privatelink',
+        {
+          type: 'category',
+          label: 'Networking',
+          collapsed: true,
+          collapsible: true,
+          link: {
+            type: 'doc',
+            id: 'integrations/data-ingestion/clickpipes/networking/index',
+          },
+          items: [
+            {
+              type: 'doc',
+              id: 'integrations/data-ingestion/clickpipes/networking/static-ips',
+              label: 'Static IPs',
+            },
+            {
+              type: 'doc',
+              id: 'integrations/data-ingestion/clickpipes/networking/aws-privatelink',
+              label: 'AWS PrivateLink',
+            },
+            {
+              type: 'doc',
+              id: 'integrations/data-ingestion/clickpipes/networking/gcp-psc',
+              label: 'GCP Private Service Connect',
+            },
+            {
+              type: 'doc',
+              id: 'integrations/data-ingestion/clickpipes/networking/azure-privatelink',
+              label: 'Azure Private Link',
+            },
+          ],
+        },
         'integrations/data-ingestion/dbms/dynamodb/index',
       ],
     },

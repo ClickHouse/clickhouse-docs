@@ -72,7 +72,7 @@ Connect to your Crunchy Bridge Postgres through the `postgres` user and run the 
 
 ## Safe list ClickPipes IPs {#safe-list-clickpipes-ips}
 
-Safelist [ClickPipes IPs](../../index.md#list-of-static-ips) by adding the Firewall Rules in Crunchy Bridge.
+Safelist [ClickPipes IPs](/integrations/clickpipes/networking/static-ips) by adding the Firewall Rules in Crunchy Bridge.
 
 <Image size="lg" img={firewall_rules_crunchy_bridge} alt="Where to find Firewall Rules in Crunchy Bridge?" border/>
 

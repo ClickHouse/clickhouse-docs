@@ -24,7 +24,7 @@ To access this, click on **Sync to ClickHouse** in the sidebar of your Postgres 
 <Image img={chIntegrationIntro} alt="ClickHouse integration landing page showing the integration option in the sidebar" size="md" border/>
 
 :::note
-Before you proceed, ensure that your Postgres service is accessible to the ClickPipes service. This should be the case by default, but if you've restricted IP access you may need to grant access to some source IPs from [this](/integrations/clickpipes#list-of-static-ips) list based on the region where your **ClickHouse service** is located.
+Before you proceed, ensure that your Postgres service is accessible to the ClickPipes service. This should be the case by default, but if you've restricted IP access you may need to grant access to some source IPs from [this](/integrations/clickpipes/networking/static-ips) list based on the region where your **ClickHouse service** is located.
 :::
 
 Click **Replicate data in ClickHouse** to start setting up your ClickPipe.
