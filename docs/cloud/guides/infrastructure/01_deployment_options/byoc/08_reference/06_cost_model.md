@@ -1,22 +1,22 @@
 ---
-title: 'BYOC cost model (AWS)'
-slug: /cloud/reference/byoc/cost-model-aws
-sidebar_label: 'Cost model (AWS)'
-keywords: ['BYOC', 'bring your own cloud', 'AWS', 'cost', 'billing', 'TCO', 'pricing', 'EC2', 'S3', 'EBS']
-description: 'How ClickHouse Cloud charges and AWS infrastructure charges combine into total cost of ownership for a BYOC deployment'
+title: 'BYOC cost model'
+slug: /cloud/reference/byoc/cost-model
+sidebar_label: 'Cost model'
+keywords: ['BYOC', 'bring your own cloud', 'AWS', 'GCP', 'cost', 'billing', 'TCO', 'pricing', 'EC2', 'S3', 'EBS', 'Compute Engine', 'Cloud Storage']
+description: 'How ClickHouse Cloud charges and cloud provider infrastructure charges combine into total cost of ownership for a BYOC deployment on AWS and GCP'
 doc_type: 'reference'
 ---
 
 A ClickHouse BYOC deployment generates two independent bills:
 
 1. **ClickHouse Cloud charges** — billed by ClickHouse for your ClickHouse services, based on total memory allocation.
-2. **AWS infrastructure charges** — billed by AWS directly to your AWS account for every resource the BYOC deployment provisions there.
+2. **Cloud provider infrastructure charges** — billed by AWS or Google Cloud directly to your own account or project, for every resource the BYOC deployment provisions there.
 
 This page describes how each is calculated and how they combine into total cost of ownership (TCO).
 
 ## ClickHouse Cloud charges {#clickhouse-cloud-charges}
 
-ClickHouse Cloud charges are based on total memory allocation. [Contact the team](https://clickhouse.com/cloud/bring-your-own-cloud) to understand how this applies to your setup.
+ClickHouse Cloud charges are based on total memory allocation, and do not depend on which cloud provider hosts the deployment. [Contact the team](https://clickhouse.com/cloud/bring-your-own-cloud) to understand how this applies to your setup.
 
 ## AWS infrastructure charges {#aws-infrastructure-charges}
 
@@ -34,8 +34,30 @@ The dominant cost drivers, in typical descending order of contribution to a BYOC
 
 For current AWS list prices, see the per-service pricing pages on [aws.amazon.com](https://aws.amazon.com/pricing/).
 
+## GCP infrastructure charges {#gcp-infrastructure-charges}
+
+Google Cloud bills your project directly for every resource provisioned by BYOC. ClickHouse doesn't mark up or resell Google Cloud capacity.
+
+The dominant cost drivers, in typical descending order of contribution to a BYOC bill, are:
+
+1. **Compute Engine** — the VMs backing the GKE node pools. Arm (Axion) shapes with bundled Titanium SSD (`c4a-standard-*-lssd`) are preferred for ClickHouse server nodes, with x86 `n2d-standard-*` shapes as the alternative; ClickHouse Keeper runs on `n2d-highmem-4` or `n2-highmem-4`, and platform add-ons on `n2d-standard-8`. Shape and count scale with your service's allocated memory and node pool autoscaling.
+2. **Cloud Storage** — storage of ClickHouse table data and backups. Each ClickHouse service uses two buckets, one for data and one for backups, plus one monitoring bucket per BYOC infrastructure. Charged per GB-month plus operations and inter-region transfer fees.
+3. **Persistent Disk** — a 100 GB boot disk per node, plus SSD-backed (`premium-rwo`) volumes for ClickHouse Keeper data and for the ClickHouse cache on node pools whose machine shape has no local SSD. On the `-lssd` shapes the cache lives on the bundled Titanium SSD instead, which is priced as part of the machine shape.
+4. **Cloud NAT and inter-zone data transfer** — egress from the private subnet through the Cloud NAT gateway, plus traffic between zones, since a regional GKE cluster spreads replicas across the zones of the region. External addresses are provisioned in the Premium network service tier by default, which determines internet egress pricing.
+5. **Google Kubernetes Engine** — flat per cluster-hour cluster management fee for the regional Standard cluster.
+6. **Cloud Load Balancing** — per forwarding rule-hour plus data processed for client ingress. Ingress gateway is shared by every ClickHouse service in the infrastructure, so load balancer charges don't scale with the number of services.
+7. **Cloud Logging** — GKE control plane and system component logs, charged per GiB of ingestion above the free allotment. Google Cloud Managed Service for Prometheus is deliberately disabled: ClickHouse runs its own in-cluster metrics stack that writes to the monitoring bucket in Cloud Storage, so metrics don't add Cloud Monitoring ingestion charges.
+
+Two structural differences from the AWS bill are worth noting when comparing the two:
+
+- **Private Google Access is enabled on the private subnet**, so traffic to Cloud Storage and to the ClickHouse-owned Artifact Registry that serves container images doesn't traverse the Cloud NAT gateway and incurs no NAT data-processing charge. This is the equivalent of the S3 gateway endpoint on AWS.
+- **Cloud DNS doesn't appear on your bill.** The DNS zone for your BYOC endpoints and its delegation records are created in ClickHouse-owned projects, not in your project.
+
+For current Google Cloud list prices, see the per-service pricing pages on [cloud.google.com](https://cloud.google.com/pricing).
+
 ## Related {#related}
 
 - [Billable AWS services](/cloud/reference/byoc/billable-aws-services) — full inventory of AWS services BYOC provisions
-- [AWS service limits and quotas](/cloud/reference/byoc/aws-service-limits) — quotas to verify before deployment
+- [AWS service limits and quotas](/cloud/reference/byoc/aws-service-limits) — AWS quotas to verify before deployment
+- [GCP service limits and quotas](/cloud/reference/byoc/gcp-service-limits) — GCP quotas to verify before deployment, including the machine families BYOC provisions
 - [BYOC architecture](/cloud/reference/byoc/architecture) — components ClickHouse Cloud deploys in your account

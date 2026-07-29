@@ -24,7 +24,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Azure Private Link](/cloud/security/azure-privatelink) | How to set up Azure Private Link |
 | [Billable AWS services](/cloud/reference/byoc/billable-aws-services) | AWS services provisioned by ClickHouse BYOC, classified as mandatory or optional, with notes on which ones contribute to your AWS bill |
 | [BYOC AWS private networking setup](/cloud/reference/byoc/onboarding/network-aws) | Set up VPC Peering or PrivateLink for BYOC on AWS |
-| [BYOC cost model (AWS)](/cloud/reference/byoc/cost-model-aws) | How ClickHouse Cloud charges and AWS infrastructure charges combine into total cost of ownership for a BYOC deployment |
+| [BYOC cost model](/cloud/reference/byoc/cost-model) | How ClickHouse Cloud charges and cloud provider infrastructure charges combine into total cost of ownership for a BYOC deployment on AWS and GCP |
 | [BYOC FAQ](/cloud/reference/byoc/reference/faq) | Deploy ClickHouse on your own cloud infrastructure |
 | [BYOC GCP private networking setup](/cloud/reference/byoc/onboarding/network-gcp) | Set up VPC Peering or Private Service Connect for BYOC on GCP |
 | [BYOC Network Security](/cloud/reference/byoc/reference/network_security) | Deploy ClickHouse on your own cloud infrastructure |
@@ -59,6 +59,7 @@ keywords: ['cloud guides', 'documentation', 'how-to', 'cloud features', 'tutoria
 | [Manage database users](/cloud/security/manage-database-users) | This page describes how administrators can add database users, manage assignments, and remove database users |
 | [Manage my account](/cloud/security/manage-my-account) | This page describes how you can accept invitations, manage MFA settings, and reset passwords |
 | [Managing AWS service limits and quotas](/cloud/reference/byoc/aws-service-limits) | AWS service quotas to verify before BYOC onboarding, how to request increases, and what to monitor as services scale |
+| [Managing GCP service limits and quotas](/cloud/reference/byoc/gcp-service-limits) | GCP quotas to verify before BYOC onboarding, how machine family quotas interact with GKE compute classes, and what to monitor as services scale |
 | [Migrating from CMEK v1 to v2](/cloud/security/cmek-migration) | Migration instructions to move from legacy CMEK to version 2 |
 | [Multi tenancy](/cloud/bestpractices/multi-tenancy) | Best practices to implement multi tenancy |
 | [Optimizing ClickHouse Assistant conversations with a semantic layer](/use-cases/AI_ML/AIChat/semantic-layer) | Guide to using AGENTS.md to provide custom business logic and data-specific instructions to the ClickHouse Assistant chat agent |

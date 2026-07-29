@@ -44,5 +44,5 @@ Before initiating BYOC onboarding, verify the following quotas in the AWS Region
 ## Related {#related}
 
 - [Billable AWS services](/cloud/reference/byoc/billable-aws-services) — full inventory of AWS services BYOC provisions
-- [BYOC cost model (AWS)](/cloud/reference/byoc/cost-model-aws) — how ClickHouse Cloud and AWS charges combine
+- [BYOC cost model](/cloud/reference/byoc/cost-model) — how ClickHouse Cloud and AWS charges combine
 - [BYOC architecture](/cloud/reference/byoc/architecture) — components ClickHouse Cloud deploys in your account

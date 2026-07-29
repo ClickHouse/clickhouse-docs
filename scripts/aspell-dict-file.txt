@@ -1338,3 +1338,9 @@ writeMap
 writeString
 writeTuple
 writeUInt
+--docs/cloud/guides/infrastructure/01_deployment_options/byoc/08_reference/09_gcp_service_limits.md--
+Axion
+preemptible
+--docs/cloud/guides/infrastructure/01_deployment_options/byoc/08_reference/06_cost_model.md--
+Axion
+preemptible

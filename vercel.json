@@ -83,6 +83,16 @@
       "permanent": true
     },
     {
+      "source": "/docs/cloud/reference/byoc/cost-model-aws",
+      "destination": "/docs/cloud/reference/byoc/cost-model",
+      "permanent": true
+    },
+    {
+      "source": "/docs/en/cloud/reference/byoc/cost-model-aws",
+      "destination": "/docs/cloud/reference/byoc/cost-model",
+      "permanent": true
+    },
+    {
       "source": "/docs/en/cloud/reference/byoc/onboarding/customization",
       "destination": "/docs/cloud/reference/byoc/onboarding/customization-aws",
       "permanent": true
