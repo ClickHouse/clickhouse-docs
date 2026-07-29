@@ -952,12 +952,12 @@ const sidebars = {
             },
             {
               type: 'doc',
-              id: 'integrations/data-ingestion/clickpipes/networking/gcp-psc/index',
+              id: 'integrations/data-ingestion/clickpipes/networking/gcp-psc',
               label: 'GCP Private Service Connect',
             },
             {
               type: 'doc',
-              id: 'integrations/data-ingestion/clickpipes/networking/azure',
+              id: 'integrations/data-ingestion/clickpipes/networking/azure-privatelink',
               label: 'Azure private connectivity',
             },
           ],
