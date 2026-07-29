@@ -20,6 +20,7 @@ methods:
 | [Query Insights](/cloud/managed-postgres/monitoring/query-insights)              | Per-statement telemetry: every query pattern ranked by impact, with diagnostic counters    | None                    |
 | [Prometheus endpoint](/cloud/managed-postgres/monitoring/prometheus)             | Scrape metrics into Prometheus, Grafana, Datadog, or any OpenMetrics-compatible collector  | API key + scraper config |
 | [Metrics reference](/cloud/managed-postgres/monitoring/metrics)                  | Full list of metrics exposed by the Prometheus endpoint, with types, labels, and meanings  | N/A                     |
+| [Notifications](/cloud/managed-postgres/monitoring/notifications)                | Console, email, and Slack alerts when a service needs attention, such as storage nearing capacity | None                    |
 
 ## Quick start {#quick-start}
 

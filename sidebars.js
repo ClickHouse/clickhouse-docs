@@ -417,6 +417,7 @@ const sidebars = {
             'cloud/managed-postgres/monitoring/query-insights',
             'cloud/managed-postgres/monitoring/prometheus',
             'cloud/managed-postgres/monitoring/metrics',
+            'cloud/managed-postgres/monitoring/notifications',
           ],
         },
         'cloud/managed-postgres/openapi',
