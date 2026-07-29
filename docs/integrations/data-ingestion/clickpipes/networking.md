@@ -36,5 +36,5 @@ The static egress IPs that ClickPipes uses in each region are listed under [List
 
 | Provider | Use with | Guide |
 | --- | --- | --- |
-| **AWS PrivateLink** | Kafka, Postgres, MySQL, and MongoDB sources on AWS | [AWS PrivateLink for ClickPipes](/integrations/clickpipes/aws-privatelink) |
-| **GCP Private Service Connect** | Postgres CDC sources on GCP (Cloud SQL or self-managed) | [GCP Private Service Connect](/integrations/clickpipes/gcp-psc) |
+| **AWS PrivateLink** | Sources hosted on AWS | [AWS PrivateLink for ClickPipes](/integrations/clickpipes/aws-privatelink) |
+| **GCP Private Service Connect** | Sources hosted on GCP | [GCP Private Service Connect](/integrations/clickpipes/gcp-psc) |
