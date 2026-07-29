@@ -135,7 +135,9 @@ For more information, see the [AWS documentation](https://docs.aws.amazon.com/vp
 
 The output will contain a Resource-Configuration ARN, which you will need for the next step. It will also contain a Resource-Configuration ID, which you will need to set up a ClickPipe connection with VPC resource.
 
+<!-- vale off -->
 #### Create a Resource-Share {#create-resource-share}
+<!-- vale on -->
 
 Sharing your resource requires a Resource-Share. This is facilitated through the Resource Access Manager (RAM).
 
