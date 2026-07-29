@@ -27,6 +27,10 @@ gcloud sql instances patch <INSTANCE_NAME> \
 
 `--allowed-psc-projects` is the auto-accept list. With `clickpipes-production` on it, Cloud SQL accepts the endpoint automatically — no manual approval. See the [Cloud SQL PSC docs](https://cloud.google.com/sql/docs/postgres/configure-private-service-connect) for the authoritative steps and options.
 
+:::warning
+`--allowed-psc-projects` overwrites the allowed-project list rather than adding to it. If the instance already allows other projects, pass all of them in the same command, or the ones you leave out lose access.
+:::
+
 ## Step 2 — Read the service attachment and DNS name {#read-attachment}
 
 ```bash

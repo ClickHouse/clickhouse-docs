@@ -129,4 +129,3 @@ Here are a few caveats to note when using this connector:
 - We require MongoDB version 5.1.0+.
 - We use MongoDB's native Change Streams API for CDC, which relies on the MongoDB oplog to capture real-time changes. 
 - Documents from MongoDB are replicated into ClickHouse as JSON type by default. This allows for flexible schema management and makes it possible to use the rich set of JSON operators in ClickHouse for querying and analytics. You can learn more about querying JSON data [here](https://clickhouse.com/docs/sql-reference/data-types/newjson).
-- Self-serve PrivateLink configuration isn't currently available. If you're on AWS and require PrivateLink, please reach out to db-integrations-support@clickhouse.com or create a support ticket — we will work with you to enable it.

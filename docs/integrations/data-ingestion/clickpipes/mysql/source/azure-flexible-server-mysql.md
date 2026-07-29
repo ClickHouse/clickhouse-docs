@@ -45,7 +45,7 @@ Connect to your Azure Flexible Server for MySQL instance as an admin user and ex
 ## Configure network access {#configure-network-access}
 
 :::note
-ClickPipes doesn't support Azure Private Link connections. If you don't allow public access to your Azure Flexible Server for MySQL instance, you can [use an SSH tunnel](/integrations/clickpipes/mysql/source/azure-flexible-server-mysql#configure-network-access) to connect securely. Azure Private Link will be supported in the future.
+ClickPipes doesn't support Azure Private Link yet. To reach an instance that doesn't allow public access, use an SSH tunnel. For more information, see [ClickPipes networking](/integrations/clickpipes/networking).
 :::
 
 Next, you must allow connections to your Azure Flexible Server for MySQL instance from ClickPipes.
