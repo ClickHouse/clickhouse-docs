@@ -955,6 +955,11 @@ const sidebars = {
               id: 'integrations/data-ingestion/clickpipes/networking/gcp-psc/index',
               label: 'GCP Private Service Connect',
             },
+            {
+              type: 'doc',
+              id: 'integrations/data-ingestion/clickpipes/networking/azure',
+              label: 'Azure private connectivity',
+            },
           ],
         },
         'integrations/data-ingestion/dbms/dynamodb/index',
