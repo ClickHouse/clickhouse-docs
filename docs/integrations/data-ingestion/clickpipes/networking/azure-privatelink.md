@@ -1,7 +1,7 @@
 ---
 sidebar_label: 'Azure private connectivity'
 description: 'Private connectivity options for ClickPipes with Azure data sources, including the status of Azure Private Link support.'
-slug: /integrations/clickpipes/networking/azure
+slug: /integrations/clickpipes/azure-privatelink
 title: 'Azure private connectivity'
 doc_type: 'guide'
 keywords: ['azure private link', 'azure', 'clickpipes', 'private connectivity', 'ssh tunnel', 'azure flexible server']

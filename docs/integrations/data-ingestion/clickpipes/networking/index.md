@@ -41,7 +41,7 @@ The static egress IPs that ClickPipes uses in each region are listed under [List
 | --- | --- | --- |
 | **AWS PrivateLink** | Sources hosted on AWS | [AWS PrivateLink for ClickPipes](/integrations/clickpipes/aws-privatelink) |
 | **GCP Private Service Connect** | Sources hosted on GCP | [GCP Private Service Connect](/integrations/clickpipes/gcp-psc) |
-| **Azure Private Link** *(planned)* | Sources hosted on Azure | [Azure private connectivity](/integrations/clickpipes/networking/azure) |
+| **Azure Private Link** *(planned)* | Sources hosted on Azure | [Azure private connectivity](/integrations/clickpipes/azure-privatelink) |
 
 ## SSH tunneling {#ssh-tunneling}
 
