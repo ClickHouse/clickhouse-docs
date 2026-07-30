@@ -13,4 +13,5 @@ ClickStack provides the core building blocks of modern observability, bringing t
 | Section | Description |
 |------|-------------|
 | [Bindplane](/use-cases/observability/clickstack/integration-partners/bindplane) | Bindplane is an OpenTelemetry-native telemetry pipeline that provides centralized management for OpenTelemetry Collectors. |
+| [bitdrift](/use-cases/observability/clickstack/integration-partners/bitdrift) | bitdrift is a mobile observability platform that connects mobile telemetry to ClickStack through OpenTelemetry trace context. |
 | [Odigos](/use-cases/observability/clickstack/integration-partners/odigos) | Odigos combines eBPF and OpenTelemetry to deliver deeper distributed traces with dramatically lower overhead than bytecode agents. |
