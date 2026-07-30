@@ -92,12 +92,11 @@ Select the destination database from the dropdown, or click **Create a new datab
 
 <Image img={newDb} alt="Create a new Postgres database dialog" size="lg" border />
 
-### Monitoring
+### Monitoring {#monitoring}
 You can track the progress of the schema migration in the ClickPipes detail view. The **Logs** will indicate the status of the schema migration, and any errors encountered will be displayed there as well.
 
 This mode has the following limitations:
 - Pipes using SSH tunneling cannot use automated schema migration. The schema must be [exported and imported manually](#manual-schema-migration).
-
 
 ## Manual schema migration {#manual-schema-migration}
 For cases where you already have existing data in your target database, or are aiming for a more customized setup versus the clean slate which the automated mode expects, you can opt for the **Manual** mode here.
