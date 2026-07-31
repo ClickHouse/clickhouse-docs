@@ -57,7 +57,25 @@ Any HTTP client that can add a query parameter works, including `curl`, [clickho
 
 ### Check which replica you hit {#check-which-replica}
 
-Run the `SELECT hostName()` example above again with the same `session_id`. You should get the same hostname. A different `session_id` may map to a different replica.
+Run the `SELECT hostName()` example again with the same `session_id`. You should get the same hostname. A different `session_id` may map to a different replica.
+
+### HTTP connection reuse {#http-connection-reuse}
+
+ClickHouse Cloud routes HTTPS traffic through Envoy. How Envoy manages downstream (client-to-proxy) and upstream (proxy-to-replica) connections affects when requests stay on the same replica.
+
+The downstream connection stays open as long as Envoy can serve the next request on it. That happens when the upstream connection already bound to that downstream connection is still healthy, or when Envoy can point the request at a healthy replica without closing the downstream connection — for example by re-selecting a replica at load-balancing time or retrying before response headers are sent.
+
+The downstream connection closes when Envoy can't recover on the same connection:
+
+- The bound upstream connection fails and Envoy doesn't retry, or the retry fails.
+- The bound upstream connection fails while the downstream connection is idle. Envoy closes the idle downstream connection when its upstream peer goes away.
+- A failure occurs after Envoy has already started sending response headers. At that point Envoy can't transparently retry on the same downstream connection.
+
+Killing a replica you're not connected to doesn't break your downstream connection. Envoy only needs a healthy upstream path for the connection you're actually using.
+
+Even without `session_id`, a client that reuses the same HTTPS connection often hits the same replica across requests. Envoy keeps one upstream connection per downstream connection in the pool, so reuse tends to stick to whichever replica Envoy first connected to on that connection.
+
+That implicit stickiness is best-effort. If Envoy retries after a network blip and opens a new upstream connection to a different replica, subsequent requests on that downstream connection can land elsewhere. For explicit, hash-based pinning, use `session_id`.
 
 ## Subdomain-based routing (deprecated) {#subdomain-based-routing-deprecated}
 
