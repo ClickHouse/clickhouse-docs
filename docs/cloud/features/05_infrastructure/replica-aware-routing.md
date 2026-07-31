@@ -51,9 +51,7 @@ Every request carrying `session_id=my-workload-1` lands on the same replica. A d
 
 On a multi-replica service, a write on one replica may not be visible on the others until replication catches up. Send your write with a `session_id`, then reuse that same value on follow-up reads. The proxy routes both to the same replica, so you read your own write even while other replicas are still behind.
 
-This pattern works for workloads that write and then immediately read back the same data, such as interactive applications or ETL jobs that validate inserts before moving on. For broader guarantees across all replicas, you can also set [`select_sequential_consistency`](/operations/settings/settings#select_sequential_consistency) to `1` on ClickHouse Cloud.
-
-Any HTTP client that can add a query parameter works, including `curl`, [clickhouse-connect](/integrations/python), JDBC/ODBC, and others. For `clickhouse-go` (v2), use HTTP mode as noted above.
+This pattern works for workloads that write and then immediately read back the same data, such as interactive applications or ETL jobs that validate inserts before moving on. 
 
 ### Check which replica you hit {#check-which-replica}
 
@@ -61,21 +59,15 @@ Run the `SELECT hostName()` example again with the same `session_id`. You should
 
 ### HTTP connection reuse {#http-connection-reuse}
 
-ClickHouse Cloud routes HTTPS traffic through Envoy. How Envoy manages downstream (client-to-proxy) and upstream (proxy-to-replica) connections affects when requests stay on the same replica.
+Reusing the same HTTPS connection often sends every request to the same replica, even without `session_id`. Envoy opens one connection to a replica for each client connection and keeps using it until something breaks that link.
 
-The downstream connection stays open as long as Envoy can serve the next request on it. That happens when the upstream connection already bound to that downstream connection is still healthy, or when Envoy can point the request at a healthy replica without closing the downstream connection — for example by re-selecting a replica at load-balancing time or retrying before response headers are sent.
+The client connection stays open when the replica is still reachable, or when Envoy can silently retry on another replica before response headers go out.
 
-The downstream connection closes when Envoy can't recover on the same connection:
+The client connection closes when Envoy can't fix things on the same connection: the replica connection fails with no successful retry, the replica dies while the client connection is idle, or a failure happens after headers are already sent.
 
-- The bound upstream connection fails and Envoy doesn't retry, or the retry fails.
-- The bound upstream connection fails while the downstream connection is idle. Envoy closes the idle downstream connection when its upstream peer goes away.
-- A failure occurs after Envoy has already started sending response headers. At that point Envoy can't transparently retry on the same downstream connection.
+A failure on a different replica doesn't affect you. Only the replica on your active connection matters.
 
-Killing a replica you're not connected to doesn't break your downstream connection. Envoy only needs a healthy upstream path for the connection you're actually using.
-
-Even without `session_id`, a client that reuses the same HTTPS connection often hits the same replica across requests. Envoy keeps one upstream connection per downstream connection in the pool, so reuse tends to stick to whichever replica Envoy first connected to on that connection.
-
-That implicit stickiness is best-effort. If Envoy retries after a network blip and opens a new upstream connection to a different replica, subsequent requests on that downstream connection can land elsewhere. For explicit, hash-based pinning, use `session_id`.
+This stickiness is best-effort. After a network blip, a retry can point the same client connection at a different replica on the next request. Use `session_id` when you need explicit, hash-based pinning.
 
 ## Subdomain-based routing (deprecated) {#subdomain-based-routing-deprecated}
 
