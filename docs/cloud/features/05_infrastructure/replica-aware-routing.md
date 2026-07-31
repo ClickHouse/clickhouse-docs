@@ -61,9 +61,7 @@ Run the `SELECT hostName()` example again with the same `session_id`. You should
 
 ClickHouse uses Envoy to open one connection to a replica for each client connection and keeps using it until something breaks that link. The client connection stays open when the replica is still reachable, or when Envoy can silently retry on another replica before response headers go out.
 
-The client connection closes when Envoy can't fix things on the same connection: the replica connection fails with no successful retry, the replica dies while the client connection is idle, or a failure happens after headers are already sent. A failure on a different replica won't impact the connection. 
-
-This stickiness is best-effort. After a network blip, a retry can point the same client connection at a different replica on the next request. 
+The client connection closes when Envoy can't fix things on the same connection: the replica connection fails with no successful retry, the replica dies while the client connection is idle, or a failure happens after headers are already sent. A failure on a different replica won't impact the connection. If there is a network blip, a retry can point the same client connection at a different replica on the next request. 
 
 ## Subdomain-based routing (deprecated) {#subdomain-based-routing-deprecated}
 
