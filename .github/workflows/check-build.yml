@@ -34,7 +34,7 @@ jobs:
           uv python install 3.12 --verbose
       - name: Setup md-lint environment
         if: matrix.check_type == 'md-lint'
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: 20
       - name: Install markdown lint dependencies
