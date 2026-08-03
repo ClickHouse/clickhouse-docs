@@ -79,8 +79,8 @@ like:
 
 Let's explore the lifecycle of a Postgres service.
 
-:::warning[Credential redaction from July 31, 2026]
-As of **July 31, 2026**, the API no longer returns the `password` and `connectionString` properties in its responses. They appear only in the [create](#create) response and [password reset] response when the request contained no password. We recommend that you capture credentials from the [create](#create) response. If you manage services with Terraform, upgrade the provider to **v3.21.0 or later** before July 31, 2026 (see the [Terraform reference](/cloud/managed-postgres/terraform)).
+:::warning[Credential redaction]
+The API does not return the `password` and `connectionString` properties in its responses. They appear only in the [create](#create) response and [password reset] response when the request contained no password. We recommend that you capture credentials from the [create](#create) response. If you manage services with Terraform, use provider **v3.21.0 or later** (see the [Terraform reference](/cloud/managed-postgres/terraform)).
 :::
 
 ### Create {#create}
@@ -156,7 +156,7 @@ curl -s --user "$KEY_ID:$KEY_SECRET" \
     | jq
 ```
 
-The output will be similar to the JSON returned for creation (but without the `password` and `connectionString` properties after July 31, 2026), but keep an eye
+The output will be similar to the JSON returned for creation (but without the `password` and `connectionString` properties), but keep an eye
 on the `state`; when it changes to `running`, the server is ready:
 
 ```bash
