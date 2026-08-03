@@ -34,8 +34,9 @@ jobs:
               return;
             }
 
+            const prAuthor = context.payload.pull_request.user.login;
             const body = `${marker}
-            Thanks for contributing to the ClickHouse documentation!
+            @${prAuthor}, thanks for contributing to the ClickHouse documentation!
 
             We’ve moved documentation development to the main [ClickHouse/ClickHouse](https://github.com/ClickHouse/ClickHouse) repository. For future documentation changes, please open your pull request there, with changes under the [docs/](https://github.com/ClickHouse/ClickHouse/tree/master/docs) directory.
 
