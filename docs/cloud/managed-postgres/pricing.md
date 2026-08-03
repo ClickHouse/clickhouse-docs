@@ -91,11 +91,11 @@ The table below summarizes the features, capabilities, and limits included in ea
 
 ### Instance types {#instance-types}
 
-Instance configurations are grouped into three categories to simplify infrastructure selection based on workload characteristics.
+Instance configurations are grouped into three categories to simplify infrastructure selection based on workload characteristics. Not all instance types are available in every AWS region.
 
-- **Memory Optimized:** Designed for memory-intensive workloads with higher memory-to-CPU ratios (such as 1:8 or 1:4). Supports AWS Graviton-based `r8gd`, `r6gd`, `m6gd`, and `m8gd` families. Best suited for large working sets, high cache hit ratios, and memory-bound database workloads.
-- **Storage Optimized:** Designed for workloads that require large amounts of local NVMe storage without scaling compute proportionally. Supports AWS Graviton-based `i8g`, `i8ge`, `i7i` and `i7ie` families, with configurations offering up to 60 TB of local NVMe storage. Best suited for large datasets, time-series workloads, log and event storage, and storage-heavy OLTP workloads.
-- **CPU Optimized:** Designed for compute-intensive workloads with lower memory-to-CPU ratios (typically around 1:2). Supports `c6gd` families and is best suited for high-concurrency transactional workloads and CPU-bound queries.
+- **Memory Optimized:** Designed for memory-intensive workloads with higher memory-to-CPU ratios (such as 1:8 or 1:4). Supports x86 (`r8id` and `r6id`) and ARM64 (Graviton-based) (`r6gd` and `r8gd`) families. Best suited for large working sets, high cache hit ratios, and memory-bound database workloads.
+- **Storage Optimized:** Designed for workloads that require large amounts of local NVMe storage without scaling compute proportionally. Supports ARM64 (Graviton-based) (`i8g` and `i8ge`) and x86 (`i7i` and `i7ie`) families, with configurations offering up to 60 TB of local NVMe storage. Best suited for large datasets, time-series workloads, log and event storage, and storage-heavy OLTP workloads.
+- **CPU Optimized:** Designed for compute-intensive workloads with lower memory-to-CPU ratios (typically around 1:2). Supports x86 (`m8id` and `m6id`) and ARM64 (Graviton-based) (`m6gd` and `m8gd`) families and is best suited for high-concurrency transactional workloads and CPU-bound queries.
 
 ## Pricing calculator {#pricing-calculator}
 
