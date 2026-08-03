@@ -4,8 +4,7 @@ sidebar_label: 'AWS Glue catalog'
 title: 'AWS Glue catalog'
 pagination_prev: null
 pagination_next: null
-description: 'In this guide, we will walk you through the steps to query
- your data in S3 buckets using ClickHouse and the AWS Glue Data Catalog.'
+description: 'Connect ClickHouse to the AWS Glue Data Catalog to read and write Iceberg tables in S3.'
 keywords: ['Glue', 'Data Lake']
 show_related_blogs: true
 doc_type: 'guide'
@@ -15,9 +14,7 @@ import BetaBadge from '@theme/badges/BetaBadge';
 
 <BetaBadge/>
 
-ClickHouse supports integration with multiple catalogs (Unity, Glue, Polaris, 
-etc.). In this guide, we will walk you through the steps to query your data in 
-S3 buckets using ClickHouse and the Glue Data Catalog.
+Connect ClickHouse to the AWS Glue Data Catalog with the [`DataLakeCatalog`](/engines/database-engines/datalakecatalog) database engine to read and write Iceberg tables stored in S3.
 
 :::note
 Glue supports many different table formats, but this integration only supports Iceberg tables.
@@ -25,14 +22,14 @@ Glue supports many different table formats, but this integration only supports I
 
 ## Configuring Glue in AWS {#configuring}
 
-To connect to the glue catalog, you will need:
+To connect to the Glue catalog, you need:
 - AWS region of your catalog
-- Access Key ID/Access Secret Key (v25.12+) or AWS Role ARN (v26.2+)
+- Access Key ID/Access Secret Key (v25.12+) or AWS IAM Role ARN (v26.2+)
 
-For AWS Role auth, AWS Role Session Name is an additional optional field. 
+For AWS IAM Role auth, AWS Role Session Name is an additional optional field.
 
 :::note
-You will need to enable it using `SET allow_database_glue_catalog = 1;`
+Enable the integration with `SET allow_database_glue_catalog = 1;`
 :::
 
 ## Creating a connection between Glue data catalog and ClickHouse {#connecting}
@@ -52,7 +49,7 @@ SETTINGS
     aws_secret_access_key = '<secret-key>'
 ```
 
-### AWS Role {#aws-role}
+### AWS IAM Role {#aws-role}
 ```sql title="Query"
 CREATE DATABASE glue
 ENGINE = DataLakeCatalog
@@ -213,6 +210,28 @@ SHOW CREATE TABLE `iceberg-benchmark.hitsiceberg`;
   │ )                                                       │
   │ENGINE = Iceberg('s3://<s3-path>')                       │
   └─────────────────────────────────────────────────────────┘
+```
+
+## Write to existing Iceberg tables in Glue {#write}
+
+Iceberg tables registered in Glue appear as tables in your `DataLakeCatalog` database. From 26.4, write to them with standard `INSERT` — enable [allow_insert_into_iceberg](/operations/settings/settings#allow_insert_into_iceberg) (25.7+, Beta from 26.2) first:
+
+```sql
+SET allow_insert_into_iceberg = 1;
+
+INSERT INTO glue.`iceberg-benchmark.hitsiceberg` (watchid, title, eventdate)
+VALUES (123456789, 'example', today());
+```
+
+Or copy rows from a ClickHouse table with `INSERT INTO ... SELECT`:
+
+```sql
+INSERT INTO glue.`iceberg-benchmark.hitsiceberg` (watchid, title, eventdate)
+SELECT
+    watchid,
+    title,
+    eventdate
+FROM some_local_table;
 ```
 
 ## Loading data from your Data Lake into ClickHouse {#loading-data-into-clickhouse}

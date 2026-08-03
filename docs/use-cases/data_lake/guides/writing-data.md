@@ -16,11 +16,65 @@ In the previous guides, you queried open table formats in place and loaded data 
 - **Offloading to long-term storage** - Data arrives in ClickHouse as a real-time analytics layer, powering dashboards and operational reporting. Once the data ages beyond its real-time window, it can be written out to Iceberg in object storage for durable, cost-effective retention in an interoperable format.
 - **Reverse ETL** - Transformations, aggregations, and enrichment performed inside ClickHouse produce derived datasets that downstream tools and other teams need to consume. Writing these results to Iceberg tables makes them available across the broader data ecosystem.
 
-In both cases, `INSERT INTO SELECT` lets you move data from ClickHouse tables into Iceberg tables stored in object storage.
+In both cases, `INSERT INTO SELECT` lets you move data from ClickHouse tables into Iceberg tables stored in object storage. Writing is currently supported for Iceberg tables; partial support for Delta Lake is in progress.
 
-:::note
-Writing to open table formats is currently supported for **Iceberg tables only**. Partial support for Delta Lake tables is under development. Tables must not be managed by a catalog.
-:::
+Iceberg inserts require [allow_insert_into_iceberg](/operations/settings/settings#allow_insert_into_iceberg) (25.7+, Beta from 26.2).
+
+## Write with or without a catalog {#write-paths}
+
+How you write depends on whether the Iceberg table is managed by a data catalog.
+
+### Without a catalog {#without-catalog}
+
+Create a standalone table with the [`IcebergS3`](/engines/table-engines/integrations/iceberg) (or `IcebergLocal` / `IcebergAzure`) table engine, then `INSERT` into it (25.7+).
+
+```sql
+SET allow_insert_into_iceberg = 1;
+
+CREATE TABLE uk.uk_iceberg
+(
+    price UInt32,
+    town String
+)
+ENGINE = IcebergS3(
+    'https://your-bucket.s3.amazonaws.com/warehouse/uk_iceberg/',
+    '<aws_access_key>',
+    '<aws_secret_key>'
+);
+
+INSERT INTO uk.uk_iceberg
+SELECT
+    price,
+    town
+FROM uk.uk_price_paid
+WHERE town = 'LONDON';
+```
+
+
+### With a catalog {#with-catalog}
+
+When tables are registered in Glue, REST, or another catalog, connect with [`DataLakeCatalog`](/engines/database-engines/datalakecatalog) and `INSERT` into the catalog tables (26.4+). `catalog_type` and related settings belong on the database — not on `IcebergS3`.
+
+```sql
+SET allow_database_glue_catalog = 1;
+SET allow_insert_into_iceberg = 1;
+
+CREATE DATABASE glue
+ENGINE = DataLakeCatalog
+SETTINGS
+    catalog_type = 'glue',
+    region = 'us-east-1',
+    aws_access_key_id = '<key>',
+    aws_secret_access_key = '<secret>';
+
+INSERT INTO glue.`my_namespace.my_table` (col1, col2)
+SELECT
+    col1,
+    col2
+FROM clickhouse_table;
+```
+
+Use the backticked `<namespace>.<table>` name for catalog tables. See the [support matrix](/use-cases/data-lake/support-matrix#catalog-support) for which catalogs support insert and create.
 
 ## Prepare a source dataset {#prepare-source}
 
@@ -100,11 +154,11 @@ Peak memory usage: 485.15 MiB.
 
 ## Write data to an Iceberg table {#write-iceberg}
 
+The following steps use the without-catalog path: a standalone [`IcebergS3`](/engines/table-engines/integrations/iceberg) table.
+
 ### Create the Iceberg table {#create-iceberg-table}
 
-To write data into Iceberg, create a table using the [`IcebergS3` table engine](/engines/table-engines/integrations/iceberg).
-
-Note that the schema must be simplified compared to the MergeTree source. ClickHouse supports a richer type system than Iceberg and the underlying Parquet files - types such as `Enum`, `LowCardinality`, and `UInt8` are not supported in Iceberg and must be mapped to compatible types.
+Create the destination table with `IcebergS3`. The schema must be simplified compared to the MergeTree source — ClickHouse types such as `Enum`, `LowCardinality`, and `UInt8` are not supported in Iceberg and must be mapped to compatible types.
 
 ```sql
 CREATE TABLE uk.uk_iceberg
@@ -132,7 +186,7 @@ ENGINE = IcebergS3('https://datasets-documentation.s3.amazonaws.com/lake_formats
 Use `INSERT INTO SELECT` to write data from the MergeTree table into the Iceberg table. In this example, we write only London transactions:
 
 ```sql
-SET allow_experimental_insert_into_iceberg = 1;
+SET allow_insert_into_iceberg = 1;
 
 INSERT INTO uk.uk_iceberg SELECT *
 FROM uk.uk_price_paid
