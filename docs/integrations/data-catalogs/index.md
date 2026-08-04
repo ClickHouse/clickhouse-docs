@@ -22,8 +22,6 @@ import data_catalogs_ui from '@site/static/images/cloud/features/data-catalogs-u
 
 <BetaBadge/>
 
-# Connect a data catalog in ClickHouse Cloud
-
 Connect ClickHouse Cloud to your data catalogs to access your open table format tables. You can set up connections in the **Data sources** UI. For setup via SQL, use the [`DataLakeCatalog`](/engines/database-engines/datalakecatalog) database engine in your SQL editor of choice.
 
 <Image img={data_catalogs_ui} size="md" alt="ClickHouse Cloud UI with data catalog integrations"/>

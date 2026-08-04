@@ -8,8 +8,6 @@ keywords: ['partner', 'integration', 'documentation', 'contributing', 'pull requ
 doc_type: 'guide'
 ---
 
-# Documenting your ClickHouse integration
-
 Integration documentation on this site gives end users one place to scope and troubleshoot setups. This page describes what to include, where files go, and how to open a pull request.
 
 Start with [Building integrations](/integrations/integration-development/building-integrations) and [Testing your integration](/integrations/integration-development/testing-your-integration) if you have not already.

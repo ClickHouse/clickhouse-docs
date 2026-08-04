@@ -11,8 +11,6 @@ import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
 <PrivatePreviewBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} slug="migrations-faq" />
 
-# Managed Postgres migrations FAQ
-
 Many questions about how Postgres replication works — including `TOAST` columns, replication slots, publications, schema changes, and data type mappings — are covered in the [ClickPipes for Postgres FAQ](/integrations/clickpipes/postgres/faq). The information there applies to Managed Postgres migrations as well.
 
 ### I'm seeing an "invalid input value for enum" error during replication {#invalid-enum-value}

@@ -13,8 +13,6 @@ import Image from '@theme/IdealImage';
 import pubsub_inqueue_job from '@site/static/images/integrations/data-ingestion/google-dataflow/pubsub-inqueue-job.png'
 import dataflow_create_job_from_template_button from '@site/static/images/integrations/data-ingestion/google-dataflow/create_job_from_template_button.png'
 
-# Dataflow Pub/Sub to ClickHouse template
-
 The Pub/Sub to ClickHouse template is a streaming pipeline that reads JSON-encoded messages from a Pub/Sub subscription and writes them into a ClickHouse table.
 Messages that fail to parse or fail to map to the target schema are routed to a dead-letter destination: a ClickHouse table, a Pub/Sub topic, or both.
 

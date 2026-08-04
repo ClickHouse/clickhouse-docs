@@ -25,8 +25,6 @@ import cp_destination from '@site/static/images/integrations/data-ingestion/clic
 import cp_overview from '@site/static/images/integrations/data-ingestion/clickpipes/cp_overview.png';
 import Image from '@theme/IdealImage';
 
-# Integrating Google Pub/Sub with ClickHouse Cloud
-
 :::note
 You can sign up for the Private Preview waitlist [here](https://clickhouse.com/cloud/clickpipes#pubsub-private-preview).
 :::

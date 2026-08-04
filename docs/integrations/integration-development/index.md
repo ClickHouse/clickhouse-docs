@@ -8,8 +8,6 @@ keywords: ['integration development', 'build integration', 'partner', 'integrati
 doc_type: 'landing-page'
 ---
 
-# Integration development
-
 These guides orient you if you build a product that connects to ClickHouse. They cover the integration surface, how to validate your connector, and how to publish documentation on this site.
 
 :::note[Partner portal]

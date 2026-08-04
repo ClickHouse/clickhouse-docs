@@ -8,8 +8,6 @@ keywords: ['partner', 'integration', 'testing', 'validation', 'example datasets'
 doc_type: 'guide'
 ---
 
-# Testing your ClickHouse integration
-
 Validate your integration against both ClickHouse deployment modes and datasets that exercise ClickHouse's type system at a meaningful scale before you submit it for review. This page defines what "tested" means at the entry level. Formal validation is a separate process for partners progressing to higher partnership tiers.
 
 See [Building integrations](/integrations/integration-development/building-integrations) for ingestion and consumption paths, and [Documenting your integration](/integrations/integration-development/documenting-your-integration) for how to publish your results.

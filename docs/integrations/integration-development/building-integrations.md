@@ -8,8 +8,6 @@ keywords: ['partner', 'integration', 'ingestion', 'consumption', 'ClickPipes', '
 doc_type: 'guide'
 ---
 
-# Building integrations with ClickHouse
-
 This page orients you to the integration surface so you can scope ingestion and consumption work. For validation and publishing, continue with [Testing your integration](/integrations/integration-development/testing-your-integration) and [Documenting your integration](/integrations/integration-development/documenting-your-integration).
 
 ## Ingestion {#ingestion}

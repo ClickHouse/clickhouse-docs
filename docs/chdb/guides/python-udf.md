@@ -7,8 +7,6 @@ keywords: ['chdb', 'udf', 'python', 'user-defined function']
 doc_type: 'guide'
 ---
 
-# Python user-defined functions (UDF)
-
 chDB allows you to register Python functions as SQL-callable UDFs. These run natively in-process — no subprocess spawning, no serialization overhead. Functions are type-safe, support automatic type inference from Python annotations, and offer configurable NULL and exception handling.
 
 ## Quick start {#quick-start}

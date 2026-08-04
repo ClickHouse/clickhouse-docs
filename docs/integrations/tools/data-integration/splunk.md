@@ -30,9 +30,9 @@ This add-on allows you to store the [ClickHouse Cloud audit logs](/cloud/securit
 
 This add-on contains only a modular input, no additional UI are provided with this add-on.
 
-# Installation
+## Installation
 
-## For Splunk Enterprise {#for-splunk-enterprise}
+### For Splunk Enterprise {#for-splunk-enterprise}
 
 Download the ClickHouse Cloud Audit Add-on for Splunk from [Splunkbase](https://splunkbase.splunk.com/app/7709).
 
@@ -48,14 +48,14 @@ Select the archived file downloaded from Splunkbase and click on Upload.
 
 If everything goes fine, you should now see the ClickHouse Audit logs application installed. If not, consult the Splunkd logs for any errors.
 
-# Modular input configuration
+## Modular input configuration
 
 To configure the modular input, you'll first need information from your ClickHouse Cloud deployment:
 
 - The organization ID
 - An admin [API Key](/cloud/manage/openapi)
 
-## Getting information from ClickHouse Cloud {#getting-information-from-clickhouse-cloud}
+### Getting information from ClickHouse Cloud {#getting-information-from-clickhouse-cloud}
 
 Log in to the [ClickHouse Cloud console](https://console.clickhouse.cloud/).
 
@@ -75,7 +75,7 @@ Save the API Key and secret in a safe place.
 
 <Image img={splunk_007} size="lg" alt="ClickHouse Cloud console showing the generated API Key and secret to be saved" border />
 
-## Configure data input in Splunk {#configure-data-input-in-splunk}
+### Configure data input in Splunk {#configure-data-input-in-splunk}
 
 Back in Splunk, navigate to Settings -> Data inputs.
 
@@ -95,7 +95,7 @@ Once you have entered all the information, click Next.
 
 The input is configured, you can start browsing the audit logs.
 
-# Usage
+## Usage
 
 The modular input stores data in Splunk. To view the data, you can use the general search view in Splunk.
 

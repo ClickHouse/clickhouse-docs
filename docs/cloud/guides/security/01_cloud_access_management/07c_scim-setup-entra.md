@@ -10,8 +10,6 @@ keywords: ['ClickHouse Cloud', 'SCIM', 'provisioning', 'Entra ID', 'Azure AD', '
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-# SCIM provisioning with Microsoft Entra ID
-
 <PrivatePreviewBadge/>
 
 <EnterprisePlanFeatureBadge feature="SCIM"/>

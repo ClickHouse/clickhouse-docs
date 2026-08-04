@@ -9,8 +9,6 @@ doc_type: 'guide'
 
 import BetaBadge from '@theme/badges/BetaBadge';
 
-# Managed Postgres data migration
-
 <BetaBadge link="https://clickhouse.com/cloud/postgres" galaxyTrack={true} galaxyEvent="docs.managed-postgres.migration-overview-beta" />
 
 You can migrate to Managed Postgres through four different paths. Which one

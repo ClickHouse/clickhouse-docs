@@ -20,7 +20,7 @@ This guide provides describes how to configure ClickHouse to use [ACME](https://
 With ACME support, ClickHouse can obtain and renew certificates from providers like [Let's Encrypt](https://letsencrypt.org/) or [ZeroSSL](https://zerossl.com/) automatically.
 TLS encryption protects data in transit between clients and ClickHouse servers, preventing eavesdropping on sensitive queries and results.
 
-## Overview {#overview}
+### Overview {#overview}
 
 ACME protocol defines automatic certificate update process with services like [Let's Encrypt](https://letsencrypt.org/) or [ZeroSSL](https://zerossl.com/). In short, ClickHouse as certificate requester needs to confirm domain ownership via predefined challenge types in order to get a certificate.
 
@@ -46,13 +46,13 @@ The HTTP port doesn't need to be 80 on the server itself; it may be remapped usi
 In the `acme` block, we're defining `email` for account creation, and accepting ACME service terms of service.
 After that, the only thing we need is a list of domains.
 
-### Current limitations {#current-limitations}
+#### Current limitations {#current-limitations}
 
 - Only `HTTP-01` challenge type is supported.
 - Only `RSA 2048` keys are supported.
 - Rate limiting isn't handled.
 
-## Configuration parameters {#configuration-parameters}
+### Configuration parameters {#configuration-parameters}
 
 Configuration options available in `acme` section:
 
@@ -68,9 +68,9 @@ Configuration options available in `acme` section:
 
 Note that configuration uses Let's Encrypt production directory by default. To avoid hitting request quota due to probable misconfiguration, it is recommended to test certificate issuing process with [staging directory](https://letsencrypt.org/docs/staging-environment/) first.
 
-# Administration
+## Administration
 
-## Initial deployment {#initial-deployment}
+### Initial deployment {#initial-deployment}
 
 When enabling the ACME client on a cluster with multiple replicas, additional care is required during the initial certificate issuance.
 
@@ -82,7 +82,7 @@ If routing traffic to a single replica isn't feasible, an alternative approach i
 
 After the initial certificate has been issued or imported, certificate renewal doesn't require special handling, as all replicas will already be running the ACME client and sharing state through Keeper.
 
-## Keeper data structure {#keeper-data-structure}
+### Keeper data structure {#keeper-data-structure}
 
 ```text
 /clickhouse/acme
@@ -95,7 +95,7 @@ After the initial certificate has been issued or imported, certificate renewal d
             └── private_key          # Domain private key (PEM)
 ```
 
-## Migrating from other ACME clients {#migrating-from-other-acme-clients}
+### Migrating from other ACME clients {#migrating-from-other-acme-clients}
 
 It is possible to migrate current TLS certificate and key to Keeper for easier migration.
 At the moment, server supports only `RSA 2048` keys.

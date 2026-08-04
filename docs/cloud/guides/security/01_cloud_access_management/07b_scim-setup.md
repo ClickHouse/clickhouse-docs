@@ -10,8 +10,6 @@ keywords: ['ClickHouse Cloud', 'SCIM', 'provisioning', 'Okta', 'SSO', 'SAML', 'i
 import EnterprisePlanFeatureBadge from '@theme/badges/EnterprisePlanFeatureBadge'
 import PrivatePreviewBadge from '@theme/badges/PrivatePreviewBadge';
 
-# SCIM provisioning with Okta
-
 <PrivatePreviewBadge/>
 
 :::note
