@@ -1192,6 +1192,7 @@ Psycopg
 Punycode
 PyArrow
 PyCharm
+PyIceberg
 PyPI
 PyReader
 PySpark
@@ -1357,6 +1358,7 @@ SchemaInferenceMode
 Schemas
 Schwartzian
 SeasClick
+SeaweedFS
 SeekTable
 SelfManaged
 Sematext

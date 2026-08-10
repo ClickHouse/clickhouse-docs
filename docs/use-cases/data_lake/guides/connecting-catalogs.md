@@ -7,7 +7,7 @@ toc_max_heading_level: 3
 pagination_prev: use-cases/data_lake/guides/querying-directly
 pagination_next: use-cases/data_lake/guides/accelerating-analytics
 description: 'Connect ClickHouse to external data catalogs using the DataLakeCatalog database engine to expose catalog tables as native ClickHouse databases.'
-keywords: ['data lake', 'lakehouse', 'catalog', 'glue', 'unity', 'rest', 'lakekeeper', 'nessie', 'OneLake']
+keywords: ['data lake', 'lakehouse', 'catalog', 'glue', 'unity', 'rest', 'lakekeeper', 'nessie', 'OneLake', 'seaweedfs']
 doc_type: 'guide'
 ---
 
@@ -26,6 +26,7 @@ This guide walks through connecting to [Databricks Unity Catalog](https://www.da
 | Lakekeeper | [Lakekeeper catalog](/use-cases/data-lake/lakekeeper-catalog) |
 | Project Nessie | [Nessie catalog](/use-cases/data-lake/nessie-catalog) |
 | Microsoft OneLake | [Fabric OneLake](/use-cases/data-lake/onelake-catalog) |
+| SeaweedFS | [SeaweedFS catalog](/use-cases/data-lake/seaweedfs-catalog) |
 
 ## Connecting to a Unity Catalog {#connecting-to-unity-catalog}
 

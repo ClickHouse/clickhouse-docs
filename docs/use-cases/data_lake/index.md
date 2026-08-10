@@ -4,7 +4,7 @@ pagination_prev: null
 pagination_next: null
 slug: /use-cases/data-lake
 title: 'Data Lake'
-keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake', 'BigLake']
+keywords: ['data lake', 'lakehouse', 'iceberg', 'delta lake', 'hudi', 'paimon', 'glue', 'unity', 'rest', 'OneLake', 'BigLake', 'SeaweedFS']
 doc_type: 'landing-page'
 ---
 
@@ -47,6 +47,7 @@ Supported catalogs include:
 | Lakekeeper | [Lakekeeper Catalog guide](/use-cases/data-lake/lakekeeper-catalog) |
 | Project Nessie | [Nessie Catalog guide](/use-cases/data-lake/nessie-catalog) |
 | Microsoft OneLake | [OneLake Catalog guide](/use-cases/data-lake/onelake-catalog) |
+| SeaweedFS | [SeaweedFS Catalog guide](/use-cases/data-lake/seaweedfs-catalog) |
 
 See the getting started guide for [connecting to catalogs](/use-cases/data-lake/getting-started/connecting-catalogs).
 
