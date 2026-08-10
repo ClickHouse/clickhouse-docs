@@ -89,7 +89,7 @@ SYSTEM UNLOCK SNAPSHOT '<snapshot_id>'
 ```
 
 :::note The `FROM` clause is deprecated
-`SYSTEM UNLOCK SNAPSHOT` no longer takes a `FROM <destination>` clause. It is still accepted for backward compatibility but ignored: the unlock now only removes the snapshot's commit marker in ClickHouse Keeper, so it does not read the backup destination and succeeds even when the backup files are already gone.
+`SYSTEM UNLOCK SNAPSHOT` no longer takes a `FROM <destination>` clause. It's still accepted for backward compatibility but ignored.
 :::
 
 :::note `ALTER TABLE ... UNLOCK SNAPSHOT` is deprecated
