@@ -82,30 +82,19 @@ SETTINGS snapshot_from_current_service = 1
 
 Each snapshot holds locks in ClickHouse Keeper that prevent the referenced object storage files from being garbage collected. After a restore completes — or when a snapshot is no longer needed — unlock it to release those locks.
 
-There are two forms: a system-level unlock that removes all locks for the snapshot at once, and a per-table unlock that removes the lock for a single table while leaving the rest of the snapshot intact.
-
-**System-level unlock** — removes all locks for the snapshot:
+Unlock a snapshot with `SYSTEM UNLOCK SNAPSHOT`, which removes all locks for the snapshot at once:
 
 ```sql
 SYSTEM UNLOCK SNAPSHOT '<snapshot_id>'
-FROM S3('https://my-bucket.s3.us-east-1.amazonaws.com/snapshots/events/', 'ACCESS_KEY_ID', 'SECRET_ACCESS_KEY')
 ```
 
-**Per-table unlock** — removes the lock for one table only:
+:::note The `FROM` clause is deprecated
+`SYSTEM UNLOCK SNAPSHOT` no longer takes a `FROM <destination>` clause. It is still accepted for backward compatibility but ignored: the unlock now only removes the snapshot's commit marker in ClickHouse Keeper, so it does not read the backup destination and succeeds even when the backup files are already gone.
+:::
 
-```sql
-ALTER TABLE mydb.events UNLOCK SNAPSHOT '<snapshot_id>'
-FROM S3('https://my-bucket.s3.us-east-1.amazonaws.com/snapshots/events/', 'ACCESS_KEY_ID', 'SECRET_ACCESS_KEY')
-```
-
-The `FROM` clause is optional when the snapshot destination was stored in Keeper at creation time (visible in the `info` column of `system.snapshot_locks`):
-
-```sql
-SYSTEM UNLOCK SNAPSHOT '<snapshot_id>'
-
--- or per-table:
-ALTER TABLE mydb.events UNLOCK SNAPSHOT '<snapshot_id>'
-```
+:::note `ALTER TABLE ... UNLOCK SNAPSHOT` is deprecated
+The per-table form `ALTER TABLE ... UNLOCK SNAPSHOT` is deprecated and now throws an error. Use `SYSTEM UNLOCK SNAPSHOT` instead.
+:::
 
 After unlocking, the corresponding row disappears from `system.snapshot_locks`, and parts no longer referenced by other snapshots drop out of `system.snapshot_parts`.
 
