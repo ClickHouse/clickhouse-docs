@@ -4,8 +4,7 @@ sidebar_label: 'SeaweedFS catalog'
 title: 'SeaweedFS catalog'
 pagination_prev: null
 pagination_next: null
-description: 'In this guide, we will walk you through the steps to query
- your data using ClickHouse and the SeaweedFS Iceberg catalog.'
+description: 'In this guide, we will walk you through the steps to query your data using ClickHouse and the SeaweedFS Iceberg catalog.'
 keywords: ['SeaweedFS', 'Table Buckets', 'REST', 'Data Lake', 'Iceberg']
 show_related_blogs: true
 doc_type: 'guide'
